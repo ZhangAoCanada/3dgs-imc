@@ -14,16 +14,18 @@ import json
 import torch
 from random import randint
 from utils.loss_utils import l1_loss, ssim
-from gaussian_renderer import render, network_gui
+from gaussian_renderer import render, network_gui, render_noise
 import sys
 from scene_experimental import Scene, GaussianModel
+from scene_experimental.gaussian_model import build_scaling_rotation
+# from scene import Scene, GaussianModel
+# from scene.gaussian_model import build_scaling_rotation
 from utils.general_utils import safe_state, get_expon_lr_func
 import uuid
 from tqdm import tqdm
 from utils.image_utils import psnr
 from argparse import ArgumentParser, Namespace
 from arguments import ModelParams, PipelineParams, OptimizationParams
-from scene_experimental.gaussian_model import build_scaling_rotation
 try:
     from torch.utils.tensorboard import SummaryWriter
     TENSORBOARD_FOUND = True
@@ -110,7 +112,11 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         bg = torch.rand((3), device="cuda") if opt.random_background else background
 
-        render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
+        ############### NOTE: IMC ###############
+        noise = gaussians.imc_process_experimental(viewpoint_cam)
+        render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
+        # render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
+
         image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
 
         if viewpoint_cam.alpha_mask is not None:
@@ -162,10 +168,13 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 print("\n[ITER {}] Saving Gaussians".format(iteration))
                 scene.save(iteration)
 
-            if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
-                dead_mask = (gaussians.get_opacity <= 0.005).squeeze(-1)
-                gaussians.relocate_gs(dead_mask=dead_mask)
-                gaussians.add_new_gs(cap_max=args.cap_max)
+
+            ############### NOTE: Densification ###############
+            # if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
+            #     dead_mask = (gaussians.get_opacity <= 0.005).squeeze(-1)
+            #     gaussians.relocate_gs(dead_mask=dead_mask)
+            # #     gaussians.add_new_gs(cap_max=args.cap_max)
+
 
             # Optimizer step
             if iteration < opt.iterations:
@@ -181,19 +190,70 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 # gaussians.optimizer.step()
                 # gaussians.optimizer.zero_grad(set_to_none = True)
 
-                L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-                actual_covariance = L @ L.transpose(1, 2)
+                ############### NOTE: IMC ###############
+                # torch.nn.utils.clip_grad_norm_(gaussians.net.parameters(), 1.)
+                gaussians.imc_experimental_optimizer.step()
+                gaussians.imc_experimental_optimizer.zero_grad()
 
-                def op_sigmoid(x, k=100, x0=0.995):
-                    return 1 / (1 + torch.exp(-k * (x - x0)))
+                ############### NOTE: IMC ###############
+                # gaussians.imc_detach_experimental()
+                filter_mask = radii > 0
+                gaussians.add_noise(noise, filter_mask)
+                # gaussians.add_noise(noise)
+
+                ################# NOTE: MCMC ##################
+                # L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+                # actual_covariance = L @ L.transpose(1, 2)
+
+                # def op_sigmoid(x, k=100, x0=0.995):
+                #     return 1 / (1 + torch.exp(-k * (x - x0)))
                 
-                noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
-                noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
-                gaussians._xyz.add_(noise)
+                # noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+                # noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
+                # gaussians._xyz.add_(noise)
 
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" + str(iteration) + ".pth")
+
+        ############### NOTE: IMC ###############
+        # noise = gaussians.imc_process_experimental(viewpoint_cam)
+        # render_pkg_noise = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
+        # image_noise, viewspace_point_tensor_noise, visibility_filter_noise, radii_noise = render_pkg_noise["render"], render_pkg_noise["viewspace_points"], render_pkg_noise["visibility_filter"], render_pkg_noise["radii"]
+
+        # Ll1_noise = l1_loss(image_noise, gt_image)
+        # if FUSED_SSIM_AVAILABLE:
+        #     ssim_value_noise = fused_ssim(image_noise.unsqueeze(0), gt_image.unsqueeze(0))
+        # else:
+        #     ssim_value_noise = ssim(image_noise, gt_image)
+
+        # psnr_noise = psnr(image_noise, gt_image).mean()
+        # # loss_noise = (1.0 - opt.lambda_dssim) * Ll1_noise \
+        # #         + opt.lambda_dssim * (1.0 - ssim_value_noise) \
+        # #         + psnr(image, gt_image).mean().detach().clone() - psnr_noise \
+        # #         + ssim_value.detach().clone() - ssim_value_noise
+        # loss_noise = Ll1_noise - Ll1.detach().clone() + psnr(image, gt_image).mean().detach().clone() - psnr_noise + ssim_value.detach().clone() - ssim_value_noise - 0.001 * noise.sum()
+        # loss_noise.backward()
+
+        # if tb_writer:
+        #     tb_writer.add_scalar('trainoise_loss_patches/l1_loss_noise', Ll1_noise.item(), iteration)
+        #     tb_writer.add_scalar('trainoise_loss_patches/psnr_noise', psnr_noise.item(), iteration)
+        #     tb_writer.add_scalar('trainoise_loss_patches/ssim_noise', ssim_value_noise.item(), iteration)
+        #     tb_writer.add_scalar('trainoise_loss_patches/total_loss_noise', loss_noise.item(), iteration)
+
+        # # torch.nn.utils.clip_grad_norm_(gaussians.net.parameters(), 1.)
+        # gaussians.imc_experimental_optimizer.step()
+        # gaussians.imc_experimental_optimizer.zero_grad()
+        # gaussians.exposure_optimizer.zero_grad(set_to_none = True)
+        # gaussians.optimizer.zero_grad(set_to_none = True)
+
+        # # if iteration > 500:
+        # with torch.no_grad():
+        #     filter_mask = radii > 0
+        #     gaussians.add_noise(noise, filter_mask)
+
+
+
 
 def prepare_output_and_logger(args):    
     if not args.model_path:

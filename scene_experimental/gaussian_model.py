@@ -22,6 +22,8 @@ from simple_knn._C import distCUDA2
 from utils.graphics_utils import BasicPointCloud
 from utils.general_utils import strip_symmetric, build_scaling_rotation
 from utils.reloc_utils import compute_relocation_cuda
+from utils.sh_utils import eval_sh
+from scene_experimental.imc_experimental import NetworksA
 
 class GaussianModel:
 
@@ -116,7 +118,6 @@ class GaussianModel:
     def get_opacity(self):
         return self.opacity_activation(self._opacity)
 
-    ############## NOTE: add exposure #####################
     @property
     def get_exposure(self):
         return self._exposure
@@ -126,7 +127,6 @@ class GaussianModel:
             return self._exposure[self.exposure_mapping[image_name]]
         else:
             return self.pretrained_exposures[image_name]
-    #######################################################
     
     def get_covariance(self, scaling_modifier = 1):
         return self.covariance_activation(self.get_scaling, scaling_modifier, self._rotation)
@@ -152,19 +152,59 @@ class GaussianModel:
 
         opacities = inverse_sigmoid(0.5 * torch.ones((fused_point_cloud.shape[0], 1), dtype=torch.float, device="cuda"))
 
-        self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
-        self._features_dc = nn.Parameter(features[:,:,0:1].transpose(1, 2).contiguous().requires_grad_(True))
-        self._features_rest = nn.Parameter(features[:,:,1:].transpose(1, 2).contiguous().requires_grad_(True))
+        ######################################################################
+        ###################### NOTE: change properties #######################
+        ######################################################################
+        # self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
+        # self._features_dc = nn.Parameter(features[:,:,0:1].transpose(1, 2).contiguous().requires_grad_(True))
+        # self._features_rest = nn.Parameter(features[:,:,1:].transpose(1, 2).contiguous().requires_grad_(True))
+        # self._scaling = nn.Parameter(scales.requires_grad_(True))
+        # self._rotation = nn.Parameter(rots.requires_grad_(True))
+        # self._opacity = nn.Parameter(opacities.requires_grad_(True))
+        # self.max_radii2D = torch.zeros((self.get_xyz.shape[0]), device="cuda")
+        # self.exposure_mapping = {cam_info.image_name: idx for idx, cam_info in enumerate(cam_infos)}
+        # self.pretrained_exposures = None
+        # exposure = torch.eye(3, 4, device="cuda")[None].repeat(len(cam_infos), 1, 1)
+        # self._exposure = nn.Parameter(exposure.requires_grad_(True))
+
+        self._xyz = fused_point_cloud.clone()
+        # self._opacity = opacities.clone()
+        # self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
+        self._opacity = nn.Parameter(opacities.requires_grad_(True))
         self._scaling = nn.Parameter(scales.requires_grad_(True))
         self._rotation = nn.Parameter(rots.requires_grad_(True))
-        self._opacity = nn.Parameter(opacities.requires_grad_(True))
         self.max_radii2D = torch.zeros((self.get_xyz.shape[0]), device="cuda")
-        ############## NOTE: add exposure #####################
+        self._features_dc = nn.Parameter(features[:,:,0:1].transpose(1, 2).contiguous().requires_grad_(True))
+        self._features_rest = nn.Parameter(features[:,:,1:].transpose(1, 2).contiguous().requires_grad_(True))
         self.exposure_mapping = {cam_info.image_name: idx for idx, cam_info in enumerate(cam_infos)}
         self.pretrained_exposures = None
         exposure = torch.eye(3, 4, device="cuda")[None].repeat(len(cam_infos), 1, 1)
         self._exposure = nn.Parameter(exposure.requires_grad_(True))
-        #######################################################
+
+
+        self.xyz_lowerbound = torch.min(self.get_xyz, dim=0).values
+        self.xyz_upperbound = torch.max(self.get_xyz, dim=0).values
+        self.scale_upperbound = torch.max(self.get_scaling, dim=0).values
+        # in_feat_len = [self._xyz.shape[1], self._scaling.shape[1], self._rotation.shape[1], self._opacity.shape[1]]
+        #################### NOTE: hyper-param ########################
+        in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1]] # [xyz, opacity, rgb]
+        # self.net_mode = "mlp"
+        # self.net_type = "relu"
+        self.net_mode = "fft"
+        self.net_type = "sine"
+        # self.net_pred_mode = "std"
+        self.net_pred_mode = "mean+std"
+        self.net = NetworksA(
+            in_features_len=in_feat_len, 
+            out_features=3, 
+            xyz_bounds=[self.xyz_lowerbound, self.xyz_upperbound], 
+            scale_upperbound=self.scale_upperbound, 
+            type=self.net_type, 
+            mode=self.net_mode, 
+            pred_mode=self.net_pred_mode
+            )
+        self.net.cuda()
+
 
     def training_setup(self, training_args):
         self.percent_dense = training_args.percent_dense
@@ -172,35 +212,99 @@ class GaussianModel:
         self.denom = torch.zeros((self.get_xyz.shape[0], 1), device="cuda")
 
         l = [
-            {'params': [self._xyz], 'lr': training_args.position_lr_init * self.spatial_lr_scale, "name": "xyz"},
-            {'params': [self._features_dc], 'lr': training_args.feature_lr, "name": "f_dc"},
-            {'params': [self._features_rest], 'lr': training_args.feature_lr / 20.0, "name": "f_rest"},
+            # {'params': [self._xyz], 'lr': training_args.position_lr_init * self.spatial_lr_scale, "name": "xyz"},
             {'params': [self._opacity], 'lr': training_args.opacity_lr, "name": "opacity"},
             {'params': [self._scaling], 'lr': training_args.scaling_lr, "name": "scaling"},
-            {'params': [self._rotation], 'lr': training_args.rotation_lr, "name": "rotation"}
+            {'params': [self._rotation], 'lr': training_args.rotation_lr, "name": "rotation"}, 
+            {'params': [self._features_dc], 'lr': training_args.feature_lr, "name": "f_dc"},
+            {'params': [self._features_rest], 'lr': training_args.feature_lr / 20.0, "name": "f_rest"},
         ]
 
         self.optimizer = torch.optim.Adam(l, lr=0.0, eps=1e-15)
-        self.xyz_scheduler_args = get_expon_lr_func(lr_init=training_args.position_lr_init*self.spatial_lr_scale,
-                                                    lr_final=training_args.position_lr_final*self.spatial_lr_scale,
-                                                    lr_delay_mult=training_args.position_lr_delay_mult,
-                                                    max_steps=training_args.position_lr_max_steps)
+        self.xyz_scheduler_args = get_expon_lr_func(
+            lr_init=training_args.position_lr_init*self.spatial_lr_scale,
+            lr_final=training_args.position_lr_final*self.spatial_lr_scale,
+            lr_delay_mult=training_args.position_lr_delay_mult,
+            max_steps=training_args.position_lr_max_steps)
 
-        ############## NOTE: add exposure #####################
+        self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-4, params=self.net.parameters())
+
         self.exposure_optimizer = torch.optim.Adam([self._exposure])
-        self.exposure_scheduler_args = get_expon_lr_func(training_args.exposure_lr_init, training_args.exposure_lr_final,
-                                                        lr_delay_steps=training_args.exposure_lr_delay_steps,
-                                                        lr_delay_mult=training_args.exposure_lr_delay_mult,
-                                                        max_steps=training_args.iterations)
-        #######################################################
+        self.exposure_scheduler_args = get_expon_lr_func(
+            training_args.exposure_lr_init, training_args.exposure_lr_final,
+            lr_delay_steps=training_args.exposure_lr_delay_steps,
+            lr_delay_mult=training_args.exposure_lr_delay_mult,
+            max_steps=training_args.iterations)
+
+
+    def imc_process_experimental(self, viewpoint_camera, max_num=1000000):
+        self.net.train()
+
+        xyz = self.get_xyz
+        opts = self.get_opacity
+        scales = self.get_scaling
+        rots = self.get_rotation
+
+        shs_view = self.get_features.transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
+        dir_pp = (self.get_xyz - viewpoint_camera.camera_center.repeat(self.get_features.shape[0], 1))
+        dir_pp_normalized = dir_pp/dir_pp.norm(dim=1, keepdim=True)
+        sh2rgb = eval_sh(self.active_sh_degree, shs_view, dir_pp_normalized)
+        colors_precomp = torch.clamp_min(sh2rgb + 0.5, 0.0)
+
+        #################### NOTE: hyper-param ########################
+        net_in = torch.cat((xyz, opts, colors_precomp), dim=1)
+        pred = self.net(net_in)
+        xyz_pred = pred['xyz']
+
+        if self.net_pred_mode == "mean+std":
+            xyz_std = pred['std']
+            xyz_noise_ = xyz_pred + torch.randn_like(xyz) * torch.exp(xyz_std)
+            # opts_noise = opts_pred[:, :opts.shape[1]] + torch.randn_like(opts) * torch.exp(opts_pred[:, opts.shape[1]:])
+            # scales_noise = scales_pred[:, :scales.shape[1]] + torch.randn_like(scales) * scales_pred[:, scales.shape[1]:]
+            # rots_noise = rots_pred[:, :rots.shape[1]] + torch.randn_like(rots) * rots_pred[:, rots.shape[1]:]
+        else:
+            xyz_noise_ = torch.rand_like(xyz) * torch.exp(xyz_pred)
+            # opts_noise = torch.rand_like(opts) * opts_pred
+            # scales_noise = torch.rand_like(scales) * torch.exp(scales_pred)
+            # rots_noise = torch.rand_like(rots) * rots_pred
+
+        # self._xyz[rand_index] += xyz_noise
+        # self._opacity[rand_index] += opts_noise
+        # self._scaling[rand_index].add_(scales_noise)
+        # self._rotation[rand_index].add_(rots_noise)
+
+        # boundary = self.xyz_upperbound - self.xyz_lowerbound
+        # lower_bound = self.xyz_lowerbound - boundary * 0.1
+        # upper_bound = self.xyz_upperbound + boundary * 0.1
+        # self._xyz[rand_index] = torch.clamp(self._xyz[rand_index], lower_bound, upper_bound)
+
+        L = build_scaling_rotation(scales, rots)
+        actual_covariance = L @ L.transpose(1, 2)
+        xyz_noise = torch.bmm(actual_covariance, xyz_noise_.unsqueeze(-1)).squeeze(-1)
+
+        return xyz_noise
+
+
+    def imc_detach_experimental(self):
+        self._xyz = self._xyz.detach().clone()
+        # self._opacity = self._opacity.detach().clone()
+        # self._scaling = self._scaling.detach()
+        # self._rotation = self._rotation.detach()
+    
+    def add_noise(self, noise, mask=None):
+        if mask is None:
+            self._xyz.add_(noise)
+        else:
+            self._xyz[mask].add_(noise[mask])
+        ######################################################################
+        ######################################################################
+        ######################################################################
 
     def update_learning_rate(self, iteration):
         ''' Learning rate scheduling per step '''
-        ############## NOTE: add exposure #####################
         if self.pretrained_exposures is None:
             for param_group in self.exposure_optimizer.param_groups:
                 param_group['lr'] = self.exposure_scheduler_args(iteration)
-        #######################################################
 
         for param_group in self.optimizer.param_groups:
             if param_group["name"] == "xyz":
@@ -248,7 +352,6 @@ class GaussianModel:
 
     def load_ply(self, path, use_train_test_exp=False):
         plydata = PlyData.read(path)
-        ############## NOTE: add exposure #####################
         if use_train_test_exp:
             exposure_file = os.path.join(os.path.dirname(path), os.pardir, os.pardir, "exposure.json")
             if os.path.exists(exposure_file):
@@ -259,7 +362,6 @@ class GaussianModel:
             else:
                 print(f"No exposure to be loaded at {exposure_file}")
                 self.pretrained_exposures = None
-        #######################################################
 
         xyz = np.stack((np.asarray(plydata.elements[0]["x"]),
                         np.asarray(plydata.elements[0]["y"]),
