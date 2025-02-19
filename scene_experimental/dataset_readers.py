@@ -142,7 +142,7 @@ def storePly(path, xyz, rgb):
     ply_data = PlyData([vertex_element])
     ply_data.write(path)
 
-def readColmapSceneInfo(path, images, depths, eval, train_test_exp, llffhold=8, init_type="sfm", num_pts=1000000):
+def readColmapSceneInfo(path, images, depths, eval, train_test_exp, llffhold=8, init_type="sfm", num_pts=5000000):
     try:
         cameras_extrinsic_file = os.path.join(path, "sparse/0", "images.bin")
         cameras_intrinsic_file = os.path.join(path, "sparse/0", "cameras.bin")

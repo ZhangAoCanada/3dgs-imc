@@ -167,9 +167,9 @@ class GaussianModel:
         # exposure = torch.eye(3, 4, device="cuda")[None].repeat(len(cam_infos), 1, 1)
         # self._exposure = nn.Parameter(exposure.requires_grad_(True))
 
-        # self._xyz = fused_point_cloud.clone()
+        self._xyz = fused_point_cloud.clone()
         # self._opacity = opacities.clone()
-        self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
+        # self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
         self._opacity = nn.Parameter(opacities.requires_grad_(True))
         self._scaling = nn.Parameter(scales.requires_grad_(True))
         self._rotation = nn.Parameter(rots.requires_grad_(True))
@@ -212,7 +212,7 @@ class GaussianModel:
         self.denom = torch.zeros((self.get_xyz.shape[0], 1), device="cuda")
 
         l = [
-            {'params': [self._xyz], 'lr': training_args.position_lr_init * self.spatial_lr_scale, "name": "xyz"},
+            # {'params': [self._xyz], 'lr': training_args.position_lr_init * self.spatial_lr_scale, "name": "xyz"},
             {'params': [self._opacity], 'lr': training_args.opacity_lr, "name": "opacity"},
             {'params': [self._scaling], 'lr': training_args.scaling_lr, "name": "scaling"},
             {'params': [self._rotation], 'lr': training_args.rotation_lr, "name": "rotation"}, 
@@ -237,19 +237,30 @@ class GaussianModel:
             max_steps=training_args.iterations)
 
 
-    def imc_process_experimental(self, viewpoint_camera, max_num=1000000):
+    def imc_process_experimental(self, viewpoint_camera, max_num=1000000, acquire_grads=False):
         self.net.train()
 
-        xyz = self.get_xyz
-        opts = self.get_opacity
-        scales = self.get_scaling
-        rots = self.get_rotation
+        xyz = self.get_xyz.detach().clone()
+        opts = self.get_opacity.detach().clone()
+        scales = self.get_scaling.detach().clone()
+        rots = self.get_rotation.detach().clone()
 
-        shs_view = self.get_features.transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
+        shs_view = self.get_features.detach().clone().transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
         dir_pp = (self.get_xyz - viewpoint_camera.camera_center.repeat(self.get_features.shape[0], 1))
         dir_pp_normalized = dir_pp/dir_pp.norm(dim=1, keepdim=True)
         sh2rgb = eval_sh(self.active_sh_degree, shs_view, dir_pp_normalized)
         colors_precomp = torch.clamp_min(sh2rgb + 0.5, 0.0)
+
+        mask = None
+        if xyz.shape[0] > max_num:
+            mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
+            random_index = torch.randperm(xyz.shape[0])[:max_num]
+            mask[random_index] = True
+            xyz = xyz[mask]
+            opts = opts[mask]
+            scales = scales[mask]
+            rots = rots[mask]
+            colors_precomp = colors_precomp[mask]
 
         #################### NOTE: hyper-param ########################
         net_in = torch.cat((xyz, opts, colors_precomp, scales, rots), dim=1)
@@ -263,7 +274,6 @@ class GaussianModel:
 
             xyz_mean = pred["xyz"]
             xyz_noise_ = xyz_mean
-            return xyz_mean
         else:
             xyz_std = pred["std"]
             xyz_noise_ = torch.rand_like(xyz) * xyz_std
@@ -272,18 +282,49 @@ class GaussianModel:
         actual_covariance = L @ L.transpose(1, 2)
         xyz_noise = torch.bmm(actual_covariance, xyz_noise_.unsqueeze(-1)).squeeze(-1)
 
-        return xyz_noise
+        if mask is not None:
+            xyz_noise_full = torch.zeros((mask.size(0), 3), device="cuda")
+            xyz_noise_full[mask] = xyz_noise
+        else:
+            xyz_noise_full = xyz_noise
+
+        if acquire_grads:
+            grad = pred["grad"] if "grad" in pred else None
+            return xyz_noise_full, mask, grad
+        return xyz_noise_full, mask
 
 
     def detach_param(self, ):
         self._xyz = self._xyz.detach().clone()
 
     def add_noise(self, noise, mask=None):
-        # if mask is None:
-        #     self._xyz.add_(noise)
-        # else:
-        #     self._xyz[mask].add_(noise[mask])
-        self._xyz.add_(noise)
+        if mask is None:
+            self._xyz.add_(noise)
+        else:
+            self._xyz[mask].add_(noise[mask])
+        # self._xyz.add_(noise)
+    
+
+    def knn_regression(self, noise, mask=None, k=10, opacities_threshold=0.01, max_noise_pnts=10000):
+        dead_mask = (self.get_opacity.detach().clone() <= opacities_threshold).squeeze(-1)
+        if dead_mask.sum() == 0:
+            return None
+        xyz = self.get_xyz.detach().clone() + noise
+        opacities = self.get_opacity.detach().clone()
+        pnts = torch.cat((xyz, opacities), dim=1)
+        dead_pnts = pnts[dead_mask]
+        healthy_pnts = pnts[~dead_mask].detach().clone()
+        if dead_pnts.shape[0] > max_noise_pnts:
+            random_d = torch.randperm(dead_pnts.shape[0])[:max_noise_pnts]
+            dead_pnts = dead_pnts[random_d]
+        if healthy_pnts.shape[0] > max_noise_pnts:
+            random_h = torch.randperm(healthy_pnts.shape[0])[:max_noise_pnts]
+            healthy_pnts = healthy_pnts[random_h]
+        dists, inds = torch.cdist(dead_pnts[:, :3], healthy_pnts[:, :3], p=2).topk(k, largest=False)
+        max_inds = torch.argmax(healthy_pnts[inds][:, :, 3], dim=1) 
+        max_neighbour = healthy_pnts[inds][torch.arange(inds.shape[0]), max_inds, :3]
+        l_noise = torch.abs(max_neighbour - dead_pnts[:, :3]).mean()
+        return l_noise
         ######################################################################
         ######################################################################
         ######################################################################

@@ -1,5 +1,6 @@
 images=input_cached
 init_type=sfm
+# init_type=random
 noise_lr=5e5
 cap_max=10000000
 scale_reg=0.01
@@ -17,7 +18,7 @@ CUDA_VISIBLE_DEVICES=3 python train_experimental.py \
     --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
     --depths dav2_cached \
     --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_sfm_fixnum_nn2ndseparatestdalltry_dynamicsingle_-11 \
+    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_sfm_fixnum_nn2ndpurestdalltry_dynamicsingle_mcmcnoise_-11_withmcmc \
     --images ${images} \
     --resolution -1 \
     --init_type ${init_type} \
@@ -32,3 +33,5 @@ CUDA_VISIBLE_DEVICES=3 python train_experimental.py \
     --depth_l1_weight_final ${depth_l1_weight_final} \
     --antialiasing \
     --port $port 
+
+# --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_fixnum_original_random500w \

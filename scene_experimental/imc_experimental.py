@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from collections import OrderedDict
 import math
+import scene_experimental.diff_operators as diff_operators
 
 
 IN_FEATURES = ['xyz', 'opacity', 'rgb', 'scale', 'rotation']
@@ -89,18 +90,19 @@ class NetworksA(nn.Module):
             scale_new = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len] / self.scale_upperbound * 2 - 1
             rota_new = coords[:, xyz_len+opac_len+rgb_len+scale_len:] * 2 - 1
 
-        xyz_new = torch.clamp(xyz_new.detach().clone(), -1, 1)
+        xyz_new = torch.clamp(xyz_new, -1, 1)
         #################### NOTE: hyper-param ########################
         if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
             coords = torch.cat([xyz_new, opac_new, rgb_new, scale_new, rota_new], dim=-1)
         else:
             coords = torch.cat([xyz_new, opac_new, rgb_new], dim=-1)
-        coords = coords.detach().clone()
+        # coords = coords.detach().clone()
+        coords_ = nn.Parameter(coords.contiguous().requires_grad_(True))
 
         if self.mode == 'fft':
-            coords = self.positional_encoding(coords)
+            coords_enc = self.positional_encoding(coords_)
 
-        output = self.net(coords)
+        output = self.net(coords_enc)
 
         if self.pred_mode == "mean+std":
             # mean = self.linear1(output)
@@ -112,7 +114,8 @@ class NetworksA(nn.Module):
 
             mean = self.linear2(output)
             return {
-                "xyz": mean
+                "xyz": mean,
+                "grad": diff_operators.gradient(mean, coords_),
             }
         else:
             std = self.linear2(output)
