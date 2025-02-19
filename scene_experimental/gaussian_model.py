@@ -167,9 +167,9 @@ class GaussianModel:
         # exposure = torch.eye(3, 4, device="cuda")[None].repeat(len(cam_infos), 1, 1)
         # self._exposure = nn.Parameter(exposure.requires_grad_(True))
 
-        self._xyz = fused_point_cloud.clone()
+        # self._xyz = fused_point_cloud.clone()
         # self._opacity = opacities.clone()
-        # self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
+        self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
         self._opacity = nn.Parameter(opacities.requires_grad_(True))
         self._scaling = nn.Parameter(scales.requires_grad_(True))
         self._rotation = nn.Parameter(rots.requires_grad_(True))
@@ -182,18 +182,18 @@ class GaussianModel:
         self._exposure = nn.Parameter(exposure.requires_grad_(True))
 
 
-        self.xyz_lowerbound = torch.min(self.get_xyz, dim=0).values
-        self.xyz_upperbound = torch.max(self.get_xyz, dim=0).values
-        self.scale_upperbound = torch.max(self.get_scaling, dim=0).values
-        # in_feat_len = [self._xyz.shape[1], self._scaling.shape[1], self._rotation.shape[1], self._opacity.shape[1]]
+        self.xyz_lowerbound = torch.min(self.get_xyz, dim=0).values.detach().clone()
+        self.xyz_upperbound = torch.max(self.get_xyz, dim=0).values.detach().clone()
+        self.scale_upperbound = torch.max(self.get_scaling, dim=0).values.detach().clone()
         #################### NOTE: hyper-param ########################
-        in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1]] # [xyz, opacity, rgb]
+        in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1], self._scaling.shape[1], self._rotation.shape[1]] # [xyz, opacity, rgb, scale, rot]
+        # in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1]] # [xyz, opacity, rgb]
         # self.net_mode = "mlp"
-        # self.net_type = "relu"
+        self.net_type = "relu"
         self.net_mode = "fft"
-        self.net_type = "sine"
-        # self.net_pred_mode = "std"
-        self.net_pred_mode = "mean+std"
+        # self.net_type = "sine"
+        self.net_pred_mode = "std"
+        # self.net_pred_mode = "mean+std"
         self.net = NetworksA(
             in_features_len=in_feat_len, 
             out_features=3, 
@@ -252,31 +252,21 @@ class GaussianModel:
         colors_precomp = torch.clamp_min(sh2rgb + 0.5, 0.0)
 
         #################### NOTE: hyper-param ########################
-        net_in = torch.cat((xyz, opts, colors_precomp), dim=1)
+        net_in = torch.cat((xyz, opts, colors_precomp, scales, rots), dim=1)
+        # net_in = torch.cat((xyz, opts, colors_precomp), dim=1)
         pred = self.net(net_in)
-        xyz_pred = pred['xyz']
 
         if self.net_pred_mode == "mean+std":
-            xyz_std = pred['std']
-            xyz_noise_ = xyz_pred + torch.randn_like(xyz) * torch.exp(xyz_std)
-            # opts_noise = opts_pred[:, :opts.shape[1]] + torch.randn_like(opts) * torch.exp(opts_pred[:, opts.shape[1]:])
-            # scales_noise = scales_pred[:, :scales.shape[1]] + torch.randn_like(scales) * scales_pred[:, scales.shape[1]:]
-            # rots_noise = rots_pred[:, :rots.shape[1]] + torch.randn_like(rots) * rots_pred[:, rots.shape[1]:]
+            # xyz_pred = pred['xyz']
+            # xyz_std = pred['std']
+            # xyz_noise_ = xyz_pred + torch.randn_like(xyz) * xyz_std
+
+            xyz_mean = pred["xyz"]
+            xyz_noise_ = xyz_mean
+            return xyz_mean
         else:
-            xyz_noise_ = torch.rand_like(xyz) * torch.exp(xyz_pred)
-            # opts_noise = torch.rand_like(opts) * opts_pred
-            # scales_noise = torch.rand_like(scales) * torch.exp(scales_pred)
-            # rots_noise = torch.rand_like(rots) * rots_pred
-
-        # self._xyz[rand_index] += xyz_noise
-        # self._opacity[rand_index] += opts_noise
-        # self._scaling[rand_index].add_(scales_noise)
-        # self._rotation[rand_index].add_(rots_noise)
-
-        # boundary = self.xyz_upperbound - self.xyz_lowerbound
-        # lower_bound = self.xyz_lowerbound - boundary * 0.1
-        # upper_bound = self.xyz_upperbound + boundary * 0.1
-        # self._xyz[rand_index] = torch.clamp(self._xyz[rand_index], lower_bound, upper_bound)
+            xyz_std = pred["std"]
+            xyz_noise_ = torch.rand_like(xyz) * xyz_std
 
         L = build_scaling_rotation(scales, rots)
         actual_covariance = L @ L.transpose(1, 2)
@@ -285,17 +275,15 @@ class GaussianModel:
         return xyz_noise
 
 
-    def imc_detach_experimental(self):
+    def detach_param(self, ):
         self._xyz = self._xyz.detach().clone()
-        # self._opacity = self._opacity.detach().clone()
-        # self._scaling = self._scaling.detach()
-        # self._rotation = self._rotation.detach()
-    
+
     def add_noise(self, noise, mask=None):
-        if mask is None:
-            self._xyz.add_(noise)
-        else:
-            self._xyz[mask].add_(noise[mask])
+        # if mask is None:
+        #     self._xyz.add_(noise)
+        # else:
+        #     self._xyz[mask].add_(noise[mask])
+        self._xyz.add_(noise)
         ######################################################################
         ######################################################################
         ######################################################################

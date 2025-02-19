@@ -27,9 +27,12 @@ class NetworksA(nn.Module):
                  **kwargs):
         super().__init__()
         self.xyz_lowerbound, self.xyz_upperbound = xyz_bounds
-        # self.boundary = self.xyz_upperbound - self.xyz_lowerbound
-        # self.xyz_lowerbound -= 0.1 * self.boundary
-        # self.xyz_upperbound += 0.1 * self.boundary
+        self.xyz_upperbound = self.xyz_upperbound.max()
+        self.xyz_lowerbound = self.xyz_lowerbound.min()
+        self.boundary = self.xyz_upperbound - self.xyz_lowerbound
+        self.xyz_lowerbound -= 0.1 * self.boundary
+        self.xyz_upperbound += 0.1 * self.boundary
+        
         self.scale_upperbound = scale_upperbound
         self.mode = mode
         self.type = type
@@ -52,9 +55,9 @@ class NetworksA(nn.Module):
                         #    outermost_linear=True, 
                            outermost_linear=False, 
                            nonlinearity=type)
-        self.linear1 = nn.Linear(hidden_features, self.out_features)
-        if self.pred_mode == "mean+std":
-            self.linear2 = nn.Linear(hidden_features, self.out_features)
+        # if self.pred_mode == "mean+std":
+        #     self.linear1 = nn.Linear(hidden_features, self.out_features)
+        self.linear2 = nn.Linear(hidden_features, self.out_features)
 
     def forward(self, coords, params=None):
         if params is None:
@@ -64,17 +67,34 @@ class NetworksA(nn.Module):
         xyz_len = self.in_features_dict['xyz']
         opac_len = self.in_features_dict['opacity']
         rgb_len = self.in_features_dict['rgb']
-        # scale_len = self.in_features_dict['scale']
-        # rota_len = self.in_features_dict['rotation']
+        if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
+            scale_len = self.in_features_dict['scale']
+            rota_len = self.in_features_dict['rotation']
 
+        """
+        self.xyz_lowerbound = coords[:, :xyz_len].min(dim=0).values.detach().clone()
+        self.xyz_upperbound = coords[:, :xyz_len].max(dim=0).values.detach().clone()
+        """
+        self.xyz_lowerbound = coords[:, :xyz_len].min().detach().clone()
+        self.xyz_upperbound = coords[:, :xyz_len].max().detach().clone()
         xyz_new = (coords[:, :xyz_len] - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
+
         opac_new = coords[:, xyz_len:xyz_len+opac_len] * 2 - 1
         rgb_new = coords[:, xyz_len+opac_len:xyz_len+opac_len+rgb_len] * 2 - 1
-        # scale_new = coords[:, xyz_len+opac_len:xyz_len+opac_len+scale_len] / self.scale_upperbound * 2 - 1
+        if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
+            """
+            self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len].max(dim=0).values.detach().clone()
+            """
+            self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len].max().detach().clone()
+            scale_new = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len] / self.scale_upperbound * 2 - 1
+            rota_new = coords[:, xyz_len+opac_len+rgb_len+scale_len:] * 2 - 1
 
+        xyz_new = torch.clamp(xyz_new.detach().clone(), -1, 1)
         #################### NOTE: hyper-param ########################
-        # xyz_new = torch.clamp(xyz_new.detach().clone(), -1, 1)
-        coords = torch.cat([xyz_new, opac_new, rgb_new], dim=-1)
+        if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
+            coords = torch.cat([xyz_new, opac_new, rgb_new, scale_new, rota_new], dim=-1)
+        else:
+            coords = torch.cat([xyz_new, opac_new, rgb_new], dim=-1)
         coords = coords.detach().clone()
 
         if self.mode == 'fft':
@@ -82,16 +102,22 @@ class NetworksA(nn.Module):
 
         output = self.net(coords)
 
-        mean = self.linear1(output)
         if self.pred_mode == "mean+std":
-            std = self.linear2(output)
-            return {
-                "xyz": mean, 
-                "std": std
-            }
-        else:
+            # mean = self.linear1(output)
+            # std = self.linear2(output)
+            # return {
+            #     "xyz": mean, 
+            #     "std": torch.exp(std)
+            # }
+
+            mean = self.linear2(output)
             return {
                 "xyz": mean
+            }
+        else:
+            std = self.linear2(output)
+            return {
+                "std": torch.exp(std)
             }
 
 
