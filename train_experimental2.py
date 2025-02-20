@@ -12,6 +12,7 @@
 import os
 import json
 import torch
+import numpy as np
 from random import randint
 from utils.loss_utils import l1_loss, ssim
 from gaussian_renderer import render, network_gui, render_noise
@@ -75,6 +76,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
     progress_bar = tqdm(range(first_iter, opt.iterations), desc="Training progress")
     first_iter += 1
+
+
     for iteration in range(first_iter, opt.iterations + 1):
         if network_gui.conn == None:
             network_gui.try_connect()
@@ -116,50 +119,59 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         ############### NOTE: IMC ###############
         # noise, noise_mask, grads = gaussians.imc_process_experimental(viewpoint_cam, acquire_grads=True)
         noise, noise_mask = gaussians.imc_process_experimental(viewpoint_cam, acquire_grads=False)
-        render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
-        # gaussians._xyz.add_(noise)
-        xyz_lr = gaussians.xyz_scheduler_args(iteration)
 
-        # render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
+        l_total = 0.0
+        viewpoint_tmp = scene.getTrainCameras().copy()
+        np.random.shuffle(viewpoint_tmp)
+        viewpoint_tmp = viewpoint_tmp[:5]
+        for idx, viewpoint_cam in enumerate(viewpoint_tmp):
+            render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
+            # gaussians._xyz.add_(noise)
+            xyz_lr = gaussians.xyz_scheduler_args(iteration)
 
-        image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
+            # render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
 
-        if viewpoint_cam.alpha_mask is not None:
-            alpha_mask = viewpoint_cam.alpha_mask.cuda()
-            image *= alpha_mask
+            image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
 
-        # Loss
-        gt_image = viewpoint_cam.original_image.cuda()
-        Ll1 = l1_loss(image, gt_image)
-        if FUSED_SSIM_AVAILABLE:
-            ssim_value = fused_ssim(image.unsqueeze(0), gt_image.unsqueeze(0))
-        else:
-            ssim_value = ssim(image, gt_image)
+            if viewpoint_cam.alpha_mask is not None:
+                alpha_mask = viewpoint_cam.alpha_mask.cuda()
+                image *= alpha_mask
 
-        loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
+            # Loss
+            gt_image = viewpoint_cam.original_image.cuda()
+            Ll1 = l1_loss(image, gt_image)
+            if FUSED_SSIM_AVAILABLE:
+                ssim_value = fused_ssim(image.unsqueeze(0), gt_image.unsqueeze(0))
+            else:
+                ssim_value = ssim(image, gt_image)
 
-        # Depth regularization
-        Ll1depth_pure = 0.0
-        if depth_l1_weight(iteration) > 0 and viewpoint_cam.depth_reliable:
-            invDepth = render_pkg["depth"]
-            mono_invdepth = viewpoint_cam.invdepthmap.cuda()
-            depth_mask = viewpoint_cam.depth_mask.cuda()
+            loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
 
-            Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
-            Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
-            loss += Ll1depth
-            Ll1depth = Ll1depth.item()
-        else:
-            Ll1depth = 0
+            # Depth regularization
+            Ll1depth_pure = 0.0
+            if depth_l1_weight(iteration) > 0 and viewpoint_cam.depth_reliable:
+                invDepth = render_pkg["depth"]
+                mono_invdepth = viewpoint_cam.invdepthmap.cuda()
+                depth_mask = viewpoint_cam.depth_mask.cuda()
 
-        ############### NOTE: IMC ###############
-        # # if grads is not None:
-        # #     l_noise = torch.abs(grads.norm(dim=-1) - 1).mean()
-        # #     loss += 0.1 * l_noise
-        # l_noise = gaussians.knn_regression(noise, noise_mask)
-        # if l_noise is not None:
-        #     loss += 0.1 * l_noise 
+                Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+                Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
+                loss += Ll1depth
+                Ll1depth = Ll1depth.item()
+            else:
+                Ll1depth = 0
 
+            ############### NOTE: IMC ###############
+            # # if grads is not None:
+            # #     l_noise = torch.abs(grads.norm(dim=-1) - 1).mean()
+            # #     loss += 0.1 * l_noise
+            # l_noise = gaussians.knn_regression(noise, noise_mask)
+            # if l_noise is not None:
+            #     loss += 0.1 * l_noise 
+
+            l_total += loss
+
+        loss = l_total / len(viewpoint_tmp)
         loss.backward()
 
         iter_end.record()
@@ -216,15 +228,15 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 # gaussians.add_noise(noise, filter_mask)
 
                 ################# NOTE: MCMC ##################
-                # L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-                # actual_covariance = L @ L.transpose(1, 2)
+                L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+                actual_covariance = L @ L.transpose(1, 2)
 
-                # def op_sigmoid(x, k=100, x0=0.995):
-                #     return 1 / (1 + torch.exp(-k * (x - x0)))
+                def op_sigmoid(x, k=100, x0=0.995):
+                    return 1 / (1 + torch.exp(-k * (x - x0)))
                 
-                # noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
-                # noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
-                # gaussians._xyz.add_(noise)
+                noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+                noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
+                gaussians._xyz.add_(noise)
 
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))

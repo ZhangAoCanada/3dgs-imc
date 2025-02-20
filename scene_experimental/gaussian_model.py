@@ -167,9 +167,9 @@ class GaussianModel:
         # exposure = torch.eye(3, 4, device="cuda")[None].repeat(len(cam_infos), 1, 1)
         # self._exposure = nn.Parameter(exposure.requires_grad_(True))
 
-        self._xyz = fused_point_cloud.clone()
+        # self._xyz = fused_point_cloud.clone()
         # self._opacity = opacities.clone()
-        # self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
+        self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
         self._opacity = nn.Parameter(opacities.requires_grad_(True))
         self._scaling = nn.Parameter(scales.requires_grad_(True))
         self._rotation = nn.Parameter(rots.requires_grad_(True))
@@ -187,13 +187,10 @@ class GaussianModel:
         self.scale_upperbound = torch.max(self.get_scaling, dim=0).values.detach().clone()
         #################### NOTE: hyper-param ########################
         in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1], self._scaling.shape[1], self._rotation.shape[1]] # [xyz, opacity, rgb, scale, rot]
-        # in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1]] # [xyz, opacity, rgb]
-        # self.net_mode = "mlp"
+        self.net_mode = "mlp"
         self.net_type = "relu"
-        self.net_mode = "fft"
-        # self.net_type = "sine"
-        self.net_pred_mode = "std"
-        # self.net_pred_mode = "mean+std"
+        # self.net_pred_mode = "std"
+        self.net_pred_mode = "mean+std"
         self.net = NetworksA(
             in_features_len=in_feat_len, 
             out_features=3, 
@@ -212,7 +209,7 @@ class GaussianModel:
         self.denom = torch.zeros((self.get_xyz.shape[0], 1), device="cuda")
 
         l = [
-            # {'params': [self._xyz], 'lr': training_args.position_lr_init * self.spatial_lr_scale, "name": "xyz"},
+            {'params': [self._xyz], 'lr': training_args.position_lr_init * self.spatial_lr_scale, "name": "xyz"},
             {'params': [self._opacity], 'lr': training_args.opacity_lr, "name": "opacity"},
             {'params': [self._scaling], 'lr': training_args.scaling_lr, "name": "scaling"},
             {'params': [self._rotation], 'lr': training_args.rotation_lr, "name": "rotation"}, 
@@ -227,7 +224,9 @@ class GaussianModel:
             lr_delay_mult=training_args.position_lr_delay_mult,
             max_steps=training_args.position_lr_max_steps)
 
-        self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-4, params=self.net.parameters())
+        self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-5, params=self.net.parameters())
+        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.9)
+        self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.ExponentialLR(self.imc_experimental_optimizer, gamma=0.9)
 
         self.exposure_optimizer = torch.optim.Adam([self._exposure])
         self.exposure_scheduler_args = get_expon_lr_func(
@@ -237,7 +236,7 @@ class GaussianModel:
             max_steps=training_args.iterations)
 
 
-    def imc_process_experimental(self, viewpoint_camera, max_num=1000000, acquire_grads=False):
+    def imc_process_experimental(self, viewpoint_camera=None, max_num=1000000, acquire_grads=False):
         self.net.train()
 
         xyz = self.get_xyz.detach().clone()
@@ -264,14 +263,12 @@ class GaussianModel:
 
         #################### NOTE: hyper-param ########################
         net_in = torch.cat((xyz, opts, colors_precomp, scales, rots), dim=1)
-        # net_in = torch.cat((xyz, opts, colors_precomp), dim=1)
         pred = self.net(net_in)
 
         if self.net_pred_mode == "mean+std":
             # xyz_pred = pred['xyz']
             # xyz_std = pred['std']
             # xyz_noise_ = xyz_pred + torch.randn_like(xyz) * xyz_std
-
             xyz_mean = pred["xyz"]
             xyz_noise_ = xyz_mean
         else:
@@ -302,7 +299,6 @@ class GaussianModel:
             self._xyz.add_(noise)
         else:
             self._xyz[mask].add_(noise[mask])
-        # self._xyz.add_(noise)
     
 
     def knn_regression(self, noise, mask=None, k=10, opacities_threshold=0.01, max_noise_pnts=10000):

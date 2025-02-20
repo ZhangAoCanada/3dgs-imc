@@ -78,17 +78,23 @@ class NetworksA(nn.Module):
         """
         self.xyz_lowerbound = coords[:, :xyz_len].min().detach().clone()
         self.xyz_upperbound = coords[:, :xyz_len].max().detach().clone()
-        xyz_new = (coords[:, :xyz_len] - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
 
+        xyz_new = (coords[:, :xyz_len] - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
         opac_new = coords[:, xyz_len:xyz_len+opac_len] * 2 - 1
         rgb_new = coords[:, xyz_len+opac_len:xyz_len+opac_len+rgb_len] * 2 - 1
+        # xyz_new = (coords[:, :xyz_len] - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound)
+        # opac_new = coords[:, xyz_len:xyz_len+opac_len]
+        # rgb_new = coords[:, xyz_len+opac_len:xyz_len+opac_len+rgb_len]
         if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
             """
             self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len].max(dim=0).values.detach().clone()
             """
             self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len].max().detach().clone()
+
             scale_new = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len] / self.scale_upperbound * 2 - 1
             rota_new = coords[:, xyz_len+opac_len+rgb_len+scale_len:] * 2 - 1
+            # scale_new = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len] / self.scale_upperbound
+            # rota_new = coords[:, xyz_len+opac_len+rgb_len+scale_len:]
 
         xyz_new = torch.clamp(xyz_new, -1, 1)
         #################### NOTE: hyper-param ########################
@@ -101,6 +107,8 @@ class NetworksA(nn.Module):
 
         if self.mode == 'fft':
             coords_enc = self.positional_encoding(coords_)
+        else:
+            coords_enc = coords_
 
         output = self.net(coords_enc)
 

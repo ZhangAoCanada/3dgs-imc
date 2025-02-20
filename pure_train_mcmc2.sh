@@ -2,7 +2,7 @@ images=input_cached
 # init_type=sfm
 init_type=random
 noise_lr=5e5
-cap_max=10000000
+cap_max=5000000
 scale_reg=0.01
 opacity_reg=0.01
 densify_from_iter=500
@@ -12,7 +12,7 @@ depth_l1_weight_init=0.01
 depth_l1_weight_final=0.0001
 port=18888
 echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
-CUDA_VISIBLE_DEVICES=2 python train.py \
+CUDA_VISIBLE_DEVICES=1 python train.py \
     --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
     --depths dav2_cached \
     --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \

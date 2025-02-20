@@ -12,13 +12,34 @@ densification_interval=400
 # densification_interval=300
 depth_l1_weight_init=0.01
 depth_l1_weight_final=0.0001
-port=12331
+port=12321
 echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
-CUDA_VISIBLE_DEVICES=3 python train_experimental.py \
+
+# CUDA_VISIBLE_DEVICES=2 python train_experimental.py \
+#     --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
+#     --depths dav2_cached \
+#     --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
+#     --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_fixnum_combine+std_fft01 \
+#     --images ${images} \
+#     --resolution -1 \
+#     --init_type ${init_type} \
+#     --cap_max ${cap_max} \
+#     --data_device cpu \
+#     --scale_reg ${scale_reg} \
+#     --opacity_reg ${opacity_reg} \
+#     --noise_lr ${noise_lr} \
+#     --densify_from_iter ${densify_from_iter} \
+#     --densification_interval ${densification_interval} \
+#     --depth_l1_weight_init ${depth_l1_weight_init} \
+#     --depth_l1_weight_final ${depth_l1_weight_final} \
+#     --antialiasing \
+#     --port $port 
+
+CUDA_VISIBLE_DEVICES=2 python train_experimental2.py \
     --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
     --depths dav2_cached \
     --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_sfm_fixnum_nn2ndpurestdalltry_dynamicsingle_mcmcnoise_-11_withmcmc \
+    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_fixnum_combine+mean+mcmcstd_randomviews_lr5 \
     --images ${images} \
     --resolution -1 \
     --init_type ${init_type} \
@@ -33,5 +54,3 @@ CUDA_VISIBLE_DEVICES=3 python train_experimental.py \
     --depth_l1_weight_final ${depth_l1_weight_final} \
     --antialiasing \
     --port $port 
-
-# --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_fixnum_original_random500w \
