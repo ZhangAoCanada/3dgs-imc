@@ -8,11 +8,14 @@
 #
 # For inquiries contact  george.drettakis@inria.fr
 #
+import sys
+sys.path.append("dust3r")
 
 import torch
 import numpy as np
 from utils.general_utils import inverse_sigmoid, get_expon_lr_func, build_rotation
 from torch import nn
+import torch.nn.functional as F
 import os
 import json
 from utils.system_utils import mkdir_p
@@ -23,7 +26,27 @@ from utils.graphics_utils import BasicPointCloud
 from utils.general_utils import strip_symmetric, build_scaling_rotation
 from utils.reloc_utils import compute_relocation_cuda
 from utils.sh_utils import eval_sh
-from scene_experimental.imc_experimental import NetworksA
+from scene_experimental_branch2.imc_experimental import NetworksA
+from scene_experimental_branch2.pntfunc_experimental import NetworkAnother
+import scene_experimental_branch2.diff_operators as diff_operators
+
+
+# from dust3r.dust3r.inference import inference
+# from dust3r.dust3r.model import AsymmetricCroCo3DStereo
+# from dust3r.dust3r.utils.image import load_images
+# from dust3r.dust3r.image_pairs import make_pairs
+# from dust3r.dust3r.cloud_opt import global_aligner, GlobalAlignerMode
+# from dust3r.dust3r.demo import get_3D_model_from_scene
+from dust3r.inference import inference
+from dust3r.model import AsymmetricCroCo3DStereo
+from dust3r.utils.image import load_images
+from dust3r.image_pairs import make_pairs
+from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
+from dust3r.demo import get_3D_model_from_scene
+import shutil
+import math
+from glob import glob
+
 
 class GaussianModel:
 
@@ -152,9 +175,7 @@ class GaussianModel:
 
         opacities = inverse_sigmoid(0.5 * torch.ones((fused_point_cloud.shape[0], 1), dtype=torch.float, device="cuda"))
 
-        ######################################################################
         ###################### NOTE: change properties #######################
-        ######################################################################
         self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
         self._features_dc = nn.Parameter(features[:,:,0:1].transpose(1, 2).contiguous().requires_grad_(True))
         self._features_rest = nn.Parameter(features[:,:,1:].transpose(1, 2).contiguous().requires_grad_(True))
@@ -169,26 +190,27 @@ class GaussianModel:
         # self._xyz = fused_point_cloud.clone()
         # self._opacity = opacities.clone()
 
-        self.xyz_lowerbound = torch.min(self.get_xyz, dim=0).values.detach().clone()
-        self.xyz_upperbound = torch.max(self.get_xyz, dim=0).values.detach().clone()
-        self.scale_upperbound = torch.max(self.get_scaling, dim=0).values.detach().clone()
         #################### NOTE: hyper-param ########################
-        in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1], self._scaling.shape[1], self._rotation.shape[1]] # [xyz, opacity, rgb, scale, rot]
-        self.net_mode = "fft" # "mlp" or "fft"
-        self.net_type = "relu" # "relu" or "sine"
-        self.net_pred_mode = "std"
-        # self.net_pred_mode = "mean+std"
-        self.net = NetworksA(
-            in_features_len=in_feat_len, 
-            out_features=3, 
-            xyz_bounds=[self.xyz_lowerbound, self.xyz_upperbound], 
-            scale_upperbound=self.scale_upperbound, 
-            type=self.net_type, 
-            mode=self.net_mode, 
-            pred_mode=self.net_pred_mode
-            )
+        xyz_lowerbound = torch.min(self.get_xyz, dim=0).values.detach().clone()
+        xyz_upperbound = torch.max(self.get_xyz, dim=0).values.detach().clone()
+        scale_bound = torch.max(self.get_scaling, dim=0).values.detach().clone()
+        # self.max_num = 300000
+        # self.net_mode = "fft" # "mlp" or "fft"
+        # self.net_type = "sine" # "sine" or "relu"
+        # self.net = NetworksA(
+        #     in_features=3, 
+        #     out_features=1, 
+        #     xyz_bounds=[xyz_lowerbound, xyz_upperbound], 
+        #     scale_upperbound=scale_bound, 
+        #     type=self.net_type, 
+        #     mode=self.net_mode, 
+        #     )
+        self.max_num = 1000
+        self.net = NetworkAnother(
+            xyz_bounds=[xyz_lowerbound, xyz_upperbound],
+            batch_size=self.max_num,
+        )
         self.net.cuda()
-
 
     def training_setup(self, training_args):
         self.percent_dense = training_args.percent_dense
@@ -211,10 +233,9 @@ class GaussianModel:
             lr_delay_mult=training_args.position_lr_delay_mult,
             max_steps=training_args.position_lr_max_steps)
 
-        self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-5, params=self.net.parameters())
-        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.9)
-        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=training_args.experimental_schedule_gamma)
-        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.LinearLR(self.imc_experimental_optimizer, start_factor=1., end_factor=0.01, total_iters=training_args.iterations)
+        self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-4, params=self.net.parameters())
+        self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.5)
+        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.ExponentialLR(self.imc_experimental_optimizer, gamma=0.9)
 
         self.exposure_optimizer = torch.optim.Adam([self._exposure])
         self.exposure_scheduler_args = get_expon_lr_func(
@@ -224,104 +245,154 @@ class GaussianModel:
             max_steps=training_args.iterations)
 
 
-    def imc_process_experimental(self, viewpoint_camera=None, max_num=1000000):
-        self.net.train()
-
-        xyz = self.get_xyz.detach().clone()
-        opts = self.get_opacity.detach().clone()
-        scales = self.get_scaling.detach().clone()
-        rots = self.get_rotation.detach().clone()
-
-        shs_view = self.get_features.detach().clone().transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
-        dir_pp = (self.get_xyz - viewpoint_camera.camera_center.repeat(self.get_features.shape[0], 1))
-        dir_pp_normalized = dir_pp/dir_pp.norm(dim=1, keepdim=True)
-        sh2rgb = eval_sh(self.active_sh_degree, shs_view, dir_pp_normalized)
-        colors_precomp = torch.clamp_min(sh2rgb + 0.5, 0.0)
-
-        mask = None
-        if xyz.shape[0] > max_num:
-            mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
-            random_index = torch.randperm(xyz.shape[0])[:max_num]
-            mask[random_index] = True
-            xyz = xyz[mask]
-            opts = opts[mask]
-            scales = scales[mask]
-            rots = rots[mask]
-            colors_precomp = colors_precomp[mask]
-
-        #################### NOTE: hyper-param ########################
-        net_in = torch.cat((xyz, opts, colors_precomp, scales, rots), dim=1)
-        pred = self.net(net_in)
-
-        if self.net_pred_mode == "mean+std":
-            # xyz_pred = pred['xyz']
-            # xyz_std = pred['std']
-            # xyz_noise_ = xyz_pred + torch.randn_like(xyz) * xyz_std
-            xyz_mean = pred["xyz"]
-            xyz_noise_ = xyz_mean
-        else:
-            xyz_std = pred["std"]
-            xyz_noise_ = torch.rand_like(xyz) * xyz_std
-
-        L = build_scaling_rotation(scales, rots)
-        actual_covariance = L @ L.transpose(1, 2)
-        xyz_noise = torch.bmm(actual_covariance, xyz_noise_.unsqueeze(-1)).squeeze(-1)
-
-        if mask is not None:
-            xyz_noise_full = torch.zeros((mask.size(0), 3), device="cuda")
-            xyz_noise_full[mask] = xyz_noise
-        else:
-            xyz_noise_full = xyz_noise
-
-        return xyz_noise_full, mask
-
-
-    def detach_param(self, ):
-        self._xyz = self._xyz.detach().clone()
-
-    def add_noise(self, noise, mask=None):
-        if mask is None:
-            self._xyz.add_(noise)
-        else:
-            self._xyz[mask].add_(noise[mask])
-        
-    def remove_nan_grad(self, ):
-        self._xyz.grad[torch.isnan(self._xyz.grad)] = 0.0
-        self._xyz.grad[torch.isinf(self._xyz.grad)] = 0.0
-        self._opacity.grad[torch.isnan(self._opacity.grad)] = 0.0
-        self._opacity.grad[torch.isinf(self._opacity.grad)] = 0.0
-        self._scaling.grad[torch.isnan(self._scaling.grad)] = 0.0
-        self._scaling.grad[torch.isinf(self._scaling.grad)] = 0.0
-        self._rotation.grad[torch.isnan(self._rotation.grad)] = 0.0
-        self._rotation.grad[torch.isinf(self._rotation.grad)] = 0.0
-        for param in self.net.parameters():
-            param.grad[torch.isnan(param.grad)] = 0.0
-            param.grad[torch.isinf(param.grad)] = 0.0
+    ######################################################################
+    ######################################################################
+    ######################################################################
+    # def nnprocess(self, ):
+    #     self.net.train()
+    #     xyz = self.get_xyz
+    #     mask = None
+    #     if xyz.shape[0] > self.max_num:
+    #         mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
+    #         random_index = torch.randperm(xyz.shape[0])[:self.max_num]
+    #         mask[random_index] = True
+    #         xyz = xyz[mask]
+    #     self.spawn_randompnts(xyz.shape[0])
+    #     #################### NOTE: hyper-param ########################
+    #     net_in = torch.cat([xyz, self.off_xyz], dim=0)
+    #     res = self.net(net_in)
+    #     return res['pred'], net_in, mask
     
+    # def save_nn(self, dir_path):
+    #     torch.save(self.net.state_dict(), os.path.join(dir_path, "net.pth"))
+    
+    # def load_nn(self, dir_path):
+    #     self.net.load_state_dict(torch.load(os.path.join(dir_path, "net.pth")))
+    
+    # def nn_l(self, pred, net_in):
+    #     opacity_const = self.get_opacity.detach().clone()
+    #     num = min(self.max_num, self.get_xyz.shape[0])
+    #     opacity_const = opacity_const[:num]
+    #     gt_opacity = torch.cat([opacity_const, self.off_opacity], dim=0)
+    #     opacity_constraint = F.l1_loss(pred, gt_opacity).mean()
+    #     grad = diff_operators.gradient(pred, net_in)
+    #     grad_constraint = torch.abs(grad.norm(dim=-1) - 1).mean()
+    #     norm_d = self.norm_direct()[:num]
+    #     gt_norm_d = torch.cat([norm_d, torch.rand_like(self.off_xyz)], dim=0)
+    #     normal_constraint = torch.where(gt_opacity != 0.0, F.cosine_similarity(grad, gt_norm_d, dim=-1)[..., None], torch.zeros_like(grad[..., :1])).mean()
+    #     a = 1
+    #     b = 0.5
+    #     c = 1
+    #     l = a * opacity_constraint + b * grad_constraint + c * normal_constraint
+    #     return 1e10 * l
+    
+    # def norm_direct(self, ):
+    #     scales = self.get_scaling.detach().clone()
+    #     rots = self.get_rotation.detach().clone()
+    #     norm_axis = torch.argmax(scales, dim=1)
+    #     norm = torch.zeros_like(scales)
+    #     norm[torch.arange(scales.shape[0]), norm_axis] = 1.0
+    #     rotations = build_rotation(rots)
+    #     norm = torch.bmm(rotations, norm.unsqueeze(-1)).squeeze(-1)
+    #     return norm
+    
+    # def partial_l(self, pred):
+    #     pnts = self.get_xyz.shape[0]
+    #     pnts = min(pnts, self.max_num)
+    #     l = (1.0 - pred[:pnts]).mean()
+    #     return 1e0 * l
 
-    def knn_regression(self, noise, mask=None, k=10, opacities_threshold=0.01, max_noise_pnts=10000):
-        dead_mask = (self.get_opacity.detach().clone() <= opacities_threshold).squeeze(-1)
-        if dead_mask.sum() == 0:
-            return None
-        xyz = self.get_xyz.detach().clone() + noise
-        opacities = self.get_opacity.detach().clone()
-        pnts = torch.cat((xyz, opacities), dim=1)
-        dead_pnts = pnts[dead_mask]
-        healthy_pnts = pnts[~dead_mask].detach().clone()
-        if dead_pnts.shape[0] > max_noise_pnts:
-            random_d = torch.randperm(dead_pnts.shape[0])[:max_noise_pnts]
-            dead_pnts = dead_pnts[random_d]
-        if healthy_pnts.shape[0] > max_noise_pnts:
-            random_h = torch.randperm(healthy_pnts.shape[0])[:max_noise_pnts]
-            healthy_pnts = healthy_pnts[random_h]
-        dists, inds = torch.cdist(dead_pnts[:, :3], healthy_pnts[:, :3], p=2).topk(k, largest=False)
-        max_inds = torch.argmax(healthy_pnts[inds][:, :, 3], dim=1) 
-        max_neighbour = healthy_pnts[inds][torch.arange(inds.shape[0]), max_inds, :3]
-        l_noise = torch.abs(max_neighbour - dead_pnts[:, :3]).mean()
-        return l_noise
-        ######################################################################
-        ######################################################################
-        ######################################################################
+    # def spawn_randompnts(self, num_pnts=100000):
+    #     upper_bound = self.net.xyz_upperbound
+    #     lower_bound = self.net.xyz_lowerbound
+    #     off_pnts = torch.rand((num_pnts, 3), device="cuda") * (upper_bound - lower_bound) + lower_bound
+    #     self.off_xyz = nn.Parameter(off_pnts.contiguous().requires_grad_(True))
+    #     self.off_opacity = torch.zeros((num_pnts, 1), device="cuda")
+
+    # def add_noise(self, noise, mask=None):
+    #     if mask is None:
+    #         self._xyz.add_(noise)
+    #     else:
+    #         self._xyz[mask].add_(noise[mask])
+
+    # def remove_nan_grad(self, ):
+    #     self._xyz.grad[torch.isnan(self._xyz.grad)] = 0.0
+    #     self._xyz.grad[torch.isinf(self._xyz.grad)] = 0.0
+    #     for param in self.net.parameters():
+    #         param.grad[torch.isnan(param.grad)] = 0.0
+    #         param.grad[torch.isinf(param.grad)] = 0.0
+    ######################################################################
+    ######################################################################
+    ######################################################################
+    def nntrain(self, viewpoint_cam):
+        self.net.train()
+        nnl = self.net(viewpoint_cam, train=True)
+        return nnl
+    
+    def nnrender(self, viewpoint_cam):
+        self.net.eval()
+        rgb, inv_depth, acc = self.net(viewpoint_cam, train=False)
+        rgb = torch.clamp(rgb, 0.0, 1.0)
+        inv_depth = torch.clamp(inv_depth, 0.0, 1.0)
+        acc = torch.clamp(acc, 0.0, 1.0)
+        return rgb, inv_depth, acc
+    
+    def point3r(self, viewpoint_cam):
+        # focals in [fx, fy]
+        image_name, H, W, focals, w2c, c2w = self.cam_info(viewpoint_cam)
+        device = 'cuda'
+        batch_size = 1
+        schedule = 'linear'
+        lr = 0.01
+        niter = 300
+        outdir = "/data2/zhangao/repos/dust3r/tmp"
+        if os.path.exists(outdir):
+            shutil.rmtree(outdir)
+        os.makedirs(outdir, exist_ok=True) 
+        model_name = "dust3r/checkpoints/DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth"
+        model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
+        img_dir = "/home/ZHANGAo_2024/3dgs/data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/train/input_cached"
+        all_img_fs = sorted(glob(os.path.join(img_dir, "*.png")))
+        all_img_fs = [os.path.basename(f) for f in all_img_fs]
+        # find index of current image_name
+        idx = all_img_fs.index(image_name)
+        # get the sequence of 5 images with sliding window
+        previous_idx = max(0, idx - 3)
+        next_idx = min(len(all_img_fs), idx + 3)
+        img_fs = all_img_fs[previous_idx:next_idx]
+        img_fs = [os.path.join(img_dir, f) for f in img_fs]
+        images = load_images(img_fs, size=512)
+        pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
+        output = inference(pairs, model, device, batch_size=batch_size)
+        view1, pred1 = output['view1'], output['pred1']
+        view2, pred2 = output['view2'], output['pred2']
+        scene = global_aligner(output, device=device, mode=GlobalAlignerMode.PointCloudOptimizer)
+        loss = scene.compute_global_alignment(init="mst", niter=niter, schedule=schedule, lr=lr)
+        get_3D_model_from_scene(outdir, False, scene, as_pointcloud=True)
+        imgs = scene.imgs
+        focals = scene.get_focals()
+        poses = scene.get_im_poses()
+        pts3d = scene.get_pts3d()
+        confidence_masks = scene.get_masks()
+    
+    def pointdepth(self, viewpoint_cam):
+        return
+    
+    def cam_info(self, viewpoint_cam):
+        image_name = viewpoint_cam.image_name
+        fovx = viewpoint_cam.FoVx
+        fovy = viewpoint_cam.FoVy
+        W = viewpoint_cam.image_width
+        H = viewpoint_cam.image_height
+        fx = W / (2 * math.tan(fovx / 2))
+        fy = H / (2 * math.tan(fovy / 2))
+        K = torch.tensor([[fx, 0, W / 2], [0, fy, H / 2], [0, 0, 1]], device="cuda")
+        w2c = viewpoint_cam.world_view_transform.transpose(0, 1)
+        c2w = torch.inverse(w2c) 
+        return image_name, H, W, [fx, fy], w2c, c2w
+    ######################################################################
+    ######################################################################
+    ######################################################################
 
     def update_learning_rate(self, iteration):
         ''' Learning rate scheduling per step '''

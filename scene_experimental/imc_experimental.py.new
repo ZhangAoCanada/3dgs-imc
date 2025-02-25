@@ -15,7 +15,7 @@ IN_FEATURES = ['xyz', 'opacity', 'rgb', 'scale', 'rotation']
 
 class NetworksA(nn.Module):
     def __init__(self, 
-                 in_features_len, 
+                 in_features, 
                  out_features,
                  xyz_bounds,
                  scale_upperbound, 
@@ -24,22 +24,12 @@ class NetworksA(nn.Module):
                  type='relu',
                  mode='mlp',
                  fft_mode="simple", 
-                 pred_mode="std", # "mean+std"
                  **kwargs):
         super().__init__()
-        self.xyz_lowerbound, self.xyz_upperbound = xyz_bounds
-        self.xyz_upperbound = self.xyz_upperbound.max()
-        self.xyz_lowerbound = self.xyz_lowerbound.min()
-        # self.boundary = self.xyz_upperbound - self.xyz_lowerbound
-        # self.xyz_lowerbound -= 0.1 * self.boundary
-        # self.xyz_upperbound += 0.1 * self.boundary
-        
-        self.scale_upperbound = scale_upperbound
+        self.find_boundary(xyz_bounds, scale_upperbound)
         self.mode = mode
         self.type = type
-        self.in_features_dict = {IN_FEATURES[i]: in_features_len[i] for i in range(len(in_features_len))}
-        self.in_features = sum(in_features_len)
-        self.pred_mode = pred_mode
+        self.in_features = in_features
         self.out_features = out_features
 
         if self.mode == "fft":
@@ -53,63 +43,32 @@ class NetworksA(nn.Module):
                            out_features=hidden_features,
                            num_hidden_layers=num_hidden_layers,
                            hidden_features=hidden_features, 
-                        #    outermost_linear=True, 
                            outermost_linear=False, 
+                        #    outermost_linear=True, 
                            nonlinearity=type)
-        # if self.pred_mode == "mean+std":
-        #     self.linear1 = nn.Linear(hidden_features, self.out_features)
-        self.linear2 = nn.Linear(hidden_features, self.out_features)
+        self.linear = nn.Linear(hidden_features, self.out_features)
+    
+    def find_boundary(self, xyz_bounds, scale_bounds):
+        self.xyz_lowerbound, self.xyz_upperbound = xyz_bounds
+        self.xyz_upperbound = self.xyz_upperbound.max()
+        self.xyz_lowerbound = self.xyz_lowerbound.min()
+        # self.boundary = self.xyz_upperbound - self.xyz_lowerbound
+        # self.xyz_lowerbound -= 0.1 * self.boundary
+        # self.xyz_upperbound += 0.1 * self.boundary
+        self.scale_upperbound = scale_bounds
 
-    def forward(self, coords, params=None):
+    def forward(self, xyz, params=None):
         if params is None:
             params = OrderedDict(self.named_parameters())
 
-        ### NOTE: Normalize to [-1, 1]
-        xyz_len = self.in_features_dict['xyz']
-        opac_len = self.in_features_dict['opacity']
-        rgb_len = self.in_features_dict['rgb']
-        if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
-            scale_len = self.in_features_dict['scale']
-            rota_len = self.in_features_dict['rotation']
-
         """
-        self.xyz_lowerbound = coords[:, :xyz_len].min(dim=0).values.detach().clone()
-        self.xyz_upperbound = coords[:, :xyz_len].max(dim=0).values.detach().clone()
+        self.xyz_lowerbound = xyz.min(dim=0).values.detach().clone()
+        self.xyz_upperbound = xyz.max(dim=0).values.detach().clone()
         """
-        self.xyz_lowerbound = coords[:, :xyz_len].min().detach().clone()
-        self.xyz_upperbound = coords[:, :xyz_len].max().detach().clone()
+        self.xyz_lowerbound = xyz.min().detach().clone()
+        self.xyz_upperbound = xyz.max().detach().clone()
 
-        if self.mode == 'fft':
-            xyz_new = (coords[:, :xyz_len] - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound)
-            opac_new = coords[:, xyz_len:xyz_len+opac_len]
-            rgb_new = coords[:, xyz_len+opac_len:xyz_len+opac_len+rgb_len]
-            if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
-                """
-                self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len].max(dim=0).values.detach().clone()
-                """
-                self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len]
-
-                scale_new = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len] / self.scale_upperbound
-                rota_new = coords[:, xyz_len+opac_len+rgb_len+scale_len:]
-        else:
-            xyz_new = (coords[:, :xyz_len] - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
-            opac_new = coords[:, xyz_len:xyz_len+opac_len] * 2 - 1
-            rgb_new = coords[:, xyz_len+opac_len:xyz_len+opac_len+rgb_len] * 2 - 1
-            if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
-                """
-                self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len].max(dim=0).values.detach().clone()
-                """
-                self.scale_upperbound = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len].max().detach().clone()
-
-                scale_new = coords[:, xyz_len+opac_len+rgb_len:xyz_len+opac_len+rgb_len+scale_len] / self.scale_upperbound * 2 - 1
-                rota_new = coords[:, xyz_len+opac_len+rgb_len+scale_len:] * 2 - 1
-
-        #################### NOTE: hyper-param ########################
-        if 'scale' in self.in_features_dict and 'rotation' in self.in_features_dict:
-            coords = torch.cat([xyz_new, opac_new, rgb_new, scale_new, rota_new], dim=-1)
-        else:
-            coords = torch.cat([xyz_new, opac_new, rgb_new], dim=-1)
-        coords = coords.detach().clone()
+        coords = (xyz - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
 
         if self.mode == 'fft':
             coords_enc = self.positional_encoding(coords)
@@ -117,24 +76,12 @@ class NetworksA(nn.Module):
             coords_enc = coords
 
         output = self.net(coords_enc)
+        pred = self.linear(output)
 
-        if self.pred_mode == "mean+std":
-            # mean = self.linear1(output)
-            # std = self.linear2(output)
-            # return {
-            #     "xyz": mean, 
-            #     "std": torch.exp(std)
-            # }
-            mean = self.linear2(output)
-            return {
-                "xyz": mean,
-            }
-        else:
-            std = self.linear2(output)
-            return {
-                "std": torch.exp(std)
-            }
-
+        return {
+            "pred": pred,
+            # "grad": diff_operators.gradient(pred, xyz),
+        }
 
 
     def forward_with_activations(self, model_input):
