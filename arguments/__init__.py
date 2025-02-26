@@ -107,6 +107,7 @@ class OptimizationParams(ParamGroup):
         self.opacity_reg = 0.01
         self.experimental_schedule_gamma = 0.9
         self.experimental_randomview_num = 5
+        self.depth_normalize = False
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):

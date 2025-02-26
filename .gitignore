@@ -13,3 +13,4 @@ submodules/fused-ssim/build
 submodules/simple-knn/build
 SIBR_viewers/build
 dust3r
+tmp

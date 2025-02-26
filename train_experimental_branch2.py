@@ -126,8 +126,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             image *= alpha_mask
 
         ############### NOTE: IMC ###############
-        # gaussians.point3r(viewpoint_cam)
-        gaussians.pointdepth(viewpoint_cam)
+        # gaussians.point3r(scene.getTrainCameras().copy())
+        # gaussians.pointdepth(scene.getTrainCameras().copy(), pipe, bg)
+
 
         # Loss
         gt_image = viewpoint_cam.original_image.cuda()
@@ -146,7 +147,16 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             mono_invdepth = viewpoint_cam.invdepthmap.cuda()
             depth_mask = viewpoint_cam.depth_mask.cuda()
 
-            Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+            ################ NOTE: normalized ##################
+            mono_min = mono_invdepth.min()
+            mono_max = mono_invdepth.max()
+            inDepth_min = invDepth.min()
+            inDepth_max = invDepth.max()
+            mono_invdepth_normalized = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
+            invDepth_normalized = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
+            Ll1depth_pure = torch.abs((invDepth_normalized  - mono_invdepth_normalized) * depth_mask).mean()
+
+            # Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
             Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
             loss += Ll1depth
             Ll1depth = Ll1depth.item()
@@ -158,6 +168,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         # loss += partial_l
 
         loss.backward()
+
+        if opt.depth_normalize:
+            del mono_min, mono_max, inDepth_min, inDepth_max, mono_invdepth_normalized, invDepth_normalized
 
         ############### NOTE: IMC ###############
         # gaussians.remove_nan_grad()
@@ -186,7 +199,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
                 dead_mask = (gaussians.get_opacity <= 0.005).squeeze(-1)
                 gaussians.relocate_gs(dead_mask=dead_mask)
-            #     gaussians.add_new_gs(cap_max=args.cap_max)
+                gaussians.add_new_gs(cap_max=args.cap_max)
 
 
             # Optimizer step
@@ -210,15 +223,15 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 # gaussians.imc_experimental_optim_scheduler.step()
 
                 ################# NOTE: MCMC ##################
-                # L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-                # actual_covariance = L @ L.transpose(1, 2)
+                L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+                actual_covariance = L @ L.transpose(1, 2)
 
-                # def op_sigmoid(x, k=100, x0=0.995):
-                #     return 1 / (1 + torch.exp(-k * (x - x0)))
+                def op_sigmoid(x, k=100, x0=0.995):
+                    return 1 / (1 + torch.exp(-k * (x - x0)))
                 
-                # noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
-                # noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
-                # gaussians._xyz.add_(noise)
+                noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+                noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
+                gaussians._xyz.add_(noise)
 
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
@@ -246,6 +259,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         #     gaussians.save_nn(scene.model_path)
 
         nnl = gaussians.nntrain(viewpoint_cam)
+        # nnl = gaussians.nntrainpts(viewpoint_cam)
         nnl.backward()
         # gaussians.remove_nan_grad()
         gaussians.imc_experimental_optimizer.step()
@@ -299,22 +313,24 @@ def training_report(tb_writer, iteration, Ll1, loss, l1_loss, elapsed, testing_i
                 l1_test = 0.0
                 psnr_test = 0.0
                 for idx, viewpoint in enumerate(config['cameras']):
-                    image = torch.clamp(renderFunc(viewpoint, scene.gaussians, *renderArgs)["render"], 0.0, 1.0)
+                    render_pkg = renderFunc(viewpoint, scene.gaussians, *renderArgs)
+                    image = torch.clamp(render_pkg["render"], 0.0, 1.0)
+                    inv_depth = render_pkg["depth"]
                     gt_image = torch.clamp(viewpoint.original_image.to("cuda"), 0.0, 1.0)
 
                     ############### NOTE: IMC ###############
-                    rgb, inv_depth, acc = scene.gaussians.nnrender(viewpoint)
+                    # rgb, nn_inv_depth, acc = scene.gaussians.nnrender(viewpoint)
 
                     if train_test_exp:
                         image = image[..., image.shape[-1] // 2:]
                         gt_image = gt_image[..., gt_image.shape[-1] // 2:]
                     if tb_writer and (idx < 5):
                         tb_writer.add_images(config['name'] + "_view_{}/render".format(viewpoint.image_name), image[None], global_step=iteration)
+                        tb_writer.add_images(config['name'] + "_view_{}/inv_depth".format(viewpoint.image_name), inv_depth[None], global_step=iteration)
 
                         ############### NOTE: IMC ###############
-                        tb_writer.add_images(config['name'] + "_view_{}/nn_rgb".format(viewpoint.image_name), rgb[None], global_step=iteration)
-                        tb_writer.add_images(config['name'] + "_view_{}/nn_inv_depth".format(viewpoint.image_name), inv_depth[None], global_step=iteration)
-                        tb_writer.add_images(config['name'] + "_view_{}/nn_acc".format(viewpoint.image_name), acc[None], global_step=iteration)
+                        # tb_writer.add_images(config['name'] + "_view_{}/nn_rgb".format(viewpoint.image_name), rgb[None], global_step=iteration)
+                        # tb_writer.add_images(config['name'] + "_view_{}/nn_inv_depth".format(viewpoint.image_name), nn_inv_depth[None], global_step=iteration)
 
                         if iteration == testing_iterations[0]:
                             tb_writer.add_images(config['name'] + "_view_{}/ground_truth".format(viewpoint.image_name), gt_image[None], global_step=iteration)

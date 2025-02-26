@@ -154,7 +154,17 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 mono_invdepth = viewpoint_cam.invdepthmap.cuda()
                 depth_mask = viewpoint_cam.depth_mask.cuda()
 
-                Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+                if opt.depth_normalize:
+                    mono_min = mono_invdepth.min()
+                    mono_max = mono_invdepth.max()
+                    inDepth_min = invDepth.min()
+                    inDepth_max = invDepth.max()
+                    mono_invdepth_normalized = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
+                    invDepth_normalized = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
+                    Ll1depth_pure = torch.abs((invDepth_normalized  - mono_invdepth_normalized) * depth_mask).mean()
+                else:
+                    Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+
                 Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
                 loss += Ll1depth
                 Ll1depth = Ll1depth.item()
@@ -165,6 +175,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         loss = l_total / len(viewpoint_random)
         loss.backward()
+
+        if opt.depth_normalize:
+            del mono_min, mono_max, inDepth_min, inDepth_max, mono_invdepth_normalized, invDepth_normalized
 
         ############### NOTE: IMC ###############
         gaussians.remove_nan_grad()
@@ -391,6 +404,7 @@ if __name__ == "__main__":
     parser.add_argument('--disable_viewer', action='store_true', default=False)
     parser.add_argument("--checkpoint_iterations", nargs="+", type=int, default=[])
     parser.add_argument("--start_checkpoint", type=str, default = None)
+    parser.add_argument("--depthnorm", action="store_true", default=False)
     args = parser.parse_args(sys.argv[1:])
 
     if args.config is not None:
@@ -410,6 +424,8 @@ if __name__ == "__main__":
     # Start GUI server, configure and run training
     if not args.disable_viewer:
         network_gui.init(args.ip, args.port)
+    if args.depthnorm:
+        args.depth_normalize = True
     torch.autograd.set_detect_anomaly(args.detect_anomaly)
     training(lp.extract(args), op.extract(args), pp.extract(args), args.test_iterations, args.save_iterations, args.checkpoint_iterations, args.start_checkpoint, args.debug_from)
 

@@ -15,6 +15,9 @@ from diff_gaussian_rasterization import GaussianRasterizationSettings, GaussianR
 from scene.gaussian_model import GaussianModel
 from utils.sh_utils import eval_sh
 
+import gsplat
+
+
 def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, scaling_modifier = 1.0, separate_sh = False, override_color = None, use_trained_exp=False):
     """
     Render the scene. 
@@ -244,3 +247,71 @@ def render_noise(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Te
         }
     
     return out
+
+
+def render_gsplat(viewpoint_camera, pc : GaussianModel, scaling_modifier = 1.0, separate_sh = False, override_color = None, use_trained_exp=False):
+    """
+    Render the scene. 
+    
+    Background tensor (bg_color) must be on GPU!
+    """
+    xyz = pc.get_xyz
+    rot = pc.get_rotation
+    scaling = pc.get_scaling
+    opacity = pc.get_opacity
+
+    shs_view = pc.get_features.transpose(1, 2).view(-1, 3, (pc.max_sh_degree+1)**2)
+    dir_pp = (pc.get_xyz - viewpoint_camera.camera_center.repeat(pc.get_features.shape[0], 1))
+    dir_pp_normalized = dir_pp/dir_pp.norm(dim=1, keepdim=True)
+    sh2rgb = eval_sh(pc.active_sh_degree, shs_view, dir_pp_normalized)
+    color = torch.clamp_min(sh2rgb + 0.5, 0.0) 
+
+    # viewpoint attributes
+    fovx = viewpoint_camera.FoVx
+    fovy = viewpoint_camera.FoVy
+    W = int(viewpoint_camera.image_width)
+    H = int(viewpoint_camera.image_height)
+    fx = W / (2 * math.tan(fovx / 2))
+    fy = H / (2 * math.tan(fovy / 2))
+    K = torch.tensor([[fx, 0, W / 2], [0, fy, H / 2], [0, 0, 1]], device="cuda").unsqueeze(0)
+    w2c = viewpoint_camera.world_view_transform.unsqueeze(0)
+
+    # rendering all features
+    """
+    meta.keys() = {'camera_ids', 'gaussian_ids', 'radii', 'means2d', 'depths', 'conics', 'opacities', 'tile_width', 'tile_height', 'tiles_per_gauss', 'isect_ids', 'flatten_ids', 'isect_offsets', 'width', 'height', 'tile_size', 'n_cameras'}
+    """
+    rasterize_mode = "antialiased"
+    rendered_image, rendered_alphas, meta = gsplat.rendering.rasterization(
+        xyz,
+        rot,
+        scaling,
+        opacity.squeeze(1),
+        color,
+        w2c.transpose(1, 2),
+        K,
+        W,
+        H,
+        render_mode="RGB+D",
+        packed=True, 
+        absgrad=False,
+        rasterize_mode=rasterize_mode
+    )
+    rendered_depth = rendered_image.squeeze(0)[..., 3:4].permute(2, 0, 1)
+    rendered_image = rendered_image.squeeze(0)[..., :3].permute(2, 0, 1)
+    rendered_alphas = rendered_alphas.squeeze(0).permute(2, 0, 1)
+
+    visibility_filter = torch.zeros(xyz.shape[0], dtype=torch.bool, device=xyz.device)
+    visibility_filter[meta['gaussian_ids']] = True
+
+    # meta['means2d'].retain_grad()
+    return {"render": rendered_image,
+            "alpha": rendered_alphas,
+            "depth": rendered_depth,
+            # "viewspace_points": meta["means2d"],
+            "viewspace_points": meta,
+            "visibility_filter" : visibility_filter,
+            "radii": meta["radii"],
+            "scaling": scaling,
+            "xyz": xyz.detach().clone(),
+            }
+    

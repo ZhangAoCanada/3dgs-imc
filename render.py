@@ -14,12 +14,13 @@ from scene import Scene
 import os
 from tqdm import tqdm
 from os import makedirs
-from gaussian_renderer import render
+from gaussian_renderer import render, render_gsplat
 import torchvision
 from utils.general_utils import safe_state
 from argparse import ArgumentParser
 from arguments import ModelParams, PipelineParams, get_combined_args
-from gaussian_renderer import GaussianModel
+# from gaussian_renderer import GaussianModel
+from scene_experimental_branch2.gaussian_model import GaussianModel
 try:
     from diff_gaussian_rasterization import SparseGaussianAdam
     SPARSE_ADAM_AVAILABLE = True
@@ -36,6 +37,8 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
     makedirs(depth_path, exist_ok=True)
     makedirs(gts_path, exist_ok=True)
 
+    gaussians.pointdepth(views, pipeline, background)
+
     for idx, view in enumerate(tqdm(views, desc="Rendering progress")):
         render_pkg = render(view, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
         rendering = render_pkg["render"]
@@ -43,11 +46,16 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
         gt = view.original_image[0:3, :, :]
 
         if view.invdepthmap is not None:
+            inv_depth /= inv_depth.max()
             mono_invdepth = view.invdepthmap.cuda()
+            mono_invdepth /= mono_invdepth.max()
             depth_mask = view.depth_mask.cuda()
             masked_inv_depth = depth_mask * inv_depth
-            mono_invdepth /= mono_invdepth.max()
-            depth_show = torch.cat([mono_invdepth, inv_depth, masked_inv_depth], dim=1)
+            render_pkg_gsplat = render_gsplat(view, gaussians)
+            gsplat_depth = render_pkg_gsplat["depth"]
+            gsplat_depth /= gsplat_depth.max()
+            gsplat_depth_masked = depth_mask * gsplat_depth
+            depth_show = torch.cat([mono_invdepth, inv_depth, masked_inv_depth, gsplat_depth, gsplat_depth_masked], dim=1)
         else:
             depth_show = inv_depth
 

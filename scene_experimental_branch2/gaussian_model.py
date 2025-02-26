@@ -42,10 +42,16 @@ from dust3r.model import AsymmetricCroCo3DStereo
 from dust3r.utils.image import load_images
 from dust3r.image_pairs import make_pairs
 from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
-from dust3r.demo import get_3D_model_from_scene
+from dust3r.demo import get_3D_model_from_scene, _convert_scene_output_to_glb
 import shutil
 import math
 from glob import glob
+from gaussian_renderer import render, render_gsplat
+import torchvision
+
+from sklearn import metrics
+from sklearn.cluster import DBSCAN
+from tqdm import tqdm
 
 
 class GaussianModel:
@@ -329,6 +335,15 @@ class GaussianModel:
         nnl = self.net(viewpoint_cam, train=True)
         return nnl
     
+    def nntrainpts(self, viewpoint_cam):
+        self.net.train()
+        with torch.no_grad():
+            render_pkg = render_gsplat(viewpoint_cam, self)
+            render_depth = render_pkg["depth"]
+            render_depth = render_depth.detach().clone()
+        nnl = self.net.train_pts(viewpoint_cam, render_depth)
+        return nnl
+    
     def nnrender(self, viewpoint_cam):
         self.net.eval()
         rgb, inv_depth, acc = self.net(viewpoint_cam, train=False)
@@ -337,46 +352,189 @@ class GaussianModel:
         acc = torch.clamp(acc, 0.0, 1.0)
         return rgb, inv_depth, acc
     
-    def point3r(self, viewpoint_cam):
-        # focals in [fx, fy]
-        image_name, H, W, focals, w2c, c2w = self.cam_info(viewpoint_cam)
-        device = 'cuda'
-        batch_size = 1
-        schedule = 'linear'
-        lr = 0.01
-        niter = 300
-        outdir = "/data2/zhangao/repos/dust3r/tmp"
-        if os.path.exists(outdir):
-            shutil.rmtree(outdir)
-        os.makedirs(outdir, exist_ok=True) 
-        model_name = "dust3r/checkpoints/DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth"
-        model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
-        img_dir = "/home/ZHANGAo_2024/3dgs/data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/train/input_cached"
-        all_img_fs = sorted(glob(os.path.join(img_dir, "*.png")))
-        all_img_fs = [os.path.basename(f) for f in all_img_fs]
-        # find index of current image_name
-        idx = all_img_fs.index(image_name)
-        # get the sequence of 5 images with sliding window
-        previous_idx = max(0, idx - 3)
-        next_idx = min(len(all_img_fs), idx + 3)
-        img_fs = all_img_fs[previous_idx:next_idx]
-        img_fs = [os.path.join(img_dir, f) for f in img_fs]
-        images = load_images(img_fs, size=512)
-        pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
-        output = inference(pairs, model, device, batch_size=batch_size)
-        view1, pred1 = output['view1'], output['pred1']
-        view2, pred2 = output['view2'], output['pred2']
-        scene = global_aligner(output, device=device, mode=GlobalAlignerMode.PointCloudOptimizer)
-        loss = scene.compute_global_alignment(init="mst", niter=niter, schedule=schedule, lr=lr)
-        get_3D_model_from_scene(outdir, False, scene, as_pointcloud=True)
-        imgs = scene.imgs
-        focals = scene.get_focals()
-        poses = scene.get_im_poses()
-        pts3d = scene.get_pts3d()
-        confidence_masks = scene.get_masks()
+    # def point3r(self, all_views):
+    #     device = 'cuda'
+    #     batch_size = 1
+    #     schedule = 'linear'
+    #     lr = 0.01
+    #     niter = 300
+    #     outdir = "/data2/zhangao/repos/dust3r/tmp"
+    #     if os.path.exists(outdir):
+    #         shutil.rmtree(outdir)
+    #     os.makedirs(outdir, exist_ok=True) 
+    #     model_name = "dust3r/checkpoints/DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth"
+    #     model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
+    #     img_dir = "/home/ZHANGAo_2024/3dgs/data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/train/input_cached"
+    #     all_img_fs = sorted(glob(os.path.join(img_dir, "*.png")))
+    #     all_img_fs = [os.path.basename(f) for f in all_img_fs]
+    #     all_images = []
+    #     all_focals = []
+    #     all_c2w = []
+    #     all_pts3d = []
+    #     all_mask = []
+    #     all_views = all_views[:5]
+    #     for vid, viewpoint_cam in enumerate(all_views):
+    #         print(f"************ processing {vid}/{len(all_views)} ************")
+    #         image_name, H, W, focals, w2c, c2w = self.cam_info(viewpoint_cam)
+    #         if image_name not in all_img_fs:
+    #             continue
+    #         idx = all_img_fs.index(image_name)
+    #         image_name_id = int(image_name.split(".")[0])
+    #         img_fs = [os.path.join(img_dir, image_name)]
+    #         idx_start = max(0, idx - 3)
+    #         idx_end = min(len(all_img_fs), idx + 3)
+    #         for i in range(idx_start, idx_end):
+    #             image_pair_name = all_img_fs[i]
+    #             image_pair_name_id = int(image_pair_name.split(".")[0])
+    #             if image_pair_name_id == image_name_id:
+    #                 continue
+    #             if abs(image_pair_name_id - image_name_id) < 10:
+    #                 img_fs.append(os.path.join(img_dir, image_pair_name))
+            
+    #         images = load_images(img_fs, size=512)
+    #         pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
+    #         output = inference(pairs, model, device, batch_size=batch_size)
+    #         view1, pred1 = output['view1'], output['pred1']
+    #         view2, pred2 = output['view2'], output['pred2']
+    #         scene = global_aligner(output, device=device, mode=GlobalAlignerMode.PointCloudOptimizer)
+    #         loss = scene.compute_global_alignment(init="mst", niter=niter, schedule=schedule, lr=lr)
+    #         # get_3D_model_from_scene(outdir, False, scene, as_pointcloud=True)
+    #         imgs = scene.imgs
+    #         focals = scene.get_focals()
+    #         poses = scene.get_im_poses()
+    #         pts3d = scene.get_pts3d()
+    #         confidence_masks = scene.get_masks()
+
+    #         fovx = viewpoint_cam.FoVx
+    #         fovy = viewpoint_cam.FoVy
+    #         new_H, new_W = imgs[0].shape[0], imgs[0].shape[1]
+    #         fx = new_W / (2 * math.tan(fovx / 2))
+    #         fy = new_H / (2 * math.tan(fovy / 2))
+
+    #         new_focal = fx
+    #         pnts = pts3d[0] * focals[0] / new_focal
+    #         pnts = pnts.reshape(-1, 3)
+    #         pnts = torch.cat([pnts, torch.ones(pnts.shape[0], 1, device=device)], dim=1)
+    #         # pnts = torch.matmul(poses[0], pnts.t()).t() 
+    #         pnts = torch.matmul(c2w, pnts.t()).t()
+    #         pnts = pnts[:, :3].reshape(new_H, new_W, 3)
+
+    #         all_images.append(imgs[0])
+    #         all_focals.append(focals[0].detach().cpu().numpy())
+    #         # all_c2w.append(poses[0].cpu())
+    #         all_c2w.append(c2w.detach().cpu().numpy())
+    #         all_pts3d.append(pnts.detach().cpu().numpy())
+    #         all_mask.append(confidence_masks[0].detach().cpu().numpy())
+        
+    #     _convert_scene_output_to_glb(outdir, all_images, all_pts3d, all_mask, all_focals, all_c2w, as_pointcloud=True)
+        
+    #     all_pts3d = [pt.reshape(-1, 3) for pt in all_pts3d]
+    #     all_pts3d = np.concatenate(all_pts3d, axis=0)
+    #     all_images = [img.reshape(-1, 3) for img in all_images]
+    #     all_images = np.concatenate(all_images, axis=0)
+    #     # save all_pts3d and all_images to ply
+    #     ply_path = os.path.join(outdir, "pts.ply")
+    #     # write ply with rgb
+    #     with open(ply_path, 'w') as f:
+    #         f.write("ply\n")
+    #         f.write("format ascii 1.0\n")
+    #         f.write("element vertex {}\n".format(all_pts3d.shape[0]))
+    #         f.write("property float x\n")
+    #         f.write("property float y\n")
+    #         f.write("property float z\n")
+    #         f.write("property uchar red\n")
+    #         f.write("property uchar green\n")
+    #         f.write("property uchar blue\n")
+    #         f.write("end_header\n")
+    #         for i in range(all_pts3d.shape[0]):
+    #             x, y, z = all_pts3d[i]
+    #             r, g, b = all_images[i]
+    #             r, g, b = int(r * 255), int(g * 255), int(b * 255)
+    #             f.write(f"{x} {y} {z} {r} {g} {b}\n")
+
+    #     print("debugging")
+
     
-    def pointdepth(self, viewpoint_cam):
+    def pointdepth(self, all_views, pipe, bg):
+        downsample_ratio = 4
+        voxel_size = 0.01
+        all_pts = torch.empty(0, device="cuda")
+        all_views = all_views[:5]
+        with torch.no_grad():
+            for i, view in tqdm(enumerate(all_views)):
+                # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
+                render_pkg_gsplat = render_gsplat(view, self)
+                render_depth_gsplat = render_pkg_gsplat["depth"]
+                gt = view.original_image.cuda()
+                # downsampling
+                render_depth_gsplat = F.interpolate(render_depth_gsplat.unsqueeze(0), size=None, scale_factor=1/downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+                gt = F.interpolate(gt.unsqueeze(0), size=None, scale_factor=1/downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+                # get points 
+                H, W, focals, c2w = self.viewcam_properties(view, downsample_ratio)
+                pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
+                pts_np = pts.detach().cpu().numpy()
+                # dbscan
+                db = DBSCAN(eps=0.05, min_samples=100).fit(pts_np)
+                labels = db.labels_
+                labels = torch.tensor(labels, device="cuda", dtype=torch.float)
+                mask = labels != -1
+                torchvision.utils.save_image(mask.reshape(H, W).float().unsqueeze(0), f"tmp/mask_{i}.png")
+                # get valid points
+                points = pts[mask]
+                colors = gt.reshape(3, -1).t()[mask]
+                pt_clr = torch.cat([points, colors], dim=1)
+                # voxelization and unique with all points
+                all_pts = torch.cat([all_pts, pt_clr], dim=0)
+                all_pts = self.unique_pts(all_pts, voxel_size)
+        # for debugging
+        xyz_ = self.get_xyz.detach().clone()
+        xyz_ = self.unique_pts(xyz_, voxel_size)
+        colors_ = torch.zeros_like(xyz_).float()
+        xyz_ = torch.cat([xyz_, colors_], dim=1)
+        all_pts = torch.cat([xyz_, all_pts], dim=0) 
+        # save to ply
+        ply_path = os.path.join("tmp", "pointdepth.ply")
+        self.save_to_ply(all_pts, ply_path)
+        print("debugging")
         return
+    
+    def unique_pts(self, points, voxel_size):
+        points[:, :3] = torch.round(points[:, :3] / voxel_size) * voxel_size
+        points = torch.unique(points, dim=0)
+        return points
+    
+    def viewcam_properties(self, viewpoint_cam, downsample_ratio):
+        fovx = viewpoint_cam.FoVx
+        fovy = viewpoint_cam.FoVy
+        W = viewpoint_cam.image_width // downsample_ratio
+        H = viewpoint_cam.image_height // downsample_ratio
+        fx = W / (2 * math.tan(fovx / 2))
+        fy = H / (2 * math.tan(fovy / 2))
+        K = torch.tensor([[fx, 0, W / 2], [0, fy, H / 2], [0, 0, 1]], device="cuda")
+        # w2c = viewpoint_cam.world_view_transform.transpose(0, 1)
+        w2c = viewpoint_cam.world_view_transform
+        c2w = torch.inverse(w2c) 
+        return H, W, [fx, fy], c2w
+    
+    def depth_proj(self, depth, H, W, focals, c2w):
+        # fx, fy = focals
+        # i, j = torch.meshgrid(torch.arange(W, device="cuda"), torch.arange(H, device="cuda"), indexing='xy')
+        # i, j = i.reshape(-1), j.reshape(-1)
+        # dirs = torch.stack([(i-W*.5)/fx, (j-H*.5)/fy, torch.ones_like(i)], -1)
+        # rays_d = torch.sum(dirs[..., None, :] * c2w[:3,:3], -1)
+        # rays_o = c2w[:3,-1].expand(rays_d.shape)
+        # pts = rays_o + rays_d * depth.reshape(1, -1).t()
+        fx, fy = focals
+        x = torch.arange(W, device="cuda").repeat(H, 1).reshape(-1)
+        y = torch.arange(H, device="cuda").repeat(W, 1).t().reshape(-1)
+        z = depth[0].reshape(-1)
+        pts = torch.stack([x, y, z], 1)
+        pts[:, 0] = (pts[:, 0] - W * 0.5) / fx * pts[:, 2]
+        pts[:, 1] = -(pts[:, 1] - H * 0.5) / fy * pts[:, 2]
+        pts = torch.cat([pts, torch.ones(pts.shape[0], 1, device="cuda")], 1)
+        pts = torch.matmul(c2w, pts.t()).t()
+        pts = pts[:, :3]
+        return pts
     
     def cam_info(self, viewpoint_cam):
         image_name = viewpoint_cam.image_name
@@ -390,6 +548,25 @@ class GaussianModel:
         w2c = viewpoint_cam.world_view_transform.transpose(0, 1)
         c2w = torch.inverse(w2c) 
         return image_name, H, W, [fx, fy], w2c, c2w
+
+    def save_to_ply(self, all_pts, ply_path):
+        all_pts = all_pts.detach().cpu().numpy()
+        with open(ply_path, 'w') as f:
+            f.write("ply\n")
+            f.write("format ascii 1.0\n")
+            f.write("element vertex {}\n".format(all_pts.shape[0]))
+            f.write("property float x\n")
+            f.write("property float y\n")
+            f.write("property float z\n")
+            f.write("property uchar red\n")
+            f.write("property uchar green\n")
+            f.write("property uchar blue\n")
+            f.write("end_header\n")
+            for i in range(all_pts.shape[0]):
+                x, y, z, r, g, b = all_pts[i]
+                r, g, b = int(r * 255), int(g * 255), int(b * 255)
+                f.write(f"{x} {y} {z} {r} {g} {b}\n")
+        print("[INFO] save to ply done.")
     ######################################################################
     ######################################################################
     ######################################################################

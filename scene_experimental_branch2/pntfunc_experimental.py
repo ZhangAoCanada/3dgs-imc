@@ -8,6 +8,9 @@ import torch.optim as optim
 from collections import OrderedDict
 import math
 
+from sklearn import metrics
+from sklearn.cluster import DBSCAN
+
 
 class NetworkAnother(nn.Module):
     """
@@ -44,11 +47,13 @@ class NetworkAnother(nn.Module):
 
         self.sigma_act = nn.ReLU()
         self.rgb_act = nn.Sigmoid()
-        self.downsample_ratio = 8
+        self.downsample_ratio = 4
         # self.batch_size = batch_size
         self.batch_size = 10000
         self.near = 0.1
-        self.far = 10.0
+        self.far = 20.0
+        self.N_samples = 100
+        self.pts = None
     
     def process(self, x):
         if self.pos_enc != "none":
@@ -58,23 +63,22 @@ class NetworkAnother(nn.Module):
         raw = self.net(x_enc)
 
         rgb, sigma_a = raw[:, :3], raw[:, 3]
-        sigma_a = self.sigma_act(sigma_a)
-        sigma_pred = 1. - torch.exp(-sigma_a)
+        sigma_pred = self.sigma_act(sigma_a)
         rgb_pred = self.rgb_act(rgb)
 
         return {
                 'rgb': rgb_pred,
-                'alpha': sigma_pred
+                'sigma': sigma_pred
             }
     
-    def forward(self, viewpoint_cam, N_samples=100, train=True):
+    def forward(self, viewpoint_cam, train=True):
         H, W, focals, c2w = self.viewcam_properties(viewpoint_cam)
         rays_o, rays_d = self.get_rays(H, W, focals, c2w)
         if train:
             gt_image = viewpoint_cam.original_image.cuda()
             mono_invdepth = viewpoint_cam.invdepthmap.cuda()
             rays_o, rays_d, gt_image, gt_invdepth = self.batchify_rays(rays_o, rays_d, gt_image, mono_invdepth)
-        rgb_map, inv_depth_map, acc_map = self.render_rays(rays_o, rays_d, N_samples)
+        rgb_map, inv_depth_map, acc_map = self.render_rays(rays_o, rays_d)
         if train:
             loss = self.loss_fn(rgb_map, inv_depth_map, acc_map, gt_image, gt_invdepth)
             return loss
@@ -82,6 +86,27 @@ class NetworkAnother(nn.Module):
         inv_depth_map = inv_depth_map.reshape(H, W).unsqueeze(0)
         acc_map = acc_map.reshape(H, W).unsqueeze(0)
         return rgb_map, inv_depth_map, acc_map
+    
+    def train_pts(self, viewpoint_cam, render_depth):
+        H, W, focals, c2w = self.viewcam_properties(viewpoint_cam)
+        rays_o, rays_d = self.get_rays(H, W, focals, c2w)
+        rendepth = F.interpolate(render_depth.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+        pts = self.depth_proj(rendepth, rays_o, rays_d)
+        pts_np = pts.detach().cpu().numpy()
+        db = DBSCAN(eps=0.05, min_samples=100).fit(pts_np)
+        labels = db.labels_
+        labels = torch.tensor(labels, device="cuda", dtype=torch.float)
+        mask = labels != -1
+        mask = mask.reshape(H, W)
+        gt_image = viewpoint_cam.original_image.cuda()
+        rays_o, rays_d, gt_rgb, gt_alpha = self.batchify_pts(rays_o, rays_d, gt_image, pts, mask)
+    
+    def batchify_pts(self, rays_o, rays_d, gt_image, pts, mask):
+        return
+    
+    def depth_proj(self, depth, rays_o, rays_d):
+        pts = rays_o + rays_d * depth.reshape(1, -1).t()
+        return pts
     
     def viewcam_properties(self, viewpoint_cam):
         fovx = viewpoint_cam.FoVx
@@ -96,7 +121,7 @@ class NetworkAnother(nn.Module):
         return H, W, [fx, fy], c2w
     
     def get_rays(self, H, W, focals, c2w, rand=False):
-        i, j = torch.meshgrid(torch.arange(H, device="cuda"), torch.arange(W, device="cuda"))
+        i, j = torch.meshgrid(torch.arange(W, device="cuda"), torch.arange(H, device="cuda"))
         i, j = i.reshape(-1), j.reshape(-1)
         if rand:
             i += torch.rand_like(i)
@@ -125,45 +150,54 @@ class NetworkAnother(nn.Module):
             gt_invdepth = gt_invdepth[rand_idx[:self.batch_size]]
         return rays_o, rays_d, gt, gt_invdepth
 
-    def render_rays(self, rays_o, rays_d, N_samples, rand=False):
+    def render_rays(self, rays_o, rays_d, rand=False):
         if rand:
-            z_vals += torch.rand(list(rays_o.shape[0]) + [N_samples], device="cuda") * (self.far - self.near) / N_samples
+            z_vals += torch.rand(list(rays_o.shape[0]) + [self.N_samples], device="cuda") * (self.far - self.near) / self.N_samples
         else:
-            z_vals = torch.linspace(self.near, self.far, N_samples, device="cuda")
-            z_vals = z_vals.expand(rays_o.shape[0], N_samples)
+            z_vals = torch.linspace(self.near, self.far, self.N_samples, device="cuda")
+            z_vals = z_vals.expand(rays_o.shape[0], self.N_samples)
         pts = rays_o[..., None, :] + rays_d[..., None, :] * z_vals[..., :, None]
         pts_flat = pts.reshape(-1, 3)
-        num = self.batch_size * N_samples
+        num = self.batch_size * self.N_samples
         if pts_flat.shape[0] > num:
             pts_flat = torch.split(pts_flat, num, dim=0)
             rgb = []
-            alpha = []
+            sigma = []
             for pts_b in pts_flat:
                 raw = self.process(pts_b)
                 rgb.append(raw['rgb'])
-                alpha.append(raw['alpha'])
+                sigma.append(raw['sigma'])
             rgb = torch.cat(rgb, 0)
-            alpha = torch.cat(alpha, 0)
+            sigma = torch.cat(sigma, 0)
         else:
             raw = self.process(pts_flat)
             rgb = raw['rgb']#.reshape(pts.shape[0], N_samples, 3)
-            alpha = raw['alpha']#.reshape(pts.shape[0], N_samples)
-        rgb = rgb.reshape(pts.shape[0], N_samples, 3)
-        alpha = alpha.reshape(pts.shape[0], N_samples)
-        # do volume rendering
-        weights = alpha * torch.cumprod(1. - alpha + 1e-10, -1)
+            sigma = raw['sigma']#.reshape(pts.shape[0], N_samples)
+        rgb = rgb.reshape(pts.shape[0], self.N_samples, 3)
+        sigma = sigma.reshape(pts.shape[0], self.N_samples)
+        ### NOTE: do volume rendering
+        dist = torch.cat([z_vals[..., 1:] - z_vals[..., :-1], torch.tensor([1e10], device="cuda").expand(rays_o.shape[0], 1)], -1)
+        alpha = 1. - torch.exp(-sigma * dist)
+        trans_raw = torch.min(torch.tensor([1.], device="cuda"), 1. - alpha + 1e-10)
+        trans = torch.cat([torch.ones_like(trans_raw[..., :1]), trans_raw[..., :-1]], -1)
+        weights = alpha * torch.cumprod(trans, -1)
         rgb_map = torch.sum(weights[..., None] * rgb, -2)
-        # depth_map = torch.sum(weights * z_vals, -1)
-        inv_depth_map = torch.sum(weights / z_vals, -1)
+        inv_depth_map = torch.sum(weights / (z_vals+1e-6), -1)
         acc_map = torch.sum(weights, -1)
         return rgb_map, inv_depth_map, acc_map
     
     def loss_fn(self, rgb_map, inv_depth_map, acc_map, gt_image, invdepth_gt):
         rgb_loss = F.mse_loss(rgb_map, gt_image)
-        # depth_loss = F.mse_loss(inv_depth_map, invdepth_gt)
+        ### NOTE: normalize depth ###
+        invdepth_min = inv_depth_map.min()
+        invdepth_max = inv_depth_map.max()
+        invdepth_gt_min = invdepth_gt.min()
+        invdepth_gt_max = invdepth_gt.max()
+        inv_depth_map = (inv_depth_map - invdepth_min) / (invdepth_max - invdepth_min)
+        invdepth_gt = (invdepth_gt - invdepth_gt_min) / (invdepth_gt_max - invdepth_gt_min)
+        depth_loss = F.mse_loss(inv_depth_map, invdepth_gt)
         # acc_loss = F.mse_loss(acc_map, torch.ones_like(acc_map))
-        # l = rgb_loss + 0.1 * depth_loss + 0.1 * acc_loss
-        return rgb_loss
+        return rgb_loss + depth_loss
 
     def find_boundary(self, xyz_bounds):
         self.xyz_lowerbound, self.xyz_upperbound = xyz_bounds
