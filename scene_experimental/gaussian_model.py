@@ -176,8 +176,8 @@ class GaussianModel:
         in_feat_len = [self._xyz.shape[1], self._opacity.shape[1], self._xyz.shape[1], self._scaling.shape[1], self._rotation.shape[1]] # [xyz, opacity, rgb, scale, rot]
         self.net_mode = "fft" # "mlp" or "fft"
         self.net_type = "relu" # "relu" or "sine"
-        self.net_pred_mode = "std"
-        # self.net_pred_mode = "mean+std"
+        # self.net_pred_mode = "std"
+        self.net_pred_mode = "mean+std"
         self.net = NetworksA(
             in_features_len=in_feat_len, 
             out_features=3, 
@@ -254,11 +254,11 @@ class GaussianModel:
         pred = self.net(net_in)
 
         if self.net_pred_mode == "mean+std":
-            # xyz_pred = pred['xyz']
-            # xyz_std = pred['std']
-            # xyz_noise_ = xyz_pred + torch.randn_like(xyz) * xyz_std
-            xyz_mean = pred["xyz"]
-            xyz_noise_ = xyz_mean
+            xyz_pred = pred['xyz']
+            xyz_std = pred['std']
+            xyz_noise_ = xyz_pred + torch.randn_like(xyz) * xyz_std
+            # xyz_mean = pred["xyz"]
+            # xyz_noise_ = xyz_mean
         else:
             xyz_std = pred["std"]
             xyz_noise_ = torch.rand_like(xyz) * xyz_std
@@ -273,7 +273,7 @@ class GaussianModel:
         else:
             xyz_noise_full = xyz_noise
 
-        return xyz_noise_full, mask
+        return xyz_noise_full, mask, xyz_std
 
 
     def detach_param(self, ):

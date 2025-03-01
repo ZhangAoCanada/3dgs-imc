@@ -28,29 +28,25 @@ from utils.reloc_utils import compute_relocation_cuda
 from utils.sh_utils import eval_sh
 from scene_experimental_branch2.imc_experimental import NetworksA
 from scene_experimental_branch2.pntfunc_experimental import NetworkAnother
-import scene_experimental_branch2.diff_operators as diff_operators
+from scene_experimental_branch2 import diff_operators
+from scene_experimental_branch2.utility import write_summary
 
-
-# from dust3r.dust3r.inference import inference
-# from dust3r.dust3r.model import AsymmetricCroCo3DStereo
-# from dust3r.dust3r.utils.image import load_images
-# from dust3r.dust3r.image_pairs import make_pairs
-# from dust3r.dust3r.cloud_opt import global_aligner, GlobalAlignerMode
-# from dust3r.dust3r.demo import get_3D_model_from_scene
-from dust3r.inference import inference
-from dust3r.model import AsymmetricCroCo3DStereo
-from dust3r.utils.image import load_images
-from dust3r.image_pairs import make_pairs
-from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
-from dust3r.demo import get_3D_model_from_scene, _convert_scene_output_to_glb
+# from dust3r.inference import inference
+# from dust3r.model import AsymmetricCroCo3DStereo
+# from dust3r.utils.image import load_images
+# from dust3r.image_pairs import make_pairs
+# from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
+# from dust3r.demo import get_3D_model_from_scene, _convert_scene_output_to_glb
 import shutil
 import math
 from glob import glob
 from gaussian_renderer import render, render_gsplat
 import torchvision
+import matplotlib.pyplot as plt
 
 from sklearn import metrics
 from sklearn.cluster import DBSCAN
+from sklearn.linear_model import LinearRegression, RANSACRegressor
 from tqdm import tqdm
 
 
@@ -197,26 +193,29 @@ class GaussianModel:
         # self._opacity = opacities.clone()
 
         #################### NOTE: hyper-param ########################
-        xyz_lowerbound = torch.min(self.get_xyz, dim=0).values.detach().clone()
-        xyz_upperbound = torch.max(self.get_xyz, dim=0).values.detach().clone()
-        scale_bound = torch.max(self.get_scaling, dim=0).values.detach().clone()
-        # self.max_num = 300000
-        # self.net_mode = "fft" # "mlp" or "fft"
-        # self.net_type = "sine" # "sine" or "relu"
-        # self.net = NetworksA(
-        #     in_features=3, 
-        #     out_features=1, 
-        #     xyz_bounds=[xyz_lowerbound, xyz_upperbound], 
-        #     scale_upperbound=scale_bound, 
-        #     type=self.net_type, 
-        #     mode=self.net_mode, 
-        #     )
-        self.max_num = 1000
-        self.net = NetworkAnother(
-            xyz_bounds=[xyz_lowerbound, xyz_upperbound],
-            batch_size=self.max_num,
-        )
+        self.max_num = 100000
+        self.net_mode = "mlp" # "mlp" or "fft"
+        self.net_type = "sine" # "sine" or "relu"
+        self.net = NetworksA(
+            in_features=3, 
+            out_features=4, 
+            type=self.net_type, 
+            mode=self.net_mode, 
+            )
         self.net.cuda()
+        self.nn_gt_pts = None
+        self.aligned_depth_dict = {}
+        self.downsample_ratio = 4
+        self.voxel_size = 0.001
+        self.eps = 0.04 # 0.05
+        self.min_samples = 100 # 100
+
+        # self.max_num = 1000
+        # self.net = NetworkAnother(
+        #     xyz_bounds=[xyz_lowerbound, xyz_upperbound],
+        #     batch_size=self.max_num,
+        # )
+        # self.net.cuda()
 
     def training_setup(self, training_args):
         self.percent_dense = training_args.percent_dense
@@ -254,103 +253,420 @@ class GaussianModel:
     ######################################################################
     ######################################################################
     ######################################################################
-    # def nnprocess(self, ):
-    #     self.net.train()
-    #     xyz = self.get_xyz
-    #     mask = None
-    #     if xyz.shape[0] > self.max_num:
-    #         mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
-    #         random_index = torch.randperm(xyz.shape[0])[:self.max_num]
-    #         mask[random_index] = True
-    #         xyz = xyz[mask]
-    #     self.spawn_randompnts(xyz.shape[0])
-    #     #################### NOTE: hyper-param ########################
-    #     net_in = torch.cat([xyz, self.off_xyz], dim=0)
-    #     res = self.net(net_in)
-    #     return res['pred'], net_in, mask
-    
-    # def save_nn(self, dir_path):
-    #     torch.save(self.net.state_dict(), os.path.join(dir_path, "net.pth"))
-    
-    # def load_nn(self, dir_path):
-    #     self.net.load_state_dict(torch.load(os.path.join(dir_path, "net.pth")))
-    
-    # def nn_l(self, pred, net_in):
-    #     opacity_const = self.get_opacity.detach().clone()
-    #     num = min(self.max_num, self.get_xyz.shape[0])
-    #     opacity_const = opacity_const[:num]
-    #     gt_opacity = torch.cat([opacity_const, self.off_opacity], dim=0)
-    #     opacity_constraint = F.l1_loss(pred, gt_opacity).mean()
-    #     grad = diff_operators.gradient(pred, net_in)
-    #     grad_constraint = torch.abs(grad.norm(dim=-1) - 1).mean()
-    #     norm_d = self.norm_direct()[:num]
-    #     gt_norm_d = torch.cat([norm_d, torch.rand_like(self.off_xyz)], dim=0)
-    #     normal_constraint = torch.where(gt_opacity != 0.0, F.cosine_similarity(grad, gt_norm_d, dim=-1)[..., None], torch.zeros_like(grad[..., :1])).mean()
-    #     a = 1
-    #     b = 0.5
-    #     c = 1
-    #     l = a * opacity_constraint + b * grad_constraint + c * normal_constraint
-    #     return 1e10 * l
-    
-    # def norm_direct(self, ):
-    #     scales = self.get_scaling.detach().clone()
-    #     rots = self.get_rotation.detach().clone()
-    #     norm_axis = torch.argmax(scales, dim=1)
-    #     norm = torch.zeros_like(scales)
-    #     norm[torch.arange(scales.shape[0]), norm_axis] = 1.0
-    #     rotations = build_rotation(rots)
-    #     norm = torch.bmm(rotations, norm.unsqueeze(-1)).squeeze(-1)
-    #     return norm
-    
-    # def partial_l(self, pred):
-    #     pnts = self.get_xyz.shape[0]
-    #     pnts = min(pnts, self.max_num)
-    #     l = (1.0 - pred[:pnts]).mean()
-    #     return 1e0 * l
-
-    # def spawn_randompnts(self, num_pnts=100000):
-    #     upper_bound = self.net.xyz_upperbound
-    #     lower_bound = self.net.xyz_lowerbound
-    #     off_pnts = torch.rand((num_pnts, 3), device="cuda") * (upper_bound - lower_bound) + lower_bound
-    #     self.off_xyz = nn.Parameter(off_pnts.contiguous().requires_grad_(True))
-    #     self.off_opacity = torch.zeros((num_pnts, 1), device="cuda")
-
-    # def add_noise(self, noise, mask=None):
-    #     if mask is None:
-    #         self._xyz.add_(noise)
-    #     else:
-    #         self._xyz[mask].add_(noise[mask])
-
-    # def remove_nan_grad(self, ):
-    #     self._xyz.grad[torch.isnan(self._xyz.grad)] = 0.0
-    #     self._xyz.grad[torch.isinf(self._xyz.grad)] = 0.0
-    #     for param in self.net.parameters():
-    #         param.grad[torch.isnan(param.grad)] = 0.0
-    #         param.grad[torch.isinf(param.grad)] = 0.0
-    ######################################################################
-    ######################################################################
-    ######################################################################
-    def nntrain(self, viewpoint_cam):
+    def nntrain(self, tb_writer, iteration):
+        if self.nn_gt_pts is None:
+            return None
         self.net.train()
-        nnl = self.net(viewpoint_cam, train=True)
-        return nnl
+        assert self.nn_gt_pts.shape[1] == 9
+        xyz, color, norm = torch.split(self.nn_gt_pts, [3, 3, 3], dim=1)
+        mask = None
+        if xyz.shape[0] > self.max_num:
+            mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
+            random_index = torch.randperm(xyz.shape[0])[:self.max_num]
+            mask[random_index] = True
+            xyz = xyz[mask]
+            color = color[mask]
+            norm = norm[mask]
+        opacity = torch.ones((xyz.shape[0], 1), device="cuda")
+        off_xyz, off_color, off_norm, off_opacity = self.spawn_randompnts(xyz.shape[0], self.voxel_size)
+        net_in = torch.cat([xyz, off_xyz], dim=0)
+        res = self.net(net_in)
+        gt_opacity = torch.cat([opacity, off_opacity], dim=0)
+        gt_color = torch.cat([color, off_color], dim=0)
+        gt_norm = torch.cat([norm, off_norm], dim=0)
+        l = self.nn_l(res, gt_opacity, gt_color, gt_norm)
+        write_summary(self.net, tb_writer, iteration)
+        return l
     
-    def nntrainpts(self, viewpoint_cam):
+    def nntrain_view(self, view, pipe, bg, tb_writer, iteration, align=True):
+        if self.nn_gt_pts is None:
+            return None
+        H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
+        pts, aligned_depth = self.filter_depth_and_align(view, pipe, bg, align=align, debug=False, single_view=True)
+        if pts is None:
+            return None
+        if align:
+            assert aligned_depth is not None
+        assert pts.shape[0] == H * W
         self.net.train()
+        assert pts.shape[1] == 9
+        xyz, color, norm = torch.split(pts, [3, 3, 3], dim=1)
+        mask = None
+        if xyz.shape[0] > self.max_num:
+            mask = torch.zeros(xyz.shape[0], dtype=torch.bool, device="cuda")
+            random_index = torch.randperm(xyz.shape[0])[:self.max_num]
+            mask[random_index] = True
+            xyz = xyz[mask]
+            color = color[mask]
+            norm = norm[mask]
+        else:
+            mask = torch.ones(xyz.shape[0], dtype=torch.bool, device="cuda")
+        opacity = torch.ones((xyz.shape[0], 1), device="cuda")
+        off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, aligned_depth, H, W, focals, c2w, times=1, voxel_size=self.voxel_size)
+        net_in = torch.cat([xyz, off_xyz], dim=0)
+        res = self.net(net_in)
+        gt_opacity = torch.cat([opacity, off_opacity], dim=0)
+        gt_color = torch.cat([color, off_color], dim=0)
+        gt_norm = torch.cat([norm, off_norm], dim=0)
+        l = self.nn_l(res, gt_opacity, gt_color, gt_norm)
+        write_summary(self.net, tb_writer, iteration)
+        return l
+    
+    def nn_l(self, pred, gt_opacity, gt_color, gt_norm):
+        pred_color = pred['rgb']
+        pred_opacity = pred['sigma']
+        net_in = pred['net_in']
+        gradient = diff_operators.gradient(pred_opacity, net_in)
+
+        opacity_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_opacity, gt_opacity), torch.zeros_like(pred_opacity)).mean()
+        color_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_color, gt_color), torch.zeros_like(pred_color)).mean()
+        normal_constraint = torch.where(gt_opacity != 0, 1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None], torch.zeros_like(gradient)).mean()
+        gradient_constraint = torch.abs(gradient.norm(dim=-1) - 1).mean()
+        inter_constraint = torch.where(gt_opacity != 0, torch.zeros_like(pred_opacity), pred_opacity).mean()
+
+        l = opacity_constraint * 3e3 + \
+            color_constraint * 1e3 + \
+            normal_constraint * 1e2 + \
+            inter_constraint * 1e2 + \
+            gradient_constraint * 5e1
+        return l
+
+    def partial_l(self, ):
+        if self.nn_gt_pts is None:
+            return 0.0
+        xyz = self.get_xyz
+        if xyz.shape[0] > self.max_num:
+            mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
+            random_index = torch.randperm(xyz.shape[0])[:self.max_num]
+            mask[random_index] = True
+            net_in = xyz[mask]
+        pred = self.net(net_in)
+        l = 10 * (1.0 - pred['sigma']).mean()
+        grad = diff_operators.gradient(l, pred['net_in'])
+        net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
-            render_pkg = render_gsplat(viewpoint_cam, self)
-            render_depth = render_pkg["depth"]
-            render_depth = render_depth.detach().clone()
-        nnl = self.net.train_pts(viewpoint_cam, render_depth)
-        return nnl
+            xyz_upper = self.net.xyz_upperbound
+            xyz_lower = self.net.xyz_lowerbound
+            diff_upper = net_in - xyz_upper
+            diff_lower = net_in - xyz_lower
+            scaling = torch.ones_like(net_in)
+            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+            scaling = torch.where(scaling < 1, 1, scaling)
+            grad = grad * net_scale * scaling
+            self._xyz[mask].add_(grad)
+            print(f"[DEBUG] grad_l2xyz max: {grad.max()}, min: {grad.min()}")
+        return l
+
+    def spawn_randompnts(self, num_pnts=100000, voxel_size=0.01):
+        upper_bound = self.net.xyz_upperbound
+        lower_bound = self.net.xyz_lowerbound
+        off_pnts = torch.rand((num_pnts, 3), device="cuda") * (upper_bound - lower_bound) + lower_bound
+        # # voxelization and remove duplicates with self.nn_gt_pts
+        # off_pnts = torch.round(off_pnts / voxel_size) * voxel_size
+        # off_pnts = torch.unique(off_pnts, dim=0)
+        # num_pnts = off_pnts.shape[0]
+        # get parameters
+        off_xyz = nn.Parameter(off_pnts.contiguous().requires_grad_(True))
+        off_opacity = torch.zeros((num_pnts, 1), device="cuda")
+        off_color = torch.rand((num_pnts, 3), device="cuda")
+        off_norm = torch.rand((num_pnts, 3), device="cuda")
+        return off_xyz, off_color, off_norm, off_opacity
     
-    def nnrender(self, viewpoint_cam):
-        self.net.eval()
-        rgb, inv_depth, acc = self.net(viewpoint_cam, train=False)
-        rgb = torch.clamp(rgb, 0.0, 1.0)
-        inv_depth = torch.clamp(inv_depth, 0.0, 1.0)
-        acc = torch.clamp(acc, 0.0, 1.0)
-        return rgb, inv_depth, acc
+    def spawn_randomraypnts(self, mask, depth, H, W, focals, c2w, times=1, voxel_size=0.01):
+        times = int(times)
+        fx, fy = focals
+        i, j = torch.meshgrid(torch.arange(W, device="cuda"), torch.arange(H, device="cuda"), indexing='xy')
+        i, j = i.reshape(-1), j.reshape(-1)
+        dirs = torch.stack([(i-W*.5)/fx, (j-H*.5)/fy, torch.ones_like(i)], -1)
+        rays_d = torch.sum(dirs[..., None, :] * c2w[:3,:3], -1)
+        rays_o = c2w[:3,-1].expand(rays_d.shape)
+
+        lowbound = min(self.net.xyz_lowerbound, 0.0).unsqueeze(0).expand(rays_o.shape)
+        upbound = max(self.net.xyz_upperbound, 0.0).unsqueeze(0).expand(rays_o.shape)
+        lowdist = (lowbound - rays_o) / (rays_d + 1e-6)
+        updist = (upbound - rays_o) / (rays_d + 1e-6)
+
+        rand_dist = torch.rand(times, H*W, 1, device="cuda") * (updist - lowdist) + lowdist
+        off_pts = rays_o.unsqueeze(0) + (rays_d.unsqueeze(0) * rand_dist)
+        mask = mask.view(1, -1).expand(times, -1)
+        off_pts = off_pts[mask].reshape(-1, 3)
+
+        off_pts = off_pts.reshape(-1, 3)
+        off_xyz = nn.Parameter(off_pts.contiguous().requires_grad_(True))
+        off_opacity = torch.zeros((off_xyz.shape[0], 1), device="cuda")
+        off_color = torch.rand((off_xyz.shape[0], 3), device="cuda")
+        off_norm = torch.rand((off_xyz.shape[0], 3), device="cuda")
+        return off_xyz, off_color, off_norm, off_opacity
+    
+    def save_nn(self, dir_path):
+        torch.save(self.net.state_dict(), os.path.join(dir_path, "net.pth"))
+    
+    def load_nn(self, dir_path):
+        self.net.load_state_dict(torch.load(os.path.join(dir_path, "net.pth")))
+
+    def add_noise(self, noise, mask=None):
+        if mask is None:
+            self._xyz.add_(noise)
+        else:
+            self._xyz[mask].add_(noise[mask])
+
+    def remove_nan_grad(self, ):
+        self._xyz.grad[torch.isnan(self._xyz.grad)] = 0.0
+        self._xyz.grad[torch.isinf(self._xyz.grad)] = 0.0
+        for param in self.net.parameters():
+            param.grad[torch.isnan(param.grad)] = 0.0
+            param.grad[torch.isinf(param.grad)] = 0.0
+        
+    def update_nnpts(self, all_views, pipe, bg, align=True, single_view=False):
+        # self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False)
+        self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, single_view=single_view)
+        if self.nn_gt_pts is not None:
+            self.net.find_boundary(self.nn_gt_pts)
+    ######################################################################
+    ######################################################################
+    ######################################################################
+    # def nntrain(self, viewpoint_cam):
+    #     self.net.train()
+    #     nnl = self.net(viewpoint_cam, train=True)
+    #     return nnl
+    
+    # def nntrainpts(self, viewpoint_cam):
+    #     self.net.train()
+    #     with torch.no_grad():
+    #         render_pkg = render_gsplat(viewpoint_cam, self)
+    #         render_depth = render_pkg["depth"]
+    #         render_depth = render_depth.detach().clone()
+    #     nnl = self.net.train_pts(viewpoint_cam, render_depth)
+    #     return nnl
+    
+    # def nnrender(self, viewpoint_cam):
+    #     self.net.eval()
+    #     rgb, inv_depth, acc = self.net(viewpoint_cam, train=False)
+    #     rgb = torch.clamp(rgb, 0.0, 1.0)
+    #     inv_depth = torch.clamp(inv_depth, 0.0, 1.0)
+    #     acc = torch.clamp(acc, 0.0, 1.0)
+    #     return rgb, inv_depth, acc
+    
+    def pointdepth(self, all_views, pipe, bg, align=True, debug=True, single_view=False):
+        if debug:
+            self.nn_gt_pts = None
+            self.aligned_depth_dict = {}
+            self.downsample_ratio = 4
+            self.voxel_size = 0.01
+            self.eps = 0.04 # 0.04
+            self.min_samples = 50 # 100
+            all_views = all_views[:100]
+
+        all_pts = torch.empty(0, device="cuda")
+        if debug:
+            if os.path.exists("tmp"):
+                shutil.rmtree("tmp")
+            os.makedirs("tmp", exist_ok=True)
+        with torch.no_grad():
+            for i in tqdm(range(len(all_views))):
+                view = all_views[i]
+                # if int(view.image_name.split(".")[0]) >= 1171:
+                #     continue
+                # if int(view.image_name.split(".")[0]) in [248, 249]:
+                #     continue
+                pt_clr, _ = self.filter_depth_and_align(view, pipe, bg, align=align, debug=debug, single_view=single_view)
+                if pt_clr is None:
+                    continue
+                # voxelization and unique with all points
+                all_pts = torch.cat([all_pts, pt_clr], dim=0)
+                all_pts = self.unique_pts(all_pts, self.voxel_size)
+        if debug:
+            # save to ply
+            ply_path = os.path.join("tmp", "pointdepth.ply")
+            self.save_to_ply(all_pts[..., :6], ply_path)
+            print("debugging")
+            # # for debugging
+            # xyz_ = self.get_xyz.detach().clone()
+            # xyz_ = self.unique_pts(xyz_, 0.03)
+            # colors_ = torch.zeros_like(xyz_).float()
+            # xyz_ = torch.cat([xyz_, colors_], dim=1)
+            # all_pts = torch.cat([xyz_, all_pts[..., :6]], dim=0) 
+            # ply_path = os.path.join("tmp", "pointall.ply")
+            # self.save_to_ply(all_pts, ply_path)
+            # print("debugging")
+        if all_pts.shape[0] == 0:
+            return None
+        return all_pts
+    
+    def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, single_view=False):
+        align_depth = None
+        mask = None
+        # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
+        render_pkg_gsplat = render_gsplat(view, self)
+        render_depth_gsplat = render_pkg_gsplat["depth"]
+        gt = view.original_image.cuda()
+        mono_invdepth = view.invdepthmap.cuda()
+        # downsampling
+        render_depth_gsplat = F.interpolate(render_depth_gsplat.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+        gt = F.interpolate(gt.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+        mono_invdepth = F.interpolate(mono_invdepth.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+        # get points 
+        H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
+        pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
+        pts_np = pts.detach().cpu().numpy()
+        # dbscan
+        # db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=-1).fit(pts_np)
+        # db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=4).fit(pts_np)
+        db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts_np)
+        labels = db.labels_
+        labels = torch.tensor(labels, device="cuda", dtype=torch.float)
+        mask = labels != -1
+        if mask.sum() == 0:
+            return None, None
+        # TODO: try to align mono_depth with render_depth_gsplat
+        if align:
+            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W))
+            self.aligned_depth_dict[view.image_name] = align_depth
+            pts = self.depth_proj(align_depth, H, W, focals, c2w)
+        ### **************************************************** ###
+        elif not single_view:
+            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W))
+            self.aligned_depth_dict[view.image_name] = align_depth
+        ### **************************************************** ###
+        # compute normal map
+        if align_depth is None:
+            mono_depth = 1.0 / (mono_invdepth + 1e-4)
+            scale_factor = 1.0
+        else:
+            mono_depth = align_depth
+            scale_factor = 100.0
+        mono_normal = self.depth2norm(mono_depth, scale_factor=scale_factor).squeeze(0)
+        # visualize
+        if debug:
+            mask_show = mask.reshape(H, W).float().unsqueeze(0).repeat(3, 1, 1) if mask is not None else torch.ones(3, H, W, device="cuda").float()
+            mono_depth /= mono_depth.max()
+            mono_depth_show = mono_depth.repeat(3, 1, 1)
+            mono_normal_show = mono_normal
+            img_show = torch.cat([mono_depth_show, mono_normal_show, mask_show], dim=1)
+            torchvision.utils.save_image(img_show, f"tmp/{view.image_name}")
+        # keep the shape
+        colors = gt.reshape(3, -1).t()
+        normals = mono_normal.reshape(3, -1).t()
+        # get valid points
+        if not align:
+            pts = pts[mask]
+            colors = colors[mask]
+            normals = normals[mask]
+        pt_clr = torch.cat([pts, colors, normals], dim=1)
+        return pt_clr, align_depth
+    
+    def depth_align(self, render_depth, mono_invdepth, mask=None, debug=True):
+        """
+        Mono_depth is normally with unkown scale. The function here is to compute the correct scale with render_depth, so that the two depth maps can be aligned. render_depth is somehow noisy. Therefore, we need to use mask to filter out the noisy points.
+
+        @param render_depth: [1, H, W]
+        @param mono_invdepth: [1, H, W]
+        @param mask: [1, H, W]
+        """
+        if mask is None:
+            mask = torch.ones_like(render_depth, dtype=torch.bool, device="cuda")
+        render_invdepth = 1.0 / (render_depth + 1e-6)
+        render_inv = render_invdepth[mask].reshape(-1).detach().cpu().numpy()
+        mono_inv = mono_invdepth[mask].reshape(-1).detach().cpu().numpy()
+        # find linear transformation from mono_inv to render_inv with RANSAC
+        mono_inv = mono_inv.reshape(-1, 1)
+        render_inv = render_inv.reshape(-1, 1)
+        # # ransac = RANSACRegressor(LinearRegression(n_jobs=-1), min_samples=0.8, residual_threshold=0.1, max_trials=100)
+        # ransac = LinearRegression(n_jobs=-1)
+        # ransac = LinearRegression(n_jobs=4)
+        ransac = LinearRegression()
+        ransac.fit(mono_inv, render_inv)
+        _, H, W = render_depth.shape
+        align_invdepth = ransac.predict(mono_invdepth.reshape(-1, 1).detach().cpu().numpy())
+        align_invdepth = torch.from_numpy(align_invdepth).reshape(1, H, W).float().cuda()
+        align_depth = 1.0 / (align_invdepth + 1e-6)
+
+        if debug:
+            align_depth_show = (align_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
+            render_depth_show = (render_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
+            render_depth_show = torch.clamp(render_depth_show, 0.0, 1.0)
+            image_show = torch.cat([render_depth_show, align_depth_show], dim=1) 
+            torchvision.utils.save_image(image_show, "tmp/align_depth.png")
+        return align_depth
+    
+    def depth2norm(self, depth, scale_factor=1.0):
+        """
+        Transform depth map to normal map
+        """
+        if depth.dim() == 3:
+            depth = depth.unsqueeze(0)
+        sobel_x = torch.tensor([[1, 0, -1], [2, 0, -2], [1, 0, -1]], dtype=torch.float32, device="cuda")
+        sobel_y = sobel_x.t()
+        kernel_x = sobel_x.view(1, 1, 3, 3)
+        kernel_y = sobel_y.view(1, 1, 3, 3)
+        grad_x = F.conv2d(depth, kernel_x, padding=1, groups=depth.size(0))
+        grad_y = F.conv2d(depth, kernel_y, padding=1, groups=depth.size(0))
+        normal = torch.cat([
+            -scale_factor * grad_x,
+            -scale_factor * grad_y,
+            torch.ones_like(depth)
+        ], dim=1)
+        norm = torch.sqrt(torch.sum(normal ** 2, dim=1, keepdim=True) + 1e-6)
+        normal = normal / norm
+        normal = normal * 0.5 + 0.5
+        return normal
+    
+    def unique_pts(self, points, voxel_size):
+        points[:, :3] = torch.round(points[:, :3] / voxel_size) * voxel_size
+        points = torch.unique(points, dim=0)
+        return points
+    
+    def viewcam_properties(self, viewpoint_cam, downsample_ratio=1.0):
+        fovx = viewpoint_cam.FoVx
+        fovy = viewpoint_cam.FoVy
+        W = viewpoint_cam.image_width // downsample_ratio
+        H = viewpoint_cam.image_height // downsample_ratio
+        fx = W / (2 * math.tan(fovx / 2))
+        fy = H / (2 * math.tan(fovy / 2))
+        K = torch.tensor([[fx, 0, W / 2], [0, fy, H / 2], [0, 0, 1]], device="cuda")
+        w2c = viewpoint_cam.world_view_transform.transpose(0, 1)
+        c2w = torch.inverse(w2c) 
+        return H, W, [fx, fy], c2w
+    
+    def depth_proj(self, depth, H, W, focals, c2w):
+        # fx, fy = focals
+        # i, j = torch.meshgrid(torch.arange(W, device="cuda"), torch.arange(H, device="cuda"), indexing='xy')
+        # i, j = i.reshape(-1), j.reshape(-1)
+        # dirs = torch.stack([(i-W*.5)/fx, (j-H*.5)/fy, torch.ones_like(i)], -1)
+        # rays_d = torch.sum(dirs[..., None, :] * c2w[:3,:3], -1)
+        # rays_o = c2w[:3,-1].expand(rays_d.shape)
+        # pts = rays_o + rays_d * depth.reshape(1, -1).t()
+        fx, fy = focals
+        x = torch.arange(W, device="cuda").repeat(H, 1).reshape(-1)
+        y = torch.arange(H, device="cuda").repeat(W, 1).t().reshape(-1)
+        z = depth[0].reshape(-1)
+        pts = torch.stack([x, y, z], 1)
+        pts[:, 0] = (pts[:, 0] - W * 0.5) / fx * pts[:, 2]
+        pts[:, 1] = (pts[:, 1] - H * 0.5) / fy * pts[:, 2]
+        pts = torch.cat([pts, torch.ones(pts.shape[0], 1, device="cuda")], 1)
+        pts = torch.matmul(c2w, pts.t()).t()
+        pts = pts[:, :3]
+        return pts
+
+    def save_to_ply(self, all_pts, ply_path):
+        all_pts = all_pts.detach().cpu().numpy()
+        with open(ply_path, 'w') as f:
+            f.write("ply\n")
+            f.write("format ascii 1.0\n")
+            f.write("element vertex {}\n".format(all_pts.shape[0]))
+            f.write("property float x\n")
+            f.write("property float y\n")
+            f.write("property float z\n")
+            f.write("property uchar red\n")
+            f.write("property uchar green\n")
+            f.write("property uchar blue\n")
+            f.write("end_header\n")
+            for i in range(all_pts.shape[0]):
+                x, y, z, r, g, b = all_pts[i]
+                r, g, b = int(r * 255), int(g * 255), int(b * 255)
+                f.write(f"{x} {y} {z} {r} {g} {b}\n")
+        print("[INFO] save to ply done.")
     
     # def point3r(self, all_views):
     #     device = 'cuda'
@@ -453,120 +769,6 @@ class GaussianModel:
     #             f.write(f"{x} {y} {z} {r} {g} {b}\n")
 
     #     print("debugging")
-
-    
-    def pointdepth(self, all_views, pipe, bg):
-        downsample_ratio = 4
-        voxel_size = 0.01
-        all_pts = torch.empty(0, device="cuda")
-        all_views = all_views[:5]
-        with torch.no_grad():
-            for i, view in tqdm(enumerate(all_views)):
-                # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
-                render_pkg_gsplat = render_gsplat(view, self)
-                render_depth_gsplat = render_pkg_gsplat["depth"]
-                gt = view.original_image.cuda()
-                # downsampling
-                render_depth_gsplat = F.interpolate(render_depth_gsplat.unsqueeze(0), size=None, scale_factor=1/downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
-                gt = F.interpolate(gt.unsqueeze(0), size=None, scale_factor=1/downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
-                # get points 
-                H, W, focals, c2w = self.viewcam_properties(view, downsample_ratio)
-                pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
-                pts_np = pts.detach().cpu().numpy()
-                # dbscan
-                db = DBSCAN(eps=0.05, min_samples=100).fit(pts_np)
-                labels = db.labels_
-                labels = torch.tensor(labels, device="cuda", dtype=torch.float)
-                mask = labels != -1
-                torchvision.utils.save_image(mask.reshape(H, W).float().unsqueeze(0), f"tmp/mask_{i}.png")
-                # get valid points
-                points = pts[mask]
-                colors = gt.reshape(3, -1).t()[mask]
-                pt_clr = torch.cat([points, colors], dim=1)
-                # voxelization and unique with all points
-                all_pts = torch.cat([all_pts, pt_clr], dim=0)
-                all_pts = self.unique_pts(all_pts, voxel_size)
-        # for debugging
-        xyz_ = self.get_xyz.detach().clone()
-        xyz_ = self.unique_pts(xyz_, voxel_size)
-        colors_ = torch.zeros_like(xyz_).float()
-        xyz_ = torch.cat([xyz_, colors_], dim=1)
-        all_pts = torch.cat([xyz_, all_pts], dim=0) 
-        # save to ply
-        ply_path = os.path.join("tmp", "pointdepth.ply")
-        self.save_to_ply(all_pts, ply_path)
-        print("debugging")
-        return
-    
-    def unique_pts(self, points, voxel_size):
-        points[:, :3] = torch.round(points[:, :3] / voxel_size) * voxel_size
-        points = torch.unique(points, dim=0)
-        return points
-    
-    def viewcam_properties(self, viewpoint_cam, downsample_ratio):
-        fovx = viewpoint_cam.FoVx
-        fovy = viewpoint_cam.FoVy
-        W = viewpoint_cam.image_width // downsample_ratio
-        H = viewpoint_cam.image_height // downsample_ratio
-        fx = W / (2 * math.tan(fovx / 2))
-        fy = H / (2 * math.tan(fovy / 2))
-        K = torch.tensor([[fx, 0, W / 2], [0, fy, H / 2], [0, 0, 1]], device="cuda")
-        # w2c = viewpoint_cam.world_view_transform.transpose(0, 1)
-        w2c = viewpoint_cam.world_view_transform
-        c2w = torch.inverse(w2c) 
-        return H, W, [fx, fy], c2w
-    
-    def depth_proj(self, depth, H, W, focals, c2w):
-        # fx, fy = focals
-        # i, j = torch.meshgrid(torch.arange(W, device="cuda"), torch.arange(H, device="cuda"), indexing='xy')
-        # i, j = i.reshape(-1), j.reshape(-1)
-        # dirs = torch.stack([(i-W*.5)/fx, (j-H*.5)/fy, torch.ones_like(i)], -1)
-        # rays_d = torch.sum(dirs[..., None, :] * c2w[:3,:3], -1)
-        # rays_o = c2w[:3,-1].expand(rays_d.shape)
-        # pts = rays_o + rays_d * depth.reshape(1, -1).t()
-        fx, fy = focals
-        x = torch.arange(W, device="cuda").repeat(H, 1).reshape(-1)
-        y = torch.arange(H, device="cuda").repeat(W, 1).t().reshape(-1)
-        z = depth[0].reshape(-1)
-        pts = torch.stack([x, y, z], 1)
-        pts[:, 0] = (pts[:, 0] - W * 0.5) / fx * pts[:, 2]
-        pts[:, 1] = -(pts[:, 1] - H * 0.5) / fy * pts[:, 2]
-        pts = torch.cat([pts, torch.ones(pts.shape[0], 1, device="cuda")], 1)
-        pts = torch.matmul(c2w, pts.t()).t()
-        pts = pts[:, :3]
-        return pts
-    
-    def cam_info(self, viewpoint_cam):
-        image_name = viewpoint_cam.image_name
-        fovx = viewpoint_cam.FoVx
-        fovy = viewpoint_cam.FoVy
-        W = viewpoint_cam.image_width
-        H = viewpoint_cam.image_height
-        fx = W / (2 * math.tan(fovx / 2))
-        fy = H / (2 * math.tan(fovy / 2))
-        K = torch.tensor([[fx, 0, W / 2], [0, fy, H / 2], [0, 0, 1]], device="cuda")
-        w2c = viewpoint_cam.world_view_transform.transpose(0, 1)
-        c2w = torch.inverse(w2c) 
-        return image_name, H, W, [fx, fy], w2c, c2w
-
-    def save_to_ply(self, all_pts, ply_path):
-        all_pts = all_pts.detach().cpu().numpy()
-        with open(ply_path, 'w') as f:
-            f.write("ply\n")
-            f.write("format ascii 1.0\n")
-            f.write("element vertex {}\n".format(all_pts.shape[0]))
-            f.write("property float x\n")
-            f.write("property float y\n")
-            f.write("property float z\n")
-            f.write("property uchar red\n")
-            f.write("property uchar green\n")
-            f.write("property uchar blue\n")
-            f.write("end_header\n")
-            for i in range(all_pts.shape[0]):
-                x, y, z, r, g, b = all_pts[i]
-                r, g, b = int(r * 255), int(g * 255), int(b * 255)
-                f.write(f"{x} {y} {z} {r} {g} {b}\n")
-        print("[INFO] save to ply done.")
     ######################################################################
     ######################################################################
     ######################################################################

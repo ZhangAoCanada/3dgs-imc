@@ -1,6 +1,6 @@
-for depth_l1_weight_init in 1.0 0.1 0.01 10.
+for depth_l1_weight_init in 0.1 0.01
 do
-    for depth_l1_weight_final in 1.0 0.1 0.01 0.001
+    for depth_l1_weight_final in 0.01 0.001 0.0001
     do
         images=input_cached
         init_type=sfm
@@ -22,7 +22,7 @@ do
             --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
             --depths dav2_cached \
             --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-            --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_350w_combine+std_randomview${experimental_randomview_num}_lr5_dynamicbound_fft_depthnormalize \
+            --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_350w_combine+std_randomview${experimental_randomview_num}_lr5_dynamicbound_fft_depthnormalize_${depth_l1_weight_init}_${depth_l1_weight_final} \
             --images ${images} \
             --resolution -1 \
             --init_type ${init_type} \

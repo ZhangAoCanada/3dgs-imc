@@ -117,7 +117,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         bg = torch.rand((3), device="cuda") if opt.random_background else background
 
         ############### NOTE: IMC ###############
-        noise, noise_mask = gaussians.imc_process_experimental(viewpoint_cam_this)
+        noise, noise_mask, std = gaussians.imc_process_experimental(viewpoint_cam_this)
 
         l_total = 0.0
         viewpoint_tmp = scene.getTrainCameras().copy()
@@ -125,6 +125,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         viewpoint_random = viewpoint_tmp[:random_num]
         viewpoint_random.append(viewpoint_cam_this)
         for idx, viewpoint_cam in enumerate(viewpoint_random):
+            ############### NOTE: IMC ###############
             render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
             # gaussians._xyz.add_(noise)
             xyz_lr = gaussians.xyz_scheduler_args(iteration)
@@ -146,6 +147,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 ssim_value = ssim(image, gt_image)
 
             loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
+
+            ################# NOTE: MCMC ##################
+            # loss = loss + args.opacity_reg * torch.abs(gaussians.get_opacity).mean()
+            # loss = loss + args.scale_reg * torch.abs(gaussians.get_scaling).mean()
 
             # Depth regularization
             Ll1depth_pure = 0.0
@@ -174,6 +179,11 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             l_total += loss
 
         loss = l_total / len(viewpoint_random)
+
+        ############### NOTE: IMC ###############
+        # l_std = -1e-5 * torch.abs(std).mean()
+        # loss += l_std
+
         loss.backward()
 
         if opt.depth_normalize:
@@ -256,7 +266,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" + str(iteration) + ".pth")
 
         ############### NOTE: IMC ###############
-        # noise, noise_mask = gaussians.imc_process_experimental(viewpoint_cam_this)
+        # noise, noise_mask, std = gaussians.imc_process_experimental(viewpoint_cam_this)
 
         # nl_total = 0.0
         # np.random.shuffle(viewpoint_tmp)

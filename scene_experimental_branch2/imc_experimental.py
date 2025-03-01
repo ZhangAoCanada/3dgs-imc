@@ -10,15 +10,10 @@ import math
 import scene_experimental.diff_operators as diff_operators
 
 
-IN_FEATURES = ['xyz', 'opacity', 'rgb', 'scale', 'rotation']
-
-
 class NetworksA(nn.Module):
     def __init__(self, 
                  in_features, 
                  out_features,
-                 xyz_bounds,
-                 scale_upperbound, 
                  hidden_features=256, 
                  num_hidden_layers=3, 
                  type='relu',
@@ -26,7 +21,6 @@ class NetworksA(nn.Module):
                  fft_mode="simple", 
                  **kwargs):
         super().__init__()
-        self.find_boundary(xyz_bounds, scale_upperbound)
         self.mode = mode
         self.type = type
         self.in_features = in_features
@@ -38,51 +32,61 @@ class NetworksA(nn.Module):
                                         mode=fft_mode)
             self.in_features = self.positional_encoding.out_dim
 
-        self.net = FCBlock(in_features=self.in_features, 
-                           out_features=self.out_features, 
-                        #    out_features=hidden_features,
+        self.body = FCBlock(in_features=self.in_features, 
+                           out_features=hidden_features,
                            num_hidden_layers=num_hidden_layers,
                            hidden_features=hidden_features, 
-                        #    outermost_linear=False, 
-                           outermost_linear=True, 
+                           outermost_linear=False, 
                            nonlinearity=type)
-        # self.linear = nn.Linear(hidden_features, self.out_features)
-        self.act = nn.Sigmoid()
-    
-    def find_boundary(self, xyz_bounds, scale_bounds):
-        self.xyz_lowerbound, self.xyz_upperbound = xyz_bounds
-        self.xyz_upperbound = self.xyz_upperbound.max()
-        self.xyz_lowerbound = self.xyz_lowerbound.min()
-        # self.boundary = self.xyz_upperbound - self.xyz_lowerbound
-        # self.xyz_lowerbound -= 0.1 * self.boundary
-        # self.xyz_upperbound += 0.1 * self.boundary
-        self.scale_upperbound = scale_bounds
+        self.linear = nn.Linear(hidden_features, self.out_features)
 
-    def forward(self, xyz, params=None):
+        self.sigma_act = nn.ReLU()
+        self.rgb_act = nn.Sigmoid()
+    
+
+    def find_boundary(self, points, keep_aspect_ratio=True):
+        if keep_aspect_ratio:
+            self.xyz_lowerbound = points.min()
+            self.xyz_upperbound = points.max()
+        else:
+            self.xyz_lowerbound = torch.max(points, dim=0, keepdim=True).values
+            self.xyz_upperbound = torch.min(points, dim=0, keepdim=True).values
+        self.boundary = self.xyz_upperbound - self.xyz_lowerbound
+        self.xyz_lowerbound -= 0.1 * self.boundary
+        self.xyz_upperbound += 0.1 * self.boundary
+
+
+    def forward(self, xyz, params=None, raw=True):
         if params is None:
             params = OrderedDict(self.named_parameters())
 
-        """
-        self.xyz_lowerbound = xyz.min(dim=0).values.detach().clone()
-        self.xyz_upperbound = xyz.max(dim=0).values.detach().clone()
-        """
-        # self.xyz_lowerbound = xyz.min().detach().clone()
-        # self.xyz_upperbound = xyz.max().detach().clone()
+        if raw:
+            coords = (xyz - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
+        else:
+            coords = xyz
+
+        coords = torch.clamp(coords, -1, 1)
 
         if self.mode == 'fft':
-            coords = (xyz - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound)
-            coords_enc = self.positional_encoding(coords)
+            coords_01 = (coords + 1) / 2
+            coords_enc = self.positional_encoding(coords_01)
         else:
-            coords = (xyz - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
             coords_enc = coords
 
-        pred = self.net(coords_enc)
+        pred = self.body(coords_enc)
+        pred = self.linear(pred)
 
-        # pred = self.linear(pred)
-        return {
-            # "pred": pred,
-            "pred": self.act(pred)
-        }
+        rgb, sigma = pred[..., :3], pred[..., 3:]
+        sigma_pred = self.sigma_act(sigma)
+        rgb_pred = self.rgb_act(rgb)
+
+        sigma_pred = 1. - torch.exp(-sigma_pred)
+
+        # if grad:
+        #     gradient = diff_operators.gradient(pred, xyz)
+        #     return {'rgb': rgb_pred, 'sigma': sigma_pred, 'grad': gradient}
+        return {'rgb': rgb_pred, 'sigma': sigma_pred, 'net_in': coords}
+
     
     def forward_with_activations(self, model_input):
         '''Returns not only model output, but also intermediate activations.'''

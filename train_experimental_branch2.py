@@ -12,6 +12,7 @@
 import os
 import json
 import torch
+import torch.nn.functional as F
 from random import randint
 from utils.loss_utils import l1_loss, ssim
 from gaussian_renderer import render, network_gui, render_noise
@@ -114,8 +115,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         bg = torch.rand((3), device="cuda") if opt.random_background else background
 
         ############### NOTE: IMC ###############
-        # pred, net_in, mask = gaussians.nnprocess()
-        # render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
+        if iteration > 2400:
+            partial_l = gaussians.partial_l()
+            # loss += partial_l
 
         render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
 
@@ -124,11 +126,6 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         if viewpoint_cam.alpha_mask is not None:
             alpha_mask = viewpoint_cam.alpha_mask.cuda()
             image *= alpha_mask
-
-        ############### NOTE: IMC ###############
-        # gaussians.point3r(scene.getTrainCameras().copy())
-        # gaussians.pointdepth(scene.getTrainCameras().copy(), pipe, bg)
-
 
         # Loss
         gt_image = viewpoint_cam.original_image.cuda()
@@ -143,29 +140,34 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         # Depth regularization
         Ll1depth_pure = 0.0
         if depth_l1_weight(iteration) > 0 and viewpoint_cam.depth_reliable:
-            invDepth = render_pkg["depth"]
-            mono_invdepth = viewpoint_cam.invdepthmap.cuda()
-            depth_mask = viewpoint_cam.depth_mask.cuda()
+            if viewpoint_cam.image_name not in gaussians.aligned_depth_dict:
+                invDepth = render_pkg["depth"]
+                mono_invdepth = viewpoint_cam.invdepthmap.cuda()
+                depth_mask = viewpoint_cam.depth_mask.cuda()
 
-            ################ NOTE: normalized ##################
-            mono_min = mono_invdepth.min()
-            mono_max = mono_invdepth.max()
-            inDepth_min = invDepth.min()
-            inDepth_max = invDepth.max()
-            mono_invdepth_normalized = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
-            invDepth_normalized = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
-            Ll1depth_pure = torch.abs((invDepth_normalized  - mono_invdepth_normalized) * depth_mask).mean()
+                ################ NOTE: normalized ##################
+                mono_min = mono_invdepth.min()
+                mono_max = mono_invdepth.max()
+                inDepth_min = invDepth.min()
+                inDepth_max = invDepth.max()
+                mono_invdepth_normalized = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
+                invDepth_normalized = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
+                Ll1depth_pure = torch.abs((invDepth_normalized  - mono_invdepth_normalized) * depth_mask).mean()
 
-            # Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+                # Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+            else:
+                aligned_depth = gaussians.aligned_depth_dict[viewpoint_cam.image_name]
+                downsample = gaussians.downsample_ratio
+                aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=None, scale_factor=downsample, mode='bilinear', align_corners=False).squeeze(0)
+                aligned_invdepth = 1.0 / (aligned_depth + 1e-4)
+                render_invdepth = render_pkg["depth"]
+                depth_mask = viewpoint_cam.depth_mask.cuda()
+                Ll1depth_pure = torch.abs((render_invdepth - aligned_invdepth) * depth_mask).mean()
             Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
             loss += Ll1depth
             Ll1depth = Ll1depth.item()
         else:
             Ll1depth = 0
-
-        ############### NOTE: IMC ###############
-        # partial_l = gaussians.partial_l(pred)
-        # loss += partial_l
 
         loss.backward()
 
@@ -199,7 +201,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
                 dead_mask = (gaussians.get_opacity <= 0.005).squeeze(-1)
                 gaussians.relocate_gs(dead_mask=dead_mask)
-                gaussians.add_new_gs(cap_max=args.cap_max)
+                # gaussians.add_new_gs(cap_max=args.cap_max)
 
 
             # Optimizer step
@@ -238,39 +240,48 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" + str(iteration) + ".pth")
 
         ############### NOTE: IMC ###############
-        # # if tb_writer:
-        # #     tb_writer.add_scalar('nn_l/partial_l', partial_l.item(), iteration)
+        if tb_writer and iteration > 2400:
+            tb_writer.add_scalar('nn_l/partial_l', partial_l.item(), iteration)
 
-        # for i in range(1):
-        #     pred, net_in, mask = gaussians.nnprocess()
-        #     nnl = gaussians.nn_l(pred, net_in)
-        #     nnl.backward()
-        #     gaussians.remove_nan_grad()
-        #     # torch.nn.utils.clip_grad_norm_(gaussians.net.parameters(), 1.)
-        #     gaussians.imc_experimental_optimizer.step()
-        #     gaussians.imc_experimental_optimizer.zero_grad()
-        #     gaussians.exposure_optimizer.zero_grad(set_to_none = True)
-        #     gaussians.optimizer.zero_grad(set_to_none = True)
+        ### NOTE: all views
+        if iteration >= 2000 and iteration % 1000 == 0:
+            gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=True)
+        nnl = gaussians.nntrain(tb_writer, iteration)
 
-        # if tb_writer:
-        #     tb_writer.add_scalar('nn_l/nnl', nnl.item(), iteration)
-        
-        # if iteration % 10000 == 0:
-        #     gaussians.save_nn(scene.model_path)
+        ### NOTE: single view
+        # if iteration % 1000 == 0:
+        #     gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False)
+        # nnl = gaussians.nntrain_view(viewpoint_cam, pipe, bg, tb_writer, iteration)
 
-        nnl = gaussians.nntrain(viewpoint_cam)
-        # nnl = gaussians.nntrainpts(viewpoint_cam)
+        if nnl is None:
+            continue
         nnl.backward()
         # gaussians.remove_nan_grad()
+        torch.nn.utils.clip_grad_norm_(gaussians.net.parameters(), 1.)
         gaussians.imc_experimental_optimizer.step()
         gaussians.imc_experimental_optimizer.zero_grad()
         gaussians.exposure_optimizer.zero_grad(set_to_none = True)
         gaussians.optimizer.zero_grad(set_to_none = True)
 
-        # with torch.no_grad():
-
         if tb_writer:
             tb_writer.add_scalar('nn_l/nnl', nnl.item(), iteration)
+        
+        if iteration % 10000 == 0:
+            gaussians.save_nn(scene.model_path)
+
+        # nnl = gaussians.nntrain(viewpoint_cam)
+        # # nnl = gaussians.nntrainpts(viewpoint_cam)
+        # nnl.backward()
+        # # gaussians.remove_nan_grad()
+        # gaussians.imc_experimental_optimizer.step()
+        # gaussians.imc_experimental_optimizer.zero_grad()
+        # gaussians.exposure_optimizer.zero_grad(set_to_none = True)
+        # gaussians.optimizer.zero_grad(set_to_none = True)
+
+        # # with torch.no_grad():
+
+        # if tb_writer:
+        #     tb_writer.add_scalar('nn_l/nnl', nnl.item(), iteration)
 
 
 

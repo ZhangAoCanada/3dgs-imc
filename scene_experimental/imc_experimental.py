@@ -56,8 +56,8 @@ class NetworksA(nn.Module):
                         #    outermost_linear=True, 
                            outermost_linear=False, 
                            nonlinearity=type)
-        # if self.pred_mode == "mean+std":
-        #     self.linear1 = nn.Linear(hidden_features, self.out_features)
+        if self.pred_mode == "mean+std":
+            self.linear1 = nn.Linear(hidden_features, self.out_features)
         self.linear2 = nn.Linear(hidden_features, self.out_features)
 
     def forward(self, coords, params=None):
@@ -119,15 +119,11 @@ class NetworksA(nn.Module):
         output = self.net(coords_enc)
 
         if self.pred_mode == "mean+std":
-            # mean = self.linear1(output)
-            # std = self.linear2(output)
-            # return {
-            #     "xyz": mean, 
-            #     "std": torch.exp(std)
-            # }
             mean = self.linear2(output)
+            std = self.linear1(output)
             return {
                 "xyz": mean,
+                "std": torch.exp(std)
             }
         else:
             std = self.linear2(output)

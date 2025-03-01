@@ -127,6 +127,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
 
+        ################# NOTE: MCMC ##################
+        # loss = loss + args.opacity_reg * torch.abs(gaussians.get_opacity).mean()
+        # loss = loss + args.scale_reg * torch.abs(gaussians.get_scaling).mean()
+
         # Depth regularization
         Ll1depth_pure = 0.0
         if depth_l1_weight(iteration) > 0 and viewpoint_cam.depth_reliable:

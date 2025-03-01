@@ -10,4 +10,5 @@ CUDA_VISIBLE_DEVICES=1 python render.py \
     --resolution -1 \
     --init_type ${init_type} \
     --antialiasing \
-    # --data_device cpu \
+    --data_device cpu \
+    --skip_test
