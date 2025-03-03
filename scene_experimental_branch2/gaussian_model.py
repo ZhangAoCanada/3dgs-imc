@@ -238,9 +238,11 @@ class GaussianModel:
             lr_delay_mult=training_args.position_lr_delay_mult,
             max_steps=training_args.position_lr_max_steps)
 
+        #################### NOTE: hyper-param ########################
         self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-4, params=self.net.parameters())
         self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.5)
         # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.ExponentialLR(self.imc_experimental_optimizer, gamma=0.9)
+        self.partial_scaling = training_args.partial_scaling
 
         self.exposure_optimizer = torch.optim.Adam([self._exposure])
         self.exposure_scheduler_args = get_expon_lr_func(
@@ -356,6 +358,7 @@ class GaussianModel:
             # scaling = torch.where(scaling < 1, 1, scaling)
             # grad = grad * net_scale * scaling
             grad = grad * net_scale
+            grad = grad * self.partial_scaling
             self._xyz[mask].add_(grad)
             print(f"[DEBUG] grad_l2xyz max: {grad.max()}, min: {grad.min()}")
         ### NOTE: original size ###

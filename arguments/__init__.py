@@ -108,6 +108,8 @@ class OptimizationParams(ParamGroup):
         self.experimental_schedule_gamma = 0.9
         self.experimental_randomview_num = 5
         self.depth_normalize = False
+        ### NOTE: for debugging ###
+        self.partial_scaling = 1.0
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):
