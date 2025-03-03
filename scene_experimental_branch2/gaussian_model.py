@@ -341,21 +341,25 @@ class GaussianModel:
             mask[random_index] = True
             net_in = xyz[mask]
         pred = self.net(net_in)
-        l = 10 * (1.0 - pred['sigma']).mean()
+        # l = 100 * (1.0 - pred['sigma']).mean()
+        l = (1.0 - pred['sigma'])
         grad = diff_operators.gradient(l, pred['net_in'])
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
-            xyz_upper = self.net.xyz_upperbound
-            xyz_lower = self.net.xyz_lowerbound
-            diff_upper = net_in - xyz_upper
-            diff_lower = net_in - xyz_lower
-            scaling = torch.ones_like(net_in)
-            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-            scaling = torch.where(scaling < 1, 1, scaling)
-            grad = grad * net_scale * scaling
+            # xyz_upper = self.net.xyz_upperbound
+            # xyz_lower = self.net.xyz_lowerbound
+            # diff_upper = net_in - xyz_upper
+            # diff_lower = net_in - xyz_lower
+            # scaling = torch.ones_like(net_in)
+            # scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+            # scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+            # scaling = torch.where(scaling < 1, 1, scaling)
+            # grad = grad * net_scale * scaling
+            grad = grad * net_scale
             self._xyz[mask].add_(grad)
             print(f"[DEBUG] grad_l2xyz max: {grad.max()}, min: {grad.min()}")
+        ### NOTE: original size ###
+        l = l.mean()
         return l
 
     def spawn_randompnts(self, num_pnts=100000, voxel_size=0.01):
@@ -421,8 +425,9 @@ class GaussianModel:
     def update_nnpts(self, all_views, pipe, bg, align=True, single_view=False):
         # self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False)
         self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, single_view=single_view)
-        if self.nn_gt_pts is not None:
-            self.net.find_boundary(self.nn_gt_pts)
+        self.net.find_boundary(self.get_xyz, extend_factor=0.0)
+        # if self.nn_gt_pts is not None:
+        #     self.net.find_boundary(self.nn_gt_pts)
     ######################################################################
     ######################################################################
     ######################################################################

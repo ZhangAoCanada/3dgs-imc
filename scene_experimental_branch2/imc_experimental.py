@@ -44,7 +44,7 @@ class NetworksA(nn.Module):
         self.rgb_act = nn.Sigmoid()
     
 
-    def find_boundary(self, points, keep_aspect_ratio=True):
+    def find_boundary(self, points, keep_aspect_ratio=True, extend_factor=0.1):
         if keep_aspect_ratio:
             self.xyz_lowerbound = points.min()
             self.xyz_upperbound = points.max()
@@ -52,8 +52,8 @@ class NetworksA(nn.Module):
             self.xyz_lowerbound = torch.max(points, dim=0, keepdim=True).values
             self.xyz_upperbound = torch.min(points, dim=0, keepdim=True).values
         self.boundary = self.xyz_upperbound - self.xyz_lowerbound
-        self.xyz_lowerbound -= 0.1 * self.boundary
-        self.xyz_upperbound += 0.1 * self.boundary
+        self.xyz_lowerbound -= extend_factor * self.boundary
+        self.xyz_upperbound += extend_factor * self.boundary
 
 
     def forward(self, xyz, params=None, raw=True):
