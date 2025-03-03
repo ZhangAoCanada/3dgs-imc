@@ -425,9 +425,9 @@ class GaussianModel:
     def update_nnpts(self, all_views, pipe, bg, align=True, single_view=False):
         # self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False)
         self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, single_view=single_view)
-        self.net.find_boundary(self.get_xyz, extend_factor=0.0)
-        # if self.nn_gt_pts is not None:
-        #     self.net.find_boundary(self.nn_gt_pts)
+        if self.nn_gt_pts is not None:
+            self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
+            # self.net.find_boundary(self.nn_gt_pts)
     ######################################################################
     ######################################################################
     ######################################################################
