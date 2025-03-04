@@ -336,8 +336,8 @@ class GaussianModel:
         return l
 
     def partial_l(self, tb_writer, iteration):
-        if self.nn_gt_pts is None:
-            return 0.0
+        if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
+            return None
         xyz = self.get_xyz
         if xyz.shape[0] > self.max_num:
             mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
@@ -349,23 +349,23 @@ class GaussianModel:
         l = (1.0 - pred['sigma'])
         grad = diff_operators.gradient(l, pred['net_in'])
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-        # with torch.no_grad():
-        #     xyz_upper = self.net.xyz_upperbound
-        #     xyz_lower = self.net.xyz_lowerbound
-        #     diff_upper = net_in - xyz_upper
-        #     diff_lower = net_in - xyz_lower
-        #     scaling = torch.ones_like(net_in)
-        #     scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-        #     scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-        #     scaling = torch.where(scaling < 1, 1, scaling)
-        #     grad = grad * net_scale * scaling
-        #     # grad = grad * net_scale
-        #     grad = grad * self.partial_scaling
-        #     self._xyz[mask].add_(grad)
         with torch.no_grad():
-            grad = grad * net_scale
+            xyz_upper = self.net.xyz_upperbound
+            xyz_lower = self.net.xyz_lowerbound
+            diff_upper = net_in - xyz_upper
+            diff_lower = net_in - xyz_lower
+            scaling = torch.ones_like(net_in)
+            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+            scaling = torch.where(scaling < 1, 1, scaling)
+            grad = grad * net_scale * scaling
+            # grad = grad * net_scale
             grad = grad * self.partial_scaling
             self._xyz[mask].add_(grad)
+        # with torch.no_grad():
+        #     grad = grad * net_scale
+        #     grad = grad * self.partial_scaling
+        #     self._xyz[mask].add_(grad)
         if tb_writer is not None:
             tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
             tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
