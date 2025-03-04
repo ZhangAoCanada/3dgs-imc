@@ -21,7 +21,7 @@ CUDA_VISIBLE_DEVICES=2 python train_experimental_branch2_singleview.py \
     --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
     --depths dav2_cached \
     --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch2_${init_type}_fixnum_singleview_unaligned_partial${partial_scaling}_sized \
+    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch2_${init_type}_fixnum_singleview_unaligned_partial${partial_scaling}_sized_boundxyz \
     --images ${images} \
     --resolution -1 \
     --init_type ${init_type} \
