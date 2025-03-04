@@ -281,10 +281,11 @@ class GaussianModel:
         return l
     
     def nntrain_view(self, view, pipe, bg, tb_writer, iteration, align=True):
-        if self.nn_gt_pts is None:
+        if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
         H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
-        pts, aligned_depth = self.filter_depth_and_align(view, pipe, bg, align=align, debug=False, single_view=True)
+        with torch.no_grad():
+            pts, aligned_depth = self.filter_depth_and_align(view, pipe, bg, align=align, debug=False, single_view=True)
         if pts is None:
             return None
         if align:
@@ -333,7 +334,7 @@ class GaussianModel:
             gradient_constraint * 5e1
         return l
 
-    def partial_l(self, ):
+    def partial_l(self, tb_writer, iteration):
         if self.nn_gt_pts is None:
             return 0.0
         xyz = self.get_xyz
@@ -348,19 +349,21 @@ class GaussianModel:
         grad = diff_operators.gradient(l, pred['net_in'])
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
-            # xyz_upper = self.net.xyz_upperbound
-            # xyz_lower = self.net.xyz_lowerbound
-            # diff_upper = net_in - xyz_upper
-            # diff_lower = net_in - xyz_lower
-            # scaling = torch.ones_like(net_in)
-            # scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-            # scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-            # scaling = torch.where(scaling < 1, 1, scaling)
-            # grad = grad * net_scale * scaling
-            grad = grad * net_scale
+            xyz_upper = self.net.xyz_upperbound
+            xyz_lower = self.net.xyz_lowerbound
+            diff_upper = net_in - xyz_upper
+            diff_lower = net_in - xyz_lower
+            scaling = torch.ones_like(net_in)
+            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+            scaling = torch.where(scaling < 1, 1, scaling)
+            grad = grad * net_scale * scaling
+            # grad = grad * net_scale
             grad = grad * self.partial_scaling
             self._xyz[mask].add_(grad)
-            print(f"[DEBUG] grad_l2xyz max: {grad.max()}, min: {grad.min()}")
+        if tb_writer is not None:
+            tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
+            tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
         ### NOTE: original size ###
         l = l.mean()
         return l
@@ -425,12 +428,14 @@ class GaussianModel:
             param.grad[torch.isnan(param.grad)] = 0.0
             param.grad[torch.isinf(param.grad)] = 0.0
         
-    def update_nnpts(self, all_views, pipe, bg, align=True, single_view=False):
-        # self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False)
-        self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, single_view=single_view)
-        if self.nn_gt_pts is not None:
+    def update_nnpts(self, all_views, pipe, bg, align=True, single_view=False, gaussians_bound=False):
+        if gaussians_bound:
             self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
-            # self.net.find_boundary(self.nn_gt_pts)
+        else:
+            self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, single_view=single_view)
+            if self.nn_gt_pts is not None:
+                # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
+                self.net.find_boundary(self.nn_gt_pts)
     ######################################################################
     ######################################################################
     ######################################################################

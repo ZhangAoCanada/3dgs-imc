@@ -244,14 +244,16 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             tb_writer.add_scalar('nn_l/partial_l', partial_l.item(), iteration)
 
         ### NOTE: all views
-        if iteration >= 2000 and iteration % 1000 == 0:
-            gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=True)
-        nnl = gaussians.nntrain(tb_writer, iteration)
+        # if iteration >= 2000 and iteration % 1000 == 0:
+        #     gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=True)
+        # nnl = gaussians.nntrain(tb_writer, iteration)
 
         ### NOTE: single view
         # if iteration % 1000 == 0:
-        #     gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=False, gaussians_bound=False)
-        # nnl = gaussians.nntrain_view(viewpoint_cam, pipe, bg, tb_writer, iteration)
+            # gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=False, gaussians_bound=False)
+        if iteration % 10 == 0:
+            gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=False, gaussians_bound=True)
+        nnl = gaussians.nntrain_view(viewpoint_cam, pipe, bg, tb_writer, iteration)
 
         if nnl is None:
             continue

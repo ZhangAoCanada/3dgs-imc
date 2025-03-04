@@ -42,6 +42,8 @@ class NetworksA(nn.Module):
 
         self.sigma_act = nn.ReLU()
         self.rgb_act = nn.Sigmoid()
+        self.xyz_lowerbound = None
+        self.xyz_upperbound = None
     
 
     def find_boundary(self, points, keep_aspect_ratio=True, extend_factor=0.1):
