@@ -243,6 +243,7 @@ class GaussianModel:
         self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.5)
         # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.ExponentialLR(self.imc_experimental_optimizer, gamma=0.9)
         self.partial_scaling = training_args.partial_scaling
+        self.n_jobs = training_args.n_jobs
 
         self.exposure_optimizer = torch.optim.Adam([self._exposure])
         self.exposure_scheduler_args = get_expon_lr_func(
@@ -347,19 +348,18 @@ class GaussianModel:
         # l = 100 * (1.0 - pred['sigma']).mean()
         l = (1.0 - pred['sigma'])
         grad = diff_operators.gradient(l, pred['net_in'])
-        # net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-        # with torch.no_grad():
-        #     xyz_upper = self.net.xyz_upperbound
-        #     xyz_lower = self.net.xyz_lowerbound
-        #     diff_upper = net_in - xyz_upper
-        #     diff_lower = net_in - xyz_lower
-        #     scaling = torch.ones_like(net_in)
-        #     scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-        #     scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-        #     scaling = torch.where(scaling < 1, 1, scaling)
-        #     grad = grad * net_scale * scaling
-        #     # grad = grad * net_scale
+        net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
+            xyz_upper = self.net.xyz_upperbound
+            xyz_lower = self.net.xyz_lowerbound
+            diff_upper = net_in - xyz_upper
+            diff_lower = net_in - xyz_lower
+            scaling = torch.ones_like(net_in)
+            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+            scaling = torch.where(scaling < 1, 1, scaling)
+            grad = grad * net_scale * scaling
+            # grad = grad * net_scale
             grad = grad * self.partial_scaling
             self._xyz[mask].add_(grad)
         if tb_writer is not None:
@@ -520,27 +520,31 @@ class GaussianModel:
         render_depth_gsplat = F.interpolate(render_depth_gsplat.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
         gt = F.interpolate(gt.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
         mono_invdepth = F.interpolate(mono_invdepth.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
-        # get points 
         H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
+        # get points 
         pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
         pts_np = pts.detach().cpu().numpy()
         # dbscan
-        # db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=-1).fit(pts_np)
-        # db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=4).fit(pts_np)
-        db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts_np)
+        db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=self.n_jobs).fit(pts_np)
         labels = db.labels_
         labels = torch.tensor(labels, device="cuda", dtype=torch.float)
         mask = labels != -1
         if mask.sum() == 0:
             return None, None
+        ### NOTE: alternatives to dbscan ###
+        render_invdepth_gsplat = 1.0 / (render_depth_gsplat + 1e-6)
+        mask_threshold = 1e-3
+        mask = torch.zeros(H*W, dtype=torch.bool, device="cuda")
+        mask = torch.where(render_invdepth_gsplat > mask_threshold, True, False)
+        ####################################
         # TODO: try to align mono_depth with render_depth_gsplat
         if align:
-            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W))
+            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=False)
             self.aligned_depth_dict[view.image_name] = align_depth
             pts = self.depth_proj(align_depth, H, W, focals, c2w)
         ### **************************************************** ###
         elif not single_view:
-            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W))
+            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=False)
             self.aligned_depth_dict[view.image_name] = align_depth
         ### **************************************************** ###
         # compute normal map
@@ -587,9 +591,7 @@ class GaussianModel:
         mono_inv = mono_inv.reshape(-1, 1)
         render_inv = render_inv.reshape(-1, 1)
         # # ransac = RANSACRegressor(LinearRegression(n_jobs=-1), min_samples=0.8, residual_threshold=0.1, max_trials=100)
-        # ransac = LinearRegression(n_jobs=-1)
-        # ransac = LinearRegression(n_jobs=4)
-        ransac = LinearRegression()
+        ransac = LinearRegression(n_jobs=self.n_jobs)
         ransac.fit(mono_inv, render_inv)
         _, H, W = render_depth.shape
         align_invdepth = ransac.predict(mono_invdepth.reshape(-1, 1).detach().cpu().numpy())

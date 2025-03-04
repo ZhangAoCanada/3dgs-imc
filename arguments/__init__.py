@@ -110,6 +110,7 @@ class OptimizationParams(ParamGroup):
         self.depth_normalize = False
         ### NOTE: for debugging ###
         self.partial_scaling = 1.0
+        self.n_jobs = 1 # default: None
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):
