@@ -47,9 +47,10 @@ from gaussian_renderer import render, render_gsplat
 import torchvision
 import matplotlib.pyplot as plt
 
-from sklearn import metrics
-from sklearn.cluster import DBSCAN
-from sklearn.linear_model import LinearRegression, RANSACRegressor
+# from sklearn import metrics
+# from sklearn.cluster import DBSCAN
+# from sklearn.linear_model import LinearRegression, RANSACRegressor
+from cuml.cluster import DBSCAN
 from tqdm import tqdm
 
 
@@ -531,25 +532,28 @@ class GaussianModel:
 
         # TODO: try to align mono_depth with render_depth_gsplat
         if align:
-            # TODO: use ransac instead of dbscan
-            render_invdepth_gsplat = 1.0 / (render_depth_gsplat + 1e-6)
-            mask_lowerbound = 1e-2
-            mask_upperbound = 100.0
-            mask = torch.zeros(H*W, dtype=torch.bool, device="cuda")
-            mask = torch.where(render_invdepth_gsplat > mask_lowerbound, True, False)
-            mask = torch.where(render_invdepth_gsplat < mask_upperbound, mask, False)
-            align_depth = self.depth_align_ransac(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=True)
+            # # TODO: use ransac instead of dbscan
+            # render_invdepth_gsplat = 1.0 / (render_depth_gsplat + 1e-6)
+            # mask = (render_invdepth_gsplat > 1e-2) & (render_invdepth_gsplat < 100.0)
+            # TODO: dbscan with gpu
+            pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
+            db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts, out_dtype='int64')
+            labels = db.labels_
+            labels = torch.tensor(labels, device="cuda", dtype=torch.float)
+            mask = labels != -1
+            if mask.sum() == 0:
+                return None, None
+
+            # align_depth = self.depth_align_ransac(render_depth_gsplat, mono_invdepth, mask.unsqueeze(0), debug=True)
+            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=True)
             if align_depth is None:
                 return None, None
             self.aligned_depth_dict[view.image_name] = align_depth
             pts = self.depth_proj(align_depth, H, W, focals, c2w)
         else:
-            # get points 
+            # NOTE: dbscan with gpu
             pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
-            # dbscan
-            pts_np = pts.detach().cpu().numpy()
-            # db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=self.n_jobs).fit(pts_np)
-            db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts_np)
+            db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts, out_dtype='int64')
             labels = db.labels_
             labels = torch.tensor(labels, device="cuda", dtype=torch.float)
             mask = labels != -1
@@ -560,20 +564,14 @@ class GaussianModel:
                 self.aligned_depth_dict[view.image_name] = align_depth
 
         # compute normal map
-        if align_depth is None:
-            mono_depth = 1.0 / (mono_invdepth + 1e-4)
-            scale_factor = 1.0
-        else:
-            mono_depth = align_depth
-            scale_factor = 100.0
+        mono_depth = align_depth if align_depth is not None else 1.0 / (mono_invdepth + 1e-4)
+        scale_factor = 100.0 if align_depth is not None else 1.0
         mono_normal = self.depth2norm(mono_depth, scale_factor=scale_factor).squeeze(0)
         # visualize
         if debug:
             mask_show = mask.reshape(H, W).float().unsqueeze(0).repeat(3, 1, 1) if mask is not None else torch.ones(3, H, W, device="cuda").float()
-            mono_depth /= mono_depth.max()
-            mono_depth_show = mono_depth.repeat(3, 1, 1)
-            mono_normal_show = mono_normal
-            img_show = torch.cat([mono_depth_show, mono_normal_show, mask_show], dim=1)
+            mono_depth_show = (mono_depth / mono_depth.max()).repeat(3, 1, 1)
+            img_show = torch.cat([mono_depth_show, mono_normal, mask_show], dim=1)
             torchvision.utils.save_image(img_show, f"tmp/{view.image_name}")
         # keep the shape
         colors = gt.reshape(3, -1).t()
@@ -613,8 +611,13 @@ class GaussianModel:
 
         render_inv = render_invdepth[mask].reshape(-1, 1)
         mono_inv = mono_invdepth[mask].reshape(-1, 1)
-        a, b = solve_linear_equation(mono_inv, render_inv)
-        align_invdepth = a * mono_inv + b
+        # a, b = solve_linear_equation(mono_inv, render_inv)
+        # align_invdepth = a * mono_inv + b
+        linear = LinearRegressionModel().fit(mono_inv, render_inv)
+        if linear.weights[0][0] < 0:
+            return None
+        _, H, W = render_depth.shape
+        align_invdepth = linear.predict(mono_invdepth.reshape(-1, 1)).reshape(1, H, W)
 
         align_depth = 1.0 / (align_invdepth + 1e-6)
         if debug:
