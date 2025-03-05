@@ -20,7 +20,7 @@ do
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
         --depths dav2_cached \
         --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch2_${init_type}_fixnum_singleview_unaligned_partial${partial_scaling}_sized_boundxyz \
+        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch2_${init_type}_fixnum_singleview_unaligned_partial${partial_scaling}_sized \
         --images ${images} \
         --resolution -1 \
         --init_type ${init_type} \

@@ -353,23 +353,23 @@ class GaussianModel:
         l = (1.0 - pred['sigma'])
         grad = diff_operators.gradient(l, pred['net_in'])
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-        # with torch.no_grad():
-        #     xyz_upper = self.net.xyz_upperbound
-        #     xyz_lower = self.net.xyz_lowerbound
-        #     diff_upper = net_in - xyz_upper
-        #     diff_lower = net_in - xyz_lower
-        #     scaling = torch.ones_like(net_in)
-        #     scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-        #     scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-        #     scaling = torch.where(scaling < 1, 1, scaling)
-        #     grad = grad * net_scale * scaling
-        #     # grad = grad * net_scale
-        #     grad = grad * self.partial_scaling
-        #     self._xyz[mask].add_(grad)
         with torch.no_grad():
-            grad = grad * net_scale
+            xyz_upper = self.net.xyz_upperbound
+            xyz_lower = self.net.xyz_lowerbound
+            diff_upper = net_in - xyz_upper
+            diff_lower = net_in - xyz_lower
+            scaling = torch.ones_like(net_in)
+            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+            scaling = torch.where(scaling < 1, 1, scaling)
+            grad = grad * net_scale * scaling
+            # grad = grad * net_scale
             grad = grad * self.partial_scaling
             self._xyz[mask].add_(grad)
+        # with torch.no_grad():
+        #     grad = grad * net_scale
+        #     grad = grad * self.partial_scaling
+        #     self._xyz[mask].add_(grad)
         if tb_writer is not None:
             tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
             tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
@@ -561,7 +561,8 @@ class GaussianModel:
                 return None, None
             if aligndepth:
                 align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=False)
-                self.aligned_depth_dict[view.image_name] = align_depth
+                if align_depth is not None:
+                    self.aligned_depth_dict[view.image_name] = align_depth
 
         # compute normal map
         mono_depth = align_depth if align_depth is not None else 1.0 / (mono_invdepth + 1e-4)
