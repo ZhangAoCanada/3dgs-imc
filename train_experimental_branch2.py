@@ -245,7 +245,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         ### NOTE: all views
         if iteration >= 2000 and iteration % 1000 == 0:
-            gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=True)
+            gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, aligndepth=True)
         nnl = gaussians.nntrain(tb_writer, iteration)
 
         ### NOTE: single view

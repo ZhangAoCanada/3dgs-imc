@@ -31,6 +31,9 @@ from scene_experimental_branch2.pntfunc_experimental import NetworkAnother
 from scene_experimental_branch2 import diff_operators
 from scene_experimental_branch2.utility import write_summary
 
+from scene_experimental_branch2.linear_regressor import solve_linear_equation
+from scene_experimental_branch2.torch_ransac import RANSAC, LinearRegressionModel
+
 # from dust3r.inference import inference
 # from dust3r.model import AsymmetricCroCo3DStereo
 # from dust3r.utils.image import load_images
@@ -286,7 +289,7 @@ class GaussianModel:
             return None
         H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
         with torch.no_grad():
-            pts, aligned_depth = self.filter_depth_and_align(view, pipe, bg, align=align, debug=False, single_view=True)
+            pts, aligned_depth = self.filter_depth_and_align(view, pipe, bg, align=align, debug=False, aligndepth=True)
         if pts is None:
             return None
         if align:
@@ -349,23 +352,23 @@ class GaussianModel:
         l = (1.0 - pred['sigma'])
         grad = diff_operators.gradient(l, pred['net_in'])
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-        with torch.no_grad():
-            xyz_upper = self.net.xyz_upperbound
-            xyz_lower = self.net.xyz_lowerbound
-            diff_upper = net_in - xyz_upper
-            diff_lower = net_in - xyz_lower
-            scaling = torch.ones_like(net_in)
-            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-            scaling = torch.where(scaling < 1, 1, scaling)
-            grad = grad * net_scale * scaling
-            # grad = grad * net_scale
-            grad = grad * self.partial_scaling
-            self._xyz[mask].add_(grad)
         # with torch.no_grad():
-        #     grad = grad * net_scale
+        #     xyz_upper = self.net.xyz_upperbound
+        #     xyz_lower = self.net.xyz_lowerbound
+        #     diff_upper = net_in - xyz_upper
+        #     diff_lower = net_in - xyz_lower
+        #     scaling = torch.ones_like(net_in)
+        #     scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+        #     scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+        #     scaling = torch.where(scaling < 1, 1, scaling)
+        #     grad = grad * net_scale * scaling
+        #     # grad = grad * net_scale
         #     grad = grad * self.partial_scaling
         #     self._xyz[mask].add_(grad)
+        with torch.no_grad():
+            grad = grad * net_scale
+            grad = grad * self.partial_scaling
+            self._xyz[mask].add_(grad)
         if tb_writer is not None:
             tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
             tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
@@ -433,11 +436,11 @@ class GaussianModel:
             param.grad[torch.isnan(param.grad)] = 0.0
             param.grad[torch.isinf(param.grad)] = 0.0
         
-    def update_nnpts(self, all_views, pipe, bg, align=True, single_view=False, gaussians_bound=False):
+    def update_nnpts(self, all_views, pipe, bg, align=True, aligndepth=False, gaussians_bound=False):
         if gaussians_bound:
             self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
         else:
-            self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, single_view=single_view)
+            self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, aligndepth=aligndepth)
             if self.nn_gt_pts is not None:
                 # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
                 self.net.find_boundary(self.nn_gt_pts)
@@ -466,7 +469,7 @@ class GaussianModel:
     #     acc = torch.clamp(acc, 0.0, 1.0)
     #     return rgb, inv_depth, acc
     
-    def pointdepth(self, all_views, pipe, bg, align=True, debug=True, single_view=False):
+    def pointdepth(self, all_views, pipe, bg, align=True, debug=True, aligndepth=False):
         if debug:
             self.nn_gt_pts = None
             self.aligned_depth_dict = {}
@@ -488,7 +491,7 @@ class GaussianModel:
                 #     continue
                 # if int(view.image_name.split(".")[0]) in [248, 249]:
                 #     continue
-                pt_clr, _ = self.filter_depth_and_align(view, pipe, bg, align=align, debug=debug, single_view=single_view)
+                pt_clr, _ = self.filter_depth_and_align(view, pipe, bg, align=align, debug=debug, aligndepth=aligndepth)
                 if pt_clr is None:
                     continue
                 # voxelization and unique with all points
@@ -512,7 +515,7 @@ class GaussianModel:
             return None
         return all_pts
     
-    def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, single_view=False):
+    def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, aligndepth=False):
         align_depth = None
         mask = None
         # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
@@ -525,32 +528,37 @@ class GaussianModel:
         gt = F.interpolate(gt.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
         mono_invdepth = F.interpolate(mono_invdepth.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
         H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
-        # get points 
-        pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
-        pts_np = pts.detach().cpu().numpy()
-        # dbscan
-        db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=self.n_jobs).fit(pts_np)
-        labels = db.labels_
-        labels = torch.tensor(labels, device="cuda", dtype=torch.float)
-        mask = labels != -1
-        if mask.sum() == 0:
-            return None, None
-        ### NOTE: alternatives to dbscan ###
-        render_invdepth_gsplat = 1.0 / (render_depth_gsplat + 1e-6)
-        mask_threshold = 1e-3
-        mask = torch.zeros(H*W, dtype=torch.bool, device="cuda")
-        mask = torch.where(render_invdepth_gsplat > mask_threshold, True, False)
-        ####################################
+
         # TODO: try to align mono_depth with render_depth_gsplat
         if align:
-            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=False)
+            # TODO: use ransac instead of dbscan
+            render_invdepth_gsplat = 1.0 / (render_depth_gsplat + 1e-6)
+            mask_lowerbound = 1e-2
+            mask_upperbound = 100.0
+            mask = torch.zeros(H*W, dtype=torch.bool, device="cuda")
+            mask = torch.where(render_invdepth_gsplat > mask_lowerbound, True, False)
+            mask = torch.where(render_invdepth_gsplat < mask_upperbound, mask, False)
+            align_depth = self.depth_align_ransac(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=True)
+            if align_depth is None:
+                return None, None
             self.aligned_depth_dict[view.image_name] = align_depth
             pts = self.depth_proj(align_depth, H, W, focals, c2w)
-        ### **************************************************** ###
-        elif not single_view:
-            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=False)
-            self.aligned_depth_dict[view.image_name] = align_depth
-        ### **************************************************** ###
+        else:
+            # get points 
+            pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
+            # dbscan
+            pts_np = pts.detach().cpu().numpy()
+            # db = DBSCAN(eps=self.eps, min_samples=self.min_samples, n_jobs=self.n_jobs).fit(pts_np)
+            db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts_np)
+            labels = db.labels_
+            labels = torch.tensor(labels, device="cuda", dtype=torch.float)
+            mask = labels != -1
+            if mask.sum() == 0:
+                return None, None
+            if aligndepth:
+                align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=False)
+                self.aligned_depth_dict[view.image_name] = align_depth
+
         # compute normal map
         if align_depth is None:
             mono_depth = 1.0 / (mono_invdepth + 1e-4)
@@ -589,19 +597,59 @@ class GaussianModel:
         if mask is None:
             mask = torch.ones_like(render_depth, dtype=torch.bool, device="cuda")
         render_invdepth = 1.0 / (render_depth + 1e-6)
-        render_inv = render_invdepth[mask].reshape(-1).detach().cpu().numpy()
-        mono_inv = mono_invdepth[mask].reshape(-1).detach().cpu().numpy()
-        # find linear transformation from mono_inv to render_inv with RANSAC
-        mono_inv = mono_inv.reshape(-1, 1)
-        render_inv = render_inv.reshape(-1, 1)
-        # # ransac = RANSACRegressor(LinearRegression(n_jobs=-1), min_samples=0.8, residual_threshold=0.1, max_trials=100)
-        ransac = LinearRegression(n_jobs=self.n_jobs)
-        ransac.fit(mono_inv, render_inv)
-        _, H, W = render_depth.shape
-        align_invdepth = ransac.predict(mono_invdepth.reshape(-1, 1).detach().cpu().numpy())
-        align_invdepth = torch.from_numpy(align_invdepth).reshape(1, H, W).float().cuda()
-        align_depth = 1.0 / (align_invdepth + 1e-6)
 
+        # render_inv = render_invdepth[mask].reshape(-1).detach().cpu().numpy()
+        # mono_inv = mono_invdepth[mask].reshape(-1).detach().cpu().numpy()
+        # # find linear transformation from mono_inv to render_inv with RANSAC
+        # mono_inv = mono_inv.reshape(-1, 1)
+        # render_inv = render_inv.reshape(-1, 1)
+        # # # ransac = RANSACRegressor(LinearRegression(n_jobs=-1), min_samples=0.8, residual_threshold=0.1, max_trials=100)
+        # # ransac = LinearRegression(n_jobs=self.n_jobs)
+        # ransac = LinearRegression()
+        # ransac.fit(mono_inv, render_inv)
+        # _, H, W = render_depth.shape
+        # align_invdepth = ransac.predict(mono_invdepth.reshape(-1, 1).detach().cpu().numpy())
+        # align_invdepth = torch.from_numpy(align_invdepth).reshape(1, H, W).float().cuda()
+
+        render_inv = render_invdepth[mask].reshape(-1, 1)
+        mono_inv = mono_invdepth[mask].reshape(-1, 1)
+        a, b = solve_linear_equation(mono_inv, render_inv)
+        align_invdepth = a * mono_inv + b
+
+        align_depth = 1.0 / (align_invdepth + 1e-6)
+        if debug:
+            align_depth_show = (align_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
+            render_depth_show = (render_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
+            render_depth_show = torch.clamp(render_depth_show, 0.0, 1.0)
+            image_show = torch.cat([render_depth_show, align_depth_show], dim=1) 
+            torchvision.utils.save_image(image_show, "tmp/align_depth.png")
+        return align_depth
+
+    def depth_align_ransac(self, render_depth, mono_invdepth, mask=None, debug=True):
+        """
+        Mono_depth is normally with unkown scale. The function here is to compute the correct scale with render_depth, so that the two depth maps can be aligned. render_depth is somehow noisy. Therefore, we need to use mask to filter out the noisy points.
+
+        @param render_depth: [1, H, W]
+        @param mono_invdepth: [1, H, W]
+        @param mask: [1, H, W]
+        """
+        if mask is None:
+            mask = torch.ones_like(render_depth, dtype=torch.bool, device="cuda")
+        render_invdepth = 1.0 / (render_depth + 1e-2)
+        render_inv = render_invdepth[mask].reshape(-1, 1)
+        mono_inv = mono_invdepth[mask].reshape(-1, 1)
+        ransac = RANSAC(
+                    model_class=LinearRegressionModel, 
+                    max_iterations=100, 
+                    threshold=0.01, 
+                    min_samples=0.5,
+                )
+        ransac.fit(mono_inv, render_inv)
+        if ransac.best_model.weights[0][0] < 0:
+            return None
+        _, H, W = render_depth.shape
+        align_invdepth = ransac.predict(mono_invdepth.reshape(-1, 1)).reshape(1, H, W)
+        align_depth = 1.0 / (align_invdepth + 1e-6)
         if debug:
             align_depth_show = (align_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
             render_depth_show = (render_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
