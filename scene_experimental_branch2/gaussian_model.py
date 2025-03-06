@@ -212,8 +212,9 @@ class GaussianModel:
         self.aligned_depth_dict = {}
         self.downsample_ratio = 4
         self.voxel_size = 0.001
-        self.eps = 0.1 # 0.05
+        self.eps = 0.05 # 0.05
         self.min_samples = 100 # 100
+        self.dbscan_maskportion_threshold = 0.3
 
         # self.max_num = 1000
         # self.net = NetworkAnother(
@@ -311,7 +312,7 @@ class GaussianModel:
         else:
             mask = torch.ones(xyz.shape[0], dtype=torch.bool, device="cuda")
         opacity = torch.ones((xyz.shape[0], 1), device="cuda")
-        off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, aligned_depth, H, W, focals, c2w, times=1, voxel_size=self.voxel_size)
+        off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, aligned_depth, H, W, focals, c2w, voxel_size=self.voxel_size)
         net_in = torch.cat([xyz, off_xyz], dim=0)
         res = self.net(net_in)
         gt_opacity = torch.cat([opacity, off_opacity], dim=0)
@@ -402,28 +403,14 @@ class GaussianModel:
         rays_d = torch.sum(dirs[..., None, :] * c2w[:3,:3], -1)
         rays_o = c2w[:3,-1].expand(rays_d.shape)
 
-        # lowbound = self.net.xyz_lowerbound.unsqueeze(0).expand(rays_o.shape)
-        # upbound = self.net.xyz_upperbound.unsqueeze(0).expand(rays_o.shape)
-        # lowdist = (lowbound - rays_o) / (rays_d + 1e-6)
-        # updist = (upbound - rays_o) / (rays_d + 1e-6)
-        # lowdist = torch.where(lowdist < 0.01, 0.01 * torch.ones_like(lowdist), lowdist)
-        # updist = torch.where(updist < 0.01, 0.01 * torch.ones_like(updist), updist)
-        # rand_dist = torch.rand(times, H*W, 1, device="cuda") * (updist - lowdist) + lowdist
-        # off_pts = rays_o.unsqueeze(0) + (rays_d.unsqueeze(0) * rand_dist)
-
         near = 0.01
-        far = 1000.0
+        # far = 100.
+        far = torch.norm(self.net.xyz_upperbound.expand(3) - self.net.xyz_lowerbound.expand(3))
         rand_dist = torch.rand(times, H*W, 1, device="cuda") * (far - near) + near
         off_pts = rays_o.unsqueeze(0) + (rays_d.unsqueeze(0) * rand_dist)
-        lowbound = self.net.xyz_lowerbound.unsqueeze(0).expand(rays_o.shape)
-        upbound = self.net.xyz_upperbound.unsqueeze(0).expand(rays_o.shape)
-        off_pts = torch.where(off_pts < lowbound, lowbound, off_pts)
-        off_pts = torch.where(off_pts > upbound, upbound, off_pts)
         
         mask = mask.view(1, -1).expand(times, -1)
         off_pts = off_pts[mask].reshape(-1, 3)
-
-        off_pts = off_pts.reshape(-1, 3)
         off_xyz = nn.Parameter(off_pts.contiguous().requires_grad_(True))
         off_opacity = torch.zeros((off_xyz.shape[0], 1), device="cuda")
         off_color = torch.rand((off_xyz.shape[0], 3), device="cuda")
@@ -525,8 +512,8 @@ class GaussianModel:
         return all_pts
     
     def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, aligndepth=False):
-        if int(view.image_name.split(".")[0]) >= 1171:
         # if int(view.image_name.split(".")[0]) in [248, 249]:
+        if int(view.image_name.split(".")[0]) >= 1171:
             return None, None
         align_depth = None
         mask = None
@@ -543,10 +530,6 @@ class GaussianModel:
 
         # TODO: try to align mono_depth with render_depth_gsplat
         if align:
-            # # TODO: use ransac instead of dbscan
-            # render_invdepth_gsplat = 1.0 / (render_depth_gsplat + 1e-6)
-            # mask = (render_invdepth_gsplat > 1e-2) & (render_invdepth_gsplat < 100.0)
-            # align_depth = self.depth_align_ransac(render_depth_gsplat, mono_invdepth, mask.unsqueeze(0), debug=True)
             # NOTE: dbscan with gpu
             pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
             pts_cudf = cudf.DataFrame(pts.detach().clone().cpu().numpy())
@@ -557,8 +540,7 @@ class GaussianModel:
             del db, labels, pts_cudf
             torch.cuda.empty_cache()
 
-            # if mask.sum() == 0:
-            if mask.sum() < 0.3 * H * W:
+            if mask.sum() < self.dbscan_maskportion_threshold * H * W:
                 return None, None
             align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=True, name=view.image_name)
             
@@ -577,16 +559,19 @@ class GaussianModel:
             del db, labels, pts_cudf
             torch.cuda.empty_cache()
 
-            # if mask.sum() == 0:
-            if mask.sum() < 0.3 * H * W:
+            if mask.sum() < self.dbscan_maskportion_threshold * H * W:
                 return None, None
             if aligndepth:
-                align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=False)
+                align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=debug)
                 if align_depth is not None:
                     self.aligned_depth_dict[view.image_name] = align_depth.detach().clone()
 
+        # # TODO: if needs to filter out extra images
+        # if int(view.image_name.split(".")[0]) >= 1171:
+        #     return None, None
+
         # compute normal map
-        mono_depth = align_depth if align_depth is not None else 1.0 / (mono_invdepth + 1e-4)
+        mono_depth = align_depth if align_depth is not None else 1.0 / (mono_invdepth + 1e-6)
         scale_factor = 100.0 if align_depth is not None else 1.0
         mono_normal = self.depth2norm(mono_depth, scale_factor=scale_factor).squeeze(0)
         # visualize
@@ -616,14 +601,17 @@ class GaussianModel:
         """
         if mask is None:
             mask = torch.ones_like(render_depth, dtype=torch.bool, device="cuda")
+
+        # NOTE: remove the zero points in render_depth
+        mask_nonzero = torch.where(render_depth < 1e-6, torch.zeros_like(render_depth, dtype=torch.bool), torch.ones_like(render_depth, dtype=torch.bool))
+        mask = mask & mask_nonzero
+
         render_invdepth = 1.0 / (render_depth + 1e-6)
         render_inv = render_invdepth[mask].reshape(-1, 1)
         mono_inv = mono_invdepth[mask].reshape(-1, 1)
         linear = LinearRegressionModel().fit(mono_inv, render_inv)
         if linear.weights[0][0] < 0:
             return None
-        # if name == "0778.png" or name == "0800.png":
-        #     print(f"weights: {linear.weights[0][0]}")
         _, H, W = render_depth.shape
         align_invdepth = linear.predict(mono_invdepth.reshape(-1, 1)).reshape(1, H, W)
         if align_invdepth.min() < 0:

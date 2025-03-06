@@ -10,9 +10,9 @@ do
     densification_interval=400
     depth_l1_weight_init=0.1
     depth_l1_weight_final=0.001
-    port=12321
+    port=12311
     echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
-    CUDA_VISIBLE_DEVICES=2 python train_experimental_branch2_singleview.py \
+    CUDA_VISIBLE_DEVICES=1 python train_experimental_branch2_singleview.py \
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
         --depths dav2_cached \
         --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
