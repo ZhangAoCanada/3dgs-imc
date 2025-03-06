@@ -2,21 +2,17 @@ for partial_scaling in 1e0 1e-1 1e-2 1e-3 1e-4 1e-5 1e1
 do
     images=input_cached
     init_type=sfm
-    # init_type=random
     noise_lr=5e5
     cap_max=3500000
     scale_reg=0.01
-    # scale_reg=0.0
     opacity_reg=0.01
-    # opacity_reg=0.0
     densify_from_iter=500
     densification_interval=400
-    # densification_interval=300
     depth_l1_weight_init=0.1
     depth_l1_weight_final=0.001
-    port=12311
+    port=12321
     echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
-    CUDA_VISIBLE_DEVICES=1 python train_experimental_branch2_singleview.py \
+    CUDA_VISIBLE_DEVICES=2 python train_experimental_branch2_singleview.py \
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
         --depths dav2_cached \
         --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \

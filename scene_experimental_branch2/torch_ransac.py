@@ -122,6 +122,21 @@ class LinearRegressionModel:
         X_with_bias = torch.cat([X, torch.ones(X.shape[0], 1, dtype=X.dtype, device=X.device)], dim=1)
         return X_with_bias @ self.weights
 
+
+class ScalingRegressionModel:
+    min_samples = 2
+    
+    def __init__(self):
+        self.weights = None
+    
+    def fit(self, X, y):
+        # Least squares solution
+        self.weights = torch.linalg.lstsq(X, y).solution
+        return self
+    
+    def predict(self, X):
+        return X @ self.weights
+
 def generate_noisy_data(n_samples=100, noise_ratio=0.3):
     """
     Generate synthetic data with outliers
