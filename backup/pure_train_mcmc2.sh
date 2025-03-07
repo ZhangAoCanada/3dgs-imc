@@ -9,7 +9,7 @@ densify_from_iter=500
 densification_interval=400
 # densification_interval=300
 depth_l1_weight_init=0.01
-depth_l1_weight_final=0.0001
+depth_l1_weight_final=0.001
 port=18888
 echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
 CUDA_VISIBLE_DEVICES=3 python train.py \

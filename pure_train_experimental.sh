@@ -2,18 +2,13 @@ images=input_cached
 init_type=sfm
 # init_type=random
 noise_lr=5e5
-cap_max=3500000
+cap_max=3000000
 scale_reg=0.01
-# scale_reg=0.0
 opacity_reg=0.01
-# opacity_reg=0.0
 densify_from_iter=500
 densification_interval=400
-# densification_interval=300
-# depth_l1_weight_init=0.01
-# depth_l1_weight_final=0.0001
-depth_l1_weight_init=0.1
-depth_l1_weight_final=0.01
+depth_l1_weight_init=0.01
+depth_l1_weight_final=0.001
 experimental_schedule_gamma=0.9
 experimental_randomview_num=5
 port=12321
@@ -23,7 +18,7 @@ CUDA_VISIBLE_DEVICES=2 python train_experimental2.py \
     --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
     --depths dav2_cached \
     --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_350w_combine+std_randomview${experimental_randomview_num}_lr5_dynamicbound_fft_meanstd_stdreg1e-2 \
+    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_350w_combine+std_randomview${experimental_randomview_num}_lr5_dynamicbound_fft_depthnormalize_${depth_l1_weight_init}_${depth_l1_weight_final} \
     --images ${images} \
     --resolution -1 \
     --init_type ${init_type} \
@@ -38,6 +33,5 @@ CUDA_VISIBLE_DEVICES=2 python train_experimental2.py \
     --depth_l1_weight_final ${depth_l1_weight_final} \
     --experimental_schedule_gamma ${experimental_schedule_gamma} \
     --antialiasing \
+    --depthnorm \
     --port $port 
-
-    # --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_350w_combine+std_randomview${experimental_randomview_num}_lr5_dynamicbound_fft_woimc \

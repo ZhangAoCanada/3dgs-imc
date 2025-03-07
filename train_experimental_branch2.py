@@ -10,6 +10,7 @@
 #
 
 import os
+import shutil
 import json
 import torch
 import torch.nn.functional as F
@@ -45,6 +46,9 @@ try:
 except:
     SPARSE_ADAM_AVAILABLE = False
 
+import cuml
+cuml.common.logger.set_level(2)
+
 
 def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint, debug_from):
 
@@ -76,6 +80,12 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
     progress_bar = tqdm(range(first_iter, opt.iterations), desc="Training progress")
     first_iter += 1
+
+    if opt.nndebug:
+        if os.path.exists("tmp"):
+            shutil.rmtree("tmp")
+        os.makedirs("tmp", exist_ok=True)
+
     for iteration in range(first_iter, opt.iterations + 1):
         if network_gui.conn == None:
             network_gui.try_connect()
@@ -116,7 +126,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         ############### NOTE: IMC ###############
         if iteration > 2400:
-            partial_l = gaussians.partial_l(tb_writer, iteration)
+            partial_l = gaussians.partial_l(tb_writer, iteration, opt.bound_type)
             # loss += partial_l
 
         render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
@@ -136,6 +146,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             ssim_value = ssim(image, gt_image)
 
         loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
+        
+        ################# NOTE: MCMC ##################
+        # loss = loss + args.opacity_reg * torch.abs(gaussians.get_opacity).mean()
+        # loss = loss + args.scale_reg * torch.abs(gaussians.get_scaling).mean()
 
         # Depth regularization
         Ll1depth_pure = 0.0
@@ -201,7 +215,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
                 dead_mask = (gaussians.get_opacity <= 0.005).squeeze(-1)
                 gaussians.relocate_gs(dead_mask=dead_mask)
-                # gaussians.add_new_gs(cap_max=args.cap_max)
+                gaussians.add_new_gs(cap_max=args.cap_max)
 
 
             # Optimizer step
@@ -243,15 +257,18 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         if tb_writer and iteration > 2400:
             tb_writer.add_scalar('nn_l/partial_l', partial_l.item(), iteration)
 
-        ### NOTE: all views
-        if iteration >= 2000 and iteration % 1000 == 0:
-            gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, aligndepth=True)
-        nnl = gaussians.nntrain(tb_writer, iteration)
-
-        ### NOTE: single view
-        # if iteration % 1000 == 0:
-        #     gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, single_view=False, gaussians_bound=False)
-        # nnl = gaussians.nntrain_view(viewpoint_cam, pipe, bg, tb_writer, iteration)
+        if opt.nn_type == "allviews":
+            ### NOTE: all views
+            if iteration >= 2000 and iteration % 1000 == 0:
+                gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, nn_type=opt.nn_type, bound_type=opt.bound_type)
+            nnl = gaussians.nntrain(tb_writer, iteration)
+        elif opt.nn_type == "singleview":
+            ### NOTE: single view
+            if iteration >= 2000 and iteration % 1000 == 0:
+                gaussians.update_nnpts(scene.getTrainCameras().copy(), pipe, background, align=False, nn_type=opt.nn_type, bound_type=opt.bound_type)
+            nnl = gaussians.nntrain_view(viewpoint_cam, pipe, bg, tb_writer, iteration)
+        else:
+            raise NotImplementedError
 
         if nnl is None:
             continue
@@ -268,20 +285,6 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         
         if iteration % 10000 == 0:
             gaussians.save_nn(scene.model_path)
-
-        # nnl = gaussians.nntrain(viewpoint_cam)
-        # # nnl = gaussians.nntrainpts(viewpoint_cam)
-        # nnl.backward()
-        # # gaussians.remove_nan_grad()
-        # gaussians.imc_experimental_optimizer.step()
-        # gaussians.imc_experimental_optimizer.zero_grad()
-        # gaussians.exposure_optimizer.zero_grad(set_to_none = True)
-        # gaussians.optimizer.zero_grad(set_to_none = True)
-
-        # # with torch.no_grad():
-
-        # if tb_writer:
-        #     tb_writer.add_scalar('nn_l/nnl', nnl.item(), iteration)
 
 
 

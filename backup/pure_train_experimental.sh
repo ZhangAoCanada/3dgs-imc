@@ -2,25 +2,28 @@ images=input_cached
 init_type=sfm
 # init_type=random
 noise_lr=5e5
-cap_max=3000000
+cap_max=3500000
 scale_reg=0.01
+# scale_reg=0.0
 opacity_reg=0.01
+# opacity_reg=0.0
 densify_from_iter=500
 densification_interval=400
+# densification_interval=300
+# depth_l1_weight_init=0.01
+# depth_l1_weight_final=0.0001
 depth_l1_weight_init=0.1
-depth_l1_weight_final=0.001
-nn_type=singleview
-bound_type=local
-partial_scaling=1e-1
-eps=0.05
-min_samples=100
-port=12311
+depth_l1_weight_final=0.01
+experimental_schedule_gamma=0.9
+experimental_randomview_num=5
+port=12321
 echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
-CUDA_VISIBLE_DEVICES=1 python train_experimental_branch3.py \
+
+CUDA_VISIBLE_DEVICES=2 python train_experimental2.py \
     --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
     --depths dav2_cached \
     --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch2_${init_type}_${nn_type}_${bound_type}_partial${partial_scaling}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final} \
+    --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_350w_combine+std_randomview${experimental_randomview_num}_lr5_dynamicbound_fft_meanstd_stdreg1e-2 \
     --images ${images} \
     --resolution -1 \
     --init_type ${init_type} \
@@ -33,10 +36,8 @@ CUDA_VISIBLE_DEVICES=1 python train_experimental_branch3.py \
     --densification_interval ${densification_interval} \
     --depth_l1_weight_init ${depth_l1_weight_init} \
     --depth_l1_weight_final ${depth_l1_weight_final} \
-    --nn_type ${nn_type} \
-    --bound_type ${bound_type} \
-    --partial_scaling ${partial_scaling} \
-    --eps ${eps} \
-    --min_samples ${min_samples} \
+    --experimental_schedule_gamma ${experimental_schedule_gamma} \
     --antialiasing \
     --port $port 
+
+    # --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_${init_type}_350w_combine+std_randomview${experimental_randomview_num}_lr5_dynamicbound_fft_woimc \

@@ -109,8 +109,15 @@ class OptimizationParams(ParamGroup):
         self.experimental_randomview_num = 5
         self.depth_normalize = False
         ### NOTE: for debugging ###
-        self.partial_scaling = 1.0
-        self.n_jobs = None # default: None
+        self.nn_type = "singleview" # "singleview" or "allviews"
+        self.bound_type = "local" # "local" or "global"
+        self.partial_scaling = 1e-1
+        self.dds_ratio = 4
+        self.dvoxel_size = 0.001
+        self.eps = 0.05 # 0.05
+        self.min_samples = 200 # 100
+        self.dbscan_portion = 0.3 # 0.3
+        self.nndebug = True
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):

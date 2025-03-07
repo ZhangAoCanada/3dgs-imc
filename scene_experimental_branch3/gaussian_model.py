@@ -8,6 +8,9 @@
 #
 # For inquiries contact  george.drettakis@inria.fr
 #
+import sys
+sys.path.append("dust3r")
+
 import torch
 import numpy as np
 from utils.general_utils import inverse_sigmoid, get_expon_lr_func, build_rotation
@@ -26,19 +29,13 @@ from utils.sh_utils import eval_sh
 from scene_experimental_branch3.imc_experimental import NetworksA
 from scene_experimental_branch3 import diff_operators
 from scene_experimental_branch3.utility import write_summary
-
 from scene_experimental_branch3.torch_ransac import RANSAC, LinearRegressionModel, ScalingRegressionModel
-
 import shutil
 import math
 from glob import glob
 from gaussian_renderer import render, render_gsplat
 import torchvision
 import matplotlib.pyplot as plt
-
-# from sklearn import metrics
-# from sklearn.cluster import DBSCAN
-# from sklearn.linear_model import LinearRegression, RANSACRegressor
 import cuml, cudf
 from cuml.cluster import DBSCAN
 from tqdm import tqdm
@@ -199,18 +196,6 @@ class GaussianModel:
         self.net.cuda()
         self.nn_gt_pts = None
         self.aligned_depth_dict = {}
-        self.downsample_ratio = 4
-        self.voxel_size = 0.001
-        self.eps = 0.05 # 0.05
-        self.min_samples = 200 # 100
-        self.dbscan_maskportion_threshold = 0.3
-
-        # self.max_num = 1000
-        # self.net = NetworkAnother(
-        #     xyz_bounds=[xyz_lowerbound, xyz_upperbound],
-        #     batch_size=self.max_num,
-        # )
-        # self.net.cuda()
 
     def training_setup(self, training_args):
         self.percent_dense = training_args.percent_dense
@@ -233,13 +218,6 @@ class GaussianModel:
             lr_delay_mult=training_args.position_lr_delay_mult,
             max_steps=training_args.position_lr_max_steps)
 
-        #################### NOTE: hyper-param ########################
-        self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-4, params=self.net.parameters())
-        self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.5)
-        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.ExponentialLR(self.imc_experimental_optimizer, gamma=0.9)
-        self.partial_scaling = training_args.partial_scaling
-        self.n_jobs = training_args.n_jobs
-
         self.exposure_optimizer = torch.optim.Adam([self._exposure])
         self.exposure_scheduler_args = get_expon_lr_func(
             training_args.exposure_lr_init, training_args.exposure_lr_final,
@@ -247,6 +225,16 @@ class GaussianModel:
             lr_delay_mult=training_args.exposure_lr_delay_mult,
             max_steps=training_args.iterations)
 
+        #################### NOTE: hyper-param ########################
+        self.imc_experimental_optimizer = torch.optim.Adam(lr=1e-4, params=self.net.parameters())
+        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.5)
+        # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.ExponentialLR(self.imc_experimental_optimizer, gamma=0.9)
+        self.partial_scaling = training_args.partial_scaling
+        self.downsample_ratio = training_args.dds_ratio
+        self.voxel_size = training_args.dvoxel_size
+        self.eps = training_args.eps
+        self.min_samples = training_args.min_samples
+        self.dbscan_portion = training_args.dbscan_portion
 
     ######################################################################
     ######################################################################
@@ -330,7 +318,7 @@ class GaussianModel:
             gradient_constraint * 5e1
         return l
 
-    def partial_l(self, tb_writer, iteration):
+    def partial_l(self, tb_writer, iteration, bound_type="local"):
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
         xyz = self.get_xyz
@@ -340,27 +328,24 @@ class GaussianModel:
             mask[random_index] = True
             net_in = xyz[mask]
         pred = self.net(net_in)
-        # l = 100 * (1.0 - pred['sigma']).mean()
         l = (1.0 - pred['sigma'])
         grad = diff_operators.gradient(l, pred['net_in'])
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
-            xyz_upper = self.net.xyz_upperbound
-            xyz_lower = self.net.xyz_lowerbound
-            diff_upper = net_in - xyz_upper
-            diff_lower = net_in - xyz_lower
-            scaling = torch.ones_like(net_in)
-            scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-            scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-            scaling = torch.where(scaling < 1, 1, scaling)
-            grad = grad * net_scale * scaling
-            # grad = grad * net_scale
+            if bound_type == "local":
+                xyz_upper = self.net.xyz_upperbound
+                xyz_lower = self.net.xyz_lowerbound
+                diff_upper = net_in - xyz_upper
+                diff_lower = net_in - xyz_lower
+                scaling = torch.ones_like(net_in)
+                scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
+                scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
+                scaling = torch.where(scaling < 1, 1, scaling)
+                grad = grad * net_scale * scaling
+            elif bound_type == "global":
+                grad = grad * net_scale
             grad = grad * self.partial_scaling
             self._xyz[mask].add_(grad)
-        # with torch.no_grad():
-        #     grad = grad * net_scale
-        #     grad = grad * self.partial_scaling
-        #     self._xyz[mask].add_(grad)
         if tb_writer is not None:
             tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
             tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
@@ -425,14 +410,19 @@ class GaussianModel:
             param.grad[torch.isnan(param.grad)] = 0.0
             param.grad[torch.isinf(param.grad)] = 0.0
         
-    def update_nnpts(self, all_views, pipe, bg, align=True, aligndepth=False, gaussians_bound=False):
-        if gaussians_bound:
-            self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
-        else:
+    def update_nnpts(self, all_views, pipe, bg, align=True, nn_type="singleview", bound_type="local"):
+        assert nn_type in ["singleview", "allviews"]
+        assert bound_type in ["local", "global"]
+        aligndepth = True if nn_type == "allviews" else False
+
+        if nn_type == "allviews" or bound_type == "local":
             self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, aligndepth=aligndepth)
-            if self.nn_gt_pts is not None:
-                # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
-                self.net.find_boundary(self.nn_gt_pts)
+            if self.nn_gt_pts is None:
+                return
+        if bound_type == "local":
+            self.net.find_boundary(self.nn_gt_pts)
+        else:
+            self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
     ######################################################################
     ######################################################################
     ######################################################################
@@ -447,10 +437,6 @@ class GaussianModel:
             all_views = all_views[:100]
 
         all_pts = torch.empty(0, device="cuda")
-        if debug:
-            if os.path.exists("tmp"):
-                shutil.rmtree("tmp")
-            os.makedirs("tmp", exist_ok=True)
         with torch.no_grad():
             for i in tqdm(range(len(all_views))):
                 view = all_views[i]
@@ -491,16 +477,21 @@ class GaussianModel:
             # NOTE: dbscan with gpu
             pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
             pts_cudf = cudf.DataFrame(pts.detach().clone().cpu().numpy())
-            db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts_cudf, out_dtype='int64')
+            db = DBSCAN(
+                eps=self.eps, 
+                min_samples=self.min_samples, 
+                max_mbytes_per_batch=5000
+                    ).fit(pts_cudf, out_dtype='int32')
+                    # ).fit(pts_cudf, out_dtype='int64')
             labels = db.labels_
             labels = torch.tensor(labels, device="cuda", dtype=torch.float)
             mask = labels.detach().clone() != -1
             del db, labels, pts_cudf
-            torch.cuda.empty_cache()
+            # torch.cuda.empty_cache()
 
-            if mask.sum() < self.dbscan_maskportion_threshold * H * W:
+            if mask.sum() < self.dbscan_portion * H * W:
                 return None, None
-            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=debug, name=view.image_name)
+            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=True, name=view.image_name)
             
             if align_depth is None:
                 return None, None
@@ -510,17 +501,24 @@ class GaussianModel:
             # NOTE: dbscan with gpu
             pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
             pts_cudf = cudf.DataFrame(pts.detach().clone().cpu().numpy())
-            db = DBSCAN(eps=self.eps, min_samples=self.min_samples).fit(pts_cudf, out_dtype='int64')
+            db = DBSCAN(
+                eps=self.eps, 
+                min_samples=self.min_samples, 
+                max_mbytes_per_batch=5000
+                    ).fit(pts_cudf, out_dtype='int32')
+                    # ).fit(pts_cudf, out_dtype='int64')
             labels = db.labels_
             labels = torch.tensor(labels, device="cuda", dtype=torch.float)
             mask = labels.detach().clone() != -1
             del db, labels, pts_cudf
             torch.cuda.empty_cache()
 
-            if mask.sum() < self.dbscan_maskportion_threshold * H * W:
+            if mask.sum() < self.dbscan_portion * H * W:
                 return None, None
             if aligndepth:
                 align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=debug)
+                if align_depth is None:
+                    return None, None
                 if align_depth is not None:
                     self.aligned_depth_dict[view.image_name] = align_depth.detach().clone()
 
