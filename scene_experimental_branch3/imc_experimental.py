@@ -12,8 +12,8 @@ import scene_experimental.diff_operators as diff_operators
 
 class NetworksA(nn.Module):
     def __init__(self, 
-                 in_features, 
-                 out_features,
+                 in_features=3, 
+                 out_features=4,
                  hidden_features=256, 
                  num_hidden_layers=3, 
                  type='relu',
@@ -38,8 +38,21 @@ class NetworksA(nn.Module):
                            hidden_features=hidden_features, 
                            outermost_linear=False, 
                            nonlinearity=type)
-        self.linear = nn.Linear(hidden_features, self.out_features)
+        self.linear_mean = nn.Linear(hidden_features, self.out_features)
+        self.linear_std = nn.Linear(hidden_features, self.out_features)
 
+        # # self.preprocess2 = nn.Linear(4, hidden_features)
+        # # self.body2 = FCBlock(in_features=hidden_features * 2, 
+        # self.body2 = FCBlock(in_features=4, 
+        #                     out_features=hidden_features,
+        #                     num_hidden_layers=2,
+        #                     hidden_features=hidden_features,
+        #                     outermost_linear=False,
+        #                     nonlinearity=type)
+        # self.linear_mean2 = nn.Linear(hidden_features, 3)
+        # self.linear_std2 = nn.Linear(hidden_features, 3)
+
+        # self.xyz_act = nn.ReLU()
         self.sigma_act = nn.ReLU()
         self.rgb_act = nn.Sigmoid()
         self.xyz_lowerbound = None
@@ -58,14 +71,18 @@ class NetworksA(nn.Module):
         self.xyz_upperbound += extend_factor * self.boundary
 
 
-    def forward(self, xyz, params=None, raw=True):
+    def forward(self, net_in, attributes=None, params=None, raw=True):
         if params is None:
             params = OrderedDict(self.named_parameters())
-
+        
         if raw:
-            coords = (xyz - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
+            # NOTE: net_in is organized as [xyz, opacity, color]
+            # xyz, opacity, color = torch.split(net_in, [3, 1, 3], dim=-1)
+            # xyz_normalzied = (xyz - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound)
+            # coords = torch.cat([xyz_normalzied, opacity, color], dim=-1) * 2 - 1
+            coords = (net_in - self.xyz_lowerbound) / (self.xyz_upperbound - self.xyz_lowerbound) * 2 - 1
         else:
-            coords = xyz
+            coords = net_in
 
         coords = torch.clamp(coords, -1, 1)
 
@@ -76,18 +93,60 @@ class NetworksA(nn.Module):
             coords_enc = coords
 
         pred = self.body(coords_enc)
-        pred = self.linear(pred)
+        pred_mean = self.linear_mean(pred)
+        # pred_std = self.linear_std(pred)
 
-        rgb, sigma = pred[..., :3], pred[..., 3:]
-        sigma_pred = self.sigma_act(sigma)
-        rgb_pred = self.rgb_act(rgb)
+        # NOTE: get mean pred
+        sigma_mean, rgb_mean = pred_mean[..., :1], pred_mean[..., 1:]
+        rgb_mean_pred = self.rgb_act(rgb_mean)
+        sigma_mean_pred = self.sigma_act(sigma_mean)
+        sigma_mean_pred = 1. - torch.exp(-sigma_mean_pred)
 
-        sigma_pred = 1. - torch.exp(-sigma_pred)
+        # NOTE: get std pred
+        # sigma_std, rgb_std = pred_std[..., :1], pred_std[..., 1:]
+        # rgb_std_pred = self.rgb_act(rgb_std)
+        # sigma_std_pred = self.sigma_act(sigma_std)
+        # sigma_std_pred = 1. - torch.exp(-sigma_std_pred)
 
-        # if grad:
-        #     gradient = diff_operators.gradient(pred, xyz)
-        #     return {'rgb': rgb_pred, 'sigma': sigma_pred, 'grad': gradient}
-        return {'rgb': rgb_pred, 'sigma': sigma_pred, 'net_in': coords}
+        # NOTE: compute pred
+        # TODO: think about the residual method
+        # TODO: if take residual method, all mean pred should be -1 to 1
+        # sigma_mean_pred = 2 * sigma_mean_pred - 1
+        # rgb_mean_pred = 2 * rgb_mean_pred - 1
+
+        # sigma_pred = sigma_mean_pred + sigma_std_pred * torch.randn_like(sigma_mean_pred)
+        # rgb_pred = rgb_mean_pred + rgb_std_pred * torch.randn_like(rgb_mean_pred)
+        # sigma_pred = torch.clamp(sigma_pred, 0, 1)
+        # rgb_pred = torch.clamp(rgb_pred, 0, 1)
+        sigma_pred = sigma_mean_pred
+        rgb_pred = rgb_mean_pred
+
+        # NOTE: convert to output format
+        # sigma_pred = torch.clamp(sigma_pred, -1, 1)
+        # rgb_pred = torch.clamp(rgb_pred, -1, 1)
+
+        # NOTE: generate noise with another network
+        # if attributes is not None:
+        #     # attr = self.preprocess2(attributes)
+        #     # pred2 = self.body2(torch.cat([pred, attr], dim=-1))
+        #     # pred2_std = self.linear_std2(pred2)
+        #     # xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std)
+        #     pred_attr = torch.cat([sigma_pred, rgb_pred], dim=-1)
+        #     net_in2 = attributes - pred_attr
+        #     pred2 = self.body2(net_in2)
+        #     pred2_std = self.linear_std2(pred2)
+        #     xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * torch.abs(attributes[..., :1] - sigma_pred)
+        # else:
+        #     xyz_noise = None
+
+
+        return {
+            'net_in': coords, 
+            'net_in_raw': net_in,
+            'rgb': rgb_pred,
+            'sigma': sigma_pred,
+            # 'xyz_noise': xyz_noise
+            }
 
     
     def forward_with_activations(self, model_input):

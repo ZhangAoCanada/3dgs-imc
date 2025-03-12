@@ -1,4 +1,4 @@
-for partial_scaling in 1e-1 1e0 1e-2 1e-3
+for min_samples in 300 800 1000
 do
     images=input_cached
     init_type=sfm
@@ -11,18 +11,20 @@ do
     densification_interval=400
     depth_l1_weight_init=0.1
     depth_l1_weight_final=0.001
-    nn_type=singleview
+    # nn_type=singleview
+    nn_type=allviews
+    # bound_type=global
     bound_type=local
-    # partial_scaling=1e-1
+    partial_scaling=1e0
     eps=0.05
-    min_samples=200
+    # min_samples=300
     port=12311
     echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
     CUDA_VISIBLE_DEVICES=1 python train_experimental_branch2.py \
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
         --depths dav2_cached \
         --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch2_${init_type}_${nn_type}_${bound_type}_partial${partial_scaling}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final} \
+        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch2_${init_type}_${nn_type}_${bound_type}_partial${partial_scaling}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_samplepnt \
         --images ${images} \
         --resolution -1 \
         --init_type ${init_type} \

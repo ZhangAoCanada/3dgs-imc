@@ -41,6 +41,47 @@ from cuml.cluster import DBSCAN
 from tqdm import tqdm
 
 
+
+def build_rotation_grad(r):
+    norm = torch.sqrt(r[:,0]*r[:,0] + r[:,1]*r[:,1] + r[:,2]*r[:,2] + r[:,3]*r[:,3])
+
+    q = r / norm[:, None]
+
+    R = torch.zeros((q.size(0), 3, 3), device='cuda', requires_grad=True)
+
+    r = q[:, 0]
+    x = q[:, 1]
+    y = q[:, 2]
+    z = q[:, 3]
+
+    R[:, 0, 0] = 1 - 2 * (y*y + z*z)
+    R[:, 0, 1] = 2 * (x*y - r*z)
+    R[:, 0, 2] = 2 * (x*z + r*y)
+    R[:, 1, 0] = 2 * (x*y + r*z)
+    R[:, 1, 1] = 1 - 2 * (x*x + z*z)
+    R[:, 1, 2] = 2 * (y*z - r*x)
+    R[:, 2, 0] = 2 * (x*z - r*y)
+    R[:, 2, 1] = 2 * (y*z + r*x)
+    R[:, 2, 2] = 1 - 2 * (x*x + y*y)
+    return R
+
+def build_scaling_rotation_grad(s, r):
+    R = build_rotation(r)
+
+    s1 = s[:,0].view(-1, 1, 1)
+    s2 = s[:,1].view(-1, 1, 1)
+    s3 = s[:,2].view(-1, 1, 1)
+
+    row1 = torch.cat([s1, torch.zeros_like(s1), torch.zeros_like(s1)], dim=2)
+    row2 = torch.cat([torch.zeros_like(s2), s2, torch.zeros_like(s2)], dim=2)
+    row3 = torch.cat([torch.zeros_like(s3), torch.zeros_like(s3), s3], dim=2)
+    L = torch.cat([row1, row2, row3], dim=1)
+
+    L = R @ L
+    return L
+
+
+
 class GaussianModel:
 
     def setup_functions(self):
@@ -188,8 +229,8 @@ class GaussianModel:
         self.net_mode = "mlp" # "mlp" or "fft"
         self.net_type = "sine" # "sine" or "relu"
         self.net = NetworksA(
-            in_features=3, 
-            out_features=4, 
+            # in_features=3, #7, 
+            # out_features=4, 
             type=self.net_type, 
             mode=self.net_mode, 
             )
@@ -235,76 +276,163 @@ class GaussianModel:
         self.eps = training_args.eps
         self.min_samples = training_args.min_samples
         self.dbscan_portion = training_args.dbscan_portion
+        self.nn_type = training_args.nn_type
+        self.bound_type = training_args.bound_type
 
     ######################################################################
     ######################################################################
     ######################################################################
-    def nntrain(self, tb_writer, iteration):
-        if self.nn_gt_pts is None:
+    ######################################################################
+    ######################################################################
+    def derivatives(self, view, tb_writer, iteration):
+        if iteration < 2400:
+        # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
+        # if iteration < 10:
+            return None, None
+        # TODO: gaussian points for learning
+        gs_xyz, gs_opacity = self.sample_xyz()
+        gs_color = self.get_color(view)
+        # gs_norm = self.get_norm()
+        gs_norm = torch.rand((gs_xyz.shape[0], 3), device="cuda")
+        gs_mask = self.mask_pts(gs_xyz.shape[0])
+        gs_xyz, gs_opacity, gs_color, gs_norm = gs_xyz[gs_mask], gs_opacity[gs_mask], gs_color[gs_mask], gs_norm[gs_mask]
+        attributes = torch.cat([gs_opacity, gs_color], dim=-1)
+        # gs_pnts = torch.cat([gs_xyz, gs_opacity, gs_color], dim=1)
+        # res = self.net(gs_pnts)
+        res = self.net(gs_xyz)#, attributes=attributes)
+        # pred_color_diff = res['rgb']
+        # pred_opacity_diff = res['sigma']
+        # pred_opacity = gs_pnts[..., 3:4] + pred_opacity_diff
+        pred_color = res['rgb']
+        pred_opacity = res['sigma']
+        l = 1.0 - pred_opacity
+
+        grad = torch.autograd.grad(l, [self._xyz, self._rotation, self._scaling], grad_outputs=torch.ones_like(l), create_graph=True)
+        grad = [gd * self.net.xyz_upperbound for gd in grad]
+        net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
+
+        # grad_net_in = diff_operators.gradient(l, res['net_in']) * (self.net.xyz_upperbound - self.net.xyz_lowerbound)
+        # grad = torch.autograd.grad(gs_xyz, [self._xyz, self._rotation, self._scaling], grad_outputs=grad_net_in, create_graph=True)
+
+        # grad = diff_operators.gradient(l, res['net_in'])
+        # net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
+        with torch.no_grad():
+            if self.bound_type == "local":
+                xyz = self._xyz[gs_mask].detach().clone()
+                upperdist = xyz - self.net.xyz_upperbound
+                lowerdist = self.net.xyz_lowerbound - xyz
+                xyz_scaling = torch.ones_like(xyz)
+                xyz_scaling = torch.where(upperdist > 0, torch.abs(upperdist) * 0.01, 1.)
+                xyz_scaling = torch.where(lowerdist < 0, torch.abs(lowerdist) * 0.01, 1.)
+            else:
+                xyz_scaling = 1.0
+            # grad = grad * net_scale * xyz_scaling
+            # self._xyz[gs_mask].add_(grad)
+
+            # grad_xyz = grad[0][gs_mask] * xyz_scaling
+            grad_xyz = grad[0][gs_mask] * net_scale * xyz_scaling
+            # self._xyz[gs_mask].add_(grad[0][gs_mask] * net_scale * xyz_scaling)
+            self._xyz[gs_mask].add_(grad_xyz)
+            self._rotation[gs_mask].add_(grad[1][gs_mask])
+            self._scaling[gs_mask].add_(grad[2][gs_mask])
+
+            # # self._opacity[gs_mask].add_(self.inverse_opacity_activation(pred_opacity - gs_opacity))
+            # self._opacity[gs_mask].copy_(self.inverse_opacity_activation(pred_opacity))
+            # # NOTE: update the features
+            # color_diff = RGB2SH(pred_color)
+            # features_diff = torch.zeros((color_diff.shape[0], 3, (self.max_sh_degree + 1) ** 2)).float().cuda()
+            # features_diff[:, :3, 0] = color_diff
+            # features_diff[:, 3:, 1:] = 0.0
+            # # self._features_dc[gs_mask].add_(features_diff[:,:,0:1].transpose(1, 2))
+            # self._features_dc[gs_mask].copy_(features_diff[:,:,0:1].transpose(1, 2))
+            if tb_writer is not None:
+                tb_writer.add_scalar("nn_l/partial_grad_min", grad_xyz.min(), iteration)
+                tb_writer.add_scalar("nn_l/partial_grad_max", grad_xyz.max(), iteration)
+        
+        # # TODO: add noise, w.r.t to covariance or L
+        # pred_noise = res['xyz_noise']
+        # xyz_noise = torch.bmm(covariance[gs_mask].detach().clone(), pred_noise.unsqueeze(-1)).squeeze(-1)
+        # noise_full = torch.zeros((self._xyz.shape[0], 3), device="cuda")
+        # noise_full[gs_mask] = xyz_noise
+        # return noise_full, gs_mask
+
+    def compute_diff(self, view, tb_writer, iteration):
+        with torch.no_grad():
+            # gs_xyz, gs_opacity = self.sample_xyz(scaling_modifier=0.5)
+            gs_xyz, gs_opacity = self.sample_xyz()
+            # gs_xyz, gs_opacity = self.get_xyz, self.get_opacity
+            gs_color = self.get_color(view)
+            if iteration > 2400:
+                res = self.net(gs_xyz)
+                opacity_diff = res['sigma'] - gs_opacity
+                color_diff = res['rgb'] - gs_color
+            else:
+                opacity_diff = 1.0 - gs_opacity
+                color_diff = torch.zeros_like(gs_color) + 1e-3
+        return torch.abs(opacity_diff), torch.abs(color_diff)
+        
+    def train_continuous(self, all_views, view, pipe, bg, tb_writer, iteration):
+        if iteration < 2000:
             return None
-        self.net.train()
-        assert self.nn_gt_pts.shape[1] == 9
-        xyz, color, norm = torch.split(self.nn_gt_pts, [3, 3, 3], dim=1)
-        mask = None
-        if xyz.shape[0] > self.max_num:
-            mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
-            random_index = torch.randperm(xyz.shape[0])[:self.max_num]
-            mask[random_index] = True
-            xyz = xyz[mask]
-            color = color[mask]
-            norm = norm[mask]
-        opacity = torch.ones((xyz.shape[0], 1), device="cuda")
-        off_xyz, off_color, off_norm, off_opacity = self.spawn_randompnts(xyz.shape[0], self.voxel_size)
-        net_in = torch.cat([xyz, off_xyz], dim=0)
-        res = self.net(net_in)
-        gt_opacity = torch.cat([opacity, off_opacity], dim=0)
-        gt_color = torch.cat([color, off_color], dim=0)
-        gt_norm = torch.cat([norm, off_norm], dim=0)
-        l = self.nn_l(res, gt_opacity, gt_color, gt_norm)
-        write_summary(self.net, tb_writer, iteration)
-        return l
-    
-    def nntrain_view(self, view, pipe, bg, tb_writer, iteration, align=True):
+        elif iteration % 1000 == 0:
+            self.update_nnpts(all_views, pipe, bg, align=False)
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
-        H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
-        with torch.no_grad():
-            pts, aligned_depth = self.filter_depth_and_align(view, pipe, bg, align=align, debug=False, aligndepth=True)
+        self.net.train()
+        if self.nn_type == "allviews":
+            pts = self.nn_gt_pts
+        else:
+            with torch.no_grad():
+                pts = self.filter_depth_and_align(view, pipe, bg, align=True, debug=False, aligndepth=True)
         if pts is None:
             return None
-        if align:
-            assert aligned_depth is not None
-        assert pts.shape[0] == H * W
-        self.net.train()
         assert pts.shape[1] == 9
+        # NOTE: get fitlered points
         xyz, color, norm = torch.split(pts, [3, 3, 3], dim=1)
-        mask = None
-        if xyz.shape[0] > self.max_num:
-            mask = torch.zeros(xyz.shape[0], dtype=torch.bool, device="cuda")
-            random_index = torch.randperm(xyz.shape[0])[:self.max_num]
-            mask[random_index] = True
-            xyz = xyz[mask]
-            color = color[mask]
-            norm = norm[mask]
-        else:
-            mask = torch.ones(xyz.shape[0], dtype=torch.bool, device="cuda")
+        H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
+        mask = self.mask_pts(xyz.shape[0])
+        xyz, color, norm = xyz[mask], color[mask], norm[mask]
         opacity = torch.ones((xyz.shape[0], 1), device="cuda")
-        off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, aligned_depth, H, W, focals, c2w, voxel_size=self.voxel_size)
-        net_in = torch.cat([xyz, off_xyz], dim=0)
-        res = self.net(net_in)
+        # NOTE: generate random points for training
+        if self.nn_type == "allviews":
+            off_xyz, off_color, off_norm, off_opacity = self.spawn_randompnts(xyz.shape[0], self.voxel_size)
+        else:
+            off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, H, W, focals, c2w, voxel_size=self.voxel_size)
+
+        # # TODO: [pnts, off_pnts], dim in [xyz, opacity, color]
+        # pnts = torch.cat([xyz, opacity, color], dim=1)
+        # off_pnts = torch.cat([off_xyz, off_opacity, off_color], dim=1)
+        # pts_num, off_num = pnts.shape[0], off_pnts.shape[0]
+        # TODO: [gt_pnts, gt_off_pnts], dim in [opacity, color, norm]
         gt_opacity = torch.cat([opacity, off_opacity], dim=0)
         gt_color = torch.cat([color, off_color], dim=0)
         gt_norm = torch.cat([norm, off_norm], dim=0)
-        l = self.nn_l(res, gt_opacity, gt_color, gt_norm)
-        write_summary(self.net, tb_writer, iteration)
+        # TODO: organize the input for the network
+        # net_in = torch.cat([pnts, off_pnts], dim=0)
+        net_in = torch.cat([xyz, off_xyz], dim=0)
+        res = self.net(net_in)
+        # TODO: calculate the loss
+        l = self.loss_fn(res, gt_opacity, gt_color, gt_norm)
+        if iteration % 500 == 0:
+            write_summary(self.net, tb_writer, iteration)
+        if tb_writer is not None:
+            tb_writer.add_scalar("nn_l/nnl", l, iteration)
         return l
-    
-    def nn_l(self, pred, gt_opacity, gt_color, gt_norm):
+
+    def loss_fn(self, pred, gt_opacity, gt_color, gt_norm):
+        # NOTE: pred has {'net_in', 'xyz', 'rgb', 'sigma'}
+        net_in = pred['net_in']
+
+        # net_in_raw = pred['net_in_raw'] # [pnts, off_pnts] in [xyz, opacity, color]
+        # pred_color_diff = pred['rgb']
+        # pred_opacity_diff = pred['sigma']
+        # pred_opacity = net_in_raw[..., 3:4] + pred_opacity_diff
+        # pred_color = net_in_raw[..., 4:] + pred_color_diff
+
         pred_color = pred['rgb']
         pred_opacity = pred['sigma']
-        net_in = pred['net_in']
-        gradient = diff_operators.gradient(pred_opacity, net_in)
 
+        gradient = diff_operators.gradient(pred_opacity, net_in)[..., :3]
         opacity_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_opacity, gt_opacity), torch.zeros_like(pred_opacity)).mean()
         color_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_color, gt_color), torch.zeros_like(pred_color)).mean()
         normal_constraint = torch.where(gt_opacity != 0, 1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None], torch.zeros_like(gradient)).mean()
@@ -316,59 +444,70 @@ class GaussianModel:
             normal_constraint * 1e2 + \
             inter_constraint * 1e2 + \
             gradient_constraint * 5e1
-        return l
 
-    def partial_l(self, tb_writer, iteration, bound_type="local"):
-        if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
-            return None
-        xyz = self.get_xyz
-        if xyz.shape[0] > self.max_num:
-            mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
-            random_index = torch.randperm(xyz.shape[0])[:self.max_num]
-            mask[random_index] = True
-            net_in = xyz[mask]
-        pred = self.net(net_in)
-        l = (1.0 - pred['sigma'])
-        grad = diff_operators.gradient(l, pred['net_in'])
-        net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-        with torch.no_grad():
-            if bound_type == "local":
-                xyz_upper = self.net.xyz_upperbound
-                xyz_lower = self.net.xyz_lowerbound
-                diff_upper = net_in - xyz_upper
-                diff_lower = net_in - xyz_lower
-                scaling = torch.ones_like(net_in)
-                scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
-                scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
-                scaling = torch.where(scaling < 1, 1, scaling)
-                grad = grad * net_scale * scaling
-            elif bound_type == "global":
-                grad = grad * net_scale
-            grad = grad * self.partial_scaling
-            self._xyz[mask].add_(grad)
-        if tb_writer is not None:
-            tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
-            tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
-        ### NOTE: original size ###
-        l = l.mean()
         return l
+    
+    def mask_pts(self, pts_num):
+        if pts_num > self.max_num:
+            mask = torch.zeros(pts_num, dtype=torch.bool, device="cuda")
+            random_index = torch.randperm(pts_num)[:self.max_num]
+            mask[random_index] = True
+            return mask
+        else:
+            return torch.ones(pts_num, dtype=torch.bool, device="cuda")
+
+    def sample_xyz(self, scaling_modifier=1.0):
+        means = self.get_xyz
+        # scaling = self.get_scaling
+        # rot = self.get_rotation
+        # L = build_scaling_rotation_grad(scaling, rot)
+        L = build_scaling_rotation(self.get_scaling, self.get_rotation)
+        covariance = L @ L.transpose(1, 2)
+        # TODO: is this L the same as the one above?
+        # L = torch.linalg.cholesky(covariance)
+        z = torch.randn_like(means) * scaling_modifier
+        #######################################################
+        # epsilon = torch.bmm(z.unsqueeze(1), L.transpose(1, 2)).squeeze(1)
+        # epsilon = torch.bmm(L, z.unsqueeze(-1)).squeeze(-1)
+        epsilon = torch.bmm(covariance, z.unsqueeze(-1)).squeeze(-1)
+        ########################################################
+        samples = means + epsilon
+        # NOTE: compute (x - μ)^T · Σ^(-1) · (x - μ)
+        cov_inv = torch.linalg.inv(covariance)
+        mahalanobis_dist = torch.sum(torch.bmm(epsilon.unsqueeze(1), cov_inv).squeeze(1) * epsilon, dim=1)
+        probs = torch.exp(-0.5 * mahalanobis_dist)
+        opacities = self.get_opacity * probs[..., None]
+        return samples, opacities
+    
+    def get_color(self, view):
+        shs_view = self.get_features.transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
+        dir_pp = (self.get_xyz - view.camera_center.repeat(self.get_features.shape[0], 1))
+        dir_pp_normalized = dir_pp/dir_pp.norm(dim=1, keepdim=True)
+        sh2rgb = eval_sh(self.active_sh_degree, shs_view, dir_pp_normalized)
+        colors_precomp = torch.clamp_min(sh2rgb + 0.5, 0.0)
+        return colors_precomp
+    
+    def get_norm(self, ):
+        scaling = self.get_scaling
+        rot = self.get_rotation
+        norm_axis = torch.argmin(scaling, dim=1)
+        norm = torch.zeros_like(scaling)
+        norm[torch.arange(scaling.shape[0]), norm_axis] = 1
+        rot_mat = build_rotation(rot)
+        normal = torch.bmm(norm.unsqueeze(1), rot_mat.transpose(1, 2)).squeeze(1)
+        return normal
 
     def spawn_randompnts(self, num_pnts=100000, voxel_size=0.01):
         upper_bound = self.net.xyz_upperbound
         lower_bound = self.net.xyz_lowerbound
         off_pnts = torch.rand((num_pnts, 3), device="cuda") * (upper_bound - lower_bound) + lower_bound
-        # # voxelization and remove duplicates with self.nn_gt_pts
-        # off_pnts = torch.round(off_pnts / voxel_size) * voxel_size
-        # off_pnts = torch.unique(off_pnts, dim=0)
-        # num_pnts = off_pnts.shape[0]
-        # get parameters
         off_xyz = nn.Parameter(off_pnts.contiguous().requires_grad_(True))
         off_opacity = torch.zeros((num_pnts, 1), device="cuda")
         off_color = torch.rand((num_pnts, 3), device="cuda")
         off_norm = torch.rand((num_pnts, 3), device="cuda")
         return off_xyz, off_color, off_norm, off_opacity
     
-    def spawn_randomraypnts(self, mask, depth, H, W, focals, c2w, times=1, voxel_size=0.01):
+    def spawn_randomraypnts(self, mask, H, W, focals, c2w, times=1, voxel_size=0.01):
         times = int(times)
         fx, fy = focals
         i, j = torch.meshgrid(torch.arange(W, device="cuda"), torch.arange(H, device="cuda"), indexing='xy')
@@ -376,9 +515,7 @@ class GaussianModel:
         dirs = torch.stack([(i-W*.5)/fx, (j-H*.5)/fy, torch.ones_like(i)], -1)
         rays_d = torch.sum(dirs[..., None, :] * c2w[:3,:3], -1)
         rays_o = c2w[:3,-1].expand(rays_d.shape)
-
         near = 0.01
-        # far = 100.
         far = torch.norm(self.net.xyz_upperbound.expand(3) - self.net.xyz_lowerbound.expand(3))
         rand_dist = torch.rand(times, H*W, 1, device="cuda") * (far - near) + near
         off_pts = rays_o.unsqueeze(0) + (rays_d.unsqueeze(0) * rand_dist)
@@ -410,22 +547,20 @@ class GaussianModel:
             param.grad[torch.isnan(param.grad)] = 0.0
             param.grad[torch.isinf(param.grad)] = 0.0
         
-    def update_nnpts(self, all_views, pipe, bg, align=True, nn_type="singleview", bound_type="local"):
-        assert nn_type in ["singleview", "allviews"]
-        assert bound_type in ["local", "global"]
-        aligndepth = True if nn_type == "allviews" else False
+    def update_nnpts(self, all_views, pipe, bg, align=True):
+        assert self.nn_type in ["singleview", "allviews"]
+        assert self.bound_type in ["local", "global"]
+        aligndepth = True if self.nn_type == "allviews" else False
 
-        if nn_type == "allviews" or bound_type == "local":
+        if self.nn_type == "allviews" or self.bound_type == "local":
             self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, aligndepth=aligndepth)
             if self.nn_gt_pts is None:
                 return
-        if bound_type == "local":
+        if self.bound_type == "local":
             self.net.find_boundary(self.nn_gt_pts)
         else:
             self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
-    ######################################################################
-    ######################################################################
-    ######################################################################
+
     def pointdepth(self, all_views, pipe, bg, align=True, debug=True, aligndepth=False):
         if debug:
             self.nn_gt_pts = None
@@ -440,7 +575,7 @@ class GaussianModel:
         with torch.no_grad():
             for i in tqdm(range(len(all_views))):
                 view = all_views[i]
-                pt_clr, _ = self.filter_depth_and_align(view, pipe, bg, align=align, debug=debug, aligndepth=aligndepth)
+                pt_clr = self.filter_depth_and_align(view, pipe, bg, align=align, debug=debug, aligndepth=aligndepth)
                 if pt_clr is None:
                     continue
                 pt_clr = pt_clr.detach().clone()
@@ -458,7 +593,7 @@ class GaussianModel:
     def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, aligndepth=False):
         # if int(view.image_name.split(".")[0]) in [248, 249]:
         if int(view.image_name.split(".")[0]) >= 1171:
-            return None, None
+            return None
         align_depth = None
         mask = None
         # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
@@ -490,11 +625,11 @@ class GaussianModel:
             # torch.cuda.empty_cache()
 
             if mask.sum() < self.dbscan_portion * H * W:
-                return None, None
-            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=True, name=view.image_name)
+                return None
+            align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=debug, name=view.image_name)
             
             if align_depth is None:
-                return None, None
+                return None
             self.aligned_depth_dict[view.image_name] = align_depth.detach().clone()
             pts = self.depth_proj(align_depth, H, W, focals, c2w)
         else:
@@ -514,11 +649,11 @@ class GaussianModel:
             torch.cuda.empty_cache()
 
             if mask.sum() < self.dbscan_portion * H * W:
-                return None, None
+                return None
             if aligndepth:
                 align_depth = self.depth_align(render_depth_gsplat, mono_invdepth, mask.reshape(1, H, W), debug=debug)
                 if align_depth is None:
-                    return None, None
+                    return None
                 if align_depth is not None:
                     self.aligned_depth_dict[view.image_name] = align_depth.detach().clone()
 
@@ -541,7 +676,7 @@ class GaussianModel:
             colors = colors[mask]
             normals = normals[mask]
         pt_clr = torch.cat([pts, colors, normals], dim=1)
-        return pt_clr, align_depth
+        return pt_clr
     
     def depth_align(self, render_depth, mono_invdepth, mask=None, debug=True, name=None):
         """
@@ -581,38 +716,38 @@ class GaussianModel:
                 torchvision.utils.save_image(image_show, f"tmp/align_depth.png")
         return align_depth
 
-    def depth_align_ransac(self, render_depth, mono_invdepth, mask=None, debug=True):
-        """
-        Mono_depth is normally with unkown scale. The function here is to compute the correct scale with render_depth, so that the two depth maps can be aligned. render_depth is somehow noisy. Therefore, we need to use mask to filter out the noisy points.
+    # def depth_align_ransac(self, render_depth, mono_invdepth, mask=None, debug=True):
+    #     """
+    #     Mono_depth is normally with unkown scale. The function here is to compute the correct scale with render_depth, so that the two depth maps can be aligned. render_depth is somehow noisy. Therefore, we need to use mask to filter out the noisy points.
 
-        @param render_depth: [1, H, W]
-        @param mono_invdepth: [1, H, W]
-        @param mask: [1, H, W]
-        """
-        if mask is None:
-            mask = torch.ones_like(render_depth, dtype=torch.bool, device="cuda")
-        render_invdepth = 1.0 / (render_depth + 1e-2)
-        render_inv = render_invdepth[mask].reshape(-1, 1)
-        mono_inv = mono_invdepth[mask].reshape(-1, 1)
-        ransac = RANSAC(
-                    model_class=LinearRegressionModel, 
-                    max_iterations=100, 
-                    threshold=0.01, 
-                    min_samples=0.5,
-                )
-        ransac.fit(mono_inv, render_inv)
-        if ransac.best_model.weights[0][0] < 0:
-            return None
-        _, H, W = render_depth.shape
-        align_invdepth = ransac.predict(mono_invdepth.reshape(-1, 1)).reshape(1, H, W)
-        align_depth = 1.0 / (align_invdepth + 1e-6)
-        if debug:
-            align_depth_show = (align_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
-            render_depth_show = (render_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
-            render_depth_show = torch.clamp(render_depth_show, 0.0, 1.0)
-            image_show = torch.cat([render_depth_show, align_depth_show], dim=1) 
-            torchvision.utils.save_image(image_show, "tmp/align_depth.png")
-        return align_depth
+    #     @param render_depth: [1, H, W]
+    #     @param mono_invdepth: [1, H, W]
+    #     @param mask: [1, H, W]
+    #     """
+    #     if mask is None:
+    #         mask = torch.ones_like(render_depth, dtype=torch.bool, device="cuda")
+    #     render_invdepth = 1.0 / (render_depth + 1e-2)
+    #     render_inv = render_invdepth[mask].reshape(-1, 1)
+    #     mono_inv = mono_invdepth[mask].reshape(-1, 1)
+    #     ransac = RANSAC(
+    #                 model_class=LinearRegressionModel, 
+    #                 max_iterations=100, 
+    #                 threshold=0.01, 
+    #                 min_samples=0.5,
+    #             )
+    #     ransac.fit(mono_inv, render_inv)
+    #     if ransac.best_model.weights[0][0] < 0:
+    #         return None
+    #     _, H, W = render_depth.shape
+    #     align_invdepth = ransac.predict(mono_invdepth.reshape(-1, 1)).reshape(1, H, W)
+    #     align_depth = 1.0 / (align_invdepth + 1e-6)
+    #     if debug:
+    #         align_depth_show = (align_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
+    #         render_depth_show = (render_depth - align_depth.min()) / (align_depth.max() - align_depth.min())
+    #         render_depth_show = torch.clamp(render_depth_show, 0.0, 1.0)
+    #         image_show = torch.cat([render_depth_show, align_depth_show], dim=1) 
+    #         torchvision.utils.save_image(image_show, "tmp/align_depth.png")
+    #     return align_depth
     
     def depth2norm(self, depth, scale_factor=1.0):
         """
@@ -691,6 +826,8 @@ class GaussianModel:
                 r, g, b = int(r * 255), int(g * 255), int(b * 255)
                 f.write(f"{x} {y} {z} {r} {g} {b}\n")
         print("[INFO] save to ply done.")
+    ######################################################################
+    ######################################################################
     ######################################################################
     ######################################################################
     ######################################################################

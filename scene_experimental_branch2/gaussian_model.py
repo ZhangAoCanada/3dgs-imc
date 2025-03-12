@@ -282,7 +282,8 @@ class GaussianModel:
         gt_color = torch.cat([color, off_color], dim=0)
         gt_norm = torch.cat([norm, off_norm], dim=0)
         l = self.nn_l(res, gt_opacity, gt_color, gt_norm)
-        write_summary(self.net, tb_writer, iteration)
+        if iteration % 500 == 0:
+            write_summary(self.net, tb_writer, iteration)
         return l
     
     def nntrain_view(self, view, pipe, bg, tb_writer, iteration, align=True):
@@ -342,7 +343,8 @@ class GaussianModel:
     def partial_l(self, tb_writer, iteration, bound_type="local"):
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
-        xyz = self.get_xyz
+        # xyz = self.get_xyz
+        xyz, _ = self.sample_xyz()
         if xyz.shape[0] > self.max_num:
             mask = torch.zeros(xyz.shape[0], dtype=torch.bool)
             random_index = torch.randperm(xyz.shape[0])[:self.max_num]
@@ -352,6 +354,8 @@ class GaussianModel:
         l = (1.0 - pred['sigma'])
         grad = diff_operators.gradient(l, pred['net_in'])
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
+        # grad = torch.autograd.grad(l, [self._xyz, self._rotation, self._scaling], grad_outputs=torch.ones_like(l), create_graph=True)
+        # net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
             if bound_type == "local":
                 xyz_upper = self.net.xyz_upperbound
@@ -362,17 +366,63 @@ class GaussianModel:
                 scaling = torch.where(diff_upper > 0, torch.abs(diff_upper) * 0.01, 1)
                 scaling = torch.where(diff_lower < 0, torch.abs(diff_lower) * 0.01, 1)
                 scaling = torch.where(scaling < 1, 1, scaling)
-                grad = grad * net_scale * scaling
-            elif bound_type == "global":
-                grad = grad * net_scale
+            else:
+                scaling = torch.ones_like(net_in)
+            grad = grad * net_scale * scaling
             grad = grad * self.partial_scaling
             self._xyz[mask].add_(grad)
+            # self._xyz[mask].add_(grad[0][mask] * net_scale * self.partial_scaling * scaling)
+            # self._rotation[mask].add_(grad[1][mask] * self.partial_scaling)
+            # self._scaling[mask].add_(grad[2][mask] * self.partial_scaling)
         if tb_writer is not None:
             tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
             tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
+            # tb_writer.add_scalar("nn_l/partial_grad_min", grad[0][mask].min(), iteration)
+            # tb_writer.add_scalar("nn_l/partial_grad_max", grad[0][mask].max(), iteration)
         ### NOTE: original size ###
         l = l.mean()
         return l
+
+    def sample_xyz(self, scaling_modifier=1.0):
+        means = self.get_xyz
+        # scaling = self.get_scaling
+        # rot = self.get_rotation
+        # L = build_scaling_rotation_grad(scaling, rot)
+        L = build_scaling_rotation(self.get_scaling, self.get_rotation)
+        covariance = L @ L.transpose(1, 2)
+        # TODO: is this L the same as the one above?
+        # L = torch.linalg.cholesky(covariance)
+        z = torch.randn_like(means) * scaling_modifier
+        #######################################################
+        # epsilon = torch.bmm(z.unsqueeze(1), L.transpose(1, 2)).squeeze(1)
+        # epsilon = torch.bmm(L, z.unsqueeze(-1)).squeeze(-1)
+        epsilon = torch.bmm(covariance, z.unsqueeze(-1)).squeeze(-1)
+        ########################################################
+        samples = means + epsilon
+        # NOTE: compute (x - μ)^T · Σ^(-1) · (x - μ)
+        cov_inv = torch.linalg.inv(covariance)
+        mahalanobis_dist = torch.sum(torch.bmm(epsilon.unsqueeze(1), cov_inv).squeeze(1) * epsilon, dim=1)
+        probs = torch.exp(-0.5 * mahalanobis_dist)
+        opacities = self.get_opacity * probs[..., None]
+        return samples, opacities
+    
+    def get_color(self, view):
+        shs_view = self.get_features.transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
+        dir_pp = (self.get_xyz - view.camera_center.repeat(self.get_features.shape[0], 1))
+        dir_pp_normalized = dir_pp/dir_pp.norm(dim=1, keepdim=True)
+        sh2rgb = eval_sh(self.active_sh_degree, shs_view, dir_pp_normalized)
+        colors_precomp = torch.clamp_min(sh2rgb + 0.5, 0.0)
+        return colors_precomp
+    
+    def get_norm(self, ):
+        scaling = self.get_scaling
+        rot = self.get_rotation
+        norm_axis = torch.argmin(scaling, dim=1)
+        norm = torch.zeros_like(scaling)
+        norm[torch.arange(scaling.shape[0]), norm_axis] = 1
+        rot_mat = build_rotation(rot)
+        normal = torch.bmm(norm.unsqueeze(1), rot_mat.transpose(1, 2)).squeeze(1)
+        return normal
 
     def spawn_randompnts(self, num_pnts=100000, voxel_size=0.01):
         upper_bound = self.net.xyz_upperbound
@@ -539,7 +589,7 @@ class GaussianModel:
             labels = torch.tensor(labels, device="cuda", dtype=torch.float)
             mask = labels.detach().clone() != -1
             del db, labels, pts_cudf
-            # torch.cuda.empty_cache()
+            torch.cuda.empty_cache()
 
             if mask.sum() < self.dbscan_portion * H * W:
                 return None, None
