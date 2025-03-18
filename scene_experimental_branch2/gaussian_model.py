@@ -352,10 +352,10 @@ class GaussianModel:
             net_in = xyz[mask]
         pred = self.net(net_in)
         l = (1.0 - pred['sigma'])
-        grad = diff_operators.gradient(l, pred['net_in'])
-        net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-        # grad = torch.autograd.grad(l, [self._xyz, self._rotation, self._scaling], grad_outputs=torch.ones_like(l), create_graph=True)
+        # grad = diff_operators.gradient(l, pred['net_in'])
         # net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
+        grad = torch.autograd.grad(l, [self._xyz, self._rotation, self._scaling], grad_outputs=torch.ones_like(l), create_graph=True)
+        net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
             if bound_type == "local":
                 xyz_upper = self.net.xyz_upperbound
@@ -368,17 +368,17 @@ class GaussianModel:
                 scaling = torch.where(scaling < 1, 1, scaling)
             else:
                 scaling = torch.ones_like(net_in)
-            grad = grad * net_scale * scaling
-            grad = grad * self.partial_scaling
-            self._xyz[mask].add_(grad)
-            # self._xyz[mask].add_(grad[0][mask] * net_scale * self.partial_scaling * scaling)
-            # self._rotation[mask].add_(grad[1][mask] * self.partial_scaling)
-            # self._scaling[mask].add_(grad[2][mask] * self.partial_scaling)
+            # grad = grad * net_scale * scaling
+            # grad = grad * self.partial_scaling
+            # self._xyz[mask].add_(grad)
+            self._xyz[mask].add_(grad[0][mask] * net_scale * self.partial_scaling * scaling)
+            self._rotation[mask].add_(grad[1][mask] * self.partial_scaling)
+            self._scaling[mask].add_(grad[2][mask] * self.partial_scaling)
         if tb_writer is not None:
-            tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
-            tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
-            # tb_writer.add_scalar("nn_l/partial_grad_min", grad[0][mask].min(), iteration)
-            # tb_writer.add_scalar("nn_l/partial_grad_max", grad[0][mask].max(), iteration)
+            # tb_writer.add_scalar("nn_l/partial_grad_min", grad.min(), iteration)
+            # tb_writer.add_scalar("nn_l/partial_grad_max", grad.max(), iteration)
+            tb_writer.add_scalar("nn_l/partial_grad_min", grad[0][mask].min(), iteration)
+            tb_writer.add_scalar("nn_l/partial_grad_max", grad[0][mask].max(), iteration)
         ### NOTE: original size ###
         l = l.mean()
         return l

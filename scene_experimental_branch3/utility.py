@@ -94,15 +94,24 @@ def lin2img(tensor, image_resolution=None):
 def make_contour_plot(array_2d,mode='log'):
     fig, ax = plt.subplots(figsize=(2.75, 2.75), dpi=300)
 
-    if(mode=='log'):
-        num_levels = 6
-        levels_pos = np.logspace(-2, 0, num=num_levels) # logspace
-        levels_neg = -1. * levels_pos[::-1]
-        levels = np.concatenate((levels_neg, np.zeros((0)), levels_pos), axis=0)
-        colors = plt.get_cmap("Spectral")(np.linspace(0., 1., num=num_levels*2+1))
-    elif(mode=='lin'):
+    # if(mode=='log'):
+    #     num_levels = 6
+    #     levels_pos = np.logspace(-2, 0, num=num_levels) # logspace
+    #     levels_neg = -1. * levels_pos[::-1]
+    #     levels = np.concatenate((levels_neg, np.zeros((0)), levels_pos), axis=0)
+    #     colors = plt.get_cmap("Spectral")(np.linspace(0., 1., num=num_levels*2+1))
+    # elif(mode=='lin'):
+    #     num_levels = 10
+    #     levels = np.linspace(-.5,.5,num=num_levels)
+    #     colors = plt.get_cmap("Spectral")(np.linspace(0., 1., num=num_levels))
+    if mode == 'log':
+        num_levels = 30
+        levels_pos = np.logspace(-2, 0, num=num_levels)
+        levels = np.concatenate((np.zeros(1), levels_pos), axis=0)
+        colors = plt.get_cmap("Spectral")(np.linspace(0., 1., num=num_levels+1))
+    elif mode == 'lin':
         num_levels = 10
-        levels = np.linspace(-.5,.5,num=num_levels)
+        levels = np.linspace(-.5, .5, num=num_levels)
         colors = plt.get_cmap("Spectral")(np.linspace(0., 1., num=num_levels))
 
     sample = np.flipud(array_2d)

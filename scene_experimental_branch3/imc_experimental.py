@@ -142,7 +142,6 @@ class NetworksA(nn.Module):
 
         return {
             'net_in': coords, 
-            'net_in_raw': net_in,
             'rgb': rgb_pred,
             'sigma': sigma_pred,
             # 'xyz_noise': xyz_noise

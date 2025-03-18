@@ -271,6 +271,7 @@ class GaussianModel:
         # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.StepLR(self.imc_experimental_optimizer, step_size=1000, gamma=0.5)
         # self.imc_experimental_optim_scheduler = torch.optim.lr_scheduler.ExponentialLR(self.imc_experimental_optimizer, gamma=0.9)
         self.partial_scaling = training_args.partial_scaling
+        self.sigma_scaling = training_args.sigma_scaling
         self.downsample_ratio = training_args.dds_ratio
         self.voxel_size = training_args.dvoxel_size
         self.eps = training_args.eps
@@ -278,6 +279,9 @@ class GaussianModel:
         self.dbscan_portion = training_args.dbscan_portion
         self.nn_type = training_args.nn_type
         self.bound_type = training_args.bound_type
+        self.minmax = training_args.minmax
+        self.range_scale = training_args.range_scale
+        print("******************* self.minmax: ", self.minmax)
 
     ######################################################################
     ######################################################################
@@ -286,16 +290,15 @@ class GaussianModel:
     ######################################################################
     def derivatives(self, view, tb_writer, iteration):
         if iteration < 2400:
-        # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
-        # if iteration < 10:
             return None, None
-        # TODO: gaussian points for learning
-        gs_xyz, gs_opacity = self.sample_xyz()
-        gs_color = self.get_color(view)
+        # if iteration < 10:
+        #     return None, None
+        # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
+
+        gs_mask = self.mask_pts(self.get_xyz.shape[0])
+        gs_xyz, gs_opacity, probability = self.sample_xyz(mask=gs_mask)
+        gs_color = self.get_color(view, mask=gs_mask)
         # gs_norm = self.get_norm()
-        gs_norm = torch.rand((gs_xyz.shape[0], 3), device="cuda")
-        gs_mask = self.mask_pts(gs_xyz.shape[0])
-        gs_xyz, gs_opacity, gs_color, gs_norm = gs_xyz[gs_mask], gs_opacity[gs_mask], gs_color[gs_mask], gs_norm[gs_mask]
         attributes = torch.cat([gs_opacity, gs_color], dim=-1)
         # gs_pnts = torch.cat([gs_xyz, gs_opacity, gs_color], dim=1)
         # res = self.net(gs_pnts)
@@ -308,33 +311,42 @@ class GaussianModel:
         l = 1.0 - pred_opacity
 
         grad = torch.autograd.grad(l, [self._xyz, self._rotation, self._scaling], grad_outputs=torch.ones_like(l), create_graph=True)
-        grad = [gd * self.net.xyz_upperbound for gd in grad]
         net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
 
         # grad_net_in = diff_operators.gradient(l, res['net_in']) * (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         # grad = torch.autograd.grad(gs_xyz, [self._xyz, self._rotation, self._scaling], grad_outputs=grad_net_in, create_graph=True)
+        # grad = [gd * self.net.xyz_upperbound for gd in grad]
+        # net_scale = 1.0
 
         # grad = diff_operators.gradient(l, res['net_in'])
         # net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
             if self.bound_type == "local":
+                # xyz = self._xyz[gs_mask].detach().clone()
+                # upperdist = xyz - self.net.xyz_upperbound
+                # lowerdist = self.net.xyz_lowerbound - xyz
+                # xyz_scaling = torch.ones_like(xyz)
+                # xyz_scaling = torch.where(upperdist > 0, torch.abs(upperdist) * 0.01, 1.)
+                # xyz_scaling = torch.where(lowerdist < 0, torch.abs(lowerdist) * 0.01, 1.)
                 xyz = self._xyz[gs_mask].detach().clone()
-                upperdist = xyz - self.net.xyz_upperbound
-                lowerdist = self.net.xyz_lowerbound - xyz
+                xyz = (xyz - self.net.xyz_lowerbound) / (self.net.xyz_upperbound - self.net.xyz_lowerbound) * 2.0 - 1.0
                 xyz_scaling = torch.ones_like(xyz)
-                xyz_scaling = torch.where(upperdist > 0, torch.abs(upperdist) * 0.01, 1.)
-                xyz_scaling = torch.where(lowerdist < 0, torch.abs(lowerdist) * 0.01, 1.)
+                xyz_scaling = torch.where(xyz > 1.0, torch.max(torch.abs(xyz / 1.0), xyz_scaling), xyz_scaling)
+                xyz_scaling = torch.where(xyz < -1.0, torch.max(torch.abs(xyz / -1.0), xyz_scaling), xyz_scaling)
             else:
                 xyz_scaling = 1.0
-            # grad = grad * net_scale * xyz_scaling
-            # self._xyz[gs_mask].add_(grad)
 
-            # grad_xyz = grad[0][gs_mask] * xyz_scaling
-            grad_xyz = grad[0][gs_mask] * net_scale * xyz_scaling
-            # self._xyz[gs_mask].add_(grad[0][gs_mask] * net_scale * xyz_scaling)
+            # grad = [gd * probability.unsqueeze(-1) * self.partial_scaling for gd in grad]
+            # grad = [gd * self.partial_scaling for gd in grad]
+
+            # grad_xyz = grad[0][gs_mask] * net_scale * xyz_scaling
+            grad_xyz = grad[0][gs_mask] * xyz_scaling * self.partial_scaling
+            grad_rot = grad[1][gs_mask] * self.partial_scaling * self.sigma_scaling
+            grad_scale = grad[2][gs_mask] * self.partial_scaling * self.sigma_scaling
+
             self._xyz[gs_mask].add_(grad_xyz)
-            self._rotation[gs_mask].add_(grad[1][gs_mask])
-            self._scaling[gs_mask].add_(grad[2][gs_mask])
+            self._rotation[gs_mask].add_(grad_rot)
+            self._scaling[gs_mask].add_(grad_scale)
 
             # # self._opacity[gs_mask].add_(self.inverse_opacity_activation(pred_opacity - gs_opacity))
             # self._opacity[gs_mask].copy_(self.inverse_opacity_activation(pred_opacity))
@@ -358,24 +370,38 @@ class GaussianModel:
 
     def compute_diff(self, view, tb_writer, iteration):
         with torch.no_grad():
-            # gs_xyz, gs_opacity = self.sample_xyz(scaling_modifier=0.5)
-            gs_xyz, gs_opacity = self.sample_xyz()
-            # gs_xyz, gs_opacity = self.get_xyz, self.get_opacity
+            # gs_mask = self.mask_pts(gs_xyz.shape[0], num_scale=10)
+            gs_xyz, gs_opacity, probability = self.sample_xyz()
             gs_color = self.get_color(view)
+            # gs_xyz, gs_opacity = self.get_xyz, self.get_opacity
             if iteration > 2400:
+                # res = self.net(gs_xyz[gs_mask])
+                # opacity_diff_mask = res['sigma'] - gs_opacity[gs_mask]
+                # color_diff_mask = res['rgb'] - gs_color[gs_mask]
+                # # random select
+                # opacity_diff = torch.zeros_like(gs_opacity)
+                # color_diff = torch.zeros_like(gs_color)
+                # opacity_diff[gs_mask] = opacity_diff_mask
+                # color_diff[gs_mask] = color_diff_mask
                 res = self.net(gs_xyz)
                 opacity_diff = res['sigma'] - gs_opacity
                 color_diff = res['rgb'] - gs_color
             else:
                 opacity_diff = 1.0 - gs_opacity
                 color_diff = torch.zeros_like(gs_color) + 1e-3
-        return torch.abs(opacity_diff), torch.abs(color_diff)
+        
+        # opacity_diff_abs = torch.abs(opacity_diff)
+        # color_diff_abs = torch.abs(color_diff)
+        opacity_diff_abs = torch.abs(opacity_diff) * probability
+        color_diff_abs = torch.abs(color_diff) * probability
+        return opacity_diff_abs, color_diff_abs
         
     def train_continuous(self, all_views, view, pipe, bg, tb_writer, iteration):
         if iteration < 2000:
             return None
         elif iteration % 1000 == 0:
             self.update_nnpts(all_views, pipe, bg, align=False)
+            # self.max_num += 10
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
         self.net.train()
@@ -387,68 +413,113 @@ class GaussianModel:
         if pts is None:
             return None
         assert pts.shape[1] == 9
-        # NOTE: get fitlered points
+        mask = self.mask_pts(pts.shape[0])
+        pts = pts[mask].clone().requires_grad_(True)
         xyz, color, norm = torch.split(pts, [3, 3, 3], dim=1)
-        H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
-        mask = self.mask_pts(xyz.shape[0])
-        xyz, color, norm = xyz[mask], color[mask], norm[mask]
         opacity = torch.ones((xyz.shape[0], 1), device="cuda")
-        # NOTE: generate random points for training
-        if self.nn_type == "allviews":
-            off_xyz, off_color, off_norm, off_opacity = self.spawn_randompnts(xyz.shape[0], self.voxel_size)
-        else:
-            off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, H, W, focals, c2w, voxel_size=self.voxel_size)
+        # if self.nn_type == "allviews":
+        #     off_xyz, off_color, off_norm, off_opacity = self.spawn_randompnts(xyz.shape[0], self.voxel_size)
+        # else:
+        #     H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
+        #     off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, H, W, focals, c2w, voxel_size=self.voxel_size)
 
-        # # TODO: [pnts, off_pnts], dim in [xyz, opacity, color]
-        # pnts = torch.cat([xyz, opacity, color], dim=1)
-        # off_pnts = torch.cat([off_xyz, off_opacity, off_color], dim=1)
-        # pts_num, off_num = pnts.shape[0], off_pnts.shape[0]
-        # TODO: [gt_pnts, gt_off_pnts], dim in [opacity, color, norm]
-        gt_opacity = torch.cat([opacity, off_opacity], dim=0)
-        gt_color = torch.cat([color, off_color], dim=0)
-        gt_norm = torch.cat([norm, off_norm], dim=0)
-        # TODO: organize the input for the network
-        # net_in = torch.cat([pnts, off_pnts], dim=0)
-        net_in = torch.cat([xyz, off_xyz], dim=0)
+        pert_xyz, pert_color, pert_norm, pert_opacity = self.perturb_pnts_whole(xyz, color, norm, opacity)
+        # if self.minmax == "whole":
+        #     pert_xyz, pert_color, pert_norm, pert_opacity = self.perturb_pnts_whole(xyz, color, norm, opacity)
+        # else:
+        #     pert_xyz, pert_color, pert_norm, pert_opacity = self.perturb_pnts(xyz, color, norm, opacity)
+
+        gt_opacity = torch.cat([opacity, pert_opacity], dim=0)
+        gt_color = torch.cat([color, pert_color], dim=0)
+        gt_norm = torch.cat([norm, pert_norm], dim=0)
+        net_in = torch.cat([xyz, pert_xyz], dim=0)
+        # gt_opacity = torch.cat([opacity, pert_opacity, off_opacity], dim=0)
+        # gt_color = torch.cat([color, pert_color, off_color], dim=0)
+        # gt_norm = torch.cat([norm, pert_norm, off_norm], dim=0)
+        # net_in = torch.cat([xyz, pert_xyz, off_xyz], dim=0)
+
+        # gt_opacity = torch.cat([opacity, off_opacity], dim=0)
+        # gt_color = torch.cat([color, off_color], dim=0)
+        # gt_norm = torch.cat([norm, off_norm], dim=0)
+        # net_in = torch.cat([xyz, off_xyz], dim=0)
+
         res = self.net(net_in)
-        # TODO: calculate the loss
         l = self.loss_fn(res, gt_opacity, gt_color, gt_norm)
         if iteration % 500 == 0:
             write_summary(self.net, tb_writer, iteration)
         if tb_writer is not None:
             tb_writer.add_scalar("nn_l/nnl", l, iteration)
         return l
+    
+    def perturb_pnts(self, xyz, color, norm, opacity, range_scale=1.):
+        # # randn_probs = (1 / math.sqrt(2 * math.pi)) * torch.exp(-0.5 * randn_vals ** 2)
+        # randn_vals = torch.randn_like(opacity)
+        # randn_probs = torch.exp(-0.5 * randn_vals ** 2)
+        randn_vals = torch.randn_like(xyz)
+        randn_probs = torch.exp(-0.5 * torch.bmm(randn_vals.unsqueeze(1), randn_vals.unsqueeze(2)).squeeze(-1))
+
+        # dist_range = (self.net.xyz_upperbound - self.net.xyz_lowerbound) * range_scale
+        if self.minmax == "min":
+            dist_range = torch.min(torch.abs(self.net.xyz_upperbound - xyz).min(dim=-1, keepdim=True).values, torch.abs(self.net.xyz_lowerbound - xyz).min(dim=-1, keepdim=True).values) * range_scale
+        elif self.minmax == "max":
+            # dist_range = torch.min(torch.abs(self.net.xyz_upperbound - xyz).min(dim=-1, keepdim=True).values, torch.abs(self.net.xyz_lowerbound - xyz).min(dim=-1, keepdim=True).values) * range_scale
+            dist_range = torch.max(torch.abs(self.net.xyz_upperbound - xyz).max(dim=-1, keepdim=True).values, torch.abs(self.net.xyz_lowerbound - xyz).max(dim=-1, keepdim=True).values) * range_scale
+        else:
+            dist_range = (self.net.xyz_upperbound - self.net.xyz_lowerbound) * range_scale
+
+        pert_xyz = xyz.clone() + randn_vals * norm * dist_range
+        pert_color = color.clone()
+        pert_norm = norm.clone()
+        pert_opacity = opacity.clone() * randn_probs
+        return pert_xyz, pert_color, pert_norm, pert_opacity
+
+    def perturb_pnts_whole(self, xyz, color, norm, opacity):
+        rand_ = torch.rand_like(xyz).requires_grad_(True)
+        xyz_ = (xyz - self.net.xyz_lowerbound) / (self.net.xyz_upperbound - self.net.xyz_lowerbound)
+        rand_vals = rand_ * (self.net.xyz_upperbound - self.net.xyz_lowerbound) + self.net.xyz_lowerbound
+        if self.minmax == "whole" or self.minmax == "wholeonly":
+            diff_vals = rand_vals - xyz
+        else:
+            diff_vals = (rand_ - xyz_) * self.range_scale
+        rand_probs = torch.exp(-0.5 * torch.bmm(diff_vals.unsqueeze(1), diff_vals.unsqueeze(2)).squeeze(-1))
+        pert_xyz = rand_vals
+        pert_color = color.clone()
+        pert_norm = norm.clone()
+        pert_opacity = opacity.clone() * rand_probs
+        return pert_xyz, pert_color, pert_norm, pert_opacity
 
     def loss_fn(self, pred, gt_opacity, gt_color, gt_norm):
-        # NOTE: pred has {'net_in', 'xyz', 'rgb', 'sigma'}
         net_in = pred['net_in']
-
-        # net_in_raw = pred['net_in_raw'] # [pnts, off_pnts] in [xyz, opacity, color]
-        # pred_color_diff = pred['rgb']
-        # pred_opacity_diff = pred['sigma']
-        # pred_opacity = net_in_raw[..., 3:4] + pred_opacity_diff
-        # pred_color = net_in_raw[..., 4:] + pred_color_diff
-
         pred_color = pred['rgb']
         pred_opacity = pred['sigma']
 
-        gradient = diff_operators.gradient(pred_opacity, net_in)[..., :3]
-        opacity_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_opacity, gt_opacity), torch.zeros_like(pred_opacity)).mean()
-        color_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_color, gt_color), torch.zeros_like(pred_color)).mean()
-        normal_constraint = torch.where(gt_opacity != 0, 1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None], torch.zeros_like(gradient)).mean()
-        gradient_constraint = torch.abs(gradient.norm(dim=-1) - 1).mean()
-        inter_constraint = torch.where(gt_opacity != 0, torch.zeros_like(pred_opacity), pred_opacity).mean()
+        # gradient = diff_operators.gradient(pred_opacity, net_in)
+        # opacity_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_opacity, gt_opacity), torch.zeros_like(pred_opacity)).mean()
+        # color_constraint = torch.where(gt_opacity != 0, F.l1_loss(pred_color, gt_color), torch.zeros_like(pred_color)).mean()
+        # normal_constraint = torch.where(gt_opacity != 0, 1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None], torch.zeros_like(gradient)).mean()
+        # gradient_constraint = torch.abs(gradient.norm(dim=-1) - 1).mean()
+        # inter_constraint = torch.where(gt_opacity != 0, torch.zeros_like(pred_opacity), pred_opacity).mean()
 
+        # l = opacity_constraint * 3e3 + \
+        #     color_constraint * 1e3 + \
+        #     normal_constraint * 1e2 + \
+        #     inter_constraint * 1e2 + \
+        #     gradient_constraint * 5e1
+
+        gradient = diff_operators.gradient(pred_opacity, net_in)
+        opacity_constraint = F.l1_loss(pred_opacity, gt_opacity).mean()
+        color_constraint = F.l1_loss(pred_color, gt_color).mean()
+        normal_constraint = (1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None]).mean()
+        gradient_constraint = torch.abs(gradient.norm(dim=-1) - 1).mean()
         l = opacity_constraint * 3e3 + \
             color_constraint * 1e3 + \
             normal_constraint * 1e2 + \
-            inter_constraint * 1e2 + \
             gradient_constraint * 5e1
 
         return l
     
-    def mask_pts(self, pts_num):
-        if pts_num > self.max_num:
+    def mask_pts(self, pts_num, num_scale=1.0):
+        if pts_num > self.max_num * num_scale:
             mask = torch.zeros(pts_num, dtype=torch.bool, device="cuda")
             random_index = torch.randperm(pts_num)[:self.max_num]
             mask[random_index] = True
@@ -456,12 +527,14 @@ class GaussianModel:
         else:
             return torch.ones(pts_num, dtype=torch.bool, device="cuda")
 
-    def sample_xyz(self, scaling_modifier=1.0):
-        means = self.get_xyz
+    def sample_xyz(self, mask=None, scaling_modifier=1.0):
+        if mask is None:
+            mask = torch.ones(self.get_xyz.shape[0], dtype=torch.bool, device="cuda")
+        means = self.get_xyz[mask]
         # scaling = self.get_scaling
         # rot = self.get_rotation
         # L = build_scaling_rotation_grad(scaling, rot)
-        L = build_scaling_rotation(self.get_scaling, self.get_rotation)
+        L = build_scaling_rotation(self.get_scaling[mask], self.get_rotation[mask])
         covariance = L @ L.transpose(1, 2)
         # TODO: is this L the same as the one above?
         # L = torch.linalg.cholesky(covariance)
@@ -473,15 +546,18 @@ class GaussianModel:
         ########################################################
         samples = means + epsilon
         # NOTE: compute (x - μ)^T · Σ^(-1) · (x - μ)
-        cov_inv = torch.linalg.inv(covariance)
+        # cov_inv = torch.linalg.inv(covariance)
+        cov_inv = torch.inverse(covariance + 1e-6 * torch.eye(3, device="cuda"))
         mahalanobis_dist = torch.sum(torch.bmm(epsilon.unsqueeze(1), cov_inv).squeeze(1) * epsilon, dim=1)
         probs = torch.exp(-0.5 * mahalanobis_dist)
-        opacities = self.get_opacity * probs[..., None]
-        return samples, opacities
+        opacities = self.get_opacity[mask] * probs[..., None]
+        return samples, opacities, probs
     
-    def get_color(self, view):
-        shs_view = self.get_features.transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
-        dir_pp = (self.get_xyz - view.camera_center.repeat(self.get_features.shape[0], 1))
+    def get_color(self, view, mask=None):
+        if mask is None:
+            mask = torch.ones(self.get_xyz.shape[0], dtype=torch.bool, device="cuda")
+        shs_view = self.get_features[mask].transpose(1, 2).view(-1, 3, (self.max_sh_degree+1)**2)
+        dir_pp = (self.get_xyz[mask] - view.camera_center.repeat(self.get_features[mask].shape[0], 1))
         dir_pp_normalized = dir_pp/dir_pp.norm(dim=1, keepdim=True)
         sh2rgb = eval_sh(self.active_sh_degree, shs_view, dir_pp_normalized)
         colors_precomp = torch.clamp_min(sh2rgb + 0.5, 0.0)
@@ -495,6 +571,7 @@ class GaussianModel:
         norm[torch.arange(scaling.shape[0]), norm_axis] = 1
         rot_mat = build_rotation(rot)
         normal = torch.bmm(norm.unsqueeze(1), rot_mat.transpose(1, 2)).squeeze(1)
+        normal = F.normalize(normal, p=2, dim=-1)
         return normal
 
     def spawn_randompnts(self, num_pnts=100000, voxel_size=0.01):

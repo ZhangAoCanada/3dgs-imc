@@ -111,13 +111,16 @@ class OptimizationParams(ParamGroup):
         ### NOTE: for debugging ###
         self.nn_type = "singleview" # "singleview" or "allviews"
         self.bound_type = "local" # "local" or "global"
-        self.partial_scaling = 1e-1
+        self.partial_scaling = 1e0
+        self.sigma_scaling = 1e-3
         self.dds_ratio = 4
         self.dvoxel_size = 0.001
         self.eps = 0.05 # 0.05
         self.min_samples = 200 # 100
         self.dbscan_portion = 0.3 # 0.3
         self.nndebug = True
+        self.minmax = "wholeonly"
+        self.range_scale = 1.0
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):
