@@ -121,6 +121,7 @@ class OptimizationParams(ParamGroup):
         self.nndebug = True
         self.minmax = "wholeonly"
         self.range_scale = 1.0
+        self.noise_method = "mcmc"
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):

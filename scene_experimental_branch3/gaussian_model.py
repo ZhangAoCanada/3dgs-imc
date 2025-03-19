@@ -371,29 +371,35 @@ class GaussianModel:
     def compute_diff(self, view, tb_writer, iteration):
         with torch.no_grad():
             # gs_mask = self.mask_pts(gs_xyz.shape[0], num_scale=10)
+            # gs_xyz, gs_opacity, probability = self.sample_xyz(mask=gs_mask)
+            # gs_color = self.get_color(view, mask=gs_mask)
+
             gs_xyz, gs_opacity, probability = self.sample_xyz()
             gs_color = self.get_color(view)
+
             # gs_xyz, gs_opacity = self.get_xyz, self.get_opacity
             if iteration > 2400:
                 # res = self.net(gs_xyz[gs_mask])
                 # opacity_diff_mask = res['sigma'] - gs_opacity[gs_mask]
                 # color_diff_mask = res['rgb'] - gs_color[gs_mask]
-                # # random select
                 # opacity_diff = torch.zeros_like(gs_opacity)
                 # color_diff = torch.zeros_like(gs_color)
                 # opacity_diff[gs_mask] = opacity_diff_mask
                 # color_diff[gs_mask] = color_diff_mask
+
                 res = self.net(gs_xyz)
-                opacity_diff = res['sigma'] - gs_opacity
+                # opacity_diff = res['sigma'] - gs_opacity
+                # color_diff = res['rgb'] - gs_color
+                opacity_diff = 1.0 - res['sigma']
                 color_diff = res['rgb'] - gs_color
             else:
                 opacity_diff = 1.0 - gs_opacity
                 color_diff = torch.zeros_like(gs_color) + 1e-3
         
-        # opacity_diff_abs = torch.abs(opacity_diff)
-        # color_diff_abs = torch.abs(color_diff)
-        opacity_diff_abs = torch.abs(opacity_diff) * probability
-        color_diff_abs = torch.abs(color_diff) * probability
+            opacity_diff_abs = torch.abs(opacity_diff)
+            color_diff_abs = torch.abs(color_diff)
+            # opacity_diff_abs = torch.abs(opacity_diff) * probability.unsqueeze(-1)
+            # color_diff_abs = torch.abs(color_diff) * probability.unsqueeze(-1)
         return opacity_diff_abs, color_diff_abs
         
     def train_continuous(self, all_views, view, pipe, bg, tb_writer, iteration):
