@@ -41,16 +41,14 @@ class NetworksA(nn.Module):
         self.linear_mean = nn.Linear(hidden_features, self.out_features)
         self.linear_std = nn.Linear(hidden_features, self.out_features)
 
-        # # self.preprocess2 = nn.Linear(4, hidden_features)
-        # # self.body2 = FCBlock(in_features=hidden_features * 2, 
-        # self.body2 = FCBlock(in_features=4, 
-        #                     out_features=hidden_features,
-        #                     num_hidden_layers=2,
-        #                     hidden_features=hidden_features,
-        #                     outermost_linear=False,
-        #                     nonlinearity=type)
-        # self.linear_mean2 = nn.Linear(hidden_features, 3)
-        # self.linear_std2 = nn.Linear(hidden_features, 3)
+        self.body2 = FCBlock(in_features=2, 
+                            out_features=hidden_features,
+                            num_hidden_layers=2,
+                            hidden_features=hidden_features,
+                            outermost_linear=False,
+                            nonlinearity=type)
+        self.linear_mean2 = nn.Linear(hidden_features, 3)
+        self.linear_std2 = nn.Linear(hidden_features, 3)
 
         # self.xyz_act = nn.ReLU()
         self.sigma_act = nn.ReLU()
@@ -71,7 +69,7 @@ class NetworksA(nn.Module):
         self.xyz_upperbound += extend_factor * self.boundary
 
 
-    def forward(self, net_in, attributes=None, params=None, raw=True):
+    def forward(self, net_in, attributes=None, noise_method=None, params=None, raw=True):
         if params is None:
             params = OrderedDict(self.named_parameters())
         
@@ -126,25 +124,34 @@ class NetworksA(nn.Module):
         # rgb_pred = torch.clamp(rgb_pred, -1, 1)
 
         # NOTE: generate noise with another network
-        # if attributes is not None:
-        #     # attr = self.preprocess2(attributes)
-        #     # pred2 = self.body2(torch.cat([pred, attr], dim=-1))
-        #     # pred2_std = self.linear_std2(pred2)
-        #     # xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std)
-        #     pred_attr = torch.cat([sigma_pred, rgb_pred], dim=-1)
-        #     net_in2 = attributes - pred_attr
-        #     pred2 = self.body2(net_in2)
-        #     pred2_std = self.linear_std2(pred2)
-        #     xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * torch.abs(attributes[..., :1] - sigma_pred)
-        # else:
-        #     xyz_noise = None
+        if attributes is not None:
+            net_in2 = torch.cat([sigma_pred, attributes], dim=-1)
+            pred2 = self.body2(net_in2)
+            pred2_std = self.linear_std2(pred2)
+
+            if noise_method == 'detach':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * attributes.detach().clone()
+            elif noise_method == 'opacity':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * attributes
+            elif noise_method == 'sigma':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * sigma_pred
+            elif noise_method == '1-sigma':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * (1 - sigma_pred)
+            elif noise_method == 'opacity-sigma':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * torch.abs(attributes - sigma_pred)
+            elif noise_method == 'opacity-sigma-detach':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * torch.abs(attributes.detach().clone() - sigma_pred.detach().clone())
+            else:
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * torch.abs(attributes[..., :1] - sigma_pred)
+        else:
+            xyz_noise = None
 
 
         return {
             'net_in': coords, 
             'rgb': rgb_pred,
             'sigma': sigma_pred,
-            # 'xyz_noise': xyz_noise
+            'xyz_noise': xyz_noise
             }
 
     

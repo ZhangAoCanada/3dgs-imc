@@ -1,7 +1,7 @@
 for partial_scaling in 1e0 1e-1 1e-2
 do
     # for sigma_scaling in 1e0 1e-1 1e-2 1e-3
-    for sigma_scaling in 1e-3
+    for sigma_scaling in 1e-1 1e-2 1e-3
     do
         images=input_cached
         init_type=sfm

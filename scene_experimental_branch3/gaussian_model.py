@@ -281,6 +281,7 @@ class GaussianModel:
         self.bound_type = training_args.bound_type
         self.minmax = training_args.minmax
         self.range_scale = training_args.range_scale
+        self.noise_method = training_args.noise_method
         print("******************* self.minmax: ", self.minmax)
 
     ######################################################################
@@ -296,16 +297,16 @@ class GaussianModel:
         # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
 
         gs_mask = self.mask_pts(self.get_xyz.shape[0])
-        gs_xyz, gs_opacity, probability = self.sample_xyz(mask=gs_mask)
+        gs_xyz, gs_opacity, probability, covariance = self.sample_xyz(mask=gs_mask)
         gs_color = self.get_color(view, mask=gs_mask)
         # gs_norm = self.get_norm()
-        attributes = torch.cat([gs_opacity, gs_color], dim=-1)
-        # gs_pnts = torch.cat([gs_xyz, gs_opacity, gs_color], dim=1)
-        # res = self.net(gs_pnts)
-        res = self.net(gs_xyz)#, attributes=attributes)
-        # pred_color_diff = res['rgb']
-        # pred_opacity_diff = res['sigma']
-        # pred_opacity = gs_pnts[..., 3:4] + pred_opacity_diff
+
+        # res = self.net(gs_xyz)
+
+        attributes = gs_opacity
+        # attributes = torch.cat([gs_opacity, gs_color], dim=-1)
+        res = self.net(gs_xyz, attributes=attributes, noise_method=self.noise_method)
+
         pred_color = res['rgb']
         pred_opacity = res['sigma']
         l = 1.0 - pred_opacity
@@ -361,37 +362,46 @@ class GaussianModel:
                 tb_writer.add_scalar("nn_l/partial_grad_min", grad_xyz.min(), iteration)
                 tb_writer.add_scalar("nn_l/partial_grad_max", grad_xyz.max(), iteration)
         
-        # # TODO: add noise, w.r.t to covariance or L
-        # pred_noise = res['xyz_noise']
-        # xyz_noise = torch.bmm(covariance[gs_mask].detach().clone(), pred_noise.unsqueeze(-1)).squeeze(-1)
-        # noise_full = torch.zeros((self._xyz.shape[0], 3), device="cuda")
-        # noise_full[gs_mask] = xyz_noise
-        # return noise_full, gs_mask
-
+        # TODO: add noise, w.r.t to covariance or L
+        pred_noise = res['xyz_noise']
+        xyz_noise = torch.bmm(covariance.detach().clone(), pred_noise.unsqueeze(-1)).squeeze(-1)
+        noise_full = torch.zeros((self._xyz.shape[0], 3), device="cuda")
+        noise_full[gs_mask] = xyz_noise
+        return noise_full, gs_mask
+    
     def compute_diff(self, view, tb_writer, iteration):
         with torch.no_grad():
-            # gs_mask = self.mask_pts(gs_xyz.shape[0], num_scale=10)
-            # gs_xyz, gs_opacity, probability = self.sample_xyz(mask=gs_mask)
-            # gs_color = self.get_color(view, mask=gs_mask)
+            # gs_xyz, gs_opacity, probability, covariance = self.sample_xyz()
+            # gs_color = self.get_color(view)
 
-            gs_xyz, gs_opacity, probability = self.sample_xyz()
+            gs_xyz, gs_opacity = self.get_xyz, self.get_opacity
             gs_color = self.get_color(view)
-
-            # gs_xyz, gs_opacity = self.get_xyz, self.get_opacity
             if iteration > 2400:
-                # res = self.net(gs_xyz[gs_mask])
-                # opacity_diff_mask = res['sigma'] - gs_opacity[gs_mask]
-                # color_diff_mask = res['rgb'] - gs_color[gs_mask]
-                # opacity_diff = torch.zeros_like(gs_opacity)
-                # color_diff = torch.zeros_like(gs_color)
-                # opacity_diff[gs_mask] = opacity_diff_mask
-                # color_diff[gs_mask] = color_diff_mask
+                gs_mask = self.mask_pts(gs_xyz.shape[0], num_scale=1)
+                res = self.net(gs_xyz[gs_mask])
+                if self.noise_method == "imc":
+                    opacity_diff_mask = res['sigma'] - gs_opacity[gs_mask]
+                    color_diff_mask = res['rgb'] - gs_color[gs_mask]
+                elif self.noise_method == "imc2":
+                    # opacity_diff_mask = (1.0 - res['sigma']) * 0.5 + (1.0 - gs_opacity[gs_mask]) * 0.5
+                    opacity_diff_mask = 1.0 - res['sigma']
+                    color_diff_mask = res['rgb'] - gs_color[gs_mask]
+                else:
+                    raise NotImplementedError
+                opacity_diff = 1.0 - gs_opacity
+                color_diff = torch.zeros_like(gs_color) + 1e-3
+                opacity_diff[gs_mask] = opacity_diff_mask
+                color_diff[gs_mask] = color_diff_mask
 
-                res = self.net(gs_xyz)
-                # opacity_diff = res['sigma'] - gs_opacity
-                # color_diff = res['rgb'] - gs_color
-                opacity_diff = 1.0 - res['sigma']
-                color_diff = res['rgb'] - gs_color
+                # res = self.net(gs_xyz)
+                # if self.noise_method == "imc":
+                #     opacity_diff = res['sigma'] - gs_opacity
+                #     color_diff = res['rgb'] - gs_color
+                # elif self.noise_method == "imc2":
+                #     opacity_diff = (1.0 - res['sigma']) * 0.5 + (1.0 - gs_opacity) * 0.5
+                #     color_diff = res['rgb'] - gs_color
+                # else:
+                #     raise NotImplementedError
             else:
                 opacity_diff = 1.0 - gs_opacity
                 color_diff = torch.zeros_like(gs_color) + 1e-3
@@ -557,7 +567,7 @@ class GaussianModel:
         mahalanobis_dist = torch.sum(torch.bmm(epsilon.unsqueeze(1), cov_inv).squeeze(1) * epsilon, dim=1)
         probs = torch.exp(-0.5 * mahalanobis_dist)
         opacities = self.get_opacity[mask] * probs[..., None]
-        return samples, opacities, probs
+        return samples, opacities, probs, covariance
     
     def get_color(self, view, mask=None):
         if mask is None:

@@ -122,11 +122,11 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         bg = torch.rand((3), device="cuda") if opt.random_background else background
 
         ############### NOTE: IMC ###############
-        gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
-        render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
+        # gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
+        # render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
 
-        # noise, noise_mask = gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
-        # render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
+        noise, noise_mask = gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
+        render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
 
         image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
 
@@ -212,8 +212,17 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 scene.save(iteration)
 
             ############### NOTE: IMC ###############
+            L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+            actual_covariance = L @ L.transpose(1, 2)
+            def op_sigmoid(x, k=100, x0=0.995):
+                return 1 / (1 + torch.exp(-k * (x - x0)))
+            noise_mcmc = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+            noise_mcmc = torch.bmm(actual_covariance, noise_mcmc.unsqueeze(-1)).squeeze(-1)
+            if noise is not None:
+                noise_mcmc[noise_mask] = noise[noise_mask]
+            gaussians._xyz.add_(noise_mcmc)
             # if noise is not None:
-            #     gaussians.add_noise(noise, noise_mask)
+            # #     gaussians._xyz.add_(noise)
 
             ############### NOTE: Densification ###############
             if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
@@ -242,31 +251,31 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 gaussians.imc_experimental_optimizer.zero_grad()
                 # gaussians.imc_experimental_optim_scheduler.step()
 
-                ################# NOTE: IMC ##################
-                if opt.noise_method == "imc":
-                    opacity_diff, color_diff = gaussians.compute_diff(viewpoint_cam, tb_writer, iteration)
-                    L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-                    actual_covariance = L @ L.transpose(1, 2)
+                # ################# NOTE: IMC ##################
+                # if opt.noise_method == "imc" or opt.noise_method == "imc2":
+                #     opacity_diff, color_diff = gaussians.compute_diff(viewpoint_cam, tb_writer, iteration)
+                #     L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+                #     actual_covariance = L @ L.transpose(1, 2)
 
-                    def op_sigmoid(x, k=100, x0=0.995):
-                        return 1 / (1 + torch.exp(-k * (x - x0)))
+                #     def op_sigmoid(x, k=100, x0=0.995):
+                #         return 1 / (1 + torch.exp(-k * (x - x0)))
                     
-                    noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(opacity_diff))*args.noise_lr*xyz_lr
-                    noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
-                    gaussians._xyz.add_(noise)
-                ################# NOTE: MCMC ##################
-                elif opt.noise_method == "mcmc":
-                    L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-                    actual_covariance = L @ L.transpose(1, 2)
+                #     noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(opacity_diff))*args.noise_lr*xyz_lr
+                #     noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
+                #     gaussians._xyz.add_(noise)
+                # ################# NOTE: MCMC ##################
+                # elif opt.noise_method == "mcmc":
+                #     L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+                #     actual_covariance = L @ L.transpose(1, 2)
 
-                    def op_sigmoid(x, k=100, x0=0.995):
-                        return 1 / (1 + torch.exp(-k * (x - x0)))
+                #     def op_sigmoid(x, k=100, x0=0.995):
+                #         return 1 / (1 + torch.exp(-k * (x - x0)))
                     
-                    noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
-                    noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
-                    gaussians._xyz.add_(noise)
-                else:
-                    raise NotImplementedError
+                #     noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+                #     noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
+                #     gaussians._xyz.add_(noise)
+                # else:
+                #     raise NotImplementedError
 
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
