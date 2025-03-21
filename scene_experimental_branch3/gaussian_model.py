@@ -298,7 +298,7 @@ class GaussianModel:
 
         gs_mask = self.mask_pts(self.get_xyz.shape[0])
         gs_xyz, gs_opacity, probability, covariance = self.sample_xyz(mask=gs_mask)
-        gs_color = self.get_color(view, mask=gs_mask)
+        # gs_color = self.get_color(view, mask=gs_mask)
         # gs_norm = self.get_norm()
 
         # res = self.net(gs_xyz)
@@ -312,23 +312,9 @@ class GaussianModel:
         l = 1.0 - pred_opacity
 
         grad = torch.autograd.grad(l, [self._xyz, self._rotation, self._scaling], grad_outputs=torch.ones_like(l), create_graph=True)
-        net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-
-        # grad_net_in = diff_operators.gradient(l, res['net_in']) * (self.net.xyz_upperbound - self.net.xyz_lowerbound)
-        # grad = torch.autograd.grad(gs_xyz, [self._xyz, self._rotation, self._scaling], grad_outputs=grad_net_in, create_graph=True)
-        # grad = [gd * self.net.xyz_upperbound for gd in grad]
-        # net_scale = 1.0
-
-        # grad = diff_operators.gradient(l, res['net_in'])
         # net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
             if self.bound_type == "local":
-                # xyz = self._xyz[gs_mask].detach().clone()
-                # upperdist = xyz - self.net.xyz_upperbound
-                # lowerdist = self.net.xyz_lowerbound - xyz
-                # xyz_scaling = torch.ones_like(xyz)
-                # xyz_scaling = torch.where(upperdist > 0, torch.abs(upperdist) * 0.01, 1.)
-                # xyz_scaling = torch.where(lowerdist < 0, torch.abs(lowerdist) * 0.01, 1.)
                 xyz = self._xyz[gs_mask].detach().clone()
                 xyz = (xyz - self.net.xyz_lowerbound) / (self.net.xyz_upperbound - self.net.xyz_lowerbound) * 2.0 - 1.0
                 xyz_scaling = torch.ones_like(xyz)
@@ -554,7 +540,8 @@ class GaussianModel:
         covariance = L @ L.transpose(1, 2)
         # TODO: is this L the same as the one above?
         # L = torch.linalg.cholesky(covariance)
-        z = torch.randn_like(means) * scaling_modifier
+        # z = torch.randn_like(means) * scaling_modifier
+        z = torch.randn_like(means).clamp(-1, 1) * scaling_modifier
         #######################################################
         # epsilon = torch.bmm(z.unsqueeze(1), L.transpose(1, 2)).squeeze(1)
         # epsilon = torch.bmm(L, z.unsqueeze(-1)).squeeze(-1)

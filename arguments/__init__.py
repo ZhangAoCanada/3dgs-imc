@@ -122,6 +122,7 @@ class OptimizationParams(ParamGroup):
         self.minmax = "wholeonly"
         self.range_scale = 1.0
         self.noise_method = "mcmc"
+        self.random_view_num = 5
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):

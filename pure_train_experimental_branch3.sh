@@ -1,5 +1,5 @@
 # for noise_method in sigma 1-sigma detach opacity-sigma-detach
-for noise_method in 1-sigma detach opacity-sigma-detach
+for noise_method in sigma opacity-sigma-detach sigma-detach opacity-sigma
 do
     images=input_cached
     init_type=sfm
@@ -25,12 +25,13 @@ do
     # noise_method=imc
     # noise_method=imc2
     # noise_method=implicit
+    random_view_num=5
     echo "[*****training*****] training with noise_method=${noise_method}"
     CUDA_VISIBLE_DEVICES=3 python train_experimental_branch3.py \
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
         --depths dav2_cached \
         --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_ \
+        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num} \
         --images ${images} \
         --resolution -1 \
         --init_type ${init_type} \
@@ -51,6 +52,7 @@ do
         --min_samples ${min_samples} \
         --minmax ${minmax} \
         --noise_method ${noise_method} \
+        --random_view_num ${random_view_num} \
         --antialiasing \
         --port $port 
 done

@@ -14,7 +14,7 @@ import shutil
 import json
 import torch
 import torch.nn.functional as F
-from random import randint
+from random import randint, shuffle
 from utils.loss_utils import l1_loss, ssim
 from gaussian_renderer import render, network_gui, render_noise
 import sys
@@ -83,6 +83,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     #         shutil.rmtree("tmp")
     #     os.makedirs("tmp", exist_ok=True)
 
+    random_view_num = opt.random_view_num
+
     for iteration in range(first_iter, opt.iterations + 1):
         if network_gui.conn == None:
             network_gui.try_connect()
@@ -107,13 +109,19 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         if iteration % 1000 == 0:
             gaussians.oneupSHdegree()
 
-        # Pick a random Camera
+        # # Pick a random Camera
+        # if not viewpoint_stack:
+        #     viewpoint_stack = scene.getTrainCameras().copy()
+        #     viewpoint_indices = list(range(len(viewpoint_stack)))
+        # rand_idx = randint(0, len(viewpoint_indices) - 1)
+        # viewpoint_cam = viewpoint_stack.pop(rand_idx)
+        # vind = viewpoint_indices.pop(rand_idx)
+
         if not viewpoint_stack:
             viewpoint_stack = scene.getTrainCameras().copy()
-            viewpoint_indices = list(range(len(viewpoint_stack)))
-        rand_idx = randint(0, len(viewpoint_indices) - 1)
-        viewpoint_cam = viewpoint_stack.pop(rand_idx)
-        vind = viewpoint_indices.pop(rand_idx)
+        shuffle(viewpoint_stack)
+        viewpoint_cameras = viewpoint_stack[:random_view_num]
+        viewpoint_stack = viewpoint_stack[random_view_num:]
 
         # Render
         if (iteration - 1) == debug_from:
@@ -125,59 +133,65 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         # gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
         # render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
 
-        noise, noise_mask = gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
-        render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
+        noise, noise_mask = gaussians.derivatives(viewpoint_cameras[0], tb_writer, iteration)
+        total_l = 0.0
+        for viewpoint_cam in viewpoint_cameras:
+            render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
 
-        image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
+            image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
 
-        if viewpoint_cam.alpha_mask is not None:
-            alpha_mask = viewpoint_cam.alpha_mask.cuda()
-            image *= alpha_mask
+            if viewpoint_cam.alpha_mask is not None:
+                alpha_mask = viewpoint_cam.alpha_mask.cuda()
+                image *= alpha_mask
 
-        # Loss
-        gt_image = viewpoint_cam.original_image.cuda()
-        Ll1 = l1_loss(image, gt_image)
-        if FUSED_SSIM_AVAILABLE:
-            ssim_value = fused_ssim(image.unsqueeze(0), gt_image.unsqueeze(0))
-        else:
-            ssim_value = ssim(image, gt_image)
-
-        loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
-        
-        ################# NOTE: MCMC ##################
-        # loss = loss + args.opacity_reg * torch.abs(gaussians.get_opacity).mean()
-        # loss = loss + args.scale_reg * torch.abs(gaussians.get_scaling).mean()
-
-        # Depth regularization
-        Ll1depth_pure = 0.0
-        if depth_l1_weight(iteration) > 0 and viewpoint_cam.depth_reliable:
-            if viewpoint_cam.image_name not in gaussians.aligned_depth_dict:
-                invDepth = render_pkg["depth"]
-                mono_invdepth = viewpoint_cam.invdepthmap.cuda()
-                depth_mask = viewpoint_cam.depth_mask.cuda()
-
-                ################ NOTE: normalized ##################
-                mono_min = mono_invdepth.min()
-                mono_max = mono_invdepth.max()
-                inDepth_min = invDepth.min()
-                inDepth_max = invDepth.max()
-                mono_invdepth_normalized = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
-                invDepth_normalized = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
-                Ll1depth_pure = torch.abs((invDepth_normalized  - mono_invdepth_normalized) * depth_mask).mean()
-                # Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+            # Loss
+            gt_image = viewpoint_cam.original_image.cuda()
+            Ll1 = l1_loss(image, gt_image)
+            if FUSED_SSIM_AVAILABLE:
+                ssim_value = fused_ssim(image.unsqueeze(0), gt_image.unsqueeze(0))
             else:
-                aligned_depth = gaussians.aligned_depth_dict[viewpoint_cam.image_name]
-                downsample = gaussians.downsample_ratio
-                aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=None, scale_factor=downsample, mode='bilinear', align_corners=False).squeeze(0)
-                aligned_invdepth = 1.0 / (aligned_depth + 1e-4)
-                render_invdepth = render_pkg["depth"]
-                depth_mask = viewpoint_cam.depth_mask.cuda()
-                Ll1depth_pure = torch.abs((render_invdepth - aligned_invdepth) * depth_mask).mean()
-            Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
-            loss += Ll1depth
-            Ll1depth = Ll1depth.item()
-        else:
-            Ll1depth = 0
+                ssim_value = ssim(image, gt_image)
+
+            loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
+            
+            ################# NOTE: MCMC ##################
+            # loss = loss + args.opacity_reg * torch.abs(gaussians.get_opacity).mean()
+            # loss = loss + args.scale_reg * torch.abs(gaussians.get_scaling).mean()
+
+            # Depth regularization
+            Ll1depth_pure = 0.0
+            if depth_l1_weight(iteration) > 0 and viewpoint_cam.depth_reliable:
+                if viewpoint_cam.image_name not in gaussians.aligned_depth_dict:
+                    invDepth = render_pkg["depth"]
+                    mono_invdepth = viewpoint_cam.invdepthmap.cuda()
+                    depth_mask = viewpoint_cam.depth_mask.cuda()
+
+                    ################ NOTE: normalized ##################
+                    mono_min = mono_invdepth.min()
+                    mono_max = mono_invdepth.max()
+                    inDepth_min = invDepth.min()
+                    inDepth_max = invDepth.max()
+                    mono_invdepth_normalized = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
+                    invDepth_normalized = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
+                    Ll1depth_pure = torch.abs((invDepth_normalized  - mono_invdepth_normalized) * depth_mask).mean()
+                    # Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+                else:
+                    aligned_depth = gaussians.aligned_depth_dict[viewpoint_cam.image_name]
+                    downsample = gaussians.downsample_ratio
+                    aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=None, scale_factor=downsample, mode='bilinear', align_corners=False).squeeze(0)
+                    aligned_invdepth = 1.0 / (aligned_depth + 1e-4)
+                    render_invdepth = render_pkg["depth"]
+                    depth_mask = viewpoint_cam.depth_mask.cuda()
+                    Ll1depth_pure = torch.abs((render_invdepth - aligned_invdepth) * depth_mask).mean()
+                Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
+                loss += Ll1depth
+                Ll1depth = Ll1depth.item()
+            else:
+                Ll1depth = 0
+
+            total_l += loss
+        
+        loss = total_l / random_view_num
 
         ############### NOTE: IMC ###############
         continuous_l = gaussians.train_continuous(scene.getTrainCameras().copy(), viewpoint_cam, pipe, background, tb_writer, iteration)

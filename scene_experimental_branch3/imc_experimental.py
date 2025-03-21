@@ -135,6 +135,8 @@ class NetworksA(nn.Module):
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * attributes
             elif noise_method == 'sigma':
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * sigma_pred
+            elif noise_method == 'sigma-detach':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * sigma_pred.detach().clone()
             elif noise_method == '1-sigma':
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * (1 - sigma_pred)
             elif noise_method == 'opacity-sigma':
