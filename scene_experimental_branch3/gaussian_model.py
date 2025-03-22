@@ -334,6 +334,7 @@ class GaussianModel:
             self._xyz[gs_mask].add_(grad_xyz)
             self._rotation[gs_mask].add_(grad_rot)
             self._scaling[gs_mask].add_(grad_scale)
+            # self._scaling[gs_mask].copy_(F.normalize(self._scaling[gs_mask], p=2, dim=-1))
 
             # # self._opacity[gs_mask].add_(self.inverse_opacity_activation(pred_opacity - gs_opacity))
             # self._opacity[gs_mask].copy_(self.inverse_opacity_activation(pred_opacity))
@@ -542,16 +543,15 @@ class GaussianModel:
         # L = torch.linalg.cholesky(covariance)
         # z = torch.randn_like(means) * scaling_modifier
         z = torch.randn_like(means).clamp(-1, 1) * scaling_modifier
-        #######################################################
-        # epsilon = torch.bmm(z.unsqueeze(1), L.transpose(1, 2)).squeeze(1)
-        # epsilon = torch.bmm(L, z.unsqueeze(-1)).squeeze(-1)
         epsilon = torch.bmm(covariance, z.unsqueeze(-1)).squeeze(-1)
-        ########################################################
         samples = means + epsilon
         # NOTE: compute (x - μ)^T · Σ^(-1) · (x - μ)
-        # cov_inv = torch.linalg.inv(covariance)
-        cov_inv = torch.inverse(covariance + 1e-6 * torch.eye(3, device="cuda"))
-        mahalanobis_dist = torch.sum(torch.bmm(epsilon.unsqueeze(1), cov_inv).squeeze(1) * epsilon, dim=1)
+        # cov_inv = torch.inverse(covariance + 1e-6 * torch.eye(3, device="cuda"))
+        # cov_inv = torch.linalg.pinv(covariance + 1e-6 * torch.eye(3, device="cuda"))
+        # mahalanobis_dist = torch.sum(torch.bmm(epsilon.unsqueeze(1), cov_inv).squeeze(1) * epsilon, dim=1)
+        # use torch.linalg.solve instead of torch.inverse
+        mahalanobis_dist = torch.sum(epsilon * torch.linalg.solve(covariance + 1e-6 * torch.eye(3, device="cuda"), epsilon.unsqueeze(-1)).squeeze(-1), dim=1)
+
         probs = torch.exp(-0.5 * mahalanobis_dist)
         opacities = self.get_opacity[mask] * probs[..., None]
         return samples, opacities, probs, covariance
@@ -623,9 +623,16 @@ class GaussianModel:
     def remove_nan_grad(self, ):
         self._xyz.grad[torch.isnan(self._xyz.grad)] = 0.0
         self._xyz.grad[torch.isinf(self._xyz.grad)] = 0.0
+        self._scaling.grad[torch.isnan(self._scaling.grad)] = 0.0
+        self._scaling.grad[torch.isinf(self._scaling.grad)] = 0.0
+        self._rotation.grad[torch.isnan(self._rotation.grad)] = 0.0
+        self._rotation.grad[torch.isinf(self._rotation.grad)] = 0.0
+        self._opacity.grad[torch.isnan(self._opacity.grad)] = 0.0
+        self._opacity.grad[torch.isinf(self._opacity.grad)] = 0.0
         for param in self.net.parameters():
-            param.grad[torch.isnan(param.grad)] = 0.0
-            param.grad[torch.isinf(param.grad)] = 0.0
+            if param is not None and param.grad is not None:
+                param.grad[torch.isnan(param.grad)] = 0.0
+                param.grad[torch.isinf(param.grad)] = 0.0
         
     def update_nnpts(self, all_views, pipe, bg, align=True):
         assert self.nn_type in ["singleview", "allviews"]

@@ -1,5 +1,5 @@
 # for noise_method in sigma 1-sigma detach opacity-sigma-detach
-for noise_method in sigma opacity-sigma-detach sigma-detach opacity-sigma
+for noise_method in opacity-sigma-detach opacity-sigma sigma sigma-detach detach
 do
     images=input_cached
     init_type=sfm
@@ -25,7 +25,7 @@ do
     # noise_method=imc
     # noise_method=imc2
     # noise_method=implicit
-    random_view_num=5
+    random_view_num=3
     echo "[*****training*****] training with noise_method=${noise_method}"
     CUDA_VISIBLE_DEVICES=3 python train_experimental_branch3.py \
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \

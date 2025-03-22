@@ -197,6 +197,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         continuous_l = gaussians.train_continuous(scene.getTrainCameras().copy(), viewpoint_cam, pipe, background, tb_writer, iteration)
         if continuous_l is not None:
             loss += continuous_l
+        loss = torch.where(torch.isnan(loss), torch.zeros_like(loss), loss)
+        loss = torch.where(torch.isinf(loss), torch.zeros_like(loss), loss)
 
         loss.backward()
 
@@ -204,7 +206,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             del mono_min, mono_max, inDepth_min, inDepth_max, mono_invdepth_normalized, invDepth_normalized
 
         ############### NOTE: IMC ###############
-        # gaussians.remove_nan_grad()
+        if iteration > 2450:
+            gaussians.remove_nan_grad()
 
         iter_end.record()
 
