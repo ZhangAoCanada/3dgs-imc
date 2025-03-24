@@ -129,7 +129,7 @@ class NetworksA(nn.Module):
             pred2 = self.body2(net_in2)
             pred2_std = self.linear_std2(pred2)
 
-            if noise_method == 'detach':
+            if noise_method == 'opacity-detach':
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * attributes.detach().clone()
             elif noise_method == 'opacity':
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * attributes
@@ -137,8 +137,10 @@ class NetworksA(nn.Module):
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * sigma_pred
             elif noise_method == 'sigma-detach':
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * sigma_pred.detach().clone()
-            elif noise_method == '1-sigma':
-                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * (1 - sigma_pred)
+            elif noise_method == '1-sigma-detach':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * (1 - sigma_pred.detach().clone())
+            elif noise_method == '1-opacity-detach':
+                xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * (1 - attributes.detach().clone())
             elif noise_method == 'opacity-sigma':
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * torch.abs(attributes - sigma_pred)
             elif noise_method == 'opacity-sigma-detach':

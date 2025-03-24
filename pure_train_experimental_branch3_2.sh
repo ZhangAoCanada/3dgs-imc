@@ -1,10 +1,9 @@
-for partial_scalivGng in 1e1 1e0 1e-1 1e-2
+for partial_scaling in 1e0 1e-1 1e-2
 do
     for sigma_scaling in 1e0 1e-1 1e-2 1e-3
     do
         images=input_cached
         init_type=sfm
-        # init_type=random
         noise_lr=5e5
         cap_max=3000000
         scale_reg=0.01
@@ -17,14 +16,14 @@ do
         bound_type=local
         eps=0.05
         min_samples=300
-        port=12321
+        port=12331
         minmax=wholescale
         range_scale=4
-        iteration=30_000
-        noise_method=opacity-sigma-detach # to be decided
+        # noise_method=opacity-sigma-detach
+        noise_method=sigma-detach
         random_view_num=3
         echo "[training] training with cap_max=${cap_max}, noise_lr=${noise_lr}, scale_reg=${scale_reg}, densify_from_iter=${densify_from_iter}, densification_interval=${densification_interval}"
-        CUDA_VISIBLE_DEVICES=2 python train_experimental_branch3.py \
+        CUDA_VISIBLE_DEVICES=3 python train_experimental_branch3.py \
             --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
             --depths dav2_cached \
             --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
@@ -49,7 +48,6 @@ do
             --min_samples ${min_samples} \
             --minmax ${minmax} \
             --range_scale ${range_scale} \
-            --iteration ${iteration} \
             --noise_method ${noise_method} \
             --random_view_num ${random_view_num} \
             --antialiasing \

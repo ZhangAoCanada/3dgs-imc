@@ -282,7 +282,6 @@ class GaussianModel:
         self.minmax = training_args.minmax
         self.range_scale = training_args.range_scale
         self.noise_method = training_args.noise_method
-        print("******************* self.minmax: ", self.minmax)
 
     ######################################################################
     ######################################################################

@@ -27,6 +27,12 @@ try:
 except:
     SPARSE_ADAM_AVAILABLE = False
 
+def generate_viewpoints(view):
+    """
+    generate a camera trajectory w.r.t the current viewpoint for rendering.
+    """
+    return
+
 
 def render_set(model_path, name, iteration, views, gaussians, pipeline, background, train_test_exp, separate_sh):
     render_path = os.path.join(model_path, name, "ours_{}".format(iteration), "renders")
