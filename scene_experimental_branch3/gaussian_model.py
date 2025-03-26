@@ -282,6 +282,9 @@ class GaussianModel:
         self.minmax = training_args.minmax
         self.range_scale = training_args.range_scale
         self.noise_method = training_args.noise_method
+        self.nn_start_iter = training_args.nn_start_iter
+        self.nn_derivatives_iter = training_args.nn_derivatives_iter
+        self.nn_update_interval = training_args.nn_update_interval
 
     ######################################################################
     ######################################################################
@@ -289,7 +292,7 @@ class GaussianModel:
     ######################################################################
     ######################################################################
     def derivatives(self, view, tb_writer, iteration):
-        if iteration < 2400:
+        if iteration < self.nn_derivatives_iter:
             return None, None
         # if iteration < 10:
         #     return None, None
@@ -399,11 +402,10 @@ class GaussianModel:
         return opacity_diff_abs, color_diff_abs
         
     def train_continuous(self, all_views, view, pipe, bg, tb_writer, iteration):
-        if iteration < 2000:
+        if iteration < self.nn_start_iter:
             return None
-        elif iteration % 1000 == 0:
+        elif iteration % self.nn_update_interval == 0:
             self.update_nnpts(all_views, pipe, bg, align=False)
-            # self.max_num += 10
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
         self.net.train()

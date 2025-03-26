@@ -123,6 +123,9 @@ class OptimizationParams(ParamGroup):
         self.range_scale = 1.0
         self.noise_method = "mcmc"
         self.random_view_num = 5
+        self.nn_start_iter = 2000
+        self.nn_derivatives_iter = 2400
+        self.nn_update_interval = 1000
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):
