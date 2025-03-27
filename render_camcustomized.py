@@ -87,7 +87,8 @@ def camera_trajectory(view, gaussians, pipeline, background, train_test_exp, sep
         view_new = generate_viewpoints(view, up_dist=up_dist, lookat_dist=lookat_dist, forward_dist=forward_dist)
         render_pkg_new = render(view_new, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
         rendering_new = render_pkg_new["render"]
-        depth_show_new = render_pkg_new["depth"].repeat(3, 1, 1)
+        # depth_show_new = render_pkg_new["depth"].repeat(3, 1, 1)
+        depth_show_new = (1 / (render_pkg_new["depth"] + 1e-6)).repeat(3, 1, 1)
         rendering_new = torch.cat([rendering_new, depth_show_new], dim=2)
         all_renderings.append(rendering_new.unsqueeze(0).permute(0, 2, 3, 1))
     all_renderings = torch.cat(all_renderings, dim=0)
