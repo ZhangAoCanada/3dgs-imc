@@ -27,6 +27,7 @@ try:
 except:
     SPARSE_ADAM_AVAILABLE = False
 import copy
+import math
 import numpy as np
 import cv2
 from utils.graphics_utils import getWorld2View2, getProjectionMatrix
@@ -42,7 +43,7 @@ def write_video(video_path, frames, fps=30):
     out.release()
 
 
-def generate_viewpoints(raw_view, up_dist=0.1, lookat_dist=0.3):
+def generate_viewpoints(raw_view, up_dist=0.1, lookat_dist=0.3, forward_dist=0.0):
     """
     Generate a camera viewpoint that is 0.1m higher than the current viewpoint.
     Both viewpoints look at the same point, which is 1m in front of the current viewpoint.
@@ -51,20 +52,55 @@ def generate_viewpoints(raw_view, up_dist=0.1, lookat_dist=0.3):
     view (NamedTuple): The current camera view with rotation matrix R and translation vector T
     """
     view = copy.deepcopy(raw_view)
-    view.T[1] += up_dist
-
-    rotation_angle = -np.arctan2(up_dist, lookat_dist)
-    relative_rotation = np.array([
+    relative_translation = torch.tensor([0, up_dist, forward_dist]).cuda()
+    rotation_angle = math.atan(up_dist / lookat_dist)
+    rotation_angle = torch.tensor(rotation_angle)
+    relative_rotation = torch.tensor([
         [1, 0, 0],
-        [0, np.cos(rotation_angle), -np.sin(rotation_angle)],
-        [0, np.sin(rotation_angle), np.cos(rotation_angle)]])
-    view.R = np.matmul(view.R, relative_rotation)
+        [0, torch.cos(rotation_angle), -torch.sin(rotation_angle)],
+        [0, torch.sin(rotation_angle), torch.cos(rotation_angle)]]).cuda()
+    old_w2c = view.world_view_transform.transpose(0, 1)
 
-    view.world_view_transform = torch.tensor(getWorld2View2(view.R, view.T, view.trans, view.scale)).transpose(0, 1).cuda()
+    new_rotation = torch.eye(4).cuda()
+    new_rotation[:3, :3] = relative_rotation
+    old_w2c[:3, 3] += relative_translation
+    new_w2c = new_rotation @ old_w2c
+
+    # relative_transform = torch.eye(4).cuda()
+    # relative_transform[:3, :3] = relative_rotation
+    # relative_transform[:3, 3] = relative_translation
+    # new_w2c = relative_transform @ old_w2c
+
+    view.world_view_transform = new_w2c.transpose(0, 1).cuda()
     view.projection_matrix = getProjectionMatrix(znear=view.znear, zfar=view.zfar, fovX=view.FoVx, fovY=view.FoVy).transpose(0,1).cuda()
     view.full_proj_transform = (view.world_view_transform.unsqueeze(0).bmm(view.projection_matrix.unsqueeze(0))).squeeze(0)
     view.camera_center = view.world_view_transform.inverse()[3, :3]
     return view
+
+
+def camera_trajectory(view, gaussians, pipeline, background, train_test_exp, separate_sh, up_dists, lookat_dists, forward_dists):
+    assert len(up_dists) == len(lookat_dists) == len(forward_dists)
+    all_renderings = []
+    for i, up_dist in enumerate(up_dists):
+        lookat_dist = lookat_dists[i]
+        forward_dist = forward_dists[i]
+        view_new = generate_viewpoints(view, up_dist=up_dist, lookat_dist=lookat_dist, forward_dist=forward_dist)
+        render_pkg_new = render(view_new, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
+        rendering_new = render_pkg_new["render"]
+        depth_show_new = render_pkg_new["depth"].repeat(3, 1, 1)
+        rendering_new = torch.cat([rendering_new, depth_show_new], dim=2)
+        all_renderings.append(rendering_new.unsqueeze(0).permute(0, 2, 3, 1))
+    all_renderings = torch.cat(all_renderings, dim=0)
+    all_renderings = (all_renderings * 255).to(torch.uint8)
+    return all_renderings
+
+
+def camera_render(view, gaussians, pipeline, background, train_test_exp, separate_sh, up_dist, lookat_dist, forward_dist):
+    view_new = generate_viewpoints(view, up_dist=up_dist, lookat_dist=lookat_dist, forward_dist=forward_dist)
+    render_pkg_new = render(view_new, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
+    rendering_new = render_pkg_new["render"]
+    depth_show_new = render_pkg_new["depth"].repeat(3, 1, 1)
+    torchvision.utils.save_image(rendering_new, "tmp/tmp.png")
 
 
 def render_set(model_path, name, iteration, views, gaussians, pipeline, background, train_test_exp, separate_sh, if_render=False):
@@ -79,6 +115,8 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
     makedirs(video_path, exist_ok=True)
 
     for idx, view in enumerate(tqdm(views, desc="Rendering progress")):
+        if idx not in [206, 344, 375, 507]:
+            continue
         render_pkg = render(view, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
         rendering = render_pkg["render"]
         inv_depth = render_pkg["depth"]
@@ -103,18 +141,12 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
             gt = gt[..., gt.shape[-1] // 2:]
 
         if if_render:
-            up_dists = [i * 0.01 for i in range(50)]
-            all_renderings = []
-            for up_dist in up_dists:
-                view_new = generate_viewpoints(view, up_dist=up_dist)
-                render_pkg_new = render(view_new, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
-                rendering_new = render_pkg_new["render"]
-                depth_show_new = render_pkg_new["depth"].repeat(3, 1, 1)
-                rendering_new = torch.cat([rendering_new, depth_show_new], dim=2)
-                all_renderings.append(rendering_new.unsqueeze(0).permute(0, 2, 3, 1))
-            all_renderings = torch.cat(all_renderings, dim=0)
-            all_renderings = (all_renderings * 255).to(torch.uint8)
-
+            up_dists = [i * 0.03 for i in range(50, 0, -1)] + [0.0] * 50
+            lookat_dists = [0.5] * 100
+            forward_dists = [0.0] * 50 + [i * -0.03 for i in range(50)]
+            all_renderings = camera_trajectory(view, gaussians, pipeline, background, train_test_exp, separate_sh, up_dists, lookat_dists, forward_dists)
+            # camera_render(view, gaussians, pipeline, background, train_test_exp, separate_sh, 0.1, 0.3, 0.0)
+            # write_video(os.path.join("./tmp", '{0:05d}'.format(idx) + ".mp4"), all_renderings.cpu().numpy(), 30)
             write_video(os.path.join(video_path, '{0:05d}'.format(idx) + ".mp4"), all_renderings.cpu().numpy(), 30)
 
         torchvision.utils.save_image(rendering, os.path.join(render_path, '{0:05d}'.format(idx) + ".png"))
