@@ -226,7 +226,7 @@ class GaussianModel:
 
         #################### NOTE: hyper-param ########################
         self.max_num = 100000
-        self.net_mode = "fft" # "mlp" or "fft"
+        self.net_mode = "mlp" # "mlp" or "fft"
         self.net_type = "sine" # "sine" or "relu"
         self.net = NetworksA(
             # in_features=3, #7, 

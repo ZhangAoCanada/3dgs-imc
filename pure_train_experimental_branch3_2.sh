@@ -83,7 +83,7 @@ do
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
         --depths dav2_cached \
         --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num}_${scale_reg}_${opacity_reg}_${nn_start_iter}_${nn_derivatives_iter}_${nn_update_interval}_fft \
+        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num}_${scale_reg}_${opacity_reg}_${nn_start_iter}_${nn_derivatives_iter}_${nn_update_interval} \
         --images ${images} \
         --resolution -1 \
         --init_type ${init_type} \
