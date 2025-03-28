@@ -1,39 +1,36 @@
-# things under test: 
-# nn_type="singleview"
-# nn_model="relu"
-# add opacity_noise and color_noise
-# minsamples=200
-# densification_interval=100
-for random_view_num in 4 5 6 7 8 9 10
+for depth_l1_weight_init in 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5
 do
+    nn_start_iter=2000
+    nn_derivatives_iter=$((nn_start_iter+500))
+    nn_update_interval=500
     images=input_cached
     init_type=sfm
-    # init_type=random
     noise_lr=5e5
     cap_max=3000000
     scale_reg=0.01
     opacity_reg=0.01
     densify_from_iter=500
     densification_interval=400
-    depth_l1_weight_init=0.1
-    depth_l1_weight_final=0.001
+    # depth_l1_weight_init=0.1
+    # depth_l1_weight_final=0.001
+    depth_l1_weight_final=$(echo "scale=10; $depth_l1_weight_init * 0.01" | bc)
     nn_type=allviews
     bound_type=local
     partial_scaling=1e0
     sigma_scaling=1e-3
     eps=0.05
-    min_samples=300
+	min_samples=300
     port=12331
     minmax=wholeonly
     # noise_method=opacity-sigma-detach
     noise_method=sigma-detach
-    # random_view_num=3
+    random_view_num=3
     echo "[*****training*****] training with noise_method=${noise_method}"
     CUDA_VISIBLE_DEVICES=3 python train_experimental_branch3.py \
         --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
         --depths dav2_cached \
         --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num}_${scale_reg}_${opacity_reg}_ \
+        --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num}_${scale_reg}_${opacity_reg}_${nn_start_iter}_${nn_derivatives_iter}_${nn_update_interval} \
         --images ${images} \
         --resolution -1 \
         --init_type ${init_type} \
@@ -55,6 +52,9 @@ do
         --minmax ${minmax} \
         --noise_method ${noise_method} \
         --random_view_num ${random_view_num} \
+        --nn_start_iter ${nn_start_iter} \
+        --nn_derivatives_iter ${nn_derivatives_iter} \
+        --nn_update_interval ${nn_update_interval} \
         --antialiasing \
         --port $port 
 done

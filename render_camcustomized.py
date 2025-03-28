@@ -116,8 +116,6 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
     makedirs(video_path, exist_ok=True)
 
     for idx, view in enumerate(tqdm(views, desc="Rendering progress")):
-        if idx not in [206, 344, 375, 507]:
-            continue
         render_pkg = render(view, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
         rendering = render_pkg["render"]
         inv_depth = render_pkg["depth"]

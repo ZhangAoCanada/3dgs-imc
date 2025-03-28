@@ -52,7 +52,7 @@
 #     --port $port 
 
 
-for min_samples in 100 200 400 500
+for noise_method in opacity-sigma-detach opacity-detach 1-opacity-detach 1-sigma-detach 1-opacity-sigma-detach
 do
     nn_start_iter=2000
     nn_derivatives_iter=$((nn_start_iter+500))
@@ -72,11 +72,12 @@ do
     partial_scaling=1e0
     sigma_scaling=1e-3
     eps=0.05
-    # min_samples=300
+    min_samples=300
+    # min_samples=500
     port=12331
     minmax=wholeonly
     # noise_method=opacity-sigma-detach
-    noise_method=sigma-detach
+    # noise_method=sigma-detach
     random_view_num=3
     echo "[*****training*****] training with noise_method=${noise_method}"
     CUDA_VISIBLE_DEVICES=3 python train_experimental_branch3.py \
