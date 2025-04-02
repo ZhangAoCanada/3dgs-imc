@@ -72,12 +72,14 @@ do
     partial_scaling=1e0
     sigma_scaling=1e-3
     eps=0.05
-    min_samples=300
-    # min_samples=500
+    # min_samples=300
+    min_samples=500
     port=12331
     minmax=wholeonly
+    noise_method=sigma-detach
     # noise_method=opacity-sigma-detach
-    # noise_method=sigma-detach
+    # noise_method=1-sigma-detach
+    # noise_method=1-opacity-detach
     random_view_num=3
     echo "[*****training*****] training with noise_method=${noise_method}"
     CUDA_VISIBLE_DEVICES=3 python train_experimental_branch3.py \

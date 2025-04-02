@@ -134,6 +134,10 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
             depth_show = torch.cat([mono_invdepth, inv_depth, masked_inv_depth, gsplat_depth, gsplat_depth_masked], dim=1)
         else:
             depth_show = inv_depth
+            depth_show = (1 / (depth_show + 1e-6))
+            threshold = 5
+            depth_show = torch.where(depth_show > threshold, torch.ones_like(depth_show) * threshold, depth_show)
+            depth_show = (depth_show - depth_show.min()) / (depth_show.max() - depth_show.min())
 
         if args.train_test_exp:
             rendering = rendering[..., rendering.shape[-1] // 2:]
