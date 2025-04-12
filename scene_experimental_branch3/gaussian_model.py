@@ -237,6 +237,18 @@ class GaussianModel:
         self.net.cuda()
         self.nn_gt_pts = None
         self.aligned_depth_dict = {}
+    
+    def create_net(self):
+        self.max_num = 100000
+        self.net_mode = "mlp" # "mlp" or "fft"
+        self.net_type = "sine" # "sine" or "relu"
+        self.net = NetworksA(
+            # in_features=3, #7, 
+            # out_features=4, 
+            type=self.net_type, 
+            mode=self.net_mode, 
+            )
+        self.net.cuda()
 
     def training_setup(self, training_args):
         self.percent_dense = training_args.percent_dense
@@ -482,7 +494,7 @@ class GaussianModel:
         xyz_ = (xyz - self.net.xyz_lowerbound) / (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         rand_vals = rand_ * (self.net.xyz_upperbound - self.net.xyz_lowerbound) + self.net.xyz_lowerbound
         if self.minmax == "whole" or self.minmax == "wholeonly":
-            diff_vals = rand_vals - xyz
+            diff_vals = (rand_vals - xyz) * self.range_scale
         else:
             diff_vals = (rand_ - xyz_) * self.range_scale
         rand_probs = torch.exp(-0.5 * torch.bmm(diff_vals.unsqueeze(1), diff_vals.unsqueeze(2)).squeeze(-1))
@@ -678,9 +690,9 @@ class GaussianModel:
         return all_pts
     
     def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, aligndepth=False):
-        # if int(view.image_name.split(".")[0]) in [248, 249]:
-        if int(view.image_name.split(".")[0]) >= 1171:
-            return None
+        # # if int(view.image_name.split(".")[0]) in [248, 249]:
+        # if int(view.image_name.split(".")[0]) >= 1171:
+        #     return None
         align_depth = None
         mask = None
         # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
@@ -701,10 +713,11 @@ class GaussianModel:
             pts_cudf = cudf.DataFrame(pts.detach().clone().cpu().numpy())
             db = DBSCAN(
                 eps=self.eps, 
-                min_samples=self.min_samples, 
+                # min_samples=self.min_samples, 
+                min_samples= 0.3 * W * H, 
                 max_mbytes_per_batch=5000
+                # max_mbytes_per_batch=2000
                     ).fit(pts_cudf, out_dtype='int32')
-                    # ).fit(pts_cudf, out_dtype='int64')
             labels = db.labels_
             labels = torch.tensor(labels, device="cuda", dtype=torch.float)
             mask = labels.detach().clone() != -1
@@ -725,10 +738,11 @@ class GaussianModel:
             pts_cudf = cudf.DataFrame(pts.detach().clone().cpu().numpy())
             db = DBSCAN(
                 eps=self.eps, 
-                min_samples=self.min_samples, 
+                # min_samples=self.min_samples, 
+                min_samples= 0.3 * W * H, 
                 max_mbytes_per_batch=5000
+                # max_mbytes_per_batch=2000
                     ).fit(pts_cudf, out_dtype='int32')
-                    # ).fit(pts_cudf, out_dtype='int64')
             labels = db.labels_
             labels = torch.tensor(labels, device="cuda", dtype=torch.float)
             mask = labels.detach().clone() != -1

@@ -178,7 +178,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 else:
                     aligned_depth = gaussians.aligned_depth_dict[viewpoint_cam.image_name]
                     downsample = gaussians.downsample_ratio
-                    aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=None, scale_factor=downsample, mode='bilinear', align_corners=False).squeeze(0)
+                    # aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=None, scale_factor=downsample, mode='bilinear', align_corners=False).squeeze(0)
+                    aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=viewpoint_cam.invdepthmap.shape[1:], mode='bilinear', align_corners=False).squeeze(0)
                     aligned_invdepth = 1.0 / (aligned_depth + 1e-4)
                     render_invdepth = render_pkg["depth"]
                     depth_mask = viewpoint_cam.depth_mask.cuda()
@@ -227,6 +228,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             if (iteration in saving_iterations):
                 print("\n[ITER {}] Saving Gaussians".format(iteration))
                 scene.save(iteration)
+                ############### NOTE: IMC ###############
+                gaussians.save_nn(scene.model_path)
 
             ############### NOTE: IMC ###############
             L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
@@ -238,8 +241,6 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             if noise is not None:
                 noise_mcmc[noise_mask] = noise[noise_mask]
             gaussians._xyz.add_(noise_mcmc)
-            # if noise is not None:
-            # #     gaussians._xyz.add_(noise)
 
             ############### NOTE: Densification ###############
             if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:

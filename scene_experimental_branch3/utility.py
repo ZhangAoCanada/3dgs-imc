@@ -26,7 +26,9 @@ def write_summary(model, writer, total_steps, prefix='train_'):
         fig = make_contour_plot(sdf_values)
         writer.add_figure(prefix + 'yz_sdf_slice', fig, global_step=total_steps)
 
-        xz_slice_coords = torch.cat((slice_coords_2d[:,:1], torch.zeros_like(slice_coords_2d[:, :1]), slice_coords_2d[:,-1:]), dim=-1)
+        xz_slice_coords = torch.cat((slice_coords_2d[:,:1], 
+                                     torch.zeros_like(slice_coords_2d[:, :1]), 
+                                     slice_coords_2d[:,-1:]), dim=-1)
         # NOTE: some changes
         # xz_slice_coords = torch.cat([xz_slice_coords, rand_o, rand_c], dim=-1)
         xz_slice_model_input = xz_slice_coords.cuda()[None, ...]
@@ -42,7 +44,7 @@ def write_summary(model, writer, total_steps, prefix='train_'):
         xy_slice_coords = torch.cat((slice_coords_2d[:,:2],
                     # torch.zeros_like(slice_coords_2d[:, :1])), dim=-1)
                     # -0.75*torch.ones_like(slice_coords_2d[:, :1])), dim=-1)
-                    0.75*torch.ones_like(slice_coords_2d[:, :1])), dim=-1)
+                    0.6*torch.ones_like(slice_coords_2d[:, :1])), dim=-1)
         # NOTE: some changes
         # xy_slice_coords = torch.cat([xy_slice_coords, rand_o, rand_c], dim=-1)
         xy_slice_model_input = xy_slice_coords.cuda()[None, ...]

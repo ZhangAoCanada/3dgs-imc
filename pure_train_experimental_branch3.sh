@@ -1,6 +1,6 @@
-for noise_method in 1-opacity-detach opacity-sigma-detach
+for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach 
 do
-    for random_view_num in 1 2 3 4 5 
+    for random_view_num in 1 2 3 
     do
         nn_start_iter=2000
         nn_derivatives_iter=$((nn_start_iter+500))
