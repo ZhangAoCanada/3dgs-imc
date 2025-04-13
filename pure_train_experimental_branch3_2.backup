@@ -4,11 +4,12 @@
 # random view
 # interval
 
-# for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach
-# for noise_method in opacity-sigma-detach 1-opacity-detach
-for noise_method in 1-opacity-detach opacity-sigma-detach
+# for noise_method in 1-opacity-detach sigma-detach opacity-sigma-detach
+
+for min_samples in 500
 do
-    for depth_l1_weight_init in 0.3 
+    for range_scale in 1
+    # for min_samples in 100 300
     do
         nn_start_iter=2000
         nn_derivatives_iter=$((nn_start_iter+500))
@@ -18,26 +19,29 @@ do
         init_type=sfm
         noise_lr=5e5
         # cap_max=3000000
-        cap_max=2000000
+        cap_max=2500000
         scale_reg=0.01
         opacity_reg=0.01
         densify_from_iter=500
         densification_interval=400
         # depth_l1_weight_init=0.1
         # depth_l1_weight_init=0.3
-        # depth_l1_weight_init=0.5
+        depth_l1_weight_init=0.0
         depth_l1_weight_final=$(echo "scale=10; $depth_l1_weight_init * 0.01" | bc)
         nn_type=allviews
         bound_type=local
         partial_scaling=1e0
+        # partial_scaling=1e-2
         sigma_scaling=1e-3
         # eps=0.05
+        # eps=3
         eps=5
-        min_samples=500
+        # min_samples=300
+        # min_samples=500
         minmax=wholeonly
-        range_scale=0.1
-        # noise_method=sigma-detach
+        # range_scale=0.5
         # noise_method=1-opacity-detach
+        noise_method=sigma-detach
         # noise_method=opacity-sigma-detach
         random_view_num=1
         dvoxel_size=0.01

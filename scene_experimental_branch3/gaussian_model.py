@@ -1,4 +1,4 @@
-#
+
 # Copyright (C) 2023, Inria
 # GRAPHDECO research group, https://team.inria.fr/graphdeco
 # All rights reserved.
@@ -417,7 +417,9 @@ class GaussianModel:
         if iteration < self.nn_start_iter:
             return None
         elif iteration % self.nn_update_interval == 0:
-            self.update_nnpts(all_views, pipe, bg, align=False)
+            torch.cuda.empty_cache()
+            with torch.no_grad():
+                self.update_nnpts(all_views, pipe, bg, align=False)
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
         self.net.train()
