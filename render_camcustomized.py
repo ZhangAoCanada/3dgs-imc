@@ -31,6 +31,7 @@ import math
 import numpy as np
 import cv2
 from utils.graphics_utils import getWorld2View2, getProjectionMatrix
+import shutil
 
 
 def write_video(video_path, frames, fps=30):
@@ -110,15 +111,23 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
     gts_path = os.path.join(model_path, name, "ours_{}".format(iteration), "gt")
     video_path = os.path.join(model_path, name, "ours_{}".format(iteration), "videos")
 
+    if os.path.exists(render_path):
+        shutil.rmtree(render_path)
+    if os.path.exists(depth_path):
+        shutil.rmtree(depth_path)
+    if os.path.exists(gts_path):
+        shutil.rmtree(gts_path)
+    if os.path.exists(video_path):
+        shutil.rmtree(video_path)
     makedirs(render_path, exist_ok=True)
     makedirs(depth_path, exist_ok=True)
     makedirs(gts_path, exist_ok=True)
     makedirs(video_path, exist_ok=True)
 
-    gaussians.create_net()
-    gaussians.load_nn(model_path)
-    from tmp_exp.tmp_tools import write_image
-    write_image(gaussians.net, "tmp")
+    # gaussians.create_net()
+    # gaussians.load_nn(model_path)
+    # from tmp_exp.tmp_tools import write_image
+    # write_image(gaussians.net, "tmp")
 
     for idx, view in enumerate(tqdm(views, desc="Rendering progress")):
         render_pkg = render(view, gaussians, pipeline, background, use_trained_exp=train_test_exp, separate_sh=separate_sh)
@@ -139,30 +148,30 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
             depth_show = torch.cat([mono_invdepth, inv_depth, masked_inv_depth, gsplat_depth, gsplat_depth_masked], dim=1)
         else:
             depth_show = inv_depth
-            # depth_show = (1 / (depth_show + 1e-6))
-            # threshold = 5
-            # depth_show = torch.where(depth_show > threshold, torch.ones_like(depth_show) * threshold, depth_show)
-            # depth_show = depth_show / threshold
-            # # depth_show = (depth_show - depth_show.min()) / (depth_show.max() - depth_show.min())
-            torchvision.utils.save_image(rendering, os.path.join("tmp", '{0:05d}'.format(idx) + "_render.png"))
-            torchvision.utils.save_image(depth_show, os.path.join("tmp", '{0:05d}'.format(idx) + "_depth.png"))
+            depth_show = (1 / (depth_show + 1e-6))
+            threshold = 5
+            depth_show = torch.where(depth_show > threshold, torch.ones_like(depth_show) * threshold, depth_show)
+            depth_show = depth_show / threshold
+            # depth_show = (depth_show - depth_show.min()) / (depth_show.max() - depth_show.min())
+            # torchvision.utils.save_image(rendering, os.path.join("tmp", '{0:05d}'.format(idx) + "_render.png"))
+            # torchvision.utils.save_image(depth_show, os.path.join("tmp", '{0:05d}'.format(idx) + "_depth.png"))
 
-        # if args.train_test_exp:
-        #     rendering = rendering[..., rendering.shape[-1] // 2:]
-        #     gt = gt[..., gt.shape[-1] // 2:]
+        if args.train_test_exp:
+            rendering = rendering[..., rendering.shape[-1] // 2:]
+            gt = gt[..., gt.shape[-1] // 2:]
 
-        # if if_render:
-        #     up_dists = [i * 0.03 for i in range(50, 0, -1)] + [0.0] * 50
-        #     lookat_dists = [0.5] * 100
-        #     forward_dists = [0.0] * 50 + [i * -0.03 for i in range(50)]
-        #     all_renderings = camera_trajectory(view, gaussians, pipeline, background, train_test_exp, separate_sh, up_dists, lookat_dists, forward_dists)
-        #     # camera_render(view, gaussians, pipeline, background, train_test_exp, separate_sh, 0.1, 0.3, 0.0)
-        #     # write_video(os.path.join("./tmp", '{0:05d}'.format(idx) + ".mp4"), all_renderings.cpu().numpy(), 30)
-        #     write_video(os.path.join(video_path, '{0:05d}'.format(idx) + ".mp4"), all_renderings.cpu().numpy(), 30)
+        if if_render:
+            up_dists = [i * 0.03 for i in range(50, 0, -1)] + [0.0] * 50
+            lookat_dists = [0.5] * 100
+            forward_dists = [0.0] * 50 + [i * -0.03 for i in range(50)]
+            all_renderings = camera_trajectory(view, gaussians, pipeline, background, train_test_exp, separate_sh, up_dists, lookat_dists, forward_dists)
+            # camera_render(view, gaussians, pipeline, background, train_test_exp, separate_sh, 0.1, 0.3, 0.0)
+            # write_video(os.path.join("./tmp", '{0:05d}'.format(idx) + ".mp4"), all_renderings.cpu().numpy(), 30)
+            write_video(os.path.join(video_path, '{0:05d}'.format(idx) + ".mp4"), all_renderings.cpu().numpy(), 30)
 
-        # torchvision.utils.save_image(rendering, os.path.join(render_path, '{0:05d}'.format(idx) + ".png"))
-        # torchvision.utils.save_image(depth_show, os.path.join(depth_path, '{0:05d}'.format(idx) + ".png"))
-        # torchvision.utils.save_image(gt, os.path.join(gts_path, '{0:05d}'.format(idx) + ".png"))
+        torchvision.utils.save_image(rendering, os.path.join(render_path, '{0:05d}'.format(idx) + ".png"))
+        torchvision.utils.save_image(depth_show, os.path.join(depth_path, '{0:05d}'.format(idx) + ".png"))
+        torchvision.utils.save_image(gt, os.path.join(gts_path, '{0:05d}'.format(idx) + ".png"))
 
 def render_sets(dataset : ModelParams, iteration : int, pipeline : PipelineParams, skip_train : bool, skip_test : bool, separate_sh: bool, if_render: bool):
     with torch.no_grad():

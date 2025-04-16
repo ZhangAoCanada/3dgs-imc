@@ -306,6 +306,8 @@ class GaussianModel:
     def derivatives(self, view, tb_writer, iteration):
         if iteration < self.nn_derivatives_iter:
             return None, None
+        if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
+            return None, None
         # if iteration < 10:
         #     return None, None
         # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
@@ -716,7 +718,7 @@ class GaussianModel:
             db = DBSCAN(
                 eps=self.eps, 
                 # min_samples=self.min_samples, 
-                min_samples= 0.3 * W * H, 
+                min_samples= 0.5 * W * H, 
                 max_mbytes_per_batch=5000
                 # max_mbytes_per_batch=2000
                     ).fit(pts_cudf, out_dtype='int32')
@@ -741,7 +743,7 @@ class GaussianModel:
             db = DBSCAN(
                 eps=self.eps, 
                 # min_samples=self.min_samples, 
-                min_samples= 0.3 * W * H, 
+                min_samples= 0.5 * W * H, 
                 max_mbytes_per_batch=5000
                 # max_mbytes_per_batch=2000
                     ).fit(pts_cudf, out_dtype='int32')
