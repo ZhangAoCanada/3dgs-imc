@@ -1,6 +1,6 @@
-for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach 
+for trials in 001 002 003
 do
-    for random_view_num in 1 2 3 
+    for random_view_num in 3
     do
         nn_start_iter=2000
         nn_derivatives_iter=$((nn_start_iter+500))
@@ -13,26 +13,26 @@ do
         opacity_reg=0.01
         densify_from_iter=500
         densification_interval=400
-        # depth_l1_weight_init=0.1
-        depth_l1_weight_init=0.3
+        depth_l1_weight_init=0.1
         depth_l1_weight_final=$(echo "scale=10; $depth_l1_weight_init * 0.01" | bc)
         nn_type=allviews
         bound_type=local
-        partial_scaling=1e0
+        # partial_scaling=1e0
+        partial_scaling=1e-2
         sigma_scaling=1e-3
         eps=0.05
-        # min_samples=300
+        # min_samples=1500
         min_samples=500
-        port=12301
+        port=12311
         minmax=wholeonly
-        # noise_method=1-opacity-detach
-        # random_view_num=3
+        noise_method=sigma-detach
+        # random_view_num=1
         echo "[*****training*****] training with noise_method=${noise_method}"
-        CUDA_VISIBLE_DEVICES=0 python train_experimental_branch3.py \
+        CUDA_VISIBLE_DEVICES=1 python train_experimental_branch3.py \
             --source_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train \
             --depths dav2_cached \
             --test_path data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test \
-            --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num}_${scale_reg}_${opacity_reg}_${nn_start_iter}_${nn_derivatives_iter}_${nn_update_interval}_ablation_numview \
+            --model_path outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num}_${scale_reg}_${opacity_reg}_${nn_start_iter}_${nn_derivatives_iter}_${nn_update_interval}_ablation_mean+mcmc_${trials} \
             --images ${images} \
             --resolution -1 \
             --init_type ${init_type} \

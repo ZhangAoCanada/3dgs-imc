@@ -5,10 +5,9 @@
 # interval
 
 # for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach
-# for noise_method in opacity-sigma-detach 1-opacity-detach
-for noise_method in 1-opacity-detach opacity-sigma-detach
+for eps in 1 2 3
 do
-    for depth_l1_weight_init in 0.3 
+    for partial_scaling in 1e-3 1e-2 1e-1 1e0
     do
         nn_start_iter=2000
         nn_derivatives_iter=$((nn_start_iter+500))
@@ -22,24 +21,25 @@ do
         scale_reg=0.01
         opacity_reg=0.01
         densify_from_iter=500
-        densification_interval=400
+        densification_interval=200
         # depth_l1_weight_init=0.1
-        # depth_l1_weight_init=0.3
+        depth_l1_weight_init=0.3
         # depth_l1_weight_init=0.5
         depth_l1_weight_final=$(echo "scale=10; $depth_l1_weight_init * 0.01" | bc)
         nn_type=allviews
         bound_type=local
-        partial_scaling=1e0
+        # partial_scaling=1e0
+        # partial_scaling=1e-2
         sigma_scaling=1e-3
         # eps=0.05
-        eps=5
+        # eps=1
         min_samples=500
         minmax=wholeonly
-        range_scale=0.1
-        # noise_method=sigma-detach
+        range_scale=1
+        noise_method=sigma-detach
         # noise_method=1-opacity-detach
         # noise_method=opacity-sigma-detach
-        random_view_num=1
+        random_view_num=3
         dvoxel_size=0.01
         port=12311
         echo "[*****training*****] training with noise_method=${noise_method}"
