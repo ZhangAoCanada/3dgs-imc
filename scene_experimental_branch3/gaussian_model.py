@@ -422,6 +422,10 @@ class GaussianModel:
             torch.cuda.empty_cache()
             with torch.no_grad():
                 self.update_nnpts(all_views, pipe, bg, align=False)
+            if self.nn_gt_pts is not None:
+                print(f"Iteration {iteration}: updated nn points, total {self.nn_gt_pts.shape[0]} points.")
+            else:
+                print(f"Iteration {iteration}: no nn points found.")
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
             return None
         self.net.train()
@@ -528,14 +532,13 @@ class GaussianModel:
 
         gradient = diff_operators.gradient(pred_opacity, net_in)
         opacity_constraint = F.l1_loss(pred_opacity, gt_opacity).mean()
-        color_constraint = F.l1_loss(pred_color, gt_color).mean()
+        # color_constraint = F.l1_loss(pred_color, gt_color).mean()
         normal_constraint = (1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None]).mean()
         # gradient_constraint = torch.abs(gradient.norm(dim=-1) - 1).mean()
         l = opacity_constraint * 3e3 + \
-            color_constraint * 1e3 + \
             normal_constraint * 1e2
-            # normal_constraint * 1e2 + \
             # gradient_constraint * 5e1
+            # color_constraint * 1e3 + \
 
         return l
     
@@ -695,9 +698,9 @@ class GaussianModel:
         return all_pts
     
     def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, aligndepth=False):
-        # if int(view.image_name.split(".")[0]) in [248, 249]:
-        if int(view.image_name.split(".")[0]) >= 1171:
-            return None
+        # # if int(view.image_name.split(".")[0]) in [248, 249]:
+        # if int(view.image_name.split(".")[0]) >= 1171:
+        #     return None
         align_depth = None
         mask = None
         # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
