@@ -4,7 +4,7 @@
 # random view
 # interval
 
-for sigma_scaling in 1e-1 1e0
+for partial_scaling in 1e-1 1e0
 do
     # for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach
     for sigma_scaling in 1e-3 1e-2 1e-1
