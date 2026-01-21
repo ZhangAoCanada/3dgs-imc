@@ -177,7 +177,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     # Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
                 else:
                     aligned_depth = gaussians.aligned_depth_dict[viewpoint_cam.image_name]
-                    downsample = gaussians.downsample_ratio
+                    # downsample = gaussians.downsample_ratio
                     # aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=None, scale_factor=downsample, mode='bilinear', align_corners=False).squeeze(0)
                     aligned_depth = F.interpolate(aligned_depth.unsqueeze(0), size=viewpoint_cam.invdepthmap.shape[1:], mode='bilinear', align_corners=False).squeeze(0)
                     aligned_invdepth = 1.0 / (aligned_depth + 1e-4)
@@ -186,9 +186,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     Ll1depth_pure = torch.abs((render_invdepth - aligned_invdepth) * depth_mask).mean()
                 Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
                 loss += Ll1depth
-                Ll1depth = Ll1depth.item()
+                Ll1depth_val = Ll1depth.item()
             else:
                 Ll1depth = 0
+                Ll1depth_val = 0
 
             total_l += loss
         
@@ -215,7 +216,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         with torch.no_grad():
             # Progress bar
             ema_loss_for_log = 0.4 * loss.item() + 0.6 * ema_loss_for_log
-            ema_Ll1depth_for_log = 0.4 * Ll1depth + 0.6 * ema_Ll1depth_for_log
+            ema_Ll1depth_for_log = 0.4 * Ll1depth_val + 0.6 * ema_Ll1depth_for_log
 
             if iteration % 10 == 0:
                 progress_bar.set_postfix({"Loss": f"{ema_loss_for_log:.{7}f}", "Depth Loss": f"{ema_Ll1depth_for_log:.{7}f}"})
@@ -420,7 +421,7 @@ if __name__ == "__main__":
     parser.add_argument('--port', type=int, default=6009)
     parser.add_argument('--debug_from', type=int, default=-1)
     parser.add_argument('--detect_anomaly', action='store_true', default=False)
-    parser.add_argument("--test_iterations", nargs="+", type=int, default=[i * 5000 for i in range(100)])
+    parser.add_argument("--test_iterations", nargs="+", type=int, default=[i * 2000 for i in range(100)])
     parser.add_argument("--save_iterations", nargs="+", type=int, default=[30000, 60000])
     parser.add_argument("--quiet", action="store_true")
     parser.add_argument('--disable_viewer', action='store_true', default=False)

@@ -730,7 +730,7 @@ class GaussianModel:
             labels = torch.tensor(labels, device="cuda", dtype=torch.float)
             mask = labels.detach().clone() != -1
             del db, labels, pts_cudf
-            # torch.cuda.empty_cache()
+            torch.cuda.empty_cache()
 
             if mask.sum() < self.dbscan_portion * H * W:
                 return None
