@@ -561,8 +561,8 @@ class GaussianModel:
         L = build_scaling_rotation(self.get_scaling[mask], self.get_rotation[mask])
         covariance = L @ L.transpose(1, 2)
         # L = torch.linalg.cholesky(covariance)
-        # z = torch.randn_like(means) * scaling_modifier
-        z = torch.rand_like(means) * scaling_modifier
+        z = torch.randn_like(means) * scaling_modifier
+        # z = (torch.rand_like(means) - 0.5) * scaling_modifier
         # z = torch.randn_like(means).clamp(-1, 1) * scaling_modifier
         epsilon = torch.bmm(covariance, z.unsqueeze(-1)).squeeze(-1)
         samples = means + epsilon
