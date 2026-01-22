@@ -1,13 +1,13 @@
-# eps
+﻿# eps
 # ranges_scale
 # depth
 # random view
 # interval
 
-for eps in 0.25 0.5 0.75 1.0
+for eps in 0.25 0.5 0.75 1.0 0.1
 do
     # for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach
-    for sigma_scaling in 1e-3
+    for sigma_scaling in 1e0
     do
         nn_start_iter=2000
         nn_derivatives_iter=$((nn_start_iter+500))
