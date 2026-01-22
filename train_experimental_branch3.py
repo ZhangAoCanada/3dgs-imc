@@ -233,12 +233,17 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 gaussians.save_nn(scene.model_path)
 
             ############### NOTE: IMC ###############
-            L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-            actual_covariance = L @ L.transpose(1, 2)
-            def op_sigmoid(x, k=100, x0=0.995):
-                return 1 / (1 + torch.exp(-k * (x - x0)))
-            noise_mcmc = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
-            noise_mcmc = torch.bmm(actual_covariance, noise_mcmc.unsqueeze(-1)).squeeze(-1)
+            # L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+            # actual_covariance = L @ L.transpose(1, 2)
+            # def op_sigmoid(x, k=100, x0=0.995):
+            #     return 1 / (1 + torch.exp(-k * (x - x0)))
+            # noise_mcmc = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+            # noise_mcmc = torch.bmm(actual_covariance, noise_mcmc.unsqueeze(-1)).squeeze(-1)
+            # if noise is not None:
+            #     noise_mcmc[noise_mask] = noise[noise_mask]
+            # gaussians._xyz.add_(noise_mcmc)
+
+            noise_mcmc = torch.zeros_like(gaussians._xyz)
             if noise is not None:
                 noise_mcmc[noise_mask] = noise[noise_mask]
             gaussians._xyz.add_(noise_mcmc)
@@ -283,18 +288,15 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 #     noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
                 #     gaussians._xyz.add_(noise)
                 # ################# NOTE: MCMC ##################
-                # elif opt.noise_method == "mcmc":
-                #     L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-                #     actual_covariance = L @ L.transpose(1, 2)
+                L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+                actual_covariance = L @ L.transpose(1, 2)
 
-                #     def op_sigmoid(x, k=100, x0=0.995):
-                #         return 1 / (1 + torch.exp(-k * (x - x0)))
-                    
-                #     noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
-                #     noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
-                #     gaussians._xyz.add_(noise)
-                # else:
-                #     raise NotImplementedError
+                def op_sigmoid(x, k=100, x0=0.995):
+                    return 1 / (1 + torch.exp(-k * (x - x0)))
+                
+                noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+                noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
+                gaussians._xyz.add_(noise)
 
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))

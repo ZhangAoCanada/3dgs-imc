@@ -4,10 +4,10 @@
 # random view
 # interval
 
-for partial_scaling in 1e-1 1e0
+for eps in 0.25 0.5 0.75 1.0
 do
     # for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach
-    for sigma_scaling in 1e-3 1e-2 1e-1
+    for sigma_scaling in 1e-3
     do
         nn_start_iter=2000
         nn_derivatives_iter=$((nn_start_iter+500))
@@ -23,28 +23,28 @@ do
         densify_from_iter=500
         densification_interval=200
         depth_l1_weight_init=0.3
-        # depth_l1_weight_final=$(echo "scale=10; $depth_l1_weight_init * 0.1" | bc)
-        depth_l1_weight_final=0.01
+        depth_l1_weight_final=$(echo "scale=10; $depth_l1_weight_init * 0.01" | bc)
         nn_type=allviews
         bound_type=local
         # partial_scaling=1e-2
         # sigma_scaling=1e-3
         # eps=0.05
-        eps=0.1
+        partial_scaling=1e0
+        # eps=0.1
         min_samples=500
         minmax=wholeonly
-        range_scale=0.5
+        range_scale=1.0
         noise_method=sigma-detach
         # noise_method=1-opacity-detach
         # noise_method=opacity-sigma-detach
-        random_view_num=3
+        random_view_num=1
         dvoxel_size=0.01
         port=12311
         echo "[*****training*****] training with noise_method=${noise_method}"
-        python train_experimental_branch3.py \
-            --source_path /mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train \
+        CUDA_VISIBLE_DEVICES=1 python train_experimental_branch3.py \
+            --source_path /data1/zhangao/DATA/large_angle//Zeche1/train \
             --depths dav2 \
-            --test_path /mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test \
+            --test_path /data1/zhangao/DATA/large_angle//Zeche1/test \
             --model_path outputs/Zeche1/experimental3_${init_type}_${nn_type}_${bound_type}_${eps}_${min_samples}_${depth_l1_weight_init}_${depth_l1_weight_final}_${minmax}_${range_scale}_${partial_scaling}_${sigma_scaling}_${noise_method}_${random_view_num}_${scale_reg}_${opacity_reg}_${nn_start_iter}_${nn_derivatives_iter}_${nn_update_interval}_wocolor${trial} \
             --images ${images} \
             --resolution -1 \
