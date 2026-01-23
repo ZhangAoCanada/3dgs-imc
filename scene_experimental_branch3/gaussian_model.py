@@ -344,8 +344,8 @@ class GaussianModel:
 
             # grad_xyz = grad[0][gs_mask] * net_scale * xyz_scaling
             grad_xyz = grad[0][gs_mask] * xyz_scaling * self.partial_scaling
-            grad_rot = grad[1][gs_mask] * self.partial_scaling * self.sigma_scaling
-            grad_scale = grad[2][gs_mask] * self.partial_scaling * self.sigma_scaling
+            grad_rot = grad[1][gs_mask] * self.sigma_scaling
+            grad_scale = grad[2][gs_mask] * self.sigma_scaling
 
             self._xyz[gs_mask].add_(grad_xyz)
             self._rotation[gs_mask].add_(grad_rot)

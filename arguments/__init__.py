@@ -60,6 +60,7 @@ class ModelParams(ParamGroup):
         ### NOTE: mcmc ###
         self.cap_max = 10000000
         self.init_type = "sfm"
+        self.test_selection_path = ""
         super().__init__(parser, "Loading Parameters", sentinel)
 
     def extract(self, args):

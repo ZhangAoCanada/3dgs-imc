@@ -54,6 +54,19 @@ class Scene:
             else:
                 assert False, "Could not recognize test scene type!"
             scene_info.test_cameras.extend(test_scene_info.train_cameras)
+        elif args.test_selection_path != "":
+            # Read selected image names from the selection file
+            with open(args.test_selection_path, 'r') as f:
+                selected_image_names = {line.strip() for line in f.readlines()}
+            
+            # Separate selected and non-selected cameras
+            test_cameras = [cam for cam in scene_info.train_cameras if cam.image_name in selected_image_names]
+            scene_info.test_cameras.extend(test_cameras)
+            
+            # Remove selected cameras from train_cameras (in-place)
+            for cam in test_cameras:
+                scene_info.train_cameras.remove(cam)
+
 
         if not self.loaded_iter:
             with open(scene_info.ply_path, 'rb') as src_file, open(os.path.join(self.model_path, "input.ply") , 'wb') as dest_file:

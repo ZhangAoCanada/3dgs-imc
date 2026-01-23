@@ -292,6 +292,7 @@ def render_gsplat(viewpoint_camera, pc : GaussianModel, scaling_modifier = 1.0, 
         W,
         H,
         render_mode="RGB+D",
+        # render_mode="RGB+ED",
         packed=True, 
         absgrad=False,
         rasterize_mode=rasterize_mode
