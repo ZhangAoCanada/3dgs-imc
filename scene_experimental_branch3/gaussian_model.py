@@ -344,8 +344,8 @@ class GaussianModel:
 
             # grad_xyz = grad[0][gs_mask] * net_scale * xyz_scaling
             grad_xyz = grad[0][gs_mask] * xyz_scaling * self.partial_scaling
-            grad_rot = grad[1][gs_mask] * self.partial_scaling * self.sigma_scaling
-            grad_scale = grad[2][gs_mask] * self.partial_scaling * self.sigma_scaling
+            grad_rot = grad[1][gs_mask] * self.sigma_scaling
+            grad_scale = grad[2][gs_mask] * self.sigma_scaling
 
             self._xyz[gs_mask].add_(grad_xyz)
             self._rotation[gs_mask].add_(grad_rot)
@@ -695,8 +695,8 @@ class GaussianModel:
     
     def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, aligndepth=False):
         # if int(view.image_name.split(".")[0]) in [248, 249]:
-        if int(view.image_name.split(".")[0]) >= 1171:
-            return None
+        # if int(view.image_name.split(".")[0]) >= 1171:
+        #     return None
         align_depth = None
         mask = None
         # render_pkg = render(view, self, pipe, bg, use_trained_exp=False, separate_sh=False)
