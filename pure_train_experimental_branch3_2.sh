@@ -5,9 +5,9 @@
 # interval
 
 # for noise_method in sigma-detach opacity-sigma-detach 1-opacity-detach
-for eps in 1 2 3
+for eps in 0.05 0.025
 do
-    for partial_scaling in 1e-3 1e-2 1e-1 1e0
+    for partial_scaling in 1e-2 1e0
     do
         nn_start_iter=2000
         nn_derivatives_iter=$((nn_start_iter+500))

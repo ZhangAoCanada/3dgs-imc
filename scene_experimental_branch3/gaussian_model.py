@@ -528,13 +528,12 @@ class GaussianModel:
 
         gradient = diff_operators.gradient(pred_opacity, net_in)
         opacity_constraint = F.l1_loss(pred_opacity, gt_opacity).mean()
-        color_constraint = F.l1_loss(pred_color, gt_color).mean()
         normal_constraint = (1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None]).mean()
+        # color_constraint = F.l1_loss(pred_color, gt_color).mean()
         # gradient_constraint = torch.abs(gradient.norm(dim=-1) - 1).mean()
         l = opacity_constraint * 3e3 + \
-            color_constraint * 1e3 + \
             normal_constraint * 1e2
-            # normal_constraint * 1e2 + \
+            # color_constraint * 1e3 + \
             # gradient_constraint * 5e1
 
         return l
@@ -559,7 +558,7 @@ class GaussianModel:
         covariance = L @ L.transpose(1, 2)
         # L = torch.linalg.cholesky(covariance)
         z = torch.randn_like(means) * scaling_modifier
-        # z = torch.randn_like(means).clamp(-1, 1) * scaling_modifier
+        # z = torch.rand_like(means) * 2.0 - 1.0
         epsilon = torch.bmm(covariance, z.unsqueeze(-1)).squeeze(-1)
         samples = means + epsilon
         # NOTE: compute (x - μ)^T · Σ^(-1) · (x - μ)

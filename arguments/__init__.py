@@ -49,7 +49,6 @@ class ModelParams(ParamGroup):
         self.sh_degree = 3
         self._source_path = ""
         self._model_path = ""
-        self._test_path = ""
         self._images = "images"
         self._depths = ""
         self._resolution = -1
@@ -60,6 +59,8 @@ class ModelParams(ParamGroup):
         ### NOTE: mcmc ###
         self.cap_max = 10000000
         self.init_type = "sfm"
+        self._test_path = ""
+        self.test_selection_path = ""
         super().__init__(parser, "Loading Parameters", sentinel)
 
     def extract(self, args):
