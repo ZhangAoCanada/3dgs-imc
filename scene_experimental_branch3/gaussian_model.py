@@ -558,7 +558,7 @@ class GaussianModel:
         covariance = L @ L.transpose(1, 2)
         # L = torch.linalg.cholesky(covariance)
         z = torch.randn_like(means) * scaling_modifier
-        # z = torch.rand_like(means) * 2.0 - 1.0
+        # z = (torch.rand_like(means) - 0.5) * scaling_modifier
         epsilon = torch.bmm(covariance, z.unsqueeze(-1)).squeeze(-1)
         samples = means + epsilon
         # NOTE: compute (x - μ)^T · Σ^(-1) · (x - μ)
