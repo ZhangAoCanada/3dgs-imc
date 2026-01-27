@@ -33,9 +33,9 @@ do
     range_scale=1
     noise_method=sigma-detach
     random_view_num=1
-    dvoxel_size=0.01
+    dvoxel_size=0.001
     port=12345
-    for eps in 0.05 0.01 0.1 0.5
+    for eps in 0.25 0.5 1.0
     do
         model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_randnmc
         echo "[*****training*****] training with noise_method=${noise_method}"
@@ -88,7 +88,7 @@ do
     echo "Processing scene: $scene_name"
     test_selection_path=${source_path}/test_selection.txt
     images=images_4
-    depths=dav2
+    depths=dav2_4
     depth_l1_weight_init=0.3
     nn_type=allviews
     bound_type=local
@@ -99,9 +99,9 @@ do
     range_scale=1
     noise_method=sigma-detach
     random_view_num=1
-    dvoxel_size=0.01
+    dvoxel_size=0.001
     port=12345
-    for eps in 0.05 0.01 0.1 0.5
+    for eps in 0.25 0.5 1.0
     do
         model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_randnmc
         echo "[*****training*****] training with noise_method=${noise_method}"
@@ -131,17 +131,128 @@ do
     done
 done
 
-source_path1=/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1
-cap_max1=2000000
-for source_path in $source_path1
+# source_path1=/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1
+# cap_max1=2000000
+# for source_path in $source_path1
+# do
+#     if [ $source_path == $source_path1 ]; then
+#         cap_max=$cap_max1
+#     fi
+#     scene_name=$(basename $source_path)
+#     echo "Processing scene: $scene_name"
+#     train_path=${source_path}/train
+#     test_path=${source_path}/test
+#     images=images
+#     depths=dav2
+#     depth_l1_weight_init=0.3
+#     nn_type=allviews
+#     bound_type=local
+#     sigma_scaling=1e-6
+#     min_samples=500
+#     minmax=wholeonly
+#     partial_scaling=1e0
+#     range_scale=1
+#     noise_method=sigma-detach
+#     random_view_num=1
+#     dvoxel_size=0.001
+#     port=12345
+#     for eps in 0.05 0.01 0.1 0.5
+#     do
+#         model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_randnmc
+#         echo "[*****training*****] training with noise_method=${noise_method}"
+#         python train_experimental_branch3_mc.py \
+#             --source_path ${train_path} \
+#             --test_path ${test_path} \
+#             --model_path ${model_path} \
+#             --images ${images} \
+#             --depths ${depths} \
+#             --cap_max ${cap_max} \
+#             --depth_l1_weight_init ${depth_l1_weight_init} \
+#             --partial_scaling ${partial_scaling} \
+#             --nn_type ${nn_type} \
+#             --bound_type ${bound_type} \
+#             --sigma_scaling ${sigma_scaling} \
+#             --eps ${eps} \
+#             --min_samples ${min_samples} \
+#             --range_scale ${range_scale} \
+#             --minmax ${minmax} \
+#             --noise_method ${noise_method} \
+#             --random_view_num ${random_view_num} \
+#             --resolution 1 \
+#             --data_device cpu \
+#             --antialiasing \
+#             --dvoxel_size ${dvoxel_size} \
+#             --port $port
+# done
+
+# source_path1=/mnt/c/Users/Aooooo/Documents/DATA/large_angle/blockA_fusion_small_aerial+somestreet
+# cap_max1=7000000
+# for source_path in $source_path1
+# do
+#     if [ $source_path == $source_path1 ]; then
+#         cap_max=$cap_max1
+#     fi
+#     scene_name=$(basename $source_path)
+#     echo "Processing scene: $scene_name"
+#     train_path=${source_path}/train
+#     test_path=${source_path}/test
+#     images=input_cached
+#     depths=dav2_cached
+#     depth_l1_weight_init=0.3
+#     nn_type=allviews
+#     bound_type=local
+#     sigma_scaling=1e-6
+#     min_samples=500
+#     minmax=wholeonly
+#     partial_scaling=1e0
+#     range_scale=1
+#     noise_method=sigma-detach
+#     random_view_num=1
+#     dvoxel_size=0.001
+#     port=12345
+#     for eps in 0.05 0.01 0.1 0.5
+#     do
+#         model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_randnmc
+#         echo "[*****training*****] training with noise_method=${noise_method}"
+#         python train_experimental_branch3_mc.py \
+#             --source_path ${train_path} \
+#             --test_path ${test_path} \
+#             --model_path ${model_path} \
+#             --images ${images} \
+#             --depths ${depths} \
+#             --cap_max ${cap_max} \
+#             --depth_l1_weight_init ${depth_l1_weight_init} \
+#             --partial_scaling ${partial_scaling} \
+#             --nn_type ${nn_type} \
+#             --bound_type ${bound_type} \
+#             --sigma_scaling ${sigma_scaling} \
+#             --eps ${eps} \
+#             --min_samples ${min_samples} \
+#             --range_scale ${range_scale} \ 
+#             --minmax ${minmax} \
+#             --noise_method ${noise_method} \
+#             --random_view_num ${random_view_num} \
+#             --resolution 1 \
+#             --data_device cpu \
+#             --antialiasing \
+#             --dvoxel_size ${dvoxel_size} \
+#             --port $port
+# done
+
+source_path1=/mnt/c/Users/Aooooo/Documents/DATA/DroneSplat/Sculpture
+cap_max1=6000000
+source_path2=/mnt/c/Users/Aooooo/Documents/DATA/DroneSplat/Simingshan
+cap_max2=2000000
+for source_path in $source_path1 $source_path2
 do
     if [ $source_path == $source_path1 ]; then
         cap_max=$cap_max1
+    else
+        cap_max=$cap_max2
     fi
     scene_name=$(basename $source_path)
     echo "Processing scene: $scene_name"
-    train_path=${source_path}/train
-    test_path=${source_path}/test
+    test_selection_path=${source_path}/test_selection.txt
     images=images
     depths=dav2
     depth_l1_weight_init=0.3
@@ -154,15 +265,15 @@ do
     range_scale=1
     noise_method=sigma-detach
     random_view_num=1
-    dvoxel_size=0.01
+    dvoxel_size=0.001
     port=12345
-    for eps in 0.05 0.01 0.1 0.5
+    for eps in 0.1 0.25 0.5
     do
         model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_randnmc
         echo "[*****training*****] training with noise_method=${noise_method}"
         python train_experimental_branch3_mc.py \
-            --source_path ${train_path} \
-            --test_path ${test_path} \
+            --source_path ${source_path} \
+            --test_selection_path ${test_selection_path} \
             --model_path ${model_path} \
             --images ${images} \
             --depths ${depths} \
@@ -183,78 +294,8 @@ do
             --antialiasing \
             --dvoxel_size ${dvoxel_size} \
             --port $port
+    done
 done
-
-source_path1=/mnt/c/Users/Aooooo/Documents/DATA/large_angle/blockA_fusion_small_aerial+somestreet
-cap_max1=7000000
-for source_path in $source_path1
-do
-    if [ $source_path == $source_path1 ]; then
-        cap_max=$cap_max1
-    fi
-    scene_name=$(basename $source_path)
-    echo "Processing scene: $scene_name"
-    train_path=${source_path}/train
-    test_path=${source_path}/test
-    images=input_cached
-    depths=dav2_cached
-    depth_l1_weight_init=0.3
-    nn_type=allviews
-    bound_type=local
-    sigma_scaling=1e-6
-    min_samples=500
-    minmax=wholeonly
-    partial_scaling=1e0
-    range_scale=1
-    noise_method=sigma-detach
-    random_view_num=1
-    dvoxel_size=0.01
-    port=12345
-    for eps in 0.05 0.01 0.1 0.5
-    do
-        model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_randnmc
-        echo "[*****training*****] training with noise_method=${noise_method}"
-        python train_experimental_branch3_mc.py \
-            --source_path ${train_path} \
-            --test_path ${test_path} \
-            --model_path ${model_path} \
-            --images ${images} \
-            --depths ${depths} \
-            --cap_max ${cap_max} \
-            --depth_l1_weight_init ${depth_l1_weight_init} \
-            --partial_scaling ${partial_scaling} \
-            --nn_type ${nn_type} \
-            --bound_type ${bound_type} \
-            --sigma_scaling ${sigma_scaling} \
-            --eps ${eps} \
-            --min_samples ${min_samples} \
-            --range_scale ${range_scale} \ 
-            --minmax ${minmax} \
-            --noise_method ${noise_method} \
-            --random_view_num ${random_view_num} \
-            --resolution 1 \
-            --data_device cpu \
-            --antialiasing \
-            --dvoxel_size ${dvoxel_size} \
-            --port $port
-done
-
-# source_path1=/data2/zhangao/DroneSplat/Sculpture
-# cap_max1=6000000
-# source_path2=/data2/zhangao/DroneSplat/Simingshan
-# cap_max2=2000000
-# for source_path in $source_path1 $source_path2
-# do
-#     if [ $source_path == $source_path1 ]; then
-#         cap_max=$cap_max1
-#     else
-#         cap_max=$cap_max2
-#     fi
-#     scene_name=$(basename $source_path)
-#     echo "Processing scene: $scene_name"
-#     images=images
-#     test_selection_path=${source_path}/test_selection.txt
-# done
 
 source_path1=/mnt/c/Users/Aooooo/Documents/DATA/HorizonGS/real/park
 cap_max1=7000000
@@ -283,9 +324,9 @@ do
     range_scale=1
     noise_method=sigma-detach
     random_view_num=1
-    dvoxel_size=0.01
+    dvoxel_size=0.001
     port=12345
-    for eps in 0.05 0.01 0.1 0.5
+    for eps in 5.0 10.0
     do
         model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_randnmc
         echo "[*****training*****] training with noise_method=${noise_method}"
