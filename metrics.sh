@@ -1,36 +1,16 @@
 ########################################
 # NOTE: run render.sh before metrics.sh
 ########################################
-# model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.3_.003_wholeonly_1e0_1e-3_1-opacity-detach_3_0.01_0.01_2000_2500_500___
-# model_path2=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_0.001_wholeonly_1e0_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500____
-# model_path3=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000_dav2
-# model_path4=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000
-# model_path5=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/original_sfm_5000000-500-400
-# model_path6=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/original_sfm_3000000-500-400
-# model_path7=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/pgsr_original_3000000
+export CUDA_VISIBLE_DEVICES=0
 
+model_path1=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/truck_resize/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e-2_sigma1e-6_sigma-detach_nview3_2000000_randmc
+model_path2=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/train_resize/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e-2_sigma1e-6_sigma-detach_nview3_1000000_randmc
 
-
-
-# model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_1_0.01_0.01_2000_2500_500_ablation_retry
-# model_path2=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_2_0.01_0.01_2000_2500_500_ablation_retry
-# model_path3=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500_ablation_retry
-# model_path4=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_1_0.01_0.01_2000_2500_500_ablation_mean+mcmc_1
-# model_path5=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_2_0.01_0.01_2000_2500_500_ablation_mean+mcmc_1
-# model_path6=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500_ablation_mean+mcmc_002
-# model_path7=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_2_0.01_0.01_2000_2500_500_ablation_variance_1
-# model_path8=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500_ablation_variance_001
-
-
-# model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/original_sfm_3000000-500-400
-
-
-
-model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000_dav2
-model_path2=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000
-model_path3=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/pgsr_original_3000000
-
-for model_path in ${model_path1} ${model_path2} ${model_path3}
+model_path3=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/building-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e0_partial1e0_sigma1e-6_sigma-detach_nview3_7000000_randnmc
+model_path4=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/residence-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e-2_partial1e0_sigma1e-6_sigma-detach_nview3_6000000_randnmc
+model_path5=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/rubble-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e0_partial1e0_sigma1e-6_sigma-detach_nview3_6000000_randnmc
+model_path6=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/sci-art-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e0_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_randnmc
+for model_path in $model_path1 $model_path2 $model_path3 $model_path4 $model_path5 $model_path6
 do
-    CUDA_VISIBLE_DEVICES=1 python metrics.py -m ${model_path} 
+    python metrics.py -m ${model_path} 
 done

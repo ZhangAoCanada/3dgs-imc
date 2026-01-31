@@ -10,8 +10,8 @@
 #
 
 import torch
-from scene import Scene
-import os
+from scene_experimental_branch3 import Scene
+import os, sys
 from tqdm import tqdm
 from os import makedirs
 from gaussian_renderer import render, render_gsplat

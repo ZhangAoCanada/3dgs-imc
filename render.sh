@@ -1,54 +1,71 @@
-images=input_cached
-init_type=sfm
-source_path=data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train
-# test_path=data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_skyroad/test
-# test_path=data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_skyroad_2nd/test
-test_path=data/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/test
+export CUDA_VISIBLE_DEVICES=0
 
+model_path_base=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3
+model_path_ext=develop3
 
-
-# model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.3_.003_wholeonly_1e0_1e-3_1-opacity-detach_3_0.01_0.01_2000_2500_500___
-# model_path2=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_0.001_wholeonly_1e0_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500____
-# model_path3=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000_dav2
-# model_path4=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000
-# model_path5=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/original_sfm_5000000-500-400
-# model_path6=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/original_sfm_3000000-500-400
-# model_path7=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/pgsr_original_3000000
-
-
-
-
-# model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_1_0.01_0.01_2000_2500_500_ablation_retry
-# model_path2=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_2_0.01_0.01_2000_2500_500_ablation_retry
-# model_path3=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500_ablation_retry
-# model_path4=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_1_0.01_0.01_2000_2500_500_ablation_mean+mcmc_1
-# model_path5=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_2_0.01_0.01_2000_2500_500_ablation_mean+mcmc_1
-# model_path6=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500_ablation_mean+mcmc_002
-# model_path7=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_2_0.01_0.01_2000_2500_500_ablation_variance_1
-# model_path8=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/experimental_branch3_sfm_allviews_local_0.05_500_0.1_.001_wholeonly_1e-2_1e-3_sigma-detach_3_0.01_0.01_2000_2500_500_ablation_variance_001
-
-
-# model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/original_sfm_3000000-500-400
-
-
-model_path1=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000_dav2
-model_path2=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/3dgs-original-until5000
-model_path3=outputs/mcmc/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/pgsr_original_3000000
-
-for model_path in ${model_path1} ${model_path2} ${model_path3}
+source_path1=/mnt/c/Users/Aooooo/Documents/DATA/tandt_db/tandt/truck_resize
+cap_max1=2000000
+source_path2=/mnt/c/Users/Aooooo/Documents/DATA/tandt_db/tandt/train_resize
+cap_max2=1000000
+for source_path in $source_path1 $source_path2
 do
-    echo "[rendering] rendering with ${model_path}"
-    CUDA_VISIBLE_DEVICES=1 python render_camcustomized.py \
-        --source_path ${source_path} \
-        --test_path ${test_path} \
-        --depths "" \
+    if [ $source_path == $source_path1 ]; then
+        cap_max=$cap_max1
+    else
+        cap_max=$cap_max2
+    fi
+    scene_name=$(basename $source_path)
+    echo "rendering scene: $scene_name"
+    test_selection_path=${source_path}/test_selection.txt
+    if [ $source_path == $source_path1 ]; then
+        model_path=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/truck_resize/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e-2_sigma1e-6_sigma-detach_nview3_2000000_randmc
+    else
+        model_path=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/train_resize/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e-2_sigma1e-6_sigma-detach_nview3_1000000_randmc
+    fi
+    python render_camcustomized.py \
         --model_path ${model_path} \
-        --images ${images} \
-        --resolution -1 \
-        --init_type ${init_type} \
         --data_device cpu \
-        # --antialiasing \
-        # --skip_train \
-        # --train_test_exp \
-        # --if_render
+        --resolution 1 \
+        --antialiasing \
+        --skip_train
+done
+
+
+source_path1=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/building-small
+cap_max1=7000000
+source_path2=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/residence-small
+cap_max2=6000000
+source_path3=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/rubble-small
+cap_max3=6000000
+source_path4=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/sci-art-small
+cap_max4=1000000
+for source_path in $source_path1 $source_path2 $source_path3 $source_path4
+do
+    if [ $source_path == $source_path1 ]; then
+        cap_max=$cap_max1
+    elif [ $source_path == $source_path2 ]; then
+        cap_max=$cap_max2
+    elif [ $source_path == $source_path3 ]; then
+        cap_max=$cap_max3
+    else
+        cap_max=$cap_max4
+    fi
+    scene_name=$(basename $source_path)
+    echo "Processing scene: $scene_name"
+    test_selection_path=${source_path}/test_selection.txt
+    if [ $source_path == $source_path1 ]; then
+        model_path=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/building-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e0_partial1e0_sigma1e-6_sigma-detach_nview3_7000000_randnmc
+    elif [ $source_path == $source_path2 ]; then
+        model_path=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/residence-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e-2_partial1e0_sigma1e-6_sigma-detach_nview3_6000000_randnmc
+    elif [ $source_path == $source_path3 ]; then
+        model_path=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/rubble-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e0_partial1e0_sigma1e-6_sigma-detach_nview3_6000000_randnmc
+    else
+        model_path=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3/sci-art-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1e0_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_randnmc
+    fi
+    python render_camcustomized.py \
+        --model_path ${model_path} \
+        --data_device cpu \
+        --resolution 1 \
+        --antialiasing \
+        --skip_train
 done

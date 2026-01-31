@@ -121,5 +121,5 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="Training script parameters")
     parser.add_argument('--model_paths', '-m', required=True, nargs="+", type=str, default=[])
     args = parser.parse_args()
-    evaluate(args.model_paths, "train")
+    # evaluate(args.model_paths, "train")
     evaluate(args.model_paths, "test")
