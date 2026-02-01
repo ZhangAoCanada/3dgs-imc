@@ -4,7 +4,7 @@
 # random view
 # interval
 
-model_path_base=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3
+model_path_base=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi
 model_path_ext=develop3
 
 source_path1=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/bicycle
@@ -66,7 +66,12 @@ do
         dvoxel_size=0.001
         port=12345
         eps=0.25
-        for eps in 0.05 0.1 0.25 0.5
+        if [${scene_name} == "bonsai" ]; then
+            eps=0.5
+        elif [${scene_name} == "room" ]; then
+            eps=0.5
+        fi
+        for range_scale in 1e-2 1e0
         do
             model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_${test_selection}
             echo "[*****training*****] training with noise_method=${noise_method}"
