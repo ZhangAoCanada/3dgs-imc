@@ -25,7 +25,7 @@ def main():
     parser = argparse.ArgumentParser(description="Select N nearest viewpoints to a given image.")
     parser.add_argument("--source_path", "-s", required=True, type=str, help="Path to the source directory containing sparse/0/")
     parser.add_argument("--image_name", "-i", required=True, type=str, help="Name of the target image")
-    parser.add_argument("--n", "-n", required=True, type=int, help="Number of nearest neighbors to select")
+    parser.add_argument("--n", "-n", required=True, type=int, nargs='+', help="Number(s) of nearest neighbors to select")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode to plot camera poses")
     
     args = parser.parse_args()
@@ -73,19 +73,26 @@ def main():
     # Sort by distance
     distances.sort(key=lambda x: x[2])
     
-    # Select top N (which will include the target itself as the first element since dist=0)
-    selected = distances[:args.n]
-    
-    print(f"Selected {len(selected)} nearest images:")
-    for name, center, dist in selected:
-        print(f"  {name}: {dist:.4f}")
+    # Process each n in the list
+    for n in args.n:
+        # Select top N (which will include the target itself as the first element since dist=0)
+        selected = distances[:n]
         
-    output_file = os.path.join(args.source_path, "test_selection.txt")
-    with open(output_file, "w") as f:
-        for name, _, _ in selected:
-            f.write(f"{name}\n")
+        print(f"Selected {len(selected)} nearest images for n={n}:")
+        if len(selected) <= 20: # Only print if list is small enough
+            for name, center, dist in selected:
+                print(f"  {name}: {dist:.4f}")
             
-    print(f"Saved selected image names to {output_file}")
+        output_file = os.path.join(args.source_path, f"test_selection_{n}.txt")
+        with open(output_file, "w") as f:
+            for name, _, _ in selected:
+                f.write(f"{name}\n")
+                
+        print(f"Saved selected image names to {output_file}")
+
+    # Use the largest n for visualization
+    max_n = max(args.n)
+    selected = distances[:max_n]
 
     if args.debug:
         print("Plotting camera poses...")

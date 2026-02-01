@@ -64,8 +64,7 @@ class Scene:
             scene_info.test_cameras.extend(test_cameras)
             
             # Remove selected cameras from train_cameras (in-place)
-            for cam in test_cameras:
-                scene_info.train_cameras.remove(cam)
+            scene_info.train_cameras[:] = [cam for cam in scene_info.train_cameras if cam.image_name not in selected_image_names]
 
         if not self.loaded_iter:
             with open(scene_info.ply_path, 'rb') as src_file, open(os.path.join(self.model_path, "input.ply") , 'wb') as dest_file:
