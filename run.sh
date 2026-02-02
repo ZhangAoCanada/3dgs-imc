@@ -66,9 +66,9 @@ do
         dvoxel_size=0.001
         port=12345
         eps=0.25
-        if [${scene_name} == "bonsai" ]; then
+        if [ $scene_name == "bonsai" ]; then
             eps=0.5
-        elif [${scene_name} == "room" ]; then
+        elif [ $scene_name == "room" ]; then
             eps=0.5
         fi
         for range_scale in 1e-2 1e0
