@@ -8,23 +8,23 @@ model_path_base=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi
 model_path_ext=develop3
 
 source_path1=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/bicycle
-cap_max1=2000000
+cap_max1=5000000
 source_path2=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/bonsai
-cap_max2=1500000
+cap_max2=1000000
 source_path3=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter
-cap_max3=1500000
+cap_max3=1000000
 source_path4=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/flowers
-cap_max4=2000000
+cap_max4=3000000
 source_path5=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/garden
-cap_max5=2000000
+cap_max5=4000000
 source_path6=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen
 cap_max6=1500000
 source_path7=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/room
-cap_max7=1500000
+cap_max7=1200000
 source_path8=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/stump
-cap_max8=2000000
+cap_max8=4200000
 source_path9=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/treehill
-cap_max9=2000000
+cap_max9=3300000
 for test_selection in test_selection_5 test_selection_10 test_selection_15 test_selection_20
 do
     for source_path in $source_path1 $source_path2 $source_path3 $source_path4 $source_path5 $source_path6 $source_path7 $source_path8 $source_path9
