@@ -6,7 +6,15 @@ import numpy as np
 # Add the parent directory to sys.path to allow imports from scene and utils
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from scene.colmap_loader import read_extrinsics_text, read_intrinsics_text, qvec2rotmat, read_extrinsics_binary, read_intrinsics_binary
+from scene.colmap_loader import (
+    read_extrinsics_text,
+    read_intrinsics_text,
+    qvec2rotmat,
+    read_extrinsics_binary,
+    read_intrinsics_binary,
+    read_points3D_binary,
+    read_points3D_text,
+)
 
 def readColmapSceneInfo(path):
     try:
@@ -22,6 +30,16 @@ def readColmapSceneInfo(path):
     return cam_extrinsics, cam_intrinsics
 
 
+def readColmapPoints(path):
+    try:
+        points_file = os.path.join(path, "sparse/0", "points3D.bin")
+        xyzs, rgbs, errors = read_points3D_binary(points_file)
+    except Exception:
+        points_file = os.path.join(path, "sparse/0", "points3D.txt")
+        xyzs, rgbs, errors = read_points3D_text(points_file)
+    return xyzs, rgbs, errors
+
+
 def fit_plane_pca(points):
     center = np.mean(points, axis=0)
     centered = points - center
@@ -29,6 +47,19 @@ def fit_plane_pca(points):
     normal = vh[-1]
     normal = normal / (np.linalg.norm(normal) + 1e-12)
     return center, normal
+
+
+def project_to_plane(vec, normal):
+    return vec - normal * np.dot(vec, normal)
+
+
+def angle_between(v1, v2):
+    n1 = np.linalg.norm(v1)
+    n2 = np.linalg.norm(v2)
+    if n1 < 1e-12 or n2 < 1e-12:
+        return 0.0
+    cos_val = np.clip(np.dot(v1, v2) / (n1 * n2), -1.0, 1.0)
+    return np.arccos(cos_val)
 
 
 def set_axes_equal(ax):
@@ -60,6 +91,7 @@ def draw_camera_frustum(ax, center, R, color, scale, aspect_ratio):
 
     corners_world = (R.T @ corners_cam.T).T + center
 
+    # Frustum edges
     edges = [
         (4, 0), (4, 1), (4, 2), (4, 3),
         (0, 1), (1, 2), (2, 3), (3, 0),
@@ -73,6 +105,7 @@ def draw_camera_frustum(ax, center, R, color, scale, aspect_ratio):
             linewidth=1.0,
         )
 
+    # Camera axes (COLMAP-like style)
     axis_scale = scale * 0.6
     axes_cam = np.array([
         [axis_scale, 0.0, 0.0],
@@ -100,6 +133,7 @@ def rotation_from_a_to_b(a, b):
     if s < 1e-12:
         if c > 0.0:
             return np.eye(3)
+        # 180 degree rotation around any orthogonal axis
         axis = np.array([1.0, 0.0, 0.0])
         if abs(a[0]) > 0.9:
             axis = np.array([0.0, 1.0, 0.0])
@@ -119,76 +153,86 @@ def rotation_from_a_to_b(a, b):
     return np.eye(3) + vx + vx @ vx * ((1.0 - c) / (s ** 2))
 
 def main():
-    parser = argparse.ArgumentParser(description="Select N nearest viewpoints to a given image.")
+    parser = argparse.ArgumentParser(description="Select viewpoints by angular threshold on a fitted bottom plane.")
     parser.add_argument("--source_path", "-s", required=True, type=str, help="Path to the source directory containing sparse/0/")
     parser.add_argument("--image_name", "-i", required=True, type=str, help="Name of the target image")
-    parser.add_argument("--n", "-n", required=True, type=int, nargs='+', help="Number(s) of nearest neighbors to select")
-    parser.add_argument("--debug", action="store_true", help="Enable debug mode to plot camera poses")
-    
+    parser.add_argument("--angle", "-a", required=True, type=float, nargs='+', help="Angular threshold(s) in degrees")
+    parser.add_argument("--debug", action="store_true", help="Enable debug mode to plot camera poses and 3D points")
+
     args = parser.parse_args()
-    
+
     if not os.path.exists(args.source_path):
         print(f"Error: Source path {args.source_path} does not exist.")
         sys.exit(1)
-        
+
     print(f"Reading colmap info from {args.source_path}...")
     try:
         extrinsics, intrinsics = readColmapSceneInfo(args.source_path)
     except Exception as e:
         print(f"Error reading colmap info: {e}")
         sys.exit(1)
-        
+
     target_center = None
+    target_rotation = None
     all_cameras = []
-    
+
     # Iterate through all cameras to find target and compute centers
-    for cam_id, cam in extrinsics.items():
+    for _, cam in extrinsics.items():
         R = qvec2rotmat(cam.qvec)
         t = cam.tvec
         center = -R.T @ t
 
-        # center = cam.tvec
-        
         if cam.name == args.image_name:
             target_center = center
-        
+            target_rotation = R
+
         all_cameras.append((cam.name, cam.camera_id, center, R))
-        
+
     if target_center is None:
         print(f"Error: Target image '{args.image_name}' not found in the dataset.")
         sys.exit(1)
-        
+
     print(f"Found target image '{args.image_name}' at {target_center}")
-    
-    # Calculate distances from target
-    distances = []
-    for name, _, center, _ in all_cameras:
-        # Include the target image itself in the distance calculation
-        dist = np.linalg.norm(center - target_center)
-        distances.append((name, center, dist))
-        
-    # Sort by distance
-    distances.sort(key=lambda x: x[2])
-    
-    # Process each n in the list
-    for n in args.n:
-        # Select top N (which will include the target itself as the first element since dist=0)
-        selected = distances[:n]
-        
-        print(f"Selected {len(selected)} nearest images for n={n}:")
-        if len(selected) <= 20: # Only print if list is small enough
-            for name, center, dist in selected:
-                print(f"  {name}: {dist:.4f}")
-            
-        output_file = os.path.join(args.source_path, f"test_selection_{n}.txt")
+
+    # Fit bottom plane via PCA
+    all_centers = np.array([c for _, _, c, _ in all_cameras])
+    plane_center, plane_normal = fit_plane_pca(all_centers)
+
+    # Use projected target vector as reference direction
+    target_vec = project_to_plane(target_center - plane_center, plane_normal)
+    if np.linalg.norm(target_vec) < 1e-8 and target_rotation is not None:
+        target_forward = target_rotation.T @ np.array([0.0, 0.0, 1.0])
+        target_vec = project_to_plane(target_forward, plane_normal)
+
+    all_selected = {}
+    for angle_deg in args.angle:
+        angle_threshold = np.deg2rad(angle_deg)
+        selected = []
+        for name, cam_id, center, R in all_cameras:
+            vec = project_to_plane(center - plane_center, plane_normal)
+            angle = angle_between(vec, target_vec)
+            if angle <= angle_threshold:
+                selected.append((name, cam_id, center, R, angle))
+
+        selected.sort(key=lambda x: x[4])
+        all_selected[angle_deg] = selected
+
+        print(f"Selected {len(selected)} images with angle <= {angle_deg} degrees:")
+        if len(selected) <= 20:
+            for name, _, _, _, angle in selected:
+                print(f"  {name}: {np.rad2deg(angle):.3f} deg")
+
+        # angle_tag = str(angle_deg).replace(".", "p")
+        angle_tag = str(angle_deg*2)
+        output_file = os.path.join(args.source_path, f"test_selection_angle_{angle_tag}.txt")
         with open(output_file, "w") as f:
-            for name, _, _ in selected:
+            for name, _, _, _, _ in selected:
                 f.write(f"{name}\n")
-                
+
         print(f"Saved selected image names to {output_file}")
 
     if args.debug:
-        print("Plotting camera poses...")
+        print("Plotting camera poses and points...")
         try:
             import matplotlib.pyplot as plt
             from mpl_toolkits.mplot3d import Axes3D
@@ -196,19 +240,19 @@ def main():
             print("Error: matplotlib is required for debug mode. Please install it.")
             return
 
-        all_centers = np.array([c for _, _, c, _ in all_cameras])
-        plane_center, plane_normal = fit_plane_pca(all_centers)
+        # Align visualization so the bottom plane is the default plotting plane
         R_align = rotation_from_a_to_b(plane_normal, np.array([0.0, 0.0, 1.0]))
 
+        # Scene scale for camera frustums
         scene_scale = np.median(np.linalg.norm(all_centers - plane_center, axis=1))
         cam_scale = max(scene_scale * 0.05, 1e-3)
 
-        plots_dir = os.path.join(args.source_path, "test_selection_plots")
+        plots_dir = os.path.join(args.source_path, "test_selection_angleplots")
         os.makedirs(plots_dir, exist_ok=True)
 
-        for n in args.n:
-            selected = distances[:n]
-            selected_names = set([name for name, _, _ in selected])
+        for angle_deg in args.angle:
+            selected = all_selected[angle_deg]
+            selected_names = set([name for name, _, _, _, _ in selected])
 
             fig = plt.figure()
             ax = fig.add_subplot(111, projection="3d")
@@ -234,18 +278,21 @@ def main():
             ax.set_xlabel("X")
             ax.set_ylabel("Y")
             ax.set_zlabel("Z")
-            ax.set_title(f"Nearest Neighbors for {args.image_name} (n={n})")
+            ax.set_title(f"Angle-based selection for {args.image_name} (angle={angle_deg})")
             set_axes_equal(ax)
 
-            fig_path = os.path.join(plots_dir, f"test_selection_{n}.png")
+            # angle_tag = str(angle_deg).replace(".", "p")
+            angle_tag = str(angle_deg*2)
+            fig_path = os.path.join(plots_dir, f"test_selection_angle_{angle_tag}.png")
             fig.savefig(fig_path, dpi=200, bbox_inches="tight")
             print(f"Saved plot to {fig_path}")
 
-            topdown_path = os.path.join(plots_dir, f"test_selection_{n}_topdown.png")
+            topdown_path = os.path.join(plots_dir, f"test_selection_angle_{angle_tag}_topdown.png")
             ax.view_init(elev=90, azim=-90)
             fig.savefig(topdown_path, dpi=200, bbox_inches="tight")
             print(f"Saved top-down plot to {topdown_path}")
             plt.close(fig)
+        # plt.show()
 
 if __name__ == "__main__":
     main()

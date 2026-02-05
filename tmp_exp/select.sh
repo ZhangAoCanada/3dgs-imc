@@ -6,13 +6,15 @@ do
     if [ ${scene_name} == "truck_resize" ]; then
         image_name=000013.jpg
     elif [ ${scene_name} == "train_resize" ]; then
-        image_name=00161.jpg
+        image_name=00183.jpg
     fi
-    python select_testdata.py \
+    python select_testdata_angle.py \
         -s ${source_path} \
         -i ${image_name} \
-        -n 5 10 15 20
+        -a 2.5 5 7.5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 \
+        --debug
 done
+
 source_path1=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/bicycle
 source_path2=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/bonsai
 source_path3=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter
@@ -44,11 +46,13 @@ do
     elif [ ${scene_name} == "treehill" ]; then #
         image_name=_DSC8932.JPG
     fi
-    python select_testdata.py \
+    python select_testdata_angle.py \
         -s ${source_path} \
         -i ${image_name} \
-        -n 5 10 15 20
+        -a 2.5 5 7.5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 \
+        --debug
 done
+
 source_path1=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/building-small
 source_path2=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/residence-small
 source_path3=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/rubble-small
@@ -68,5 +72,6 @@ do
     python select_testdata.py \
         -s ${source_path} \
         -i ${image_name} \
-        -n 5 10 15 20
+        -n 5 10 15 20 25 30 35 40 45 50 60 70 80 90 100 \
+        --debug
 done

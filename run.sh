@@ -25,7 +25,7 @@ source_path8=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/stump
 cap_max8=4200000
 source_path9=/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/treehill
 cap_max9=3300000
-for test_selection in test_selection_5 test_selection_10 test_selection_15 test_selection_20
+for test_selection in test_selection_angle_5.0 test_selection_angle_10.0 test_selection_angle_15.0 test_selection_angle_20.0 test_selection_angle_30.0 test_selection_angle_40.0 test_selection_angle_50.0 test_selection_angle_60.0 test_selection_angle_70.0 test_selection_angle_80.0 test_selection_angle_90.0 test_selection_angle_100.0 test_selection_angle_110.0 test_selection_angle_120.0 test_selection_angle_130.0 test_selection_angle_140.0 test_selection_angle_150.0 test_selection_angle_160.0 test_selection_angle_170.0 test_selection_angle_180.0
 do
     for source_path in $source_path1 $source_path2 $source_path3 $source_path4 $source_path5 $source_path6 $source_path7 $source_path8 $source_path9
     do
@@ -59,7 +59,7 @@ do
         sigma_scaling=1e-6
         min_samples=500
         minmax=wholeonly
-        partial_scaling=1e0
+        partial_scaling=1e-2
         range_scale=1
         noise_method=sigma-detach
         random_view_num=3
@@ -71,7 +71,7 @@ do
         elif [ $scene_name == "room" ]; then
             eps=0.5
         fi
-        for range_scale in 1e-2 1e0
+        for depth_l1_weight_init in 0.0 0.3
         do
             model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_${test_selection}
             echo "[*****training*****] training with noise_method=${noise_method}"
@@ -106,7 +106,7 @@ source_path1=/mnt/c/Users/Aooooo/Documents/DATA/tandt_db/tandt/truck_resize
 cap_max1=2000000
 source_path2=/mnt/c/Users/Aooooo/Documents/DATA/tandt_db/tandt/train_resize
 cap_max2=1000000
-for test_selection in test_selection_5 test_selection_10 test_selection_15 test_selection_20
+for test_selection in test_selection_angle_5.0 test_selection_angle_10.0 test_selection_angle_15.0 test_selection_angle_20.0 test_selection_angle_30.0 test_selection_angle_40.0 test_selection_angle_50.0 test_selection_angle_60.0 test_selection_angle_70.0 test_selection_angle_80.0 test_selection_angle_90.0 test_selection_angle_100.0 test_selection_angle_110.0 test_selection_angle_120.0 test_selection_angle_130.0 test_selection_angle_140.0 test_selection_angle_150.0 test_selection_angle_160.0 test_selection_angle_170.0 test_selection_angle_180.0
 do
     for source_path in $source_path1 $source_path2
     do
@@ -126,14 +126,14 @@ do
         sigma_scaling=1e-6
         min_samples=500
         minmax=wholeonly
-        partial_scaling=1e0
+        partial_scaling=1e-2
         range_scale=1
         noise_method=sigma-detach
         random_view_num=3
         dvoxel_size=0.001
         port=12345
         eps=0.25
-        for partial_scaling in 1e-2 1e0
+        for depth_l1_weight_init in 0.0 0.3
         do
             model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_${test_selection}
             echo "[*****training*****] training with noise_method=${noise_method}"
@@ -172,7 +172,7 @@ source_path3=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/rubble-small
 cap_max3=6000000
 source_path4=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/sci-art-small
 cap_max4=1000000
-for test_selection in test_selection_5 test_selection_10 test_selection_15 test_selection_20
+for test_selection in test_selection_5 test_selection_10 test_selection_15 test_selection_20 test_selection_25 test_selection_30 test_selection_35 test_selection_40 test_selection_45 test_selection_50 test_selection_60 test_selection_70 test_selection_80 test_selection_90 test_selection_100
 do
     for source_path in $source_path1 $source_path2 $source_path3 $source_path4
     do
@@ -196,7 +196,7 @@ do
         sigma_scaling=1e-6
         min_samples=500
         minmax=wholeonly
-        partial_scaling=1e0
+        partial_scaling=1e-2
         range_scale=1
         noise_method=sigma-detach
         random_view_num=3
@@ -206,7 +206,7 @@ do
         if [ ${scene_name} == "residence-small" ]; then
             eps=0.5
         fi
-        for range_scale in 1e-2 1e0
+        for depth_l1_weight_init in 0.0 0.3
         do
             model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_${test_selection}
             echo "[*****training*****] training with noise_method=${noise_method}"
