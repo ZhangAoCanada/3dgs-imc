@@ -562,11 +562,11 @@ class GaussianModel:
         epsilon = torch.bmm(covariance, z.unsqueeze(-1)).squeeze(-1)
         samples = means + epsilon
         # NOTE: compute (x - μ)^T · Σ^(-1) · (x - μ)
-        # cov_inv = torch.inverse(covariance + 1e-6 * torch.eye(3, device="cuda"))
-        # cov_inv = torch.linalg.pinv(covariance + 1e-6 * torch.eye(3, device="cuda"))
-        # mahalanobis_dist = torch.sum(torch.bmm(epsilon.unsqueeze(1), cov_inv).squeeze(1) * epsilon, dim=1)
-        # use torch.linalg.solve instead of torch.inverse
-        mahalanobis_dist = torch.sum(epsilon * torch.linalg.solve(covariance + 1e-6 * torch.eye(3, device="cuda"), epsilon.unsqueeze(-1)).squeeze(-1), dim=1)
+        # Use L from build_scaling_rotation directly: Σ = L @ L^T, so Σ^{-1} = L^{-T} @ L^{-1}
+        # Solve L @ u = epsilon via triangular solve, then mahalanobis = ||u||^2
+        L_reg = L + 1e-6 * torch.eye(3, device="cuda")
+        u = torch.linalg.solve_triangular(L_reg, epsilon.unsqueeze(-1), upper=False).squeeze(-1)
+        mahalanobis_dist = torch.sum(u * u, dim=1)
 
         probs = torch.exp(-0.5 * mahalanobis_dist)
         opacities = self.get_opacity[mask] * probs[..., None]
