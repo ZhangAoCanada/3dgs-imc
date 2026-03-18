@@ -10,7 +10,7 @@
 #
 
 import torch
-from scene import Scene
+from scene_experimental_branch3 import Scene, GaussianModel
 import os
 from tqdm import tqdm
 from os import makedirs
@@ -19,8 +19,6 @@ import torchvision
 from utils.general_utils import safe_state
 from argparse import ArgumentParser
 from arguments import ModelParams, PipelineParams, get_combined_args
-# from gaussian_renderer import GaussianModel
-from scene_experimental_branch2.gaussian_model import GaussianModel
 try:
     from diff_gaussian_rasterization import SparseGaussianAdam
     SPARSE_ADAM_AVAILABLE = True

@@ -45,6 +45,7 @@ try:
     SPARSE_ADAM_AVAILABLE = True
 except:
     SPARSE_ADAM_AVAILABLE = False
+import time
 
 
 def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint, debug_from):
@@ -84,6 +85,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     #     os.makedirs("tmp", exist_ok=True)
 
     random_view_num = opt.random_view_num
+
+    print(f"[INFO] num train views: {len(scene.getTrainCameras())}, num test views: {len(scene.getTestCameras())}")
+
+    total_time_start = time.time()
 
     for iteration in range(first_iter, opt.iterations + 1):
         if network_gui.conn == None:
@@ -226,6 +231,12 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             # Log and save
             training_report(tb_writer, iteration, Ll1, loss, l1_loss, iter_start.elapsed_time(iter_end), testing_iterations, scene, render, (pipe, background, 1., SPARSE_ADAM_AVAILABLE, None, dataset.train_test_exp), dataset.train_test_exp)
             if (iteration in saving_iterations):
+                if iteration >= opt.iterations:
+                    total_time = time.time() - total_time_start
+                    print(f"\n[INFO] Total training time: {total_time:.2f}seconds")
+                    time_path = os.path.join(dataset.model_path, "training_time.txt")
+                    with open(time_path, 'w') as time_f:
+                        time_f.write(f"Total training time: {total_time:.2f}seconds\n")
                 print("\n[ITER {}] Saving Gaussians".format(iteration))
                 scene.save(iteration)
                 ############### NOTE: IMC ###############
@@ -419,8 +430,10 @@ if __name__ == "__main__":
     parser.add_argument('--port', type=int, default=6009)
     parser.add_argument('--debug_from', type=int, default=-1)
     parser.add_argument('--detect_anomaly', action='store_true', default=False)
-    parser.add_argument("--test_iterations", nargs="+", type=int, default=[i * 5000 for i in range(100)])
-    parser.add_argument("--save_iterations", nargs="+", type=int, default=[30000, 60000])
+    parser.add_argument("--test_iterations", nargs="+", type=int, default=[i * 10000 for i in range(100)])
+    # parser.add_argument("--test_iterations", nargs="+", type=int, default=[7000, 30000])
+    # parser.add_argument("--save_iterations", nargs="+", type=int, default=[30000, 60000])
+    parser.add_argument("--save_iterations", nargs="+", type=int, default=[i * 10000 for i in range(100)])
     parser.add_argument("--quiet", action="store_true")
     parser.add_argument('--disable_viewer', action='store_true', default=False)
     parser.add_argument("--checkpoint_iterations", nargs="+", type=int, default=[])

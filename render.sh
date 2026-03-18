@@ -3,9 +3,9 @@ export CUDA_VISIBLE_DEVICES=0
 model_path_base=/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3
 model_path_ext=develop3
 
-source_path1=/mnt/c/Users/Aooooo/Documents/DATA/tandt_db/tandt/truck_resize
+source_path1=/data1/zhangao/DATA/tandt_db/tandt/truck_resize
 cap_max1=2000000
-source_path2=/mnt/c/Users/Aooooo/Documents/DATA/tandt_db/tandt/train_resize
+source_path2=/data1/zhangao/DATA/tandt_db/tandt/train_resize
 cap_max2=1000000
 for source_path in $source_path1 $source_path2
 do
@@ -31,13 +31,13 @@ do
 done
 
 
-source_path1=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/building-small
+source_path1=/data1/zhangao/DATA/DATA-small/building-small
 cap_max1=7000000
-source_path2=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/residence-small
+source_path2=/data1/zhangao/DATA/DATA-small/residence-small
 cap_max2=6000000
-source_path3=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/rubble-small
+source_path3=/data1/zhangao/DATA/DATA-small/rubble-small
 cap_max3=6000000
-source_path4=/mnt/c/Users/Aooooo/Documents/DATA/DATA-small/sci-art-small
+source_path4=/data1/zhangao/DATA/DATA-small/sci-art-small
 cap_max4=1000000
 for source_path in $source_path1 $source_path2 $source_path3 $source_path4
 do
