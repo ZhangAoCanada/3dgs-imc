@@ -387,6 +387,8 @@ class GaussianModel:
         self.nn_update_interval = training_args.nn_update_interval
         self.cpf_prior_source = training_args.cpf_prior_source
         self.max_num = training_args.cpf_max_points
+        _drift_cap = getattr(training_args, "cpf_drift_max_points", 0)
+        self.cpf_drift_max_points = _drift_cap if _drift_cap and _drift_cap > 0 else self.max_num
         self.cpf_max_refresh_views = training_args.cpf_max_refresh_views
         self.cpf_unique_every = max(1, training_args.cpf_unique_every)
         self.cpf_sfm_align_max_points = training_args.cpf_sfm_align_max_points
@@ -462,7 +464,7 @@ class GaussianModel:
         #     return None, None
         # self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
 
-        gs_mask = self.mask_pts(self.get_xyz.shape[0])
+        gs_mask = self.mask_pts(self.get_xyz.shape[0], cap=self.cpf_drift_max_points)
         gs_xyz, gs_opacity, probability, covariance = self.sample_xyz(mask=gs_mask)
         # gs_color = self.get_color(view, mask=gs_mask)
         # gs_norm = self.get_norm()
@@ -747,10 +749,11 @@ class GaussianModel:
 
         return l
     
-    def mask_pts(self, pts_num, num_scale=1.0):
-        if pts_num > self.max_num * num_scale:
+    def mask_pts(self, pts_num, num_scale=1.0, cap=None):
+        n = cap if cap is not None else self.max_num
+        if pts_num > n * num_scale:
             mask = torch.zeros(pts_num, dtype=torch.bool, device="cuda")
-            random_index = torch.randperm(pts_num)[:self.max_num]
+            random_index = torch.randperm(pts_num)[:n]
             mask[random_index] = True
             return mask
         else:

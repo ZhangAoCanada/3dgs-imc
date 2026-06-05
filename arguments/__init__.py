@@ -137,6 +137,7 @@ class OptimizationParams(ParamGroup):
         self.nn_update_interval = 500
         self.cpf_prior_source = "render" # "render" or "sfm_depth"
         self.cpf_max_points = 100000
+        self.cpf_drift_max_points = 0  # 0 -> same as cpf_max_points; large -> apply CPF drift to all Gaussians
         self.cpf_max_refresh_views = 0
         self.cpf_unique_every = 1
         self.cpf_sfm_align_max_points = 20000
