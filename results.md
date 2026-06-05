@@ -28,6 +28,26 @@ The same depth-free config gives a **large** biased-view margin where the scene 
 
 → **+1.54 dB PSNR / +0.030 SSIM / −0.010 LPIPS over MH**, depth-free, in 10.3 min. Counter (+0.12) is a hard extreme-80° extrapolation that is scene-capped at ~21 (cross-method spread only ~0.4 dB; six off-optimum levers all regress). The method's value shows where the CPF has usable geometry — exactly the biased-view regime it targets. DAV2 depth is an optional booster that helps where monocular depth is accurate (bonsai) and not where it isn't (counter).
 
+## Method enhancement: `cpf_drift_max_points` (decouple CPF drift coverage)
+
+`derivatives()` applied the CPF drift to only a `cpf_max_points` (100k) random subsample of Gaussians per step (~12% of bonsai's 810k), conflated with the net-training cap (where >100k overfits). `cpf_drift_max_points` (0=use cpf_max_points; large=all) lets the gentle clamped drift regularize **every** Gaussian. Biggest single-lever gain of the development effort, but **scene-dependent**:
+
+| Scene | drift 100k-subset | **drift-to-ALL** | Δ |
+| --- | ---: | ---: | ---: |
+| bonsai | 21.879 | **22.214** | **+0.335** |
+| counter | 21.031 | 20.957 | −0.074 |
+
+Bonsai best = drift-to-ALL + regs0.01 depth-free = **22.214 PSNR (+0.87 over MCMC 21.34, +1.87 over MH 20.34)**, stable and constraint-respecting (matches the regs=0 result but without divergence). Counter keeps `cpf_drift_max_points=0`.
+
+### Margin-over-second-best summary (target was +1 dB)
+| Scene | GS-LSS best | 2nd-best | margin |
+| --- | ---: | ---: | ---: |
+| counter | 21.03 | MH 20.91 | +0.12 |
+| kitchen | 23.36 | MH 23.12 | +0.23 |
+| bonsai | **22.21** | MCMC 21.34 | **+0.87** |
+
+A clean **+1 dB over the second-best is at/beyond this method's ceiling** at angle-80: drift-all reached +0.87 on bonsai, but every stack on it (DAV2 depth-loss −0.94, 48 views −0.22, regs=0 −0.26) regressed. The CPF is a gentle geometry regularizer; its gain over a strong 30k baseline saturates around +0.5–0.9. The large, reliable win is over MH (+1.5–1.9 on bonsai).
+
 ---
 
 # GS-LSS Fast Development Snapshot (historical, pre-2026-06-05 findings)

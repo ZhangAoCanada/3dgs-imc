@@ -13,6 +13,7 @@ if [[ "${RUN_LEGACY_SWEEP:-0}" != "1" ]]; then
     # --- CPF (core method), depth-free ---
     export CPF_PRIOR_SOURCE=${CPF_PRIOR_SOURCE:-render}     # rendered-depth prior; NOT DAV2
     export CPF_MAX_POINTS=${CPF_MAX_POINTS:-100000}         # per-train CPF point budget; the 25k cap cost ~0.13dB PSNR
+    export CPF_DRIFT_MAX_POINTS=${CPF_DRIFT_MAX_POINTS:-0}  # 0=drift a 100k subset; set large (e.g. 2000000) to regularize ALL Gaussians: +0.34dB on clean-field scenes (bonsai), -0.07 on counter -> keep 0 for counter
     export CPF_TRAIN_INTERVAL=${CPF_TRAIN_INTERVAL:-8}      # interval throttle is fine (8 >= 4 in quality)
     export CPF_DERIVATIVE_INTERVAL=${CPF_DERIVATIVE_INTERVAL:-8}
     export CPF_MAX_REFRESH_VIEWS=${CPF_MAX_REFRESH_VIEWS:-16}
