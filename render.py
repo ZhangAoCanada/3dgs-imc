@@ -87,6 +87,10 @@ if __name__ == "__main__":
     parser.add_argument("--skip_test", action="store_true")
     parser.add_argument("--quiet", action="store_true")
     args = get_combined_args(parser)
+    # Render/eval should load the requested output iteration from model_path,
+    # not a training continuation source recorded in cfg_args.
+    args.load_model_path = ""
+    args.load_iteration = 0
     print("Rendering " + args.model_path)
 
     # Initialize system state (RNG)

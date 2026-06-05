@@ -18,6 +18,7 @@ from scene.colmap_loader import read_extrinsics_text, read_intrinsics_text, qvec
 from utils.graphics_utils import getWorld2View2, focal2fov, fov2focal
 import numpy as np
 import json
+import cv2
 from pathlib import Path
 from plyfile import PlyData, PlyElement
 from utils.sh_utils import SH2RGB
@@ -142,7 +143,113 @@ def storePly(path, xyz, rgb):
     ply_data = PlyData([vertex_element])
     ply_data.write(path)
 
-def readColmapSceneInfo(path, images, depths, eval, train_test_exp, llffhold=8, init_type="sfm", num_pts=5000000):
+
+def readSelectionNames(selection_path):
+    if selection_path == "" or not os.path.exists(selection_path):
+        return set()
+    with open(selection_path, "r") as f:
+        return {line.strip() for line in f if line.strip()}
+
+def augmentPointCloudWithDepth(pcd, cam_infos, depth_init_points=0, depth_init_stride=32, depth_init_views=0, skip_image_names=None):
+    if pcd is None or depth_init_points <= 0:
+        return pcd
+
+    skip_image_names = skip_image_names or set()
+    stride = max(1, int(depth_init_stride))
+    candidates = [
+        cam for cam in cam_infos
+        if cam.image_name not in skip_image_names
+        and cam.depth_path != "" and os.path.exists(cam.depth_path)
+        and os.path.exists(cam.image_path)
+    ]
+    candidates = sorted(candidates, key=lambda cam: cam.image_name)
+    if depth_init_views > 0 and len(candidates) > depth_init_views:
+        ids = np.linspace(0, len(candidates) - 1, int(depth_init_views), dtype=np.int64)
+        candidates = [candidates[i] for i in ids]
+
+    if len(candidates) == 0:
+        print("Depth init requested, but no train cameras with depth were found.")
+        return pcd
+
+    xyz_chunks = []
+    color_chunks = []
+    for cam in candidates:
+        image = np.asarray(Image.open(cam.image_path).convert("RGB"), dtype=np.float32) / 255.0
+        invdepth = cv2.imread(cam.depth_path, -1)
+        if invdepth is None:
+            continue
+        invdepth = invdepth.astype(np.float32) / float(2**16)
+        if invdepth.ndim != 2:
+            invdepth = invdepth[..., 0]
+
+        if cam.depth_params is not None:
+            scale = cam.depth_params.get("scale", 0)
+            med_scale = cam.depth_params.get("med_scale", scale)
+            if med_scale > 0 and (scale < 0.2 * med_scale or scale > 5 * med_scale):
+                continue
+            if scale > 0:
+                invdepth = invdepth * scale + cam.depth_params.get("offset", 0)
+
+        h, w = invdepth.shape
+        if image.shape[0] != h or image.shape[1] != w:
+            image = np.asarray(Image.fromarray((image * 255).astype(np.uint8)).resize((w, h), Image.BILINEAR), dtype=np.float32) / 255.0
+
+        yy, xx = np.mgrid[stride // 2:h:stride, stride // 2:w:stride]
+        inv_samples = invdepth[yy, xx]
+        valid = np.isfinite(inv_samples) & (inv_samples > 1e-4)
+        if valid.sum() == 0:
+            continue
+
+        z = 1.0 / np.maximum(inv_samples[valid], 1e-4)
+        x_pix = xx[valid].astype(np.float32) + 0.5
+        y_pix = yy[valid].astype(np.float32) + 0.5
+        fx = fov2focal(cam.FovX, w)
+        fy = fov2focal(cam.FovY, h)
+        x = (x_pix - w * 0.5) / fx * z
+        y = (y_pix - h * 0.5) / fy * z
+        cam_points = np.stack([x, y, z, np.ones_like(z)], axis=-1)
+        c2w = np.linalg.inv(getWorld2View2(cam.R, cam.T))
+        world_points = (cam_points @ c2w.T)[:, :3]
+        colors = image[yy[valid], xx[valid]]
+        xyz_chunks.append(world_points.astype(np.float32))
+        color_chunks.append(colors.astype(np.float32))
+
+    if len(xyz_chunks) == 0:
+        print("Depth init requested, but no valid depth samples were projected.")
+        return pcd
+
+    depth_xyz = np.concatenate(xyz_chunks, axis=0)
+    depth_rgb = np.concatenate(color_chunks, axis=0)
+
+    sfm_xyz = np.asarray(pcd.points)
+    lo = np.percentile(sfm_xyz, 0.5, axis=0)
+    hi = np.percentile(sfm_xyz, 99.5, axis=0)
+    margin = (hi - lo) * 0.25 + 1e-3
+    keep = np.all((depth_xyz >= (lo - margin)) & (depth_xyz <= (hi + margin)), axis=1)
+    if keep.any():
+        depth_xyz = depth_xyz[keep]
+        depth_rgb = depth_rgb[keep]
+    else:
+        depth_xyz = depth_xyz[:0]
+        depth_rgb = depth_rgb[:0]
+
+    if depth_xyz.shape[0] > depth_init_points:
+        rng = np.random.default_rng(0)
+        ids = rng.choice(depth_xyz.shape[0], int(depth_init_points), replace=False)
+        depth_xyz = depth_xyz[ids]
+        depth_rgb = depth_rgb[ids]
+
+    if depth_xyz.shape[0] == 0:
+        print("Depth init requested, but all projected samples were filtered out.")
+        return pcd
+
+    points = np.concatenate([sfm_xyz, depth_xyz], axis=0).astype(np.float32)
+    colors = np.concatenate([np.asarray(pcd.colors), depth_rgb], axis=0).astype(np.float32)
+    normals = np.concatenate([np.asarray(pcd.normals), np.zeros_like(depth_xyz, dtype=np.float32)], axis=0).astype(np.float32)
+    print(f"Depth init added {depth_xyz.shape[0]} train-view points from {len(candidates)} cameras (stride={stride}).")
+    return BasicPointCloud(points=points, colors=colors, normals=normals)
+
+def readColmapSceneInfo(path, images, depths, eval, train_test_exp, llffhold=8, init_type="sfm", num_pts=5000000, depth_init_points=0, depth_init_stride=32, depth_init_views=0, test_selection_path=""):
     try:
         cameras_extrinsic_file = os.path.join(path, "sparse/0", "images.bin")
         cameras_intrinsic_file = os.path.join(path, "sparse/0", "cameras.bin")
@@ -232,6 +339,13 @@ def readColmapSceneInfo(path, images, depths, eval, train_test_exp, llffhold=8, 
         pcd = fetchPly(ply_path)
     except:
         pcd = None
+
+    if depth_init_points > 0 and depths != "" and pcd is not None:
+        selected_image_names = readSelectionNames(test_selection_path)
+        pcd = augmentPointCloudWithDepth(
+            pcd, train_cam_infos, depth_init_points=depth_init_points,
+            depth_init_stride=depth_init_stride, depth_init_views=depth_init_views,
+            skip_image_names=selected_image_names)
 
     scene_info = SceneInfo(point_cloud=pcd,
                            train_cameras=train_cam_infos,

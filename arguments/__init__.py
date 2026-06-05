@@ -61,6 +61,11 @@ class ModelParams(ParamGroup):
         self.init_type = "sfm"
         self._test_path = ""
         self.test_selection_path = ""
+        self.depth_init_points = 0
+        self.depth_init_stride = 32
+        self.depth_init_views = 0
+        self.load_iteration = 0
+        self.load_model_path = ""
         super().__init__(parser, "Loading Parameters", sentinel)
 
     def extract(self, args):
@@ -100,10 +105,13 @@ class OptimizationParams(ParamGroup):
         self.densify_grad_threshold = 0.0002
         self.depth_l1_weight_init = 1.0
         self.depth_l1_weight_final = 0.01 * self.depth_l1_weight_init
+        self.depth_l1_stop_iter = 0
+        self.depth_align_sfm_on_demand = 0
         self.random_background = False
         self.optimizer_type = "default"
         ### NOTE: mcmc ###
         self.noise_lr = 5e5
+        self.stochastic_stop_iter = 0
         self.scale_reg = 0.01
         self.opacity_reg = 0.01
         self.experimental_schedule_gamma = 0.9
@@ -127,6 +135,56 @@ class OptimizationParams(ParamGroup):
         self.nn_start_iter = 2000
         self.nn_derivatives_iter = 2500
         self.nn_update_interval = 500
+        self.cpf_prior_source = "render" # "render" or "sfm_depth"
+        self.cpf_max_points = 100000
+        self.cpf_max_refresh_views = 0
+        self.cpf_unique_every = 1
+        self.cpf_sfm_align_max_points = 20000
+        self.cpf_grad_create_graph = False
+        self.cpf_train_interval = 1
+        self.cpf_derivative_interval = 1
+        self.cpf_loss_weight = 1.0
+        self.cpf_loss_cap = 0.0
+        self.cpf_reliability_gate = 0
+        self.cpf_reliability_loss_ratio = 4.0
+        self.cpf_reliability_min_loss = 30.0
+        self.cpf_reliability_ema_decay = 0.95
+        self.cpf_noise_weight = 1.0
+        self.cpf_update_loss_threshold = 0.0
+        self.cpf_max_drift_norm = 0.0
+        self.cpf_max_noise_norm = 0.0
+        self.cpf_stop_iter = 0
+        self.cpf_refresh_stop_iter = 0
+        self.cpf_train_stop_iter = 0
+        self.cpf_densify = False
+        self.cpf_densify_start_iter = 3000
+        self.cpf_densify_until_iter = 12000
+        self.cpf_densify_pool = 32768
+        self.cpf_densify_density_points = 16384
+        self.cpf_densify_sigma_weight = 1.0
+        self.cpf_densify_gap_weight = 0.5
+        self.cpf_densify_relocate = 1
+        self.cpf_densify_birth = 1
+        self.cpf_densify_birth_ratio = 1.0
+        self.cpf_densify_sigma_min = 0.0
+        self.cpf_densify_gap_min = 0.0
+        self.cpf_densify_use_residual = 0
+        self.cpf_densify_guided_clone = 0
+        self.cpf_densify_guided_ratio = 1.0
+        self.cpf_densify_guided_grad_weight = 1.0
+        self.cpf_densify_guided_cpf_weight = 0.75
+        self.cpf_densify_guided_density_weight = 0.5
+        self.cpf_densify_guided_coarse_ratio = 0.25
+        self.cpf_densify_guided_fine_scale = 1.0
+        self.cpf_densify_guided_coarse_scale = 5.0
+        self.cpf_residual_cache = 0
+        self.cpf_residual_cache_start_iter = 1000
+        self.cpf_residual_cache_until_iter = 12000
+        self.cpf_residual_cache_interval = 200
+        self.cpf_residual_cache_pixels = 1024
+        self.cpf_residual_cache_max_points = 32768
+        self.timing_breakdown = False
+        self.timing_sync = False
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):

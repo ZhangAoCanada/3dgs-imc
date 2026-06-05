@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+REPO_DIR=$(cd "${SCRIPT_DIR}/.." && pwd)
+cd "${REPO_DIR}"
+
+STAMP=$(date +%Y%m%d_%H%M%S)
+LOG_PATH="outputs/monitor/counter_angle80_lss_cpf_relocate_i18000_${STAMP}.log"
+
+export SCENE=${SCENE:-counter}
+export ITERATIONS=${ITERATIONS:-18000}
+export CPF_DENSIFY=${CPF_DENSIFY:-1}
+export CPF_DENSIFY_RELOCATE=${CPF_DENSIFY_RELOCATE:-1}
+export CPF_DENSIFY_BIRTH=${CPF_DENSIFY_BIRTH:-0}
+export CPF_DENSIFY_START_ITER=${CPF_DENSIFY_START_ITER:-3000}
+export CPF_DENSIFY_UNTIL_ITER=${CPF_DENSIFY_UNTIL_ITER:-12000}
+export CPF_DENSIFY_POOL=${CPF_DENSIFY_POOL:-32768}
+export CPF_DENSIFY_DENSITY_POINTS=${CPF_DENSIFY_DENSITY_POINTS:-16384}
+export CPF_DENSIFY_SIGMA_WEIGHT=${CPF_DENSIFY_SIGMA_WEIGHT:-1.0}
+export CPF_DENSIFY_GAP_WEIGHT=${CPF_DENSIFY_GAP_WEIGHT:-0.5}
+export CPF_DENSIFY_SIGMA_MIN=${CPF_DENSIFY_SIGMA_MIN:-0.05}
+export CPF_DENSIFY_GAP_MIN=${CPF_DENSIFY_GAP_MIN:-0.25}
+export CPF_REFRESH_STOP_ITER=${CPF_REFRESH_STOP_ITER:-18000}
+export CPF_TRAIN_STOP_ITER=${CPF_TRAIN_STOP_ITER:-18000}
+export CPF_STOP_ITER=${CPF_STOP_ITER:-18000}
+export STOCHASTIC_STOP_ITER=${STOCHASTIC_STOP_ITER:-18000}
+export DEPTH_L1_WEIGHT_INIT=${DEPTH_L1_WEIGHT_INIT:-1.0}
+export DEPTH_L1_WEIGHT_FINAL=${DEPTH_L1_WEIGHT_FINAL:-0.01}
+export DEPTH_L1_STOP_ITER=${DEPTH_L1_STOP_ITER:-0}
+export CPF_UPDATE_LOSS_THRESHOLD=${CPF_UPDATE_LOSS_THRESHOLD:-0}
+export RANDOM_VIEW_NUM=${RANDOM_VIEW_NUM:-1}
+export TIMING_BREAKDOWN=${TIMING_BREAKDOWN:-1}
+export TIMING_SYNC=${TIMING_SYNC:-0}
+export RUN_EVAL=${RUN_EVAL:-1}
+export MODEL_PATH=${MODEL_PATH:-outputs/fast_lss_dev/${SCENE}_angle80_lss_sfmdepth_i${ITERATIONS}_depth1_cpfrelocate_images4}
+export LABEL=${LABEL:-counter_angle80_lss_cpf_relocate_i${ITERATIONS}}
+
+if [[ "${SKIP_DATA_PREFLIGHT:-0}" != "1" ]]; then
+    python3 scripts/preflight_angle80_experiment.py --scenes "${SCENE}" --methods lss_refine
+fi
+
+"${SCRIPT_DIR}/launch_monitored_experiment.sh" "${LOG_PATH}" -- bash run_fast_lss_dev.sh

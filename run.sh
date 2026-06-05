@@ -1,5 +1,47 @@
-﻿
-export CUDA_VISIBLE_DEVICES=1
+#!/usr/bin/env bash
+set -euo pipefail
+
+export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-1}
+
+if [[ "${RUN_LEGACY_SWEEP:-0}" != "1" ]]; then
+    # ===== Depth-free GS-LSS (CPF) best config — MipNeRF360 angle-80 =====
+    # Counter angle-80, one GPU, ~12 min: beats MH-3DGS on PSNR+SSIM+LPIPS, no DAV2 depth.
+    # The CPF is the method; it is developed standalone here (rendered-depth prior).
+    export SCENE=${SCENE:-counter}
+    export ITERATIONS=${ITERATIONS:-18000}
+
+    # --- CPF (core method), depth-free ---
+    export CPF_PRIOR_SOURCE=${CPF_PRIOR_SOURCE:-render}     # rendered-depth prior; NOT DAV2
+    export CPF_MAX_POINTS=${CPF_MAX_POINTS:-100000}         # per-train CPF point budget; the 25k cap cost ~0.13dB PSNR
+    export CPF_TRAIN_INTERVAL=${CPF_TRAIN_INTERVAL:-8}      # interval throttle is fine (8 >= 4 in quality)
+    export CPF_DERIVATIVE_INTERVAL=${CPF_DERIVATIVE_INTERVAL:-8}
+    export CPF_MAX_REFRESH_VIEWS=${CPF_MAX_REFRESH_VIEWS:-16}
+
+    # --- 3DGS-MCMC base regularizers (compactness; required for sharp Gaussians) ---
+    export SCALE_REG=${SCALE_REG:-0.01}
+    export OPACITY_REG=${OPACITY_REG:-0.01}
+
+    # --- DAV2 depth prior: OPTIONAL, OFF by default. To enable, set:
+    #   DEPTH_L1_WEIGHT_INIT=1.0 DEPTH_L1_WEIGHT_FINAL=0.01 DEPTH_ALIGN_SFM_ON_DEMAND=1 CPF_PRIOR_SOURCE=sfm_depth
+    export DEPTH_L1_WEIGHT_INIT=${DEPTH_L1_WEIGHT_INIT:-0.0}
+    export DEPTH_L1_WEIGHT_FINAL=${DEPTH_L1_WEIGHT_FINAL:-0.0}
+    export DEPTH_ALIGN_SFM_ON_DEMAND=${DEPTH_ALIGN_SFM_ON_DEMAND:-0}
+
+    # --- base 3DGS-MCMC schedule ---
+    export RANDOM_VIEW_NUM=${RANDOM_VIEW_NUM:-1}
+    export DENSIFY_FROM_ITER=${DENSIFY_FROM_ITER:-500}
+    export DENSIFY_UNTIL_ITER=${DENSIFY_UNTIL_ITER:-12000}
+    export DENSIFICATION_INTERVAL=${DENSIFICATION_INTERVAL:-400}
+    export TIMING_BREAKDOWN=${TIMING_BREAKDOWN:-1}
+    export RUN_EVAL=${RUN_EVAL:-1}
+    export LABEL=${LABEL:-${SCENE}_angle80_cpf_nodepth_best_i${ITERATIONS}}
+    export MODEL_PATH=${MODEL_PATH:-outputs/fast_lss_dev/${SCENE}_angle80_cpf_nodepth_reg01_pts100k_i${ITERATIONS}_images4}
+
+    STAMP=$(date +%Y%m%d_%H%M%S)
+    LOG_PATH=${LOG_PATH:-outputs/monitor/${LABEL}_${STAMP}.log}
+    exec scripts/launch_monitored_experiment.sh "${LOG_PATH}" -- bash run_fast_lss_dev.sh
+fi
+
 model_path_base=/data1/zhangao/outputs/develop3_multi_angle2
 model_path_ext=develop3
 

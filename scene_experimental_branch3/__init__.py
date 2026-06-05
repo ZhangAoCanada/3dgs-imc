@@ -27,12 +27,13 @@ class Scene:
         :param path: Path to colmap scene main folder.
         """
         self.model_path = args.model_path
+        self.load_model_path = getattr(args, "load_model_path", "") or self.model_path
         self.loaded_iter = None
         self.gaussians = gaussians
 
         if load_iteration:
             if load_iteration == -1:
-                self.loaded_iter = searchForMaxIteration(os.path.join(self.model_path, "point_cloud"))
+                self.loaded_iter = searchForMaxIteration(os.path.join(self.load_model_path, "point_cloud"))
             else:
                 self.loaded_iter = load_iteration
             print("Loading trained model at iteration {}".format(self.loaded_iter))
@@ -41,7 +42,10 @@ class Scene:
         self.test_cameras = {}
 
         if os.path.exists(os.path.join(args.source_path, "sparse")):
-            scene_info = sceneLoadTypeCallbacks["Colmap"](args.source_path, args.images, args.depths, args.eval, args.train_test_exp, init_type=args.init_type)
+            scene_info = sceneLoadTypeCallbacks["Colmap"](
+                args.source_path, args.images, args.depths, args.eval, args.train_test_exp, init_type=args.init_type,
+                depth_init_points=args.depth_init_points, depth_init_stride=args.depth_init_stride,
+                depth_init_views=args.depth_init_views, test_selection_path=args.test_selection_path)
         elif os.path.exists(os.path.join(args.source_path, "transforms_train.json")):
             print("Found transforms_train.json file, assuming Blender data set!")
             scene_info = sceneLoadTypeCallbacks["Blender"](args.source_path, args.white_background, args.depths, args.eval)
@@ -66,7 +70,7 @@ class Scene:
             # Remove selected cameras from train_cameras (in-place)
             scene_info.train_cameras[:] = [cam for cam in scene_info.train_cameras if cam.image_name not in selected_image_names]
 
-        if not self.loaded_iter:
+        if (not self.loaded_iter) or (self.load_model_path != self.model_path):
             with open(scene_info.ply_path, 'rb') as src_file, open(os.path.join(self.model_path, "input.ply") , 'wb') as dest_file:
                 dest_file.write(src_file.read())
             json_cams = []
@@ -93,7 +97,15 @@ class Scene:
             self.test_cameras[resolution_scale] = cameraList_from_camInfos(scene_info.test_cameras, resolution_scale, args, scene_info.is_nerf_synthetic, True)
 
         if self.loaded_iter:
-            self.gaussians.load_ply(os.path.join(self.model_path,
+            self.gaussians.create_net()
+            net_path = os.path.join(self.load_model_path, "net.pth")
+            if os.path.exists(net_path):
+                self.gaussians.load_nn(self.load_model_path)
+            else:
+                print(f"No CPF network checkpoint found at {net_path}; initializing a fresh CPF network.")
+            exposure_path = os.path.join(self.load_model_path, "exposure.json")
+            self.gaussians.setup_exposure_from_cameras(scene_info.train_cameras, exposure_path)
+            self.gaussians.load_ply(os.path.join(self.load_model_path,
                                                            "point_cloud",
                                                            "iteration_" + str(self.loaded_iter),
                                                            "point_cloud.ply"), args.train_test_exp)

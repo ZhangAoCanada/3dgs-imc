@@ -12,6 +12,7 @@
 import os
 import shutil
 import json
+import math
 import torch
 import torch.nn.functional as F
 from random import randint, shuffle
@@ -56,7 +57,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     first_iter = 0
     tb_writer = prepare_output_and_logger(dataset)
     gaussians = GaussianModel(dataset.sh_degree)
-    scene = Scene(dataset, gaussians)
+    load_iteration = getattr(dataset, "load_iteration", 0)
+    scene = Scene(dataset, gaussians, load_iteration=load_iteration if load_iteration else None)
+    if scene.loaded_iter and not checkpoint:
+        first_iter = scene.loaded_iter
     gaussians.training_setup(opt)
     if checkpoint:
         (model_params, first_iter) = torch.load(checkpoint)
@@ -85,12 +89,40 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     #     os.makedirs("tmp", exist_ok=True)
 
     random_view_num = opt.random_view_num
+    stochastic_stop_logged = False
 
     print(f"[INFO] num train views: {len(scene.getTrainCameras())}, num test views: {len(scene.getTestCameras())}")
+
+    timing_enabled = getattr(opt, "timing_breakdown", False)
+    timing_sync = getattr(opt, "timing_sync", False)
+    timing_breakdown = {
+        "view_selection": 0.0,
+        "cpf_derivatives": 0.0,
+        "render_loss": 0.0,
+        "cpf_training": 0.0,
+        "backward": 0.0,
+        "report_save": 0.0,
+        "noise_densify": 0.0,
+        "optimizer": 0.0,
+        "iterations": 0,
+    }
+
+    def timing_mark():
+        if timing_enabled and timing_sync:
+            torch.cuda.synchronize()
+        return time.perf_counter()
+
+    def timing_add(name, start_time):
+        if not timing_enabled:
+            return
+        if timing_sync:
+            torch.cuda.synchronize()
+        timing_breakdown[name] += time.perf_counter() - start_time
 
     total_time_start = time.time()
 
     for iteration in range(first_iter, opt.iterations + 1):
+        iter_timing_start = timing_mark()
         if network_gui.conn == None:
             network_gui.try_connect()
         while network_gui.conn != None:
@@ -124,21 +156,32 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         if not viewpoint_stack:
             viewpoint_stack = scene.getTrainCameras().copy()
-        shuffle(viewpoint_stack)
-        viewpoint_cameras = viewpoint_stack[:random_view_num]
-        viewpoint_stack = viewpoint_stack[random_view_num:]
+
+        if random_view_num <= 1:
+            rand_idx = randint(0, len(viewpoint_stack) - 1)
+            viewpoint_cameras = [viewpoint_stack.pop(rand_idx)]
+        else:
+            shuffle(viewpoint_stack)
+            actual_view_num = min(random_view_num, len(viewpoint_stack))
+            viewpoint_cameras = viewpoint_stack[:actual_view_num]
+            viewpoint_stack = viewpoint_stack[actual_view_num:]
 
         # Render
         if (iteration - 1) == debug_from:
             pipe.debug = True
 
         bg = torch.rand((3), device="cuda") if opt.random_background else background
+        timing_add("view_selection", iter_timing_start)
 
         ############### NOTE: IMC ###############
         # gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
         # render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
 
+        segment_start = timing_mark()
         noise, noise_mask = gaussians.derivatives(viewpoint_cameras[0], tb_writer, iteration)
+        timing_add("cpf_derivatives", segment_start)
+
+        segment_start = timing_mark()
         total_l = 0.0
         for viewpoint_cam in viewpoint_cameras:
             render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
@@ -158,6 +201,20 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 ssim_value = ssim(image, gt_image)
 
             loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
+
+            residual_cache_active = (
+                int(getattr(opt, "cpf_residual_cache", 0)) != 0
+                and iteration >= int(getattr(opt, "cpf_residual_cache_start_iter", 0))
+                and (int(getattr(opt, "cpf_residual_cache_until_iter", 0)) <= 0 or iteration <= int(getattr(opt, "cpf_residual_cache_until_iter", 0)))
+                and iteration % max(1, int(getattr(opt, "cpf_residual_cache_interval", 1))) == 0
+            )
+            if residual_cache_active:
+                gaussians.cache_residual_candidates(
+                    viewpoint_cam,
+                    image,
+                    gt_image,
+                    max_pixels=int(getattr(opt, "cpf_residual_cache_pixels", 1024)),
+                )
             
             ################# NOTE: MCMC ##################
             loss = loss + args.opacity_reg * torch.abs(gaussians.get_opacity).mean()
@@ -165,21 +222,37 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
             # Depth regularization
             Ll1depth_pure = 0.0
-            if depth_l1_weight(iteration) > 0 and viewpoint_cam.depth_reliable:
+            current_depth_l1_weight = depth_l1_weight(iteration)
+            depth_l1_stop_iter = getattr(opt, "depth_l1_stop_iter", 0)
+            if depth_l1_stop_iter > 0 and iteration > depth_l1_stop_iter:
+                current_depth_l1_weight = 0.0
+            if current_depth_l1_weight > 0 and viewpoint_cam.depth_reliable:
+                if (
+                    int(getattr(opt, "depth_align_sfm_on_demand", 0)) != 0
+                    and viewpoint_cam.image_name not in gaussians.aligned_depth_dict
+                    and viewpoint_cam.invdepthmap is not None
+                ):
+                    mono_for_align = viewpoint_cam.invdepthmap.cuda()
+                    H, W = mono_for_align.shape[-2:]
+                    fx = W / (2 * math.tan(viewpoint_cam.FoVx / 2))
+                    fy = H / (2 * math.tan(viewpoint_cam.FoVy / 2))
+                    aligned_depth = gaussians.depth_align_sfm(mono_for_align, viewpoint_cam, H, W, [fx, fy])
+                    if aligned_depth is not None:
+                        gaussians.aligned_depth_dict[viewpoint_cam.image_name] = aligned_depth.detach()
+
                 if viewpoint_cam.image_name not in gaussians.aligned_depth_dict:
                     invDepth = render_pkg["depth"]
                     mono_invdepth = viewpoint_cam.invdepthmap.cuda()
                     depth_mask = viewpoint_cam.depth_mask.cuda()
 
-                    ################ NOTE: normalized ##################
-                    mono_min = mono_invdepth.min()
-                    mono_max = mono_invdepth.max()
-                    inDepth_min = invDepth.min()
-                    inDepth_max = invDepth.max()
-                    mono_invdepth_normalized = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
-                    invDepth_normalized = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
-                    Ll1depth_pure = torch.abs((invDepth_normalized  - mono_invdepth_normalized) * depth_mask).mean()
-                    # Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+                    if opt.depth_normalize:
+                        mono_min = mono_invdepth.min()
+                        mono_max = mono_invdepth.max()
+                        inDepth_min = invDepth.min()
+                        inDepth_max = invDepth.max()
+                        mono_invdepth = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-6)
+                        invDepth = (invDepth - inDepth_min) / (inDepth_max - inDepth_min + 1e-6)
+                    Ll1depth_pure = torch.abs((invDepth - mono_invdepth) * depth_mask).mean()
                 else:
                     aligned_depth = gaussians.aligned_depth_dict[viewpoint_cam.image_name]
                     downsample = gaussians.downsample_ratio
@@ -189,34 +262,47 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     render_invdepth = render_pkg["depth"]
                     depth_mask = viewpoint_cam.depth_mask.cuda()
                     Ll1depth_pure = torch.abs((render_invdepth - aligned_invdepth) * depth_mask).mean()
-                Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
+                Ll1depth = current_depth_l1_weight * Ll1depth_pure 
                 loss += Ll1depth
                 Ll1depth = Ll1depth.item()
             else:
                 Ll1depth = 0
 
             total_l += loss
+        timing_add("render_loss", segment_start)
         
-        loss = total_l / random_view_num
+        loss = total_l / len(viewpoint_cameras)
 
         ############### NOTE: IMC ###############
+        segment_start = timing_mark()
         continuous_l = gaussians.train_continuous(scene.getTrainCameras().copy(), viewpoint_cam, pipe, background, tb_writer, iteration)
+        timing_add("cpf_training", segment_start)
         if continuous_l is not None:
             loss += continuous_l
         loss = torch.where(torch.isnan(loss), torch.zeros_like(loss), loss)
         loss = torch.where(torch.isinf(loss), torch.zeros_like(loss), loss)
 
+        segment_start = timing_mark()
         loss.backward()
-
-        if opt.depth_normalize:
-            del mono_min, mono_max, inDepth_min, inDepth_max, mono_invdepth_normalized, invDepth_normalized
 
         ############### NOTE: IMC ###############
         if iteration > 2450:
             gaussians.remove_nan_grad()
+        guided_stats_active = (
+            getattr(opt, "cpf_densify", False)
+            and int(getattr(opt, "cpf_densify_guided_clone", 0)) != 0
+            and iteration < opt.densify_until_iter
+            and iteration > opt.densify_from_iter
+        )
+        if guided_stats_active:
+            gaussians.add_densification_stats(viewspace_point_tensor, visibility_filter)
+        timing_add("backward", segment_start)
 
         iter_end.record()
 
+        if timing_enabled:
+            timing_breakdown["iterations"] += 1
+        segment_start = timing_mark()
         with torch.no_grad():
             # Progress bar
             ema_loss_for_log = 0.4 * loss.item() + 0.6 * ema_loss_for_log
@@ -237,12 +323,35 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     time_path = os.path.join(dataset.model_path, "training_time.txt")
                     with open(time_path, 'w') as time_f:
                         time_f.write(f"Total training time: {total_time:.2f}seconds\n")
+                    if timing_enabled:
+                        measured_time = sum(v for k, v in timing_breakdown.items() if k != "iterations")
+                        breakdown = {
+                            "total_training_seconds": total_time,
+                            "measured_segment_seconds": measured_time,
+                            "timing_sync": timing_sync,
+                            "iterations": timing_breakdown["iterations"],
+                            "segments": {},
+                        }
+                        for name, seconds in timing_breakdown.items():
+                            if name == "iterations":
+                                continue
+                            breakdown["segments"][name] = {
+                                "seconds": seconds,
+                                "percent_of_training": 100.0 * seconds / total_time if total_time > 0 else 0.0,
+                                "percent_of_measured": 100.0 * seconds / measured_time if measured_time > 0 else 0.0,
+                            }
+                        timing_path = os.path.join(dataset.model_path, "timing_breakdown.json")
+                        with open(timing_path, 'w') as timing_f:
+                            json.dump(breakdown, timing_f, indent=2, sort_keys=True)
+                        print(f"[INFO] Saved timing breakdown to {timing_path}")
                 print("\n[ITER {}] Saving Gaussians".format(iteration))
                 scene.save(iteration)
                 ############### NOTE: IMC ###############
                 gaussians.save_nn(scene.model_path)
+            timing_add("report_save", segment_start)
 
             ############### NOTE: IMC ###############
+            segment_start = timing_mark()
             # L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
             # actual_covariance = L @ L.transpose(1, 2)
             # def op_sigmoid(x, k=100, x0=0.995):
@@ -258,10 +367,41 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             ############### NOTE: Densification ###############
             if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
                 dead_mask = (gaussians.get_opacity <= 0.005).squeeze(-1)
-                gaussians.relocate_gs(dead_mask=dead_mask)
-                gaussians.add_new_gs(cap_max=args.cap_max)
+                cpf_densify_active = (
+                    getattr(opt, "cpf_densify", False)
+                    and iteration >= getattr(opt, "cpf_densify_start_iter", 0)
+                    and (getattr(opt, "cpf_densify_until_iter", 0) <= 0 or iteration <= getattr(opt, "cpf_densify_until_iter", 0))
+                )
+                if cpf_densify_active:
+                    use_cpf_relocate = int(getattr(opt, "cpf_densify_relocate", 1)) != 0
+                    use_cpf_birth = int(getattr(opt, "cpf_densify_birth", 1)) != 0
+                    if use_cpf_relocate:
+                        relocated = gaussians.relocate_gs_cpf(dead_mask=dead_mask)
+                        if not relocated:
+                            gaussians.relocate_gs(dead_mask=dead_mask)
+                    else:
+                        gaussians.relocate_gs(dead_mask=dead_mask)
+                    if use_cpf_birth:
+                        current_num_points = gaussians.get_xyz.shape[0]
+                        target_num = min(args.cap_max, int(1.05 * current_num_points))
+                        target_add = max(0, target_num - current_num_points)
+                        if int(getattr(opt, "cpf_densify_guided_clone", 0)) != 0:
+                            added = gaussians.add_new_gs_cpf_guided(cap_max=args.cap_max, num_gs=target_add)
+                        else:
+                            added = gaussians.add_new_gs_cpf(cap_max=args.cap_max)
+                        remaining = max(0, target_add - max(0, added))
+                        if remaining > 0:
+                            gaussians.add_new_gs(cap_max=args.cap_max, num_gs=remaining)
+                    else:
+                        gaussians.add_new_gs(cap_max=args.cap_max)
+                else:
+                    gaussians.relocate_gs(dead_mask=dead_mask)
+                    gaussians.add_new_gs(cap_max=args.cap_max)
 
 
+            timing_add("noise_densify", segment_start)
+
+            segment_start = timing_mark()
             # Optimizer step
             if iteration < opt.iterations:
                 gaussians.exposure_optimizer.step()
@@ -295,15 +435,22 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 #     noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
                 #     gaussians._xyz.add_(noise)
                 # ################# NOTE: MCMC ##################
-                L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
-                actual_covariance = L @ L.transpose(1, 2)
+                stochastic_stop_iter = getattr(opt, "stochastic_stop_iter", 0)
+                stochastic_active = stochastic_stop_iter <= 0 or iteration <= stochastic_stop_iter
+                if stochastic_active:
+                    L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)
+                    actual_covariance = L @ L.transpose(1, 2)
 
-                def op_sigmoid(x, k=100, x0=0.995):
-                    return 1 / (1 + torch.exp(-k * (x - x0)))
-                
-                noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
-                noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
-                gaussians._xyz.add_(noise)
+                    def op_sigmoid(x, k=100, x0=0.995):
+                        return 1 / (1 + torch.exp(-k * (x - x0)))
+                    
+                    noise = torch.randn_like(gaussians._xyz) * (op_sigmoid(1- gaussians.get_opacity))*args.noise_lr*xyz_lr
+                    noise = torch.bmm(actual_covariance, noise.unsqueeze(-1)).squeeze(-1)
+                    gaussians._xyz.add_(noise)
+                elif not stochastic_stop_logged:
+                    print(f"[INFO] Stochastic covariance noise stopped at iteration {iteration} by stochastic_stop_iter={stochastic_stop_iter}")
+                    stochastic_stop_logged = True
+            timing_add("optimizer", segment_start)
 
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
@@ -450,6 +597,12 @@ if __name__ == "__main__":
     args.save_iterations.append(args.iterations)
     
     print("Optimizing " + args.model_path)
+    if args.model_path:
+        os.makedirs(args.model_path, exist_ok=True)
+        with open(os.path.join(args.model_path, "full_args.json"), "w") as f:
+            json.dump(vars(args), f, indent=2, sort_keys=True)
+        with open(os.path.join(args.model_path, "command.txt"), "w") as f:
+            f.write(" ".join(sys.argv) + "\n")
 
     # Initialize system state (RNG)
     safe_state(args.quiet)

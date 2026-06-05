@@ -184,6 +184,21 @@ class GaussianModel:
             return self._exposure[self.exposure_mapping[image_name]]
         else:
             return self.pretrained_exposures[image_name]
+
+    def setup_exposure_from_cameras(self, cam_infos, exposure_json_path=None):
+        self.exposure_mapping = {cam_info.image_name: idx for idx, cam_info in enumerate(cam_infos)}
+        self.pretrained_exposures = None
+        exposure = torch.eye(3, 4, device="cuda")[None].repeat(len(cam_infos), 1, 1)
+        if exposure_json_path and os.path.exists(exposure_json_path):
+            with open(exposure_json_path, "r") as f:
+                saved_exposures = json.load(f)
+            loaded = 0
+            for image_name, idx in self.exposure_mapping.items():
+                if image_name in saved_exposures:
+                    exposure[idx] = torch.tensor(saved_exposures[image_name], dtype=torch.float32, device="cuda")
+                    loaded += 1
+            print(f"[INFO] Loaded {loaded}/{len(self.exposure_mapping)} exposure matrices from {exposure_json_path}")
+        self._exposure = nn.Parameter(exposure.requires_grad_(True))
     
     def get_covariance(self, scaling_modifier = 1):
         return self.covariance_activation(self.get_scaling, scaling_modifier, self._rotation)
@@ -211,6 +226,7 @@ class GaussianModel:
 
         ###################### NOTE: change properties #######################
         self._xyz = nn.Parameter(fused_point_cloud.requires_grad_(True))
+        self._sfm_xyz = fused_point_cloud.detach().clone()
         self._features_dc = nn.Parameter(features[:,:,0:1].transpose(1, 2).contiguous().requires_grad_(True))
         self._features_rest = nn.Parameter(features[:,:,1:].transpose(1, 2).contiguous().requires_grad_(True))
         self._scaling = nn.Parameter(scales.requires_grad_(True))
@@ -226,6 +242,32 @@ class GaussianModel:
 
         #################### NOTE: hyper-param ########################
         self.max_num = 100000
+        self.cpf_prior_source = "render"
+        self.cpf_max_refresh_views = 0
+        self.cpf_unique_every = 1
+        self.cpf_sfm_align_max_points = 20000
+        self.cpf_grad_create_graph = False
+        self.cpf_train_interval = 1
+        self.cpf_derivative_interval = 1
+        self.cpf_loss_weight = 1.0
+        self.cpf_loss_cap = 0.0
+        self.cpf_reliability_gate = 0
+        self.cpf_reliability_loss_ratio = 4.0
+        self.cpf_reliability_min_loss = 30.0
+        self.cpf_reliability_ema_decay = 0.95
+        self.cpf_loss_ema = None
+        self.last_cpf_reliable = True
+        self.cpf_noise_weight = 1.0
+        self.cpf_update_loss_threshold = 0.0
+        self.cpf_max_drift_norm = 0.0
+        self.cpf_max_noise_norm = 0.0
+        self.cpf_stop_iter = 0
+        self.cpf_refresh_stop_iter = 0
+        self.cpf_train_stop_iter = 0
+        self._cpf_stop_logged = False
+        self._cpf_train_stop_logged = False
+        self._cpf_refresh_stop_logged = False
+        self.last_cpf_loss = None
         self.net_mode = "mlp" # "mlp" or "fft"
         self.net_type = "sine" # "sine" or "relu"
         self.net = NetworksA(
@@ -236,10 +278,45 @@ class GaussianModel:
             )
         self.net.cuda()
         self.nn_gt_pts = None
+        self.cpf_residual_pts = None
+        self.cpf_densify_guided_clone = 0
+        self.cpf_densify_guided_ratio = 1.0
+        self.cpf_densify_guided_grad_weight = 1.0
+        self.cpf_densify_guided_cpf_weight = 0.75
+        self.cpf_densify_guided_density_weight = 0.5
+        self.cpf_densify_guided_coarse_ratio = 0.25
+        self.cpf_densify_guided_fine_scale = 1.0
+        self.cpf_densify_guided_coarse_scale = 5.0
         self.aligned_depth_dict = {}
     
     def create_net(self):
         self.max_num = 100000
+        self.cpf_prior_source = "render"
+        self.cpf_max_refresh_views = 0
+        self.cpf_unique_every = 1
+        self.cpf_sfm_align_max_points = 20000
+        self.cpf_grad_create_graph = False
+        self.cpf_train_interval = 1
+        self.cpf_derivative_interval = 1
+        self.cpf_loss_weight = 1.0
+        self.cpf_loss_cap = 0.0
+        self.cpf_reliability_gate = 0
+        self.cpf_reliability_loss_ratio = 4.0
+        self.cpf_reliability_min_loss = 30.0
+        self.cpf_reliability_ema_decay = 0.95
+        self.cpf_loss_ema = None
+        self.last_cpf_reliable = True
+        self.cpf_noise_weight = 1.0
+        self.cpf_update_loss_threshold = 0.0
+        self.cpf_max_drift_norm = 0.0
+        self.cpf_max_noise_norm = 0.0
+        self.cpf_stop_iter = 0
+        self.cpf_refresh_stop_iter = 0
+        self.cpf_train_stop_iter = 0
+        self._cpf_stop_logged = False
+        self._cpf_train_stop_logged = False
+        self._cpf_refresh_stop_logged = False
+        self.last_cpf_loss = None
         self.net_mode = "mlp" # "mlp" or "fft"
         self.net_type = "sine" # "sine" or "relu"
         self.net = NetworksA(
@@ -249,6 +326,17 @@ class GaussianModel:
             mode=self.net_mode, 
             )
         self.net.cuda()
+        self.nn_gt_pts = None
+        self.cpf_residual_pts = None
+        self.cpf_densify_guided_clone = 0
+        self.cpf_densify_guided_ratio = 1.0
+        self.cpf_densify_guided_grad_weight = 1.0
+        self.cpf_densify_guided_cpf_weight = 0.75
+        self.cpf_densify_guided_density_weight = 0.5
+        self.cpf_densify_guided_coarse_ratio = 0.25
+        self.cpf_densify_guided_fine_scale = 1.0
+        self.cpf_densify_guided_coarse_scale = 5.0
+        self.aligned_depth_dict = {}
 
     def training_setup(self, training_args):
         self.percent_dense = training_args.percent_dense
@@ -297,6 +385,56 @@ class GaussianModel:
         self.nn_start_iter = training_args.nn_start_iter
         self.nn_derivatives_iter = training_args.nn_derivatives_iter
         self.nn_update_interval = training_args.nn_update_interval
+        self.cpf_prior_source = training_args.cpf_prior_source
+        self.max_num = training_args.cpf_max_points
+        self.cpf_max_refresh_views = training_args.cpf_max_refresh_views
+        self.cpf_unique_every = max(1, training_args.cpf_unique_every)
+        self.cpf_sfm_align_max_points = training_args.cpf_sfm_align_max_points
+        self.cpf_grad_create_graph = training_args.cpf_grad_create_graph
+        self.cpf_train_interval = max(1, training_args.cpf_train_interval)
+        self.cpf_derivative_interval = max(1, training_args.cpf_derivative_interval)
+        self.cpf_loss_weight = float(getattr(training_args, "cpf_loss_weight", 1.0))
+        self.cpf_loss_cap = float(getattr(training_args, "cpf_loss_cap", 0.0))
+        self.cpf_reliability_gate = int(getattr(training_args, "cpf_reliability_gate", 0))
+        self.cpf_reliability_loss_ratio = float(getattr(training_args, "cpf_reliability_loss_ratio", 4.0))
+        self.cpf_reliability_min_loss = float(getattr(training_args, "cpf_reliability_min_loss", 30.0))
+        self.cpf_reliability_ema_decay = float(getattr(training_args, "cpf_reliability_ema_decay", 0.95))
+        self.cpf_noise_weight = training_args.cpf_noise_weight
+        self.cpf_update_loss_threshold = training_args.cpf_update_loss_threshold
+        self.cpf_max_drift_norm = training_args.cpf_max_drift_norm
+        self.cpf_max_noise_norm = training_args.cpf_max_noise_norm
+        self.cpf_stop_iter = training_args.cpf_stop_iter
+        self.cpf_refresh_stop_iter = training_args.cpf_refresh_stop_iter
+        self.cpf_train_stop_iter = training_args.cpf_train_stop_iter
+        self.cpf_densify = training_args.cpf_densify
+        self.cpf_densify_start_iter = training_args.cpf_densify_start_iter
+        self.cpf_densify_until_iter = training_args.cpf_densify_until_iter
+        self.cpf_densify_pool = training_args.cpf_densify_pool
+        self.cpf_densify_density_points = training_args.cpf_densify_density_points
+        self.cpf_densify_sigma_weight = training_args.cpf_densify_sigma_weight
+        self.cpf_densify_gap_weight = training_args.cpf_densify_gap_weight
+        self.cpf_densify_relocate = int(getattr(training_args, "cpf_densify_relocate", 1))
+        self.cpf_densify_birth = int(getattr(training_args, "cpf_densify_birth", 1))
+        self.cpf_densify_birth_ratio = float(getattr(training_args, "cpf_densify_birth_ratio", 1.0))
+        self.cpf_densify_sigma_min = float(getattr(training_args, "cpf_densify_sigma_min", 0.0))
+        self.cpf_densify_gap_min = float(getattr(training_args, "cpf_densify_gap_min", 0.0))
+        self.cpf_densify_use_residual = int(getattr(training_args, "cpf_densify_use_residual", 0))
+        self.cpf_densify_guided_clone = int(getattr(training_args, "cpf_densify_guided_clone", 0))
+        self.cpf_densify_guided_ratio = float(getattr(training_args, "cpf_densify_guided_ratio", 1.0))
+        self.cpf_densify_guided_grad_weight = float(getattr(training_args, "cpf_densify_guided_grad_weight", 1.0))
+        self.cpf_densify_guided_cpf_weight = float(getattr(training_args, "cpf_densify_guided_cpf_weight", 0.75))
+        self.cpf_densify_guided_density_weight = float(getattr(training_args, "cpf_densify_guided_density_weight", 0.5))
+        self.cpf_densify_guided_coarse_ratio = float(getattr(training_args, "cpf_densify_guided_coarse_ratio", 0.25))
+        self.cpf_densify_guided_fine_scale = float(getattr(training_args, "cpf_densify_guided_fine_scale", 1.0))
+        self.cpf_densify_guided_coarse_scale = float(getattr(training_args, "cpf_densify_guided_coarse_scale", 5.0))
+        self.cpf_residual_cache_max_points = int(getattr(training_args, "cpf_residual_cache_max_points", 32768))
+
+    def _clamp_update_norm(self, update, max_norm):
+        if max_norm <= 0:
+            return update
+        norm = update.norm(dim=-1, keepdim=True).clamp_min(1e-12)
+        scale = torch.clamp(max_norm / norm, max=1.0)
+        return update * scale
 
     ######################################################################
     ######################################################################
@@ -306,7 +444,19 @@ class GaussianModel:
     def derivatives(self, view, tb_writer, iteration):
         if iteration < self.nn_derivatives_iter:
             return None, None
+        if self.cpf_stop_iter > 0 and iteration > self.cpf_stop_iter:
+            return None, None
+        if (iteration - self.nn_derivatives_iter) % self.cpf_derivative_interval != 0:
+            return None, None
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
+            return None, None
+        if self.cpf_update_loss_threshold > 0:
+            last_loss = self.last_cpf_loss
+            if last_loss is None or not math.isfinite(last_loss) or last_loss > self.cpf_update_loss_threshold:
+                return None, None
+        if self.cpf_reliability_gate != 0 and not getattr(self, "last_cpf_reliable", True):
+            if tb_writer is not None:
+                tb_writer.add_scalar("nn_l/derivatives_reliability_skipped", 1, iteration)
             return None, None
         # if iteration < 10:
         #     return None, None
@@ -327,7 +477,13 @@ class GaussianModel:
         pred_opacity = res['sigma']
         l = 1.0 - pred_opacity
 
-        grad = torch.autograd.grad(l, [self._xyz, self._rotation, self._scaling], grad_outputs=torch.ones_like(l), create_graph=True)
+        grad = torch.autograd.grad(
+            l,
+            [self._xyz, self._rotation, self._scaling],
+            grad_outputs=torch.ones_like(l),
+            retain_graph=True,
+            create_graph=self.cpf_grad_create_graph,
+        )
         # net_scale = (self.net.xyz_upperbound - self.net.xyz_lowerbound)
         with torch.no_grad():
             if self.bound_type == "local":
@@ -346,6 +502,7 @@ class GaussianModel:
             grad_xyz = grad[0][gs_mask] * xyz_scaling * self.partial_scaling
             grad_rot = grad[1][gs_mask] * self.sigma_scaling
             grad_scale = grad[2][gs_mask] * self.sigma_scaling
+            grad_xyz = self._clamp_update_norm(grad_xyz, self.cpf_max_drift_norm)
 
             self._xyz[gs_mask].add_(grad_xyz)
             self._rotation[gs_mask].add_(grad_rot)
@@ -368,6 +525,8 @@ class GaussianModel:
         # TODO: add noise, w.r.t to covariance or L
         pred_noise = res['xyz_noise']
         xyz_noise = torch.bmm(covariance.detach().clone(), pred_noise.unsqueeze(-1)).squeeze(-1)
+        xyz_noise = xyz_noise * self.cpf_noise_weight
+        xyz_noise = self._clamp_update_norm(xyz_noise, self.cpf_max_noise_norm)
         noise_full = torch.zeros((self._xyz.shape[0], 3), device="cuda")
         noise_full[gs_mask] = xyz_noise
         return noise_full, gs_mask
@@ -418,11 +577,31 @@ class GaussianModel:
     def train_continuous(self, all_views, view, pipe, bg, tb_writer, iteration):
         if iteration < self.nn_start_iter:
             return None
-        elif iteration % self.nn_update_interval == 0:
-            torch.cuda.empty_cache()
-            with torch.no_grad():
-                self.update_nnpts(all_views, pipe, bg, align=False)
+        if self.cpf_stop_iter > 0 and iteration > self.cpf_stop_iter:
+            if not self._cpf_stop_logged:
+                print(f"[INFO] CPF fully stopped at iteration {iteration} by cpf_stop_iter={self.cpf_stop_iter}")
+                self._cpf_stop_logged = True
+            return None
+        if self.cpf_train_stop_iter > 0 and iteration > self.cpf_train_stop_iter:
+            if not self._cpf_train_stop_logged:
+                print(f"[INFO] CPF training/refresh stopped at iteration {iteration} by cpf_train_stop_iter={self.cpf_train_stop_iter}; CPF derivatives remain active unless cpf_stop_iter is set")
+                if tb_writer is not None:
+                    tb_writer.add_scalar("nn_l/train_stop_active", 1, iteration)
+                self._cpf_train_stop_logged = True
+            return None
+        if iteration == self.nn_start_iter or (iteration > self.nn_start_iter and (iteration - self.nn_start_iter) % self.nn_update_interval == 0):
+            if self.cpf_refresh_stop_iter <= 0 or iteration <= self.cpf_refresh_stop_iter:
+                torch.cuda.empty_cache()
+                with torch.no_grad():
+                    self.update_nnpts(all_views, pipe, bg, align=False)
+            elif not self._cpf_refresh_stop_logged:
+                print(f"[INFO] CPF prior refresh stopped at iteration {iteration} by cpf_refresh_stop_iter={self.cpf_refresh_stop_iter}; CPF training continues on cached priors")
+                if tb_writer is not None:
+                    tb_writer.add_scalar("nn_l/refresh_stop_active", 1, iteration)
+                self._cpf_refresh_stop_logged = True
         if self.net.xyz_lowerbound is None or self.net.xyz_upperbound is None:
+            return None
+        if (iteration - self.nn_start_iter) % self.cpf_train_interval != 0:
             return None
         self.net.train()
         if self.nn_type == "allviews":
@@ -465,10 +644,40 @@ class GaussianModel:
 
         res = self.net(net_in)
         l = self.loss_fn(res, gt_opacity, gt_color, gt_norm)
+        l_detached = l.detach()
+        self.last_cpf_loss = float(l_detached.item()) if torch.isfinite(l_detached) else math.inf
+        if self.cpf_update_loss_threshold > 0 and (not math.isfinite(self.last_cpf_loss) or self.last_cpf_loss > self.cpf_update_loss_threshold):
+            if tb_writer is not None:
+                tb_writer.add_scalar("nn_l/nnl_skipped", self.last_cpf_loss, iteration)
+            return None
+        if self.cpf_reliability_gate != 0:
+            ema = getattr(self, "cpf_loss_ema", None)
+            if ema is not None and math.isfinite(self.last_cpf_loss):
+                ratio_limit = ema * max(1.0, self.cpf_reliability_loss_ratio)
+                loss_limit = max(self.cpf_reliability_min_loss, ratio_limit)
+                if self.last_cpf_loss > loss_limit:
+                    self.last_cpf_reliable = False
+                    if tb_writer is not None:
+                        tb_writer.add_scalar("nn_l/reliability_skip_loss", self.last_cpf_loss, iteration)
+                        tb_writer.add_scalar("nn_l/reliability_loss_limit", loss_limit, iteration)
+                        tb_writer.add_scalar("nn_l/reliability_loss_ema", ema, iteration)
+                    return None
+            if math.isfinite(self.last_cpf_loss):
+                decay = min(0.999, max(0.0, self.cpf_reliability_ema_decay))
+                self.cpf_loss_ema = self.last_cpf_loss if ema is None else decay * ema + (1.0 - decay) * self.last_cpf_loss
+            self.last_cpf_reliable = math.isfinite(self.last_cpf_loss)
+        if self.cpf_loss_cap > 0:
+            cap = torch.as_tensor(self.cpf_loss_cap, dtype=l.dtype, device=l.device)
+            l = cap * (1.0 - torch.exp(-l / cap))
+        if self.cpf_loss_weight != 1.0:
+            l = l * self.cpf_loss_weight
         if iteration % 500 == 0:
             write_summary(self.net, tb_writer, iteration)
         if tb_writer is not None:
+            tb_writer.add_scalar("nn_l/nnl_raw", l_detached, iteration)
             tb_writer.add_scalar("nn_l/nnl", l, iteration)
+            if self.cpf_reliability_gate != 0 and getattr(self, "cpf_loss_ema", None) is not None:
+                tb_writer.add_scalar("nn_l/reliability_loss_ema", self.cpf_loss_ema, iteration)
         return l
     
     def perturb_pnts(self, xyz, color, norm, opacity, range_scale=1.):
@@ -656,6 +865,10 @@ class GaussianModel:
         aligndepth = True if self.nn_type == "allviews" else False
 
         if self.nn_type == "allviews" or self.bound_type == "local":
+            if self.cpf_max_refresh_views > 0 and len(all_views) > self.cpf_max_refresh_views:
+                view_ids = torch.randperm(len(all_views))[:self.cpf_max_refresh_views].tolist()
+                all_views = [all_views[i] for i in view_ids]
+            self.aligned_depth_dict = {}
             self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, aligndepth=aligndepth)
             if self.nn_gt_pts is None:
                 return
@@ -683,6 +896,9 @@ class GaussianModel:
                     continue
                 pt_clr = pt_clr.detach().clone()
                 all_pts = torch.cat([all_pts, pt_clr], dim=0)
+                if (i + 1) % self.cpf_unique_every == 0:
+                    all_pts = self.unique_pts(all_pts, self.voxel_size)
+            if all_pts.shape[0] > 0:
                 all_pts = self.unique_pts(all_pts, self.voxel_size)
         if debug:
             # save to ply
@@ -694,6 +910,9 @@ class GaussianModel:
         return all_pts
     
     def filter_depth_and_align(self, view, pipe, bg, align=True, debug=True, aligndepth=False):
+        if self.cpf_prior_source == "sfm_depth":
+            return self.filter_sfm_aligned_depth(view, debug=debug)
+
         # if int(view.image_name.split(".")[0]) in [248, 249]:
         # if int(view.image_name.split(".")[0]) >= 1171:
         #     return None
@@ -782,6 +1001,106 @@ class GaussianModel:
             normals = normals[mask]
         pt_clr = torch.cat([pts, colors, normals], dim=1)
         return pt_clr
+
+    def filter_sfm_aligned_depth(self, view, debug=False):
+        if view.invdepthmap is None:
+            return None
+
+        gt = view.original_image.cuda()
+        mono_invdepth = view.invdepthmap.cuda()
+        if self.downsample_ratio != 1:
+            gt = F.interpolate(gt.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+            mono_invdepth = F.interpolate(mono_invdepth.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+
+        H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
+        align_depth = self.depth_align_sfm(mono_invdepth, view, H, W, focals)
+        if align_depth is None:
+            mono_depth = 1.0 / (mono_invdepth + 1e-6)
+            scale_factor = 1.0
+        else:
+            mono_depth = align_depth
+            self.aligned_depth_dict[view.image_name] = align_depth.detach().clone()
+            scale_factor = 100.0
+
+        valid_mask = torch.isfinite(mono_depth) & torch.isfinite(mono_invdepth) & (mono_depth > 0) & (mono_invdepth > 0)
+        if valid_mask.sum() < self.dbscan_portion * H * W:
+            return None
+
+        pts = self.depth_proj(mono_depth, H, W, focals, c2w)
+        mono_normal = self.depth2norm(mono_depth, scale_factor=scale_factor).squeeze(0)
+        colors = gt.reshape(3, -1).t()
+        normals = mono_normal.reshape(3, -1).t()
+        mask_flat = valid_mask.reshape(-1)
+
+        if debug:
+            os.makedirs("tmp", exist_ok=True)
+            depth_show = (mono_depth - mono_depth.min()) / (mono_depth.max() - mono_depth.min() + 1e-6)
+            mask_show = valid_mask.float().repeat(3, 1, 1)
+            torchvision.utils.save_image(torch.cat([depth_show.repeat(3, 1, 1), mono_normal, mask_show], dim=1), f"tmp/sfm_depth_{view.image_name}")
+
+        return torch.cat([pts[mask_flat], colors[mask_flat], normals[mask_flat]], dim=1)
+
+    def depth_align_sfm(self, mono_invdepth, view, H, W, focals):
+        sfm_xyz = getattr(self, "_sfm_xyz", None)
+        if sfm_xyz is None or sfm_xyz.shape[0] < 32:
+            return None
+
+        points = sfm_xyz.detach()
+        if points.shape[0] > self.cpf_sfm_align_max_points:
+            idx = torch.randperm(points.shape[0], device=points.device)[:self.cpf_sfm_align_max_points]
+            points = points[idx]
+
+        fx, fy = focals
+        ones = torch.ones((points.shape[0], 1), dtype=points.dtype, device=points.device)
+        points_h = torch.cat([points, ones], dim=1)
+        w2c = view.world_view_transform.transpose(0, 1)
+        cam = (w2c @ points_h.t()).t()[:, :3]
+        z = cam[:, 2]
+        valid = z > 1e-4
+        if valid.sum() < 32:
+            return None
+
+        cam = cam[valid]
+        z = z[valid]
+        u = cam[:, 0] / z * fx + W * 0.5
+        v = cam[:, 1] / z * fy + H * 0.5
+        ui = torch.round(u).long()
+        vi = torch.round(v).long()
+        inside = (ui >= 0) & (ui < W) & (vi >= 0) & (vi < H)
+        if inside.sum() < 32:
+            return None
+
+        ui = ui[inside]
+        vi = vi[inside]
+        z = z[inside]
+        mono_samples = mono_invdepth[0, vi, ui].reshape(-1, 1)
+        target_inv = (1.0 / (z + 1e-6)).reshape(-1, 1)
+        finite = torch.isfinite(mono_samples) & torch.isfinite(target_inv) & (mono_samples > 0) & (target_inv > 0)
+        finite = finite.squeeze(1)
+        if finite.sum() < 32:
+            return None
+
+        mono_samples = mono_samples[finite]
+        target_inv = target_inv[finite]
+        if mono_samples.shape[0] > self.cpf_sfm_align_max_points:
+            idx = torch.randperm(mono_samples.shape[0], device=mono_samples.device)[:self.cpf_sfm_align_max_points]
+            mono_samples = mono_samples[idx]
+            target_inv = target_inv[idx]
+
+        linear = LinearRegressionModel().fit(mono_samples, target_inv)
+        pred = linear.predict(mono_samples)
+        residual = torch.abs(pred - target_inv)
+        cutoff = torch.quantile(residual.detach().flatten(), 0.75) * 2.5 + 1e-6
+        inliers = residual.flatten() <= cutoff
+        if inliers.sum() >= 32:
+            linear = LinearRegressionModel().fit(mono_samples[inliers], target_inv[inliers])
+
+        if linear.weights[0][0] <= 0:
+            return None
+        align_invdepth = linear.predict(mono_invdepth.reshape(-1, 1)).reshape(1, H, W)
+        if not torch.isfinite(align_invdepth).all() or align_invdepth.min() <= 0:
+            return None
+        return 1.0 / (align_invdepth + 1e-6)
     
     def depth_align(self, render_depth, mono_invdepth, mask=None, debug=True, name=None):
         """
@@ -1032,6 +1351,7 @@ class GaussianModel:
             rots[:, idx] = np.asarray(plydata.elements[0][attr_name])
 
         self._xyz = nn.Parameter(torch.tensor(xyz, dtype=torch.float, device="cuda").requires_grad_(True))
+        self._sfm_xyz = self._xyz.detach().clone()
         self._features_dc = nn.Parameter(torch.tensor(features_dc, dtype=torch.float, device="cuda").transpose(1, 2).contiguous().requires_grad_(True))
         self._features_rest = nn.Parameter(torch.tensor(features_extra, dtype=torch.float, device="cuda").transpose(1, 2).contiguous().requires_grad_(True))
         self._opacity = nn.Parameter(torch.tensor(opacities, dtype=torch.float, device="cuda").requires_grad_(True))
@@ -1188,8 +1508,38 @@ class GaussianModel:
 
         torch.cuda.empty_cache()
 
+    def _ensure_densification_stat_shapes(self):
+        n = self.get_xyz.shape[0]
+        device = self.get_xyz.device
+        dtype = self.get_xyz.dtype
+        if not hasattr(self, "xyz_gradient_accum") or self.xyz_gradient_accum is None:
+            self.xyz_gradient_accum = torch.zeros((n, 1), device=device, dtype=dtype)
+        if not hasattr(self, "denom") or self.denom is None:
+            self.denom = torch.zeros((n, 1), device=device, dtype=dtype)
+        if not hasattr(self, "max_radii2D") or self.max_radii2D is None:
+            self.max_radii2D = torch.zeros((n,), device=device, dtype=dtype)
+
+        if self.xyz_gradient_accum.shape[0] < n:
+            pad = n - self.xyz_gradient_accum.shape[0]
+            self.xyz_gradient_accum = torch.cat([self.xyz_gradient_accum, torch.zeros((pad, 1), device=device, dtype=self.xyz_gradient_accum.dtype)], dim=0)
+            self.denom = torch.cat([self.denom, torch.zeros((pad, 1), device=device, dtype=self.denom.dtype)], dim=0)
+            self.max_radii2D = torch.cat([self.max_radii2D, torch.zeros((pad,), device=device, dtype=self.max_radii2D.dtype)], dim=0)
+        elif self.xyz_gradient_accum.shape[0] > n:
+            self.xyz_gradient_accum = self.xyz_gradient_accum[:n]
+            self.denom = self.denom[:n]
+            self.max_radii2D = self.max_radii2D[:n]
+
     def add_densification_stats(self, viewspace_point_tensor, update_filter):
-        self.xyz_gradient_accum[update_filter] += torch.norm(viewspace_point_tensor.grad[update_filter,:2], dim=-1, keepdim=True)
+        if viewspace_point_tensor.grad is None:
+            return
+        self._ensure_densification_stat_shapes()
+        if update_filter.dtype == torch.bool:
+            update_filter = update_filter.reshape(-1)
+        else:
+            update_filter = update_filter.reshape(-1).long()
+        if update_filter.numel() <= 0:
+            return
+        self.xyz_gradient_accum[update_filter] += torch.norm(viewspace_point_tensor.grad[update_filter, :2], dim=-1, keepdim=True)
         self.denom[update_filter] += 1
 
     def replace_tensors_to_optimizer(self, inds=None):
@@ -1284,10 +1634,327 @@ class GaussianModel:
         self.replace_tensors_to_optimizer(inds=reinit_idx) 
         
 
-    def add_new_gs(self, cap_max):
+    def cache_residual_candidates(self, view, render_image, gt_image, max_pixels=1024):
+        if view.invdepthmap is None or max_pixels <= 0:
+            return 0
+        with torch.no_grad():
+            gt = gt_image.detach()
+            pred = render_image.detach()
+            if pred.shape[-2:] != gt.shape[-2:]:
+                pred = F.interpolate(pred.unsqueeze(0), size=gt.shape[-2:], mode='bilinear', align_corners=False).squeeze(0)
+
+            H, W = gt.shape[-2:]
+            mono_invdepth = view.invdepthmap.cuda()
+            if mono_invdepth.shape[-2:] != (H, W):
+                mono_invdepth = F.interpolate(mono_invdepth.unsqueeze(0), size=(H, W), mode='bilinear', align_corners=False).squeeze(0)
+
+            fovx = view.FoVx
+            fovy = view.FoVy
+            fx = W / (2 * math.tan(fovx / 2))
+            fy = H / (2 * math.tan(fovy / 2))
+            align_depth = self.depth_align_sfm(mono_invdepth, view, H, W, [fx, fy])
+            if align_depth is None:
+                depth = 1.0 / (mono_invdepth + 1e-6)
+            else:
+                depth = align_depth
+
+            residual = torch.mean(torch.abs(pred - gt), dim=0)
+            valid = torch.isfinite(depth[0]) & torch.isfinite(residual) & (depth[0] > 0)
+            if getattr(view, "depth_mask", None) is not None:
+                depth_mask = view.depth_mask.cuda()
+                if depth_mask.shape[-2:] != (H, W):
+                    depth_mask = F.interpolate(depth_mask.unsqueeze(0).float(), size=(H, W), mode='nearest').squeeze(0) > 0.5
+                valid = valid & depth_mask.squeeze(0).bool()
+            valid_ids = torch.nonzero(valid.reshape(-1), as_tuple=False).reshape(-1)
+            if valid_ids.numel() <= 0:
+                return 0
+
+            k = min(int(max_pixels), valid_ids.numel())
+            residual_flat = residual.reshape(-1)[valid_ids]
+            top_local = torch.topk(residual_flat, k=k, largest=True).indices
+            selected = valid_ids[top_local]
+
+            z = depth.reshape(-1)[selected]
+            y = torch.div(selected, W, rounding_mode='floor').float()
+            x = (selected % W).float()
+            pts_cam = torch.stack([(x - W * 0.5) / fx * z, (y - H * 0.5) / fy * z, z], dim=1)
+            pts_h = torch.cat([pts_cam, torch.ones((pts_cam.shape[0], 1), dtype=pts_cam.dtype, device=pts_cam.device)], dim=1)
+            w2c = view.world_view_transform.transpose(0, 1)
+            c2w = torch.inverse(w2c)
+            pts = (c2w @ pts_h.t()).t()[:, :3]
+            colors = torch.clamp(gt.permute(1, 2, 0).reshape(-1, 3)[selected], 0.0, 1.0)
+            normals = torch.zeros_like(colors)
+            normals[:, 2] = 1.0
+            new_pts = torch.cat([pts, colors, normals], dim=1)
+            finite = torch.isfinite(new_pts[:, :6]).all(dim=1)
+            new_pts = new_pts[finite]
+            if new_pts.shape[0] <= 0:
+                return 0
+
+            old_pts = getattr(self, "cpf_residual_pts", None)
+            if old_pts is None or old_pts.shape[0] <= 0:
+                cached = new_pts.detach()
+            else:
+                cached = torch.cat([old_pts.detach(), new_pts.detach()], dim=0)
+            max_points = max(1, int(getattr(self, "cpf_residual_cache_max_points", 32768)))
+            if cached.shape[0] > max_points:
+                cached = cached[-max_points:]
+            self.cpf_residual_pts = cached.contiguous()
+            return int(new_pts.shape[0])
+
+    def _cpf_scored_birth_candidates(self, num, pool_size=None, density_points=None):
+        pts = getattr(self, "nn_gt_pts", None)
+        if int(getattr(self, "cpf_densify_use_residual", 0)) != 0:
+            residual_pts = getattr(self, "cpf_residual_pts", None)
+            if residual_pts is not None and residual_pts.shape[0] > 0:
+                pts = residual_pts
+        if pts is None or pts.shape[0] <= 0 or not hasattr(self, "net"):
+            return None
+        if self.get_xyz.shape[0] <= 0:
+            return None
+        pool_size = int(pool_size or self.cpf_densify_pool)
+        density_points = int(density_points or self.cpf_densify_density_points)
+        pool_size = max(num, min(pool_size, pts.shape[0]))
+
+        with torch.no_grad():
+            pts = pts.detach()
+            finite = torch.isfinite(pts[:, :6]).all(dim=1)
+            if finite.sum() <= 0:
+                return None
+            pts = pts[finite]
+            if pts.shape[0] <= 0:
+                return None
+            if pts.shape[0] > pool_size:
+                cand_idx = torch.randperm(pts.shape[0], device=pts.device)[:pool_size]
+                pts = pts[cand_idx]
+
+            cand_xyz = pts[:, :3].contiguous()
+            cand_color = torch.clamp(pts[:, 3:6].contiguous(), 0.0, 1.0)
+            existing_xyz = self.get_xyz.detach()
+            existing_count = existing_xyz.shape[0]
+            if existing_count > density_points:
+                subset_ids = torch.randperm(existing_count, device=existing_xyz.device)[:density_points]
+                existing_subset = existing_xyz[subset_ids]
+            else:
+                subset_ids = torch.arange(existing_count, device=existing_xyz.device)
+                existing_subset = existing_xyz
+            if existing_subset.shape[0] <= 0:
+                return None
+
+            nearest_dist = []
+            nearest_local = []
+            chunk = 1024
+            for start in range(0, cand_xyz.shape[0], chunk):
+                d = torch.cdist(cand_xyz[start:start + chunk], existing_subset)
+                vals, inds = torch.min(d, dim=1)
+                nearest_dist.append(vals)
+                nearest_local.append(inds)
+            nearest_dist = torch.cat(nearest_dist, dim=0)
+            nearest_idx = subset_ids[torch.cat(nearest_local, dim=0)]
+
+            support = torch.ones_like(nearest_dist)
+            if self.net.xyz_lowerbound is not None and self.net.xyz_upperbound is not None:
+                try:
+                    support_vals = []
+                    for start in range(0, cand_xyz.shape[0], chunk):
+                        res = self.net(cand_xyz[start:start + chunk])
+                        support_vals.append(res["sigma"].detach().reshape(-1))
+                    support = torch.cat(support_vals, dim=0).clamp(0.0, 1.0)
+                except Exception:
+                    support = torch.ones_like(nearest_dist)
+
+            gap_scale = torch.median(nearest_dist).clamp_min(1e-6)
+            gap_score = torch.clamp(nearest_dist / gap_scale, max=10.0)
+            valid = torch.isfinite(support) & torch.isfinite(gap_score)
+            sigma_min = max(0.0, float(getattr(self, "cpf_densify_sigma_min", 0.0)))
+            gap_min = max(0.0, float(getattr(self, "cpf_densify_gap_min", 0.0)))
+            if sigma_min > 0:
+                valid = valid & (support >= sigma_min)
+            if gap_min > 0:
+                valid = valid & (gap_score >= gap_min)
+            if valid.sum() <= 0:
+                return None
+
+            cand_xyz = cand_xyz[valid]
+            cand_color = cand_color[valid]
+            nearest_idx = nearest_idx[valid]
+            support = support[valid].clamp_min(1e-6)
+            gap_score = gap_score[valid].clamp_min(1e-6)
+            score = (support ** max(0.0, float(self.cpf_densify_sigma_weight))) * ((1.0 + gap_score) ** max(0.0, float(self.cpf_densify_gap_weight)))
+            score = torch.where(torch.isfinite(score), score, torch.zeros_like(score))
+            k = min(num, score.shape[0])
+            if k <= 0:
+                return None
+            top = torch.topk(score, k=k, largest=True).indices
+            return cand_xyz[top], cand_color[top], nearest_idx[top]
+
+    def relocate_gs_cpf(self, dead_mask=None):
+        if dead_mask is None or dead_mask.sum() == 0:
+            return False
+        dead_indices = dead_mask.nonzero(as_tuple=True)[0]
+        candidates = self._cpf_scored_birth_candidates(dead_indices.shape[0])
+        if candidates is None:
+            return False
+        cand_xyz, cand_color, seed_idx = candidates
+        if cand_xyz.shape[0] <= 0:
+            return False
+        dead_indices = dead_indices[:cand_xyz.shape[0]]
+        ratio = torch.bincount(seed_idx, minlength=self.get_xyz.shape[0]).unsqueeze(-1)
+        _, _, _, new_opacity, new_scaling, new_rotation = self._update_params(seed_idx, ratio=ratio)
+        new_features_dc = RGB2SH(cand_color).unsqueeze(1)
+        new_features_rest = torch.zeros((cand_xyz.shape[0], self._features_rest.shape[1], self._features_rest.shape[2]), dtype=self._features_rest.dtype, device="cuda")
+        with torch.no_grad():
+            self._xyz[dead_indices] = cand_xyz
+            self._features_dc[dead_indices] = new_features_dc
+            self._features_rest[dead_indices] = new_features_rest
+            self._opacity[dead_indices] = new_opacity
+            self._scaling[dead_indices] = new_scaling
+            self._rotation[dead_indices] = new_rotation
+        self.replace_tensors_to_optimizer(inds=dead_indices)
+        return True
+
+    def _cpf_support_values(self, xyz, chunk=32768):
+        if not hasattr(self, "net") or self.net is None or xyz.shape[0] <= 0:
+            return torch.ones((xyz.shape[0],), device=xyz.device, dtype=xyz.dtype)
+        support_vals = []
+        try:
+            with torch.no_grad():
+                for start in range(0, xyz.shape[0], int(chunk)):
+                    res = self.net(xyz[start:start + int(chunk)].contiguous())
+                    sigma = res.get("sigma", None) if isinstance(res, dict) else None
+                    if sigma is None:
+                        return torch.ones((xyz.shape[0],), device=xyz.device, dtype=xyz.dtype)
+                    support_vals.append(sigma.detach().reshape(-1))
+            support = torch.cat(support_vals, dim=0)
+            return torch.nan_to_num(support, nan=0.0, posinf=1.0, neginf=0.0).clamp(0.0, 1.0)
+        except Exception:
+            return torch.ones((xyz.shape[0],), device=xyz.device, dtype=xyz.dtype)
+
+    def add_new_gs_cpf_guided(self, cap_max, num_gs=None):
+        current_num_points = self._opacity.shape[0]
+        if num_gs is None:
+            target_num = min(cap_max, int(1.05 * current_num_points))
+            num_gs = max(0, target_num - current_num_points)
+        else:
+            num_gs = min(int(num_gs), max(0, cap_max - current_num_points))
+
+        guided_ratio = max(0.0, float(getattr(self, "cpf_densify_guided_ratio", 1.0)))
+        num_gs = int(num_gs * guided_ratio)
+        if guided_ratio > 0 and num_gs <= 0 and current_num_points < cap_max:
+            num_gs = 1
+        if num_gs <= 0 or current_num_points <= 0:
+            return 0
+
+        self._ensure_densification_stat_shapes()
+        n = self.get_xyz.shape[0]
+        eps = torch.finfo(torch.float32).eps
+        with torch.no_grad():
+            opacity = self.get_opacity.detach().squeeze(-1).clamp_min(eps)
+            grad = self.xyz_gradient_accum[:n] / self.denom[:n].clamp_min(1.0)
+            grad = torch.nan_to_num(grad.detach().squeeze(-1), nan=0.0, posinf=0.0, neginf=0.0).clamp_min(0.0)
+            positive_grad = grad[grad > 0]
+            if positive_grad.numel() > 0:
+                grad_scale = positive_grad.mean().clamp_min(eps)
+                grad_score = (grad / grad_scale).clamp(0.0, 10.0)
+            else:
+                grad_score = torch.zeros_like(opacity)
+
+            grad_weight = max(0.0, float(getattr(self, "cpf_densify_guided_grad_weight", 1.0)))
+            density_weight = max(0.0, float(getattr(self, "cpf_densify_guided_density_weight", 0.5)))
+            weights = opacity * ((1.0 + grad_score) ** grad_weight)
+            if density_weight > 0:
+                density_factor = 1.0 / (1.0 + torch.log1p(self.denom[:n].detach().squeeze(-1).clamp_min(0.0)))
+                weights = weights * density_factor.clamp_min(0.05) ** density_weight
+            finite = torch.isfinite(weights) & (weights > 0)
+            if finite.sum() <= 0:
+                weights = opacity
+                finite = torch.isfinite(weights) & (weights > 0)
+            if finite.sum() <= 0:
+                return 0
+
+            valid_idx = torch.nonzero(finite, as_tuple=False).reshape(-1)
+            valid_weights = weights[valid_idx].clamp_min(eps)
+            pool_size = max(num_gs, min(int(getattr(self, "cpf_densify_pool", 32768)), valid_idx.shape[0]))
+            if valid_idx.shape[0] > pool_size:
+                pool_local = torch.multinomial(valid_weights, pool_size, replacement=False)
+                pool_idx = valid_idx[pool_local]
+                pool_weights = valid_weights[pool_local]
+            else:
+                pool_idx = valid_idx
+                pool_weights = valid_weights
+
+            cpf_weight = max(0.0, float(getattr(self, "cpf_densify_guided_cpf_weight", 0.75)))
+            if cpf_weight > 0:
+                support = self._cpf_support_values(self.get_xyz.detach()[pool_idx])
+                pool_weights = pool_weights * (support.clamp(0.0, 1.0) + 0.05) ** cpf_weight
+            pool_weights = torch.nan_to_num(pool_weights, nan=0.0, posinf=0.0, neginf=0.0).clamp_min(eps)
+            if pool_weights.sum() <= eps:
+                return 0
+            local_idx = torch.multinomial(pool_weights, num_gs, replacement=True)
+            add_idx = pool_idx[local_idx]
+            ratio = torch.bincount(add_idx, minlength=n).unsqueeze(-1)
+
+        (
+            new_xyz,
+            new_features_dc,
+            new_features_rest,
+            new_opacity,
+            new_scaling,
+            new_rotation,
+        ) = self._update_params(add_idx, ratio=ratio)
+
+        with torch.no_grad():
+            fine_scale = max(0.0, float(getattr(self, "cpf_densify_guided_fine_scale", 1.0)))
+            coarse_scale = max(fine_scale, float(getattr(self, "cpf_densify_guided_coarse_scale", 5.0)))
+            coarse_ratio = min(1.0, max(0.0, float(getattr(self, "cpf_densify_guided_coarse_ratio", 0.25))))
+            proposal_scale = torch.full((add_idx.shape[0], 1), fine_scale, device=self.get_xyz.device, dtype=self.get_xyz.dtype)
+            coarse_n = int(add_idx.shape[0] * coarse_ratio)
+            if coarse_n > 0:
+                proposal_scale[:coarse_n] = coarse_scale
+            parent_density = 1.0 / (1.0 + torch.log1p(self.denom[:n].detach().squeeze(-1)[add_idx].clamp_min(0.0)))
+            std = (self.get_scaling.detach()[add_idx] * proposal_scale * parent_density.unsqueeze(-1).clamp_min(0.05)).clamp_min(1e-6)
+            samples = torch.normal(mean=torch.zeros_like(std), std=std)
+            rots = build_rotation(self._rotation.detach()[add_idx])
+            new_xyz = new_xyz + torch.bmm(rots, samples.unsqueeze(-1)).squeeze(-1)
+            if hasattr(self, "net") and getattr(self.net, "xyz_lowerbound", None) is not None and getattr(self.net, "xyz_upperbound", None) is not None:
+                new_xyz = torch.max(torch.min(new_xyz, self.net.xyz_upperbound), self.net.xyz_lowerbound)
+
+            self._opacity[add_idx] = new_opacity
+            self._scaling[add_idx] = new_scaling
+
+        self.densification_postfix(new_xyz, new_features_dc, new_features_rest, new_opacity, new_scaling, new_rotation, reset_params=False)
+        self.replace_tensors_to_optimizer(inds=add_idx)
+        self._ensure_densification_stat_shapes()
+        return int(add_idx.shape[0])
+
+    def add_new_gs_cpf(self, cap_max):
         current_num_points = self._opacity.shape[0]
         target_num = min(cap_max, int(1.05 * current_num_points))
         num_gs = max(0, target_num - current_num_points)
+        birth_ratio = max(0.0, float(getattr(self, "cpf_densify_birth_ratio", 1.0)))
+        if birth_ratio <= 0 or num_gs <= 0:
+            return 0
+        num_gs = max(1, int(num_gs * birth_ratio))
+        candidates = self._cpf_scored_birth_candidates(num_gs)
+        if candidates is None:
+            return 0
+        new_xyz, new_color, seed_idx = candidates
+        if new_xyz.shape[0] <= 0:
+            return 0
+        ratio = torch.bincount(seed_idx, minlength=self.get_xyz.shape[0]).unsqueeze(-1)
+        _, _, _, new_opacity, new_scaling, new_rotation = self._update_params(seed_idx, ratio=ratio)
+        new_features_dc = RGB2SH(new_color).unsqueeze(1)
+        new_features_rest = torch.zeros((new_xyz.shape[0], self._features_rest.shape[1], self._features_rest.shape[2]), dtype=self._features_rest.dtype, device="cuda")
+        self.densification_postfix(new_xyz, new_features_dc, new_features_rest, new_opacity, new_scaling, new_rotation, reset_params=False)
+        return int(new_xyz.shape[0])
+
+    def add_new_gs(self, cap_max, num_gs=None):
+        current_num_points = self._opacity.shape[0]
+        if num_gs is None:
+            target_num = min(cap_max, int(1.05 * current_num_points))
+            num_gs = max(0, target_num - current_num_points)
+        else:
+            num_gs = min(int(num_gs), max(0, cap_max - current_num_points))
 
         if num_gs <= 0:
             return 0
@@ -1311,6 +1978,3 @@ class GaussianModel:
         self.replace_tensors_to_optimizer(inds=add_idx)
 
         return num_gs
-
-
-
