@@ -389,8 +389,6 @@ class GaussianModel:
         self.max_num = training_args.cpf_max_points
         _drift_cap = getattr(training_args, "cpf_drift_max_points", 0)
         self.cpf_drift_max_points = _drift_cap if _drift_cap and _drift_cap > 0 else self.max_num
-        self.cpf_opacity_drift_weight = getattr(training_args, "cpf_opacity_drift_weight", 0.0)
-        self.cpf_color_drift_weight = getattr(training_args, "cpf_color_drift_weight", 0.0)
         self.cpf_max_refresh_views = training_args.cpf_max_refresh_views
         self.cpf_unique_every = max(1, training_args.cpf_unique_every)
         self.cpf_sfm_align_max_points = training_args.cpf_sfm_align_max_points
@@ -513,16 +511,15 @@ class GaussianModel:
             self._scaling[gs_mask].add_(grad_scale)
             # self._scaling[gs_mask].copy_(F.normalize(self._scaling[gs_mask], p=2, dim=-1))
 
-            # CPF attribute regularization: gently drift opacity/colour toward the field prediction
-            # (off by default; weights are the small fraction moved toward the target each derivative step)
-            op_w = getattr(self, "cpf_opacity_drift_weight", 0.0)
-            if op_w > 0:
-                op_target = self.inverse_opacity_activation(torch.clamp(pred_opacity, 1e-4, 1.0 - 1e-4))
-                self._opacity[gs_mask].add_(op_w * (op_target - self._opacity[gs_mask]))
-            col_w = getattr(self, "cpf_color_drift_weight", 0.0)
-            if col_w > 0:
-                col_target = RGB2SH(torch.clamp(pred_color, 0.0, 1.0)).unsqueeze(1)
-                self._features_dc[gs_mask].add_(col_w * (col_target - self._features_dc[gs_mask]))
+            # # self._opacity[gs_mask].add_(self.inverse_opacity_activation(pred_opacity - gs_opacity))
+            # self._opacity[gs_mask].copy_(self.inverse_opacity_activation(pred_opacity))
+            # # NOTE: update the features
+            # color_diff = RGB2SH(pred_color)
+            # features_diff = torch.zeros((color_diff.shape[0], 3, (self.max_sh_degree + 1) ** 2)).float().cuda()
+            # features_diff[:, :3, 0] = color_diff
+            # features_diff[:, 3:, 1:] = 0.0
+            # # self._features_dc[gs_mask].add_(features_diff[:,:,0:1].transpose(1, 2))
+            # self._features_dc[gs_mask].copy_(features_diff[:,:,0:1].transpose(1, 2))
             if tb_writer is not None:
                 tb_writer.add_scalar("nn_l/partial_grad_min", grad_xyz.min(), iteration)
                 tb_writer.add_scalar("nn_l/partial_grad_max", grad_xyz.max(), iteration)
