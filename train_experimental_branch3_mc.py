@@ -288,6 +288,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         ############### NOTE: IMC ###############
         if iteration > 2450:
             gaussians.remove_nan_grad()
+        gaussians.apply_cpf_pull_grad()   # route the CPF pull through the optimizer (was a no-op manual drift)
+        if int(getattr(opt, "cpf_pull_obs_gate", 0)) or int(getattr(opt, "cpf_noise_obs_gate", 0)):
+            gaussians.add_obs(visibility_filter)
         guided_stats_active = (
             getattr(opt, "cpf_densify", False)
             and int(getattr(opt, "cpf_densify_guided_clone", 0)) != 0

@@ -389,6 +389,14 @@ class GaussianModel:
         self.max_num = training_args.cpf_max_points
         _drift_cap = getattr(training_args, "cpf_drift_max_points", 0)
         self.cpf_drift_max_points = _drift_cap if _drift_cap and _drift_cap > 0 else self.max_num
+        self.cpf_pull_weight = getattr(training_args, "cpf_pull_weight", 0.0)
+        self.cpf_pull_obs_gate = int(getattr(training_args, "cpf_pull_obs_gate", 0))
+        self.cpf_pull_persist = int(getattr(training_args, "cpf_pull_persist", 0))
+        self.cpf_field_sfm_anchor = int(getattr(training_args, "cpf_field_sfm_anchor", 0))
+        self.cpf_field_alpha_thresh = float(getattr(training_args, "cpf_field_alpha_thresh", 0.0))
+        self.cpf_noise_obs_gate = int(getattr(training_args, "cpf_noise_obs_gate", 0))  # focus CPF noise on under-observed Gaussians
+        self._cpf_pull_grad = None
+        self._obs_count = None
         self.cpf_max_refresh_views = training_args.cpf_max_refresh_views
         self.cpf_unique_every = max(1, training_args.cpf_unique_every)
         self.cpf_sfm_align_max_points = training_args.cpf_sfm_align_max_points
@@ -506,9 +514,24 @@ class GaussianModel:
             grad_scale = grad[2][gs_mask] * self.sigma_scaling
             grad_xyz = self._clamp_update_norm(grad_xyz, self.cpf_max_drift_norm)
 
-            self._xyz[gs_mask].add_(grad_xyz)
-            self._rotation[gs_mask].add_(grad_rot)
-            self._scaling[gs_mask].add_(grad_scale)
+            # NOTE: tensor[bool_mask].add_(...) is a no-op here (it writes a detached copy), so the
+            # manual CPF position "drift" never moved anything. Route the pull through the optimizer
+            # instead: accumulate the descent gradient of (1 - sigma) into _xyz.grad so Adam applies it
+            # (gradient-based, LR-scheduled, stable). Applied in the training loop after loss.backward().
+            pull_w = getattr(self, "cpf_pull_weight", 0.0)
+            if pull_w > 0:
+                pull = torch.zeros_like(self._xyz)
+                base = grad[0][gs_mask] * xyz_scaling   # d(1 - sigma)/d_xyz -> pull toward field surface
+                if self.cpf_pull_obs_gate and self._obs_count is not None and self._obs_count.shape[0] == self._xyz.shape[0]:
+                    obs = self._obs_count[gs_mask]
+                    m = obs.mean().clamp_min(1.0)
+                    base = base * (m / (obs + m)).unsqueeze(-1)   # pull under-observed Gaussians more; spare well-seen ones
+                pull[gs_mask] = base
+                self._cpf_pull_grad = pull_w * pull
+                if tb_writer is not None:
+                    tb_writer.add_scalar("nn_l/cpf_pull_grad_norm", self._cpf_pull_grad.norm().item(), iteration)
+            else:
+                self._cpf_pull_grad = None
             # self._scaling[gs_mask].copy_(F.normalize(self._scaling[gs_mask], p=2, dim=-1))
 
             # # self._opacity[gs_mask].add_(self.inverse_opacity_activation(pred_opacity - gs_opacity))
@@ -529,6 +552,14 @@ class GaussianModel:
         xyz_noise = torch.bmm(covariance.detach().clone(), pred_noise.unsqueeze(-1)).squeeze(-1)
         xyz_noise = xyz_noise * self.cpf_noise_weight
         xyz_noise = self._clamp_update_norm(xyz_noise, self.cpf_max_noise_norm)
+        # THESIS: the CPF's value is filling the supervision gap, which widens with view-angle.
+        # Focus the noise regularization on UNDER-observed Gaussians (few training views -> the
+        # floater-prone ones at large angles); spare well-observed ones (the data already constrains them).
+        # As the bias angle grows, more Gaussians are under-observed -> more get the noise -> margin grows.
+        if getattr(self, "cpf_noise_obs_gate", 0) and self._obs_count is not None and self._obs_count.shape[0] == self._xyz.shape[0]:
+            obs = self._obs_count[gs_mask]
+            m = obs.mean().clamp_min(1.0)
+            xyz_noise = xyz_noise * (m / (obs + m)).unsqueeze(-1)   # ~1 for under-observed, ->0 for well-observed
         noise_full = torch.zeros((self._xyz.shape[0], 3), device="cuda")
         noise_full[gs_mask] = xyz_noise
         return noise_full, gs_mask
@@ -861,7 +892,28 @@ class GaussianModel:
             if param is not None and param.grad is not None:
                 param.grad[torch.isnan(param.grad)] = 0.0
                 param.grad[torch.isinf(param.grad)] = 0.0
-        
+
+    def apply_cpf_pull_grad(self):
+        # Add the stored CPF pull gradient (descent of (1 - sigma) w.r.t. positions) into _xyz.grad,
+        # so the optimizer applies it together with the photometric gradient (LR-scheduled, stable).
+        g = getattr(self, "_cpf_pull_grad", None)
+        self._cpf_pull_grad = None
+        if g is None or g.shape[0] != self._xyz.shape[0]:
+            return
+        with torch.no_grad():
+            if getattr(self, "cpf_pull_persist", 0):
+                self._xyz.add_(-g)   # direct constant-step pull: persists late, independent of position_lr decay
+            elif self._xyz.grad is not None and g.shape == self._xyz.grad.shape:
+                self._xyz.grad.add_(g)   # optimizer-routed pull: LR-scheduled, fades late
+
+    def add_obs(self, visibility_filter):
+        # accumulate per-Gaussian observation count for the pull's observation gate
+        # (resets on size change from densification; the stable late-training window dominates)
+        n = self._xyz.shape[0]
+        if self._obs_count is None or self._obs_count.shape[0] != n:
+            self._obs_count = torch.zeros(n, device="cuda")
+        self._obs_count[visibility_filter] += 1.0
+
     def update_nnpts(self, all_views, pipe, bg, align=True):
         assert self.nn_type in ["singleview", "allviews"]
         assert self.bound_type in ["local", "global"]
@@ -873,12 +925,31 @@ class GaussianModel:
                 all_views = [all_views[i] for i in view_ids]
             self.aligned_depth_dict = {}
             self.nn_gt_pts = self.pointdepth(all_views, pipe, bg, align, debug=False, aligndepth=aligndepth)
+            if getattr(self, "cpf_field_sfm_anchor", 0):
+                sfm_pts = self._sfm_field_pts()   # independent SfM anchor (not self-rendered)
+                if sfm_pts is not None:
+                    self.nn_gt_pts = sfm_pts if self.nn_gt_pts is None else torch.cat([self.nn_gt_pts, sfm_pts], dim=0)
             if self.nn_gt_pts is None:
                 return
         if self.bound_type == "local":
             self.net.find_boundary(self.nn_gt_pts)
         else:
             self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
+
+    def _sfm_field_pts(self, max_points=100000):
+        # Independent geometry anchor for the CPF field: the SfM (COLMAP) points, which are NOT
+        # derived from the current rendering. Colour/normal are placeholders (the pull uses only sigma).
+        sfm = getattr(self, "_sfm_xyz", None)
+        if sfm is None or sfm.shape[0] == 0:
+            return None
+        pts = sfm.detach()
+        if pts.shape[0] > max_points:
+            idx = torch.randperm(pts.shape[0], device=pts.device)[:max_points]
+            pts = pts[idx]
+        color = torch.full((pts.shape[0], 3), 0.5, device=pts.device)
+        normal = torch.zeros((pts.shape[0], 3), device=pts.device)
+        normal[:, 2] = 1.0
+        return torch.cat([pts, color, normal], dim=1)
 
     def pointdepth(self, all_views, pipe, bg, align=True, debug=True, aligndepth=False):
         if debug:
@@ -998,10 +1069,23 @@ class GaussianModel:
         colors = gt.reshape(3, -1).t()
         normals = mono_normal.reshape(3, -1).t()
         # get valid points
+        # confidence filter: drop low-alpha (uncertain / background / floater) pixels so the CPF
+        # field is the confident *current* surface, not every projected pixel. align path keeps
+        # all pixels by default, so this is the only surface filter it gets.
+        thr = getattr(self, "cpf_field_alpha_thresh", 0.0)
+        amask = None
+        if thr > 0:
+            alpha = F.interpolate(render_pkg_gsplat["alpha"].unsqueeze(0), scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
+            amask = alpha.reshape(-1) > thr
         if not align:
-            pts = pts[mask]
-            colors = colors[mask]
-            normals = normals[mask]
+            sel = mask if amask is None else (mask & amask)
+            pts = pts[sel]
+            colors = colors[sel]
+            normals = normals[sel]
+        elif amask is not None:
+            pts = pts[amask]
+            colors = colors[amask]
+            normals = normals[amask]
         pt_clr = torch.cat([pts, colors, normals], dim=1)
         return pt_clr
 

@@ -138,6 +138,12 @@ class OptimizationParams(ParamGroup):
         self.cpf_prior_source = "render" # "render" or "sfm_depth"
         self.cpf_max_points = 100000
         self.cpf_drift_max_points = 0  # 0 -> same as cpf_max_points; large -> apply CPF drift to all Gaussians
+        self.cpf_pull_weight = 0.0  # >0 -> route CPF pull (toward field surface) through the optimizer
+        self.cpf_pull_obs_gate = 0  # 1 -> weight the pull toward under-observed Gaussians
+        self.cpf_pull_persist = 0   # 1 -> apply pull directly (constant step, persists late) vs optimizer-routed
+        self.cpf_field_sfm_anchor = 0  # 1 -> add independent SfM points to the CPF field (not self-rendered)
+        self.cpf_field_alpha_thresh = 0.0  # >0 -> drop field pixels with accumulated alpha below this (confident surface only)
+        self.cpf_noise_obs_gate = 0  # 1 -> focus CPF noise on under-observed Gaussians (thesis: amplify supervision-gap reg -> margin grows with angle)
         self.cpf_max_refresh_views = 0
         self.cpf_unique_every = 1
         self.cpf_sfm_align_max_points = 20000

@@ -43,6 +43,12 @@ CPF_RELIABILITY_EMA_DECAY=${CPF_RELIABILITY_EMA_DECAY:-0.95}
 CPF_PRIOR_SOURCE=${CPF_PRIOR_SOURCE:-sfm_depth}
 CPF_MAX_POINTS=${CPF_MAX_POINTS:-25000}
 CPF_DRIFT_MAX_POINTS=${CPF_DRIFT_MAX_POINTS:-0}
+CPF_PULL_WEIGHT=${CPF_PULL_WEIGHT:-0}
+CPF_PULL_OBS_GATE=${CPF_PULL_OBS_GATE:-0}
+CPF_PULL_PERSIST=${CPF_PULL_PERSIST:-0}
+CPF_FIELD_SFM_ANCHOR=${CPF_FIELD_SFM_ANCHOR:-0}
+CPF_FIELD_ALPHA_THRESH=${CPF_FIELD_ALPHA_THRESH:-0}
+CPF_NOISE_OBS_GATE=${CPF_NOISE_OBS_GATE:-0}
 CPF_MAX_REFRESH_VIEWS=${CPF_MAX_REFRESH_VIEWS:-16}
 CPF_UNIQUE_EVERY=${CPF_UNIQUE_EVERY:-8}
 CPF_TRAIN_INTERVAL=${CPF_TRAIN_INTERVAL:-8}
@@ -120,13 +126,21 @@ if [[ "${ANTIALIASING}" == "1" ]]; then
     PIPELINE_ARGS+=(--antialiasing)
 fi
 
+# Test split: a train/test directory pair (TEST_PATH, e.g. aerial-ground) takes precedence
+# over a test_selection file (TEST_SELECTION, e.g. angle / discontinuous splits).
+if [[ -n "${TEST_PATH:-}" ]]; then
+    SPLIT_ARGS=(--test_path "${TEST_PATH}")
+else
+    SPLIT_ARGS=(--test_selection_path "${TEST_SELECTION}")
+fi
+
 "${CONDA_EXE}" run -n "${ENV_NAME}" python train_experimental_branch3_mc.py \
     --source_path "${SOURCE_PATH}" \
-    --test_selection_path "${TEST_SELECTION}" \
+    "${SPLIT_ARGS[@]}" \
     --model_path "${MODEL_PATH}" \
     "${LOAD_ARGS[@]}" \
-    --images images_4 \
-    --depths dav2_4 \
+    --images "${IMAGES:-images_4}" \
+    --depths "${DEPTHS:-dav2_4}" \
     --resolution 1 \
     --data_device cpu \
     --init_type sfm \
@@ -164,6 +178,12 @@ fi
     --cpf_unique_every "${CPF_UNIQUE_EVERY}" \
     --cpf_max_points "${CPF_MAX_POINTS}" \
     --cpf_drift_max_points "${CPF_DRIFT_MAX_POINTS}" \
+    --cpf_pull_weight "${CPF_PULL_WEIGHT}" \
+    --cpf_pull_obs_gate "${CPF_PULL_OBS_GATE}" \
+    --cpf_pull_persist "${CPF_PULL_PERSIST}" \
+    --cpf_field_sfm_anchor "${CPF_FIELD_SFM_ANCHOR}" \
+    --cpf_field_alpha_thresh "${CPF_FIELD_ALPHA_THRESH}" \
+    --cpf_noise_obs_gate "${CPF_NOISE_OBS_GATE}" \
     --cpf_sfm_align_max_points "${CPF_SFM_ALIGN_MAX_POINTS}" \
     --cpf_train_interval "${CPF_TRAIN_INTERVAL}" \
     --cpf_derivative_interval "${CPF_DERIVATIVE_INTERVAL}" \

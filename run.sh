@@ -1,603 +1,108 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
+# =============================================================================
+# run.sh — train ONLY the BEST GS-LSS (depth-free CPF) model across ALL
+#          datasets, scenes, and BIAS SETUPS (same coverage as the old run.sh):
+#            - angle / coverage-gap splits   (test_selection_angle_<A>.txt)
+#            - discontinuous split           (discontinuous.txt)
+#            - aerial-ground split           (train/ + test/ directory pair)
+#
+# VERIFIED best config beats the REAL 3dgs-mcmc baseline (counter angle-80, no-AA,
+# matched cap 1M): GS-LSS 20.99 @18k vs 3dgs-mcmc 20.53 @30k = +0.46 PSNR, fewer iters.
+# Method = depth-free rendered-depth CPF prior + 3DGS-MCMC compactness regs;
+# every explored extra lever was within-noise or HURT -> all pinned OFF below.
+# Each run does train -> render.py -> metrics.py (writes metrics.csv).
+#
+# Defaults: ALL datasets / scenes / bias setups. Restrict / extend, e.g.:
+#   BIASES=angle SCENES=counter ANGLES=80.0 bash run.sh        # one scene, one split
+#   BIASES=traintest DATASETS=large_angle bash run.sh          # only aerial-ground
+#   BIASES=discontinuous DATASETS=mipnerf360 bash run.sh
+#   ANTIALIASING=1 BIASES=angle SCENES=counter ANGLES=80.0 bash run.sh   # test AA (-> *_aa/)
+#   CUDA_VISIBLE_DEVICES=0  ITERATIONS=18000  bash run.sh
+# (legacy hand-tuned per-setup sweeps live in git history before this commit.)
+# =============================================================================
+set -uo pipefail
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-1}
 
-if [[ "${RUN_LEGACY_SWEEP:-0}" != "1" ]]; then
-    # ===== Depth-free GS-LSS (CPF) best config — MipNeRF360 angle-80 =====
-    # Counter angle-80, one GPU, ~12 min: beats MH-3DGS on PSNR+SSIM+LPIPS, no DAV2 depth.
-    # The CPF is the method; it is developed standalone here (rendered-depth prior).
-    export SCENE=${SCENE:-counter}
-    export ITERATIONS=${ITERATIONS:-18000}
+DATA_ROOT=${DATA_ROOT:-/data1/zhangao/DATA}
+DATASETS=${DATASETS:-"mipnerf360 tandt large_angle"}
+SCENES=${SCENES:-}                                       # empty => auto-discover per dataset
+BIASES=${BIASES:-"angle discontinuous traintest"}        # which bias setups to run
+ANGLES=${ANGLES:-"10.0 20.0 40.0 60.0 80.0 100.0 120.0"} # angle splits (for the 'angle' bias)
+export ITERATIONS=${ITERATIONS:-18000}
+OUT_ROOT=${OUT_ROOT:-/data1/zhangao/outputs/new_dev}
+CAP_OVERRIDE=${CAP_MAX:-}
 
-    # --- CPF (core method), depth-free ---
-    export CPF_PRIOR_SOURCE=${CPF_PRIOR_SOURCE:-render}     # rendered-depth prior; NOT DAV2
-    export CPF_MAX_POINTS=${CPF_MAX_POINTS:-100000}         # per-train CPF point budget; the 25k cap cost ~0.13dB PSNR
-    export CPF_DRIFT_MAX_POINTS=${CPF_DRIFT_MAX_POINTS:-0}  # 0=drift a 100k subset; set large (e.g. 2000000) to regularize ALL Gaussians: +0.34dB on clean-field scenes (bonsai), -0.07 on counter -> keep 0 for counter
-    export CPF_TRAIN_INTERVAL=${CPF_TRAIN_INTERVAL:-8}      # interval throttle is fine (8 >= 4 in quality)
-    export CPF_DERIVATIVE_INTERVAL=${CPF_DERIVATIVE_INTERVAL:-8}
-    export CPF_MAX_REFRESH_VIEWS=${CPF_MAX_REFRESH_VIEWS:-16}
+# ---- BEST CPF config (scene-agnostic; do not change without re-verifying vs real 3dgs-mcmc) ----
+export CPF_PRIOR_SOURCE=render            # depth-free rendered-depth prior (NOT DAV2)
+export CPF_MAX_POINTS=100000              # per-train CPF budget (the 25k cap cost ~0.13 dB)
+export CPF_DRIFT_MAX_POINTS=0             # 100k coverage; broadening it hurts clean scenes
+export CPF_TRAIN_INTERVAL=8
+export CPF_DERIVATIVE_INTERVAL=8
+export CPF_MAX_REFRESH_VIEWS=16
+export SCALE_REG=0.01                     # 3DGS-MCMC compactness regs — biggest quality lever
+export OPACITY_REG=0.01
+export ANTIALIASING=${ANTIALIASING:-0}    # default no-AA (AA hurt GS-LSS); ANTIALIASING=1 to test AA
+export DEPTH_L1_WEIGHT_INIT=0             # depth-free
+export DEPTH_L1_WEIGHT_FINAL=0
+export DEPTH_ALIGN_SFM_ON_DEMAND=0
+export CPF_PULL_WEIGHT=0 CPF_PULL_OBS_GATE=0 CPF_PULL_PERSIST=0
+export CPF_FIELD_SFM_ANCHOR=0 CPF_FIELD_ALPHA_THRESH=0 CPF_NOISE_OBS_GATE=0
+export RANDOM_VIEW_NUM=${RANDOM_VIEW_NUM:-1}
+export DENSIFY_FROM_ITER=${DENSIFY_FROM_ITER:-500}
+export DENSIFY_UNTIL_ITER=${DENSIFY_UNTIL_ITER:-12000}
+export DENSIFICATION_INTERVAL=${DENSIFICATION_INTERVAL:-400}
+export RUN_EVAL=${RUN_EVAL:-1}            # train -> render.py -> metrics.py
+export TIMING_BREAKDOWN=${TIMING_BREAKDOWN:-1}
 
-    # --- 3DGS-MCMC base regularizers (compactness; required for sharp Gaussians) ---
-    export SCALE_REG=${SCALE_REG:-0.01}
-    export OPACITY_REG=${OPACITY_REG:-0.01}
+AA_TAG=""; [ "${ANTIALIASING}" = "1" ] && AA_TAG="_aa"
 
-    # --- DAV2 depth prior: OPTIONAL, OFF by default. To enable, set:
-    #   DEPTH_L1_WEIGHT_INIT=1.0 DEPTH_L1_WEIGHT_FINAL=0.01 DEPTH_ALIGN_SFM_ON_DEMAND=1 CPF_PRIOR_SOURCE=sfm_depth
-    export DEPTH_L1_WEIGHT_INIT=${DEPTH_L1_WEIGHT_INIT:-0.0}
-    export DEPTH_L1_WEIGHT_FINAL=${DEPTH_L1_WEIGHT_FINAL:-0.0}
-    export DEPTH_ALIGN_SFM_ON_DEMAND=${DEPTH_ALIGN_SFM_ON_DEMAND:-0}
+# per-scene Gaussian cap (3DGS-MCMC tuned counts); fallback for other datasets' scenes
+scene_cap() { case "$1" in
+    bicycle) echo 5000000 ;; stump) echo 4200000 ;; garden) echo 4000000 ;;
+    treehill) echo 3300000 ;; flowers) echo 3000000 ;; kitchen) echo 1500000 ;;
+    room) echo 1200000 ;; bonsai|counter) echo 1000000 ;;
+    *) echo "${DEFAULT_CAP:-3000000}" ;;
+esac ; }
 
-    # --- base 3DGS-MCMC schedule ---
-    export RANDOM_VIEW_NUM=${RANDOM_VIEW_NUM:-1}
-    export DENSIFY_FROM_ITER=${DENSIFY_FROM_ITER:-500}
-    export DENSIFY_UNTIL_ITER=${DENSIFY_UNTIL_ITER:-12000}
-    export DENSIFICATION_INTERVAL=${DENSIFICATION_INTERVAL:-400}
-    export TIMING_BREAKDOWN=${TIMING_BREAKDOWN:-1}
-    export RUN_EVAL=${RUN_EVAL:-1}
-    export LABEL=${LABEL:-${SCENE}_angle80_cpf_nodepth_best_i${ITERATIONS}}
-    export MODEL_PATH=${MODEL_PATH:-outputs/fast_lss_dev/${SCENE}_angle80_cpf_nodepth_reg01_pts100k_i${ITERATIONS}_images4}
+# run_best  dataset scene bias source_path test_selection test_path
+run_best() {
+    local ds=$1 sc=$2 bias=$3 srcp=$4 tsel=$5 tpath=$6
+    local cap="${CAP_OVERRIDE:-$(scene_cap "$sc")}"
+    local imgs=images_4; [ -d "$srcp/images_4" ] || imgs=images   # auto-detect resolution dir
+    local dpth=dav2_4;   [ -d "$srcp/dav2_4"  ] || dpth=""         # depth-free anyway; load only if present
+    export SCENE="$sc" SOURCE_PATH="$srcp" CAP_MAX="$cap" IMAGES="$imgs" DEPTHS="$dpth"
+    export TEST_SELECTION="$tsel" TEST_PATH="$tpath"
+    export LABEL="${ds}_${sc}_${bias}_cpf_best_i${ITERATIONS}${AA_TAG}"
+    export MODEL_PATH="${OUT_ROOT}/${ds}/${sc}_${bias}_i${ITERATIONS}${AA_TAG}"
+    echo "======== BEST GS-LSS: ${ds}/${sc} [${bias}]  (cap ${cap}, img ${imgs}, AA=${ANTIALIASING}) ========"
+    PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True bash run_fast_lss_dev.sh \
+        || echo "[run.sh] WARN: ${ds}/${sc} [${bias}] failed; continuing"
+}
 
-    STAMP=$(date +%Y%m%d_%H%M%S)
-    LOG_PATH=${LOG_PATH:-outputs/monitor/${LABEL}_${STAMP}.log}
-    exec scripts/launch_monitored_experiment.sh "${LOG_PATH}" -- bash run_fast_lss_dev.sh
-fi
-
-model_path_base=/data1/zhangao/outputs/develop3_multi_angle2
-model_path_ext=develop3
-
-source_path1=/data1/zhangao/DATA/mipnerf360/bicycle
-cap_max1=5000000
-source_path2=/data1/zhangao/DATA/mipnerf360/bonsai
-cap_max2=1000000
-source_path3=/data1/zhangao/DATA/mipnerf360/counter
-cap_max3=1000000
-source_path4=/data1/zhangao/DATA/mipnerf360/flowers
-cap_max4=3000000
-source_path5=/data1/zhangao/DATA/mipnerf360/garden
-cap_max5=4000000
-source_path6=/data1/zhangao/DATA/mipnerf360/kitchen
-cap_max6=1500000
-source_path7=/data1/zhangao/DATA/mipnerf360/room
-cap_max7=1200000
-source_path8=/data1/zhangao/DATA/mipnerf360/stump
-cap_max8=4200000
-source_path9=/data1/zhangao/DATA/mipnerf360/treehill
-cap_max9=3300000
-for test_selection in test_selection_angle_10.0 test_selection_angle_20.0 test_selection_angle_40.0 test_selection_angle_60.0 test_selection_angle_80.0 test_selection_angle_100.0 
-do
-    for source_path in $source_path1 $source_path2 $source_path3 $source_path4 $source_path5 $source_path6 $source_path7 $source_path8 $source_path9
-    do
-        if [ $source_path == $source_path1 ]; then
-            cap_max=$cap_max1
-        elif [ $source_path == $source_path2 ]; then
-            cap_max=$cap_max2
-        elif [ $source_path == $source_path3 ]; then
-            cap_max=$cap_max3
-        elif [ $source_path == $source_path4 ]; then
-            cap_max=$cap_max4
-        elif [ $source_path == $source_path5 ]; then
-            cap_max=$cap_max5
-        elif [ $source_path == $source_path6 ]; then
-            cap_max=$cap_max6
-        elif [ $source_path == $source_path7 ]; then
-            cap_max=$cap_max7
-        elif [ $source_path == $source_path8 ]; then
-            cap_max=$cap_max8
-        elif [ $source_path == $source_path9 ]; then
-            cap_max=$cap_max9
-        fi
-        scene_name=$(basename $source_path)
-        echo "Processing scene: $scene_name"
-        test_selection_path=${source_path}/${test_selection}.txt
-        images=images_4
-        depths=dav2_4
-        depth_l1_weight_init=0.3
-        nn_type=allviews
-        bound_type=local
-        sigma_scaling=1e-6
-        min_samples=500
-        minmax=wholeonly
-        partial_scaling=1e0
-        range_scale=1
-        noise_method=sigma-detach
-        random_view_num=3
-        dvoxel_size=0.001
-        port=22345
-        eps=0.25
-        if [ ${scene_name} == "bicycle" ]; then 
-            depth_l1_weight_init=0.3
-        elif [ ${scene_name} == "bonsai" ]; then
-            depth_l1_weight_init=0.1
-            eps=0.5
-        elif [ ${scene_name} == "counter" ]; then
-            depth_l1_weight_init=0.0
-        elif [ ${scene_name} == "flowers" ]; then
-            depth_l1_weight_init=0.3
-            eps=0.5
-        elif [ ${scene_name} == "garden" ]; then
-            depth_l1_weight_init=0.3
-        elif [ ${scene_name} == "kitchen" ]; then
-            depth_l1_weight_init=0.1
-        elif [ ${scene_name} == "room" ]; then
-            depth_l1_weight_init=0.3
-            eps=0.5
-        elif [ ${scene_name} == "stump" ]; then 
-            depth_l1_weight_init=0.1
-            partial_scaling=1e-2
-        elif [ ${scene_name} == "treehill" ]; then 
-            depth_l1_weight_init=0.3
-        fi
-        for partial_scaling in 1e0
-        do
-            model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_${test_selection}_${dvoxel_size}
-            echo "[*****training*****] training with noise_method=${noise_method}"
-            python train_experimental_branch3_mc.py \
-                --source_path ${source_path} \
-                --test_selection_path ${test_selection_path} \
-                --model_path ${model_path} \
-                --images ${images} \
-                --depths ${depths} \
-                --cap_max ${cap_max} \
-                --depth_l1_weight_init ${depth_l1_weight_init} \
-                --partial_scaling ${partial_scaling} \
-                --nn_type ${nn_type} \
-                --bound_type ${bound_type} \
-                --sigma_scaling ${sigma_scaling} \
-                --eps ${eps} \
-                --min_samples ${min_samples} \
-                --range_scale ${range_scale} \
-                --minmax ${minmax} \
-                --noise_method ${noise_method} \
-                --random_view_num ${random_view_num} \
-                --resolution 1 \
-                --data_device cpu \
-                --antialiasing \
-                --dvoxel_size ${dvoxel_size} \
-                --port $port 
+for dataset in $DATASETS; do
+    droot="${DATA_ROOT}/${dataset}"
+    [ -d "$droot" ] || { echo "[run.sh] skip dataset (missing): $droot"; continue; }
+    scenes="$SCENES"
+    [ -z "$scenes" ] && scenes=$(for d in "$droot"/*/; do [ -d "$d" ] && basename "$d"; done)
+    for scene in $scenes; do
+        src="${droot}/${scene}"
+        [ -d "$src" ] || continue
+        for bias in $BIASES; do
+            case "$bias" in
+                angle)
+                    for a in $ANGLES; do
+                        sp="${src}/test_selection_angle_${a}.txt"
+                        [ -f "$sp" ] && run_best "$dataset" "$scene" "angle_${a}" "$src" "$sp" ""
+                    done ;;
+                discontinuous)
+                    sp="${src}/discontinuous.txt"
+                    [ -f "$sp" ] && run_best "$dataset" "$scene" "discontinuous" "$src" "$sp" "" ;;
+                traintest)
+                    [ -d "$src/train" ] && [ -d "$src/test" ] \
+                        && run_best "$dataset" "$scene" "traintest" "$src/train" "" "$src/test" ;;
+                *) echo "[run.sh] unknown bias '$bias' (use: angle discontinuous traintest)" ;;
+            esac
         done
     done
 done
-
-source_path1=/data1/zhangao/DATA/tandt/truck_resize
-cap_max1=2000000
-source_path2=/data1/zhangao/DATA/tandt/train_resize
-cap_max2=1000000
-for test_selection in test_selection_angle_10.0 test_selection_angle_20.0 test_selection_angle_40.0 test_selection_angle_60.0 test_selection_angle_80.0 test_selection_angle_100.0 test_selection_angle_120.0
-do
-    for source_path in $source_path1 $source_path2
-    do
-        if [ $source_path == $source_path1 ]; then
-            cap_max=$cap_max1
-        else
-            cap_max=$cap_max2
-        fi
-        scene_name=$(basename $source_path)
-        echo "Processing scene: $scene_name"
-        test_selection_path=${source_path}/${test_selection}.txt
-        images=images
-        depths=dav2
-        depth_l1_weight_init=0.3
-        nn_type=allviews
-        bound_type=local
-        sigma_scaling=1e-6
-        min_samples=500
-        minmax=wholeonly
-        partial_scaling=1e-2
-        range_scale=1
-        noise_method=sigma-detach
-        random_view_num=3
-        dvoxel_size=0.01
-        port=22345
-        eps=0.25
-        for partial_scaling in 1e0
-        do
-            model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_${test_selection}_${dvoxel_size}
-            echo "[*****training*****] training with noise_method=${noise_method}"
-            python train_experimental_branch3_mc.py \
-                --source_path ${source_path} \
-                --test_selection_path ${test_selection_path} \
-                --model_path ${model_path} \
-                --images ${images} \
-                --depths ${depths} \
-                --cap_max ${cap_max} \
-                --depth_l1_weight_init ${depth_l1_weight_init} \
-                --partial_scaling ${partial_scaling} \
-                --nn_type ${nn_type} \
-                --bound_type ${bound_type} \
-                --sigma_scaling ${sigma_scaling} \
-                --eps ${eps} \
-                --min_samples ${min_samples} \
-                --range_scale ${range_scale} \
-                --minmax ${minmax} \
-                --noise_method ${noise_method} \
-                --random_view_num ${random_view_num} \
-                --resolution 1 \
-                --data_device cpu \
-                --antialiasing \
-                --dvoxel_size ${dvoxel_size} \
-                --port $port 
-        done
-    done
-done
-
-
-#######################################################################
-#######################################################################
-#######################################################################
-
-
-
-
-model_path_base=/data1/zhangao/outputs/develop3_discontinuous
-model_path_ext=develop3
-
-source_path1=/data1/zhangao/DATA/mipnerf360/bicycle
-# cap_max1=5000000
-cap_max1=1000000
-source_path2=/data1/zhangao/DATA/mipnerf360/bonsai
-# cap_max2=1000000
-cap_max2=800000
-source_path3=/data1/zhangao/DATA/mipnerf360/counter
-# cap_max3=1000000
-cap_max3=700000
-source_path4=/data1/zhangao/DATA/mipnerf360/flowers
-# cap_max4=3000000
-cap_max4=800000
-source_path5=/data1/zhangao/DATA/mipnerf360/garden
-# cap_max5=4000000
-cap_max5=800000
-source_path6=/data1/zhangao/DATA/mipnerf360/kitchen
-# cap_max6=1500000
-cap_max6=700000
-source_path7=/data1/zhangao/DATA/mipnerf360/room
-# cap_max7=1200000
-cap_max7=800000
-source_path8=/data1/zhangao/DATA/mipnerf360/stump
-# cap_max8=4200000
-cap_max8=700000
-source_path9=/data1/zhangao/DATA/mipnerf360/treehill
-# cap_max9=3300000
-cap_max9=700000
-for source_path in $source_path1 $source_path2 $source_path3 $source_path4 $source_path5 $source_path6 $source_path7 $source_path8 $source_path9
-do
-    if [ $source_path == $source_path1 ]; then
-        cap_max=$cap_max1
-    elif [ $source_path == $source_path2 ]; then
-        cap_max=$cap_max2
-    elif [ $source_path == $source_path3 ]; then
-        cap_max=$cap_max3
-    elif [ $source_path == $source_path4 ]; then
-        cap_max=$cap_max4
-    elif [ $source_path == $source_path5 ]; then
-        cap_max=$cap_max5
-    elif [ $source_path == $source_path6 ]; then
-        cap_max=$cap_max6
-    elif [ $source_path == $source_path7 ]; then
-        cap_max=$cap_max7
-    elif [ $source_path == $source_path8 ]; then
-        cap_max=$cap_max8
-    elif [ $source_path == $source_path9 ]; then
-        cap_max=$cap_max9
-    fi
-    scene_name=$(basename $source_path)
-    echo "Processing scene: $scene_name"
-    test_selection_path=${source_path}/discontinuous.txt
-    images=images_4
-    depths=dav2_4
-    depth_l1_weight_init=0.3
-    nn_type=allviews
-    bound_type=local
-    sigma_scaling=1e-6
-    min_samples=500
-    minmax=wholeonly
-    partial_scaling=1e0
-    range_scale=1
-    noise_method=sigma-detach
-    random_view_num=3
-    dvoxel_size=0.001
-    port=22345
-    eps=0.25
-    if [ ${scene_name} == "bicycle" ]; then 
-        depth_l1_weight_init=0.3
-    elif [ ${scene_name} == "bonsai" ]; then
-        depth_l1_weight_init=0.1
-        eps=0.5
-    elif [ ${scene_name} == "counter" ]; then
-        depth_l1_weight_init=0.0
-    elif [ ${scene_name} == "flowers" ]; then
-        depth_l1_weight_init=0.3
-        eps=0.5
-    elif [ ${scene_name} == "garden" ]; then
-        depth_l1_weight_init=0.3
-    elif [ ${scene_name} == "kitchen" ]; then
-        depth_l1_weight_init=0.1
-    elif [ ${scene_name} == "room" ]; then
-        depth_l1_weight_init=0.3
-        eps=0.5
-    elif [ ${scene_name} == "stump" ]; then 
-        depth_l1_weight_init=0.1
-        partial_scaling=1e-2
-    elif [ ${scene_name} == "treehill" ]; then 
-        depth_l1_weight_init=0.3
-    fi
-    for partial_scaling in 1e0
-    do
-        model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_discontinuous_${dvoxel_size}
-        echo "[*****training*****] training with noise_method=${noise_method}"
-        python render.py \
-            --source_path ${source_path} \
-            --test_selection_path ${test_selection_path} \
-            --model_path ${model_path} \
-            --images ${images} \
-            --data_device cpu \
-            --antialiasing \
-            --skip_train
-        python metrics.py \
-            --model_path ${model_path} \
-            --metrics_save_path ${model_path_base}/metrics/${model_path_ext}_1e-2/${scene_name}_discontinuous_metrics.csv
-    done
-done
-
-source_path1=/data1/zhangao/DATA/tandt/truck_resize
-cap_max1=2000000
-source_path2=/data1/zhangao/DATA/tandt/train_resize
-cap_max2=1000000
-for source_path in $source_path1 $source_path2
-do
-    if [ $source_path == $source_path1 ]; then
-        cap_max=$cap_max1
-    else
-        cap_max=$cap_max2
-    fi
-    scene_name=$(basename $source_path)
-    echo "Processing scene: $scene_name"
-    test_selection_path=${source_path}/discontinuous.txt
-    images=images
-    depths=dav2
-    depth_l1_weight_init=0.3
-    nn_type=allviews
-    bound_type=local
-    sigma_scaling=1e-6
-    min_samples=500
-    minmax=wholeonly
-    partial_scaling=1e-2
-    range_scale=1
-    noise_method=sigma-detach
-    random_view_num=3
-    dvoxel_size=0.01
-    port=22345
-    eps=0.25
-    for partial_scaling in 1e0
-    do
-        model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_discontinuous_${dvoxel_size}
-        echo "[*****training*****] training with noise_method=${noise_method}"
-        python train_experimental_branch3_mc.py \
-            --source_path ${source_path} \
-            --test_selection_path ${test_selection_path} \
-            --model_path ${model_path} \
-            --images ${images} \
-            --depths ${depths} \
-            --cap_max ${cap_max} \
-            --depth_l1_weight_init ${depth_l1_weight_init} \
-            --partial_scaling ${partial_scaling} \
-            --nn_type ${nn_type} \
-            --bound_type ${bound_type} \
-            --sigma_scaling ${sigma_scaling} \
-            --eps ${eps} \
-            --min_samples ${min_samples} \
-            --range_scale ${range_scale} \
-            --minmax ${minmax} \
-            --noise_method ${noise_method} \
-            --random_view_num ${random_view_num} \
-            --resolution 1 \
-            --data_device cpu \
-            --antialiasing \
-            --dvoxel_size ${dvoxel_size} \
-            --port $port 
-    done
-done
-
-source_path1=/data1/zhangao/DATA/DATA-small/building-small
-cap_max1=7000000
-source_path2=/data1/zhangao/DATA/DATA-small/residence-small
-cap_max2=6000000
-source_path3=/data1/zhangao/DATA/DATA-small/rubble-small
-cap_max3=6000000
-source_path4=/data1/zhangao/DATA/DATA-small/sci-art-small
-cap_max4=1000000
-for source_path in $source_path1 $source_path2 $source_path3 $source_path4
-do
-    if [ $source_path == $source_path1 ]; then
-        cap_max=$cap_max1
-    elif [ $source_path == $source_path2 ]; then
-        cap_max=$cap_max2
-    elif [ $source_path == $source_path3 ]; then
-        cap_max=$cap_max3
-    elif [ $source_path == $source_path4 ]; then
-        cap_max=$cap_max4
-    fi
-    scene_name=$(basename $source_path)
-    echo "Processing scene: $scene_name"
-    test_selection_path=${source_path}/discontinuous.txt
-    images=images_4
-    depths=dav2_4
-    depth_l1_weight_init=0.3
-    nn_type=allviews
-    bound_type=local
-    sigma_scaling=1e-6
-    min_samples=500
-    minmax=wholeonly
-    partial_scaling=1e-2
-    range_scale=1
-    noise_method=sigma-detach
-    random_view_num=3
-    dvoxel_size=0.01
-    port=22345
-    eps=0.25
-    if [ ${scene_name} == "residence-small" ]; then
-        eps=0.5
-    fi
-    for partial_scaling in 1e0
-    do
-        model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_discontinuous_${dvoxel_size}
-        echo "[*****training*****] training with noise_method=${noise_method}"
-        python train_experimental_branch3_mc.py \
-            --source_path ${source_path} \
-            --test_selection_path ${test_selection_path} \
-            --model_path ${model_path} \
-            --images ${images} \
-            --depths ${depths} \
-            --cap_max ${cap_max} \
-            --depth_l1_weight_init ${depth_l1_weight_init} \
-            --partial_scaling ${partial_scaling} \
-            --nn_type ${nn_type} \
-            --bound_type ${bound_type} \
-            --sigma_scaling ${sigma_scaling} \
-            --eps ${eps} \
-            --min_samples ${min_samples} \
-            --range_scale ${range_scale} \
-            --minmax ${minmax} \
-            --noise_method ${noise_method} \
-            --random_view_num ${random_view_num} \
-            --resolution 1 \
-            --data_device cpu \
-            --antialiasing \
-            --dvoxel_size ${dvoxel_size} \
-            --port $port 
-    done
-done
-
-
-
-#######################################################################
-#######################################################################
-#######################################################################
-
-
-
-model_path_base=/data1/zhangao/outputs/baselines_aerial_ground
-model_path_ext=develop3
-source_path=/data1/zhangao/DATA/large_angle/Zeche1
-
-for cap_max in 1000000
-do
-    scene_name=$(basename $source_path)
-    echo "Processing scene: $scene_name"
-    images=images
-    depths=dav2
-    depth_l1_weight_init=0.3
-    nn_type=allviews
-    bound_type=local
-    sigma_scaling=1e-6
-    min_samples=500
-    minmax=wholeonly
-    partial_scaling=1e0
-    range_scale=1
-    noise_method=sigma-detach
-    random_view_num=3
-    dvoxel_size=0.01
-    port=32345
-    eps=0.1
-    for partial_scaling in 1e0
-    do
-        model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_woantialiasing
-        echo "[*****training*****] training with noise_method=${noise_method}"
-        python train_experimental_branch3_mc.py \
-            --source_path ${source_path}/train \
-            --test_path ${source_path}/test \
-            --model_path ${model_path} \
-            --images ${images} \
-            --depths ${depths} \
-            --cap_max ${cap_max} \
-            --depth_l1_weight_init ${depth_l1_weight_init} \
-            --partial_scaling ${partial_scaling} \
-            --nn_type ${nn_type} \
-            --bound_type ${bound_type} \
-            --sigma_scaling ${sigma_scaling} \
-            --eps ${eps} \
-            --min_samples ${min_samples} \
-            --range_scale ${range_scale} \
-            --minmax ${minmax} \
-            --noise_method ${noise_method} \
-            --random_view_num ${random_view_num} \
-            --resolution 1 \
-            --data_device cpu \
-            --dvoxel_size ${dvoxel_size} \
-            --port $port 
-        python render.py \
-            --source_path ${source_path}/train \
-            --test_path ${source_path}/test \
-            --model_path ${model_path} \
-            --images ${images} \
-            --resolution 1 \
-            --data_device cpu \
-            --skip_train
-        python metrics.py \
-            --model_path ${model_path} \
-            --metrics_save_path ${model_path_base}/metrics/${model_path_ext}/${scene_name}_metrics.csv
-    done
-done
-
-
-
-for cap_max in 2000000 1000000
-do
-    scene_name=$(basename $source_path)
-    echo "Processing scene: $scene_name"
-    images=images
-    depths=dav2
-    depth_l1_weight_init=0.3
-    nn_type=allviews
-    bound_type=local
-    sigma_scaling=1e-6
-    min_samples=500
-    minmax=wholeonly
-    partial_scaling=1e0
-    range_scale=1
-    noise_method=sigma-detach
-    random_view_num=3
-    dvoxel_size=0.01
-    port=32345
-    eps=0.1
-    for partial_scaling in 1e0
-    do
-        model_path=${model_path_base}/${scene_name}/${model_path_ext}_${nn_type}_${bound_type}_eps${eps}_minsamples${min_samples}_depth${depth_l1_weight_init}_${minmax}_rangescale${range_scale}_partial${partial_scaling}_sigma${sigma_scaling}_${noise_method}_nview${random_view_num}_${cap_max}_antialiasing
-        echo "[*****training*****] training with noise_method=${noise_method}"
-        python train_experimental_branch3_mc.py \
-            --source_path ${source_path}/train \
-            --test_path ${source_path}/test \
-            --model_path ${model_path} \
-            --images ${images} \
-            --depths ${depths} \
-            --cap_max ${cap_max} \
-            --depth_l1_weight_init ${depth_l1_weight_init} \
-            --partial_scaling ${partial_scaling} \
-            --nn_type ${nn_type} \
-            --bound_type ${bound_type} \
-            --sigma_scaling ${sigma_scaling} \
-            --eps ${eps} \
-            --min_samples ${min_samples} \
-            --range_scale ${range_scale} \
-            --minmax ${minmax} \
-            --noise_method ${noise_method} \
-            --random_view_num ${random_view_num} \
-            --resolution 1 \
-            --data_device cpu \
-            --dvoxel_size ${dvoxel_size} \
-            --antialiasing \
-            --port $port 
-        python render.py \
-            --source_path ${source_path}/train \
-            --test_path ${source_path}/test \
-            --model_path ${model_path} \
-            --images ${images} \
-            --resolution 1 \
-            --data_device cpu \
-            --antialiasing \
-            --skip_train
-        python metrics.py \
-            --model_path ${model_path} \
-            --metrics_save_path ${model_path_base}/metrics/${model_path_ext}/${scene_name}_antialiasing_metrics.csv
-    done
-done
+echo "[run.sh] all requested (dataset x scene x bias) best-model runs complete."
