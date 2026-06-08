@@ -228,9 +228,9 @@ fi
     --cpf_max_drift_norm "${CPF_MAX_DRIFT_NORM}" \
     --cpf_max_noise_norm "${CPF_MAX_NOISE_NORM}" \
     --dds_ratio 2 \
-    --dvoxel_size 0.002 \
-    --eps 0.25 \
-    --min_samples 500 \
+    --dvoxel_size "${DVOXEL_SIZE:-0.002}" \
+    --eps "${EPS:-0.25}" \
+    --min_samples "${MIN_SAMPLES:-500}" \
     --test_iterations 99999999 \
     --save_iterations "${ITERATIONS}" \
     "${TIMING_ARGS[@]}" \

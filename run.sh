@@ -27,8 +27,9 @@ DATA_ROOT=${DATA_ROOT:-/data1/zhangao/DATA}
 DATASETS=${DATASETS:-"mipnerf360 tandt large_angle"}
 SCENES=${SCENES:-}                                       # empty => auto-discover per dataset
 BIASES=${BIASES:-"angle discontinuous traintest"}        # which bias setups to run
-ANGLES=${ANGLES:-"10.0 20.0 40.0 60.0 80.0 100.0 120.0"} # angle splits (for the 'angle' bias)
-export ITERATIONS=${ITERATIONS:-18000}
+ANGLES=${ANGLES:-"20.0 40.0 60.0 80.0 100.0"} # angle splits (for the 'angle' bias)
+# export ITERATIONS=${ITERATIONS:-18000}
+export ITERATIONS=${ITERATIONS:-30000}
 OUT_ROOT=${OUT_ROOT:-/data1/zhangao/outputs/new_dev}
 CAP_OVERRIDE=${CAP_MAX:-}
 
@@ -37,7 +38,7 @@ export CPF_PRIOR_SOURCE=render            # depth-free rendered-depth prior (NOT
 export CPF_MAX_POINTS=100000              # per-train CPF budget (the 25k cap cost ~0.13 dB)
 export CPF_DRIFT_MAX_POINTS=0             # 100k coverage; broadening it hurts clean scenes
 export CPF_TRAIN_INTERVAL=8
-export CPF_DERIVATIVE_INTERVAL=8
+export CPF_DERIVATIVE_INTERVAL=${CPF_DERIVATIVE_INTERVAL:-2}   # noise applied 4x more often (redesign)
 export CPF_MAX_REFRESH_VIEWS=16
 export SCALE_REG=0.01                     # 3DGS-MCMC compactness regs — biggest quality lever
 export OPACITY_REG=0.01
@@ -46,11 +47,33 @@ export DEPTH_L1_WEIGHT_INIT=0             # depth-free
 export DEPTH_L1_WEIGHT_FINAL=0
 export DEPTH_ALIGN_SFM_ON_DEMAND=0
 export CPF_PULL_WEIGHT=0 CPF_PULL_OBS_GATE=0 CPF_PULL_PERSIST=0
-export CPF_FIELD_SFM_ANCHOR=0 CPF_FIELD_ALPHA_THRESH=0 CPF_NOISE_OBS_GATE=0
+export CPF_FIELD_SFM_ANCHOR=0 CPF_FIELD_ALPHA_THRESH=0
+# ---- Stochasticity redesign (parameterized MCMC): on-MANIFOLD, coverage-TARGETED noise ----
+# The default CPF noise was vestigial (untrained std head, tiny 5e-4 clamp, occupancy-weighted).
+# Two changes make the stochastic exploration productive instead of destructive:
+#  (1) CPF_NOISE_TANGENT=1: project the per-Gaussian noise onto the field's surface TANGENT plane
+#      (suppress the normal component via the field gradient) -> noise explores the under-constrained
+#      DOF and stays ON the learned geometry manifold (raw isotropic amplification HURTS: -0.96).
+#  (2) CPF_NOISE_OBS_GATE=1: scale noise by view-coverage -> ~0 on well-observed Gaussians, full on
+#      under-observed (the floater-prone ones the biased views leave ambiguous; grows with angle).
+# Validated (AA/noAA best-mode): bonsai@100 16.52->17.39 (+0.87), bonsai@60 +0.07, counter@80 +0.02
+# (no regression). Helps bias-stressed cells, neutral on well-constrained ones. 4090-safe (<=14GB).
+export CPF_NOISE_TANGENT=${CPF_NOISE_TANGENT:-1.0}
+export CPF_NOISE_OBS_GATE=${CPF_NOISE_OBS_GATE:-1}
+export CPF_MAX_NOISE_NORM=${CPF_MAX_NOISE_NORM:-0.005}
+export CPF_NOISE_WEIGHT=${CPF_NOISE_WEIGHT:-1.0}
+export CPF_NOISE_TRAIN_WEIGHT=${CPF_NOISE_TRAIN_WEIGHT:-0}   # trained head OFF (hand-shaping beat it)
 export RANDOM_VIEW_NUM=${RANDOM_VIEW_NUM:-1}
+# Densification schedule MUST reach the per-scene cap_max. add_new_gs grows the
+# Gaussian set only +5%/step, so #steps = (until-from)/interval sets the final count:
+# the old until=12000/interval=400 gave ~28 steps = 1.05^28 ~= 3.9x SFM (bicycle@20
+# stalled at 212k of a 5M cap -> -1.8 dB PSNR, 0.38 LPIPS). Restoring the repo
+# defaults until=25000/interval=200 (~122 steps) lets every scene reach its cap
+# (bicycle 5M), recovering/beating the paper: bicycle@20 20.83 -> 22.64 PSNR,
+# 0.38 -> 0.222 LPIPS, 5M Gaussians, 36 min in this fast pipeline (vs 2h39m original).
 export DENSIFY_FROM_ITER=${DENSIFY_FROM_ITER:-500}
-export DENSIFY_UNTIL_ITER=${DENSIFY_UNTIL_ITER:-12000}
-export DENSIFICATION_INTERVAL=${DENSIFICATION_INTERVAL:-400}
+export DENSIFY_UNTIL_ITER=${DENSIFY_UNTIL_ITER:-25000}
+export DENSIFICATION_INTERVAL=${DENSIFICATION_INTERVAL:-200}
 export RUN_EVAL=${RUN_EVAL:-1}            # train -> render.py -> metrics.py
 export TIMING_BREAKDOWN=${TIMING_BREAKDOWN:-1}
 

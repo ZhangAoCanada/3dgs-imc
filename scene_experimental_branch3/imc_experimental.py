@@ -124,6 +124,7 @@ class NetworksA(nn.Module):
         # rgb_pred = torch.clamp(rgb_pred, -1, 1)
 
         # NOTE: generate noise with another network
+        pred2_std = None
         if attributes is not None:
             net_in2 = torch.cat([sigma_pred, attributes], dim=-1)
             pred2 = self.body2(net_in2)
@@ -156,10 +157,11 @@ class NetworksA(nn.Module):
 
 
         return {
-            'net_in': coords, 
+            'net_in': coords,
             'rgb': rgb_pred,
             'sigma': sigma_pred,
-            'xyz_noise': xyz_noise
+            'xyz_noise': xyz_noise,
+            'log_std': pred2_std,   # per-axis log-std of the learned proposal (None if attributes is None)
             }
 
     

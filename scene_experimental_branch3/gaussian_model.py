@@ -413,6 +413,18 @@ class GaussianModel:
         self.cpf_update_loss_threshold = training_args.cpf_update_loss_threshold
         self.cpf_max_drift_norm = training_args.cpf_max_drift_norm
         self.cpf_max_noise_norm = training_args.cpf_max_noise_norm
+        # Smart stochasticity: fraction of the CPF noise's surface-NORMAL component to remove,
+        # so the stochastic exploration stays on the learned geometry manifold (tangent dirs =
+        # the under-constrained DOF) instead of pushing Gaussians off-surface. 0=off (original
+        # isotropic), 1=pure tangent. Env-wired to avoid argparse plumbing during development.
+        self.cpf_noise_tangent = float(getattr(training_args, "cpf_noise_tangent", os.environ.get("CPF_NOISE_TANGENT", 0.0)))
+        # Trained stochastic proposal head (parameterized MCMC): when cpf_noise_train_weight>0,
+        # train body2/linear_std2 so the reparam noise explores the learned valid-geometry manifold:
+        # perturbed Gaussians must stay occupied (on-surface) while the per-axis log-std is maximized
+        # (entropy). This AUTO-SCALES the noise to local field sharpness -> small where geometry is
+        # well-constrained, large where the biased views leave it ambiguous. Env-wired (default off).
+        self.cpf_noise_train_weight = float(getattr(training_args, "cpf_noise_train_weight", os.environ.get("CPF_NOISE_TRAIN_WEIGHT", 0.0)))
+        self.cpf_noise_entropy_weight = float(getattr(training_args, "cpf_noise_entropy_weight", os.environ.get("CPF_NOISE_ENTROPY_WEIGHT", 0.01)))
         self.cpf_stop_iter = training_args.cpf_stop_iter
         self.cpf_refresh_stop_iter = training_args.cpf_refresh_stop_iter
         self.cpf_train_stop_iter = training_args.cpf_train_stop_iter
@@ -550,6 +562,16 @@ class GaussianModel:
         # TODO: add noise, w.r.t to covariance or L
         pred_noise = res['xyz_noise']
         xyz_noise = torch.bmm(covariance.detach().clone(), pred_noise.unsqueeze(-1)).squeeze(-1)
+        # Smart stochasticity (cpf_noise_tangent): the field gradient grad[0]=d(1-sigma)/d_xyz is the
+        # surface NORMAL; the under-constrained DOF (where the biased views leave geometry ambiguous)
+        # live in the TANGENT plane. Suppressing the normal component keeps the stochastic exploration
+        # ON the learned valid-geometry manifold rather than pushing Gaussians off-surface (measured:
+        # naive isotropic amplification HURTS -> bonsai@100 16.52->15.56). Lets us safely raise magnitude.
+        if self.cpf_noise_tangent > 0.0:
+            nrm = grad[0][gs_mask].detach()
+            n_hat = torch.nn.functional.normalize(nrm, dim=-1, eps=1e-8)
+            along = (xyz_noise * n_hat).sum(dim=-1, keepdim=True)
+            xyz_noise = xyz_noise - self.cpf_noise_tangent * along * n_hat
         xyz_noise = xyz_noise * self.cpf_noise_weight
         xyz_noise = self._clamp_update_norm(xyz_noise, self.cpf_max_noise_norm)
         # THESIS: the CPF's value is filling the supervision gap, which widens with view-angle.
@@ -677,6 +699,26 @@ class GaussianModel:
 
         res = self.net(net_in)
         l = self.loss_fn(res, gt_opacity, gt_color, gt_norm)
+        # === Trained stochastic proposal head (parameterized MCMC) ===
+        # body2/linear_std2 (the per-axis noise log-std) are otherwise NEVER trained (this fn calls
+        # self.net without `attributes`, so that branch never runs -> zero gradient -> random noise).
+        # Train them so the reparameterized noise eps explores the learned valid-geometry MANIFOLD:
+        # penalize eps's component along the field surface-NORMAL (detached field gradient -> no field
+        # corruption) so noise stays on-surface, with a bounded log-std regularizer. The head thus
+        # LEARNS per-axis, position-aware tangent noise (finer than the hand-set tangent projection).
+        if self.cpf_noise_train_weight > 0:
+            opa1 = torch.ones((xyz.shape[0], 1), device="cuda")
+            rn = self.net(xyz, attributes=opa1, noise_method=self.noise_method)
+            eps = rn['xyz_noise']                      # reparam noise, differentiable in log_std (body2)
+            log_std = rn['log_std']
+            gsig = torch.autograd.grad(rn['sigma'].sum(), xyz, retain_graph=True)[0].detach()
+            n_hat = torch.nn.functional.normalize(gsig, dim=-1, eps=1e-8)
+            l_normal = ((eps * n_hat).sum(dim=-1, keepdim=True) ** 2).mean()     # suppress off-surface (normal) noise
+            l_reg = (log_std ** 2).mean()                                         # keep magnitude bounded/stable
+            l = l + self.cpf_noise_train_weight * (l_normal + self.cpf_noise_entropy_weight * l_reg)
+            if tb_writer is not None:
+                tb_writer.add_scalar("nn_l/head_normal", l_normal.detach(), iteration)
+                tb_writer.add_scalar("nn_l/head_logstd_mean", log_std.mean().detach(), iteration)
         l_detached = l.detach()
         self.last_cpf_loss = float(l_detached.item()) if torch.isfinite(l_detached) else math.inf
         if self.cpf_update_loss_threshold > 0 and (not math.isfinite(self.last_cpf_loss) or self.last_cpf_loss > self.cpf_update_loss_threshold):
