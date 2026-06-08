@@ -8,7 +8,8 @@ if [[ "${SKIP_UVM_PREFLIGHT:-0}" != "1" ]]; then
     python3 scripts/check_nvidia_uvm_state.py
 fi
 
-CONDA_EXE=${CONDA_EXE:-/data1/hewenxuan/miniconda3/bin/conda}
+# Portable: prefer conda on PATH (override with CONDA_EXE=...); fall back to the dev box path.
+CONDA_EXE=${CONDA_EXE:-$(command -v conda 2>/dev/null || echo /data1/hewenxuan/miniconda3/bin/conda)}
 ENV_NAME=${ENV_NAME:-3dgs-imc}
 
 SCENE=${SCENE:-counter}

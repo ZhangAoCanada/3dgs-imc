@@ -23,15 +23,28 @@
 set -uo pipefail
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-1}
 
+# Repo dir: portable defaults resolve under here regardless of the caller's cwd.
+REPO_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+# ---- Configurable roots (override via env / command line) ----
+#   DATA_ROOT     : dataset root, contains <dataset>/<scene>/...   (point this at your data)
+#   OUT_ROOT      : full training outputs (models + renders) — heavy; can be a scratch disk
+#   SWEEP_RESULTS : light metrics-only copy of every run, collected for easy transfer
+# e.g.  DATA_ROOT=/path/to/DATA OUT_ROOT=/scratch/gslss_models bash run.sh
 DATA_ROOT=${DATA_ROOT:-/data1/zhangao/DATA}
+OUT_ROOT=${OUT_ROOT:-${REPO_DIR}/outputs/sweep_models}
+SWEEP_RESULTS=${SWEEP_RESULTS:-${REPO_DIR}/outputs/sweep_results}
+
 DATASETS=${DATASETS:-"mipnerf360 tandt large_angle"}
 SCENES=${SCENES:-}                                       # empty => auto-discover per dataset
 BIASES=${BIASES:-"angle discontinuous traintest"}        # which bias setups to run
 ANGLES=${ANGLES:-"20.0 40.0 60.0 80.0 100.0"} # angle splits (for the 'angle' bias)
-# export ITERATIONS=${ITERATIONS:-18000}
 export ITERATIONS=${ITERATIONS:-30000}
-OUT_ROOT=${OUT_ROOT:-/data1/zhangao/outputs/new_dev}
 CAP_OVERRIDE=${CAP_MAX:-}
+
+# AA policy: indoor scenes benefit from antialiasing, outdoor do not. By DEFAULT auto-select per
+# scene (indoor -> AA, outdoor -> no-AA). Set ANTIALIASING=0 or =1 to FORCE one mode for all scenes.
+if [ -n "${ANTIALIASING+x}" ]; then AA_FORCED="${ANTIALIASING}"; else AA_FORCED=""; fi
 
 # ---- BEST CPF config (scene-agnostic; do not change without re-verifying vs real 3dgs-mcmc) ----
 export CPF_PRIOR_SOURCE=render            # depth-free rendered-depth prior (NOT DAV2)
@@ -42,7 +55,7 @@ export CPF_DERIVATIVE_INTERVAL=${CPF_DERIVATIVE_INTERVAL:-2}   # noise applied 4
 export CPF_MAX_REFRESH_VIEWS=16
 export SCALE_REG=0.01                     # 3DGS-MCMC compactness regs — biggest quality lever
 export OPACITY_REG=0.01
-export ANTIALIASING=${ANTIALIASING:-0}    # default no-AA (AA hurt GS-LSS); ANTIALIASING=1 to test AA
+# ANTIALIASING is set PER SCENE in run_best (indoor->AA) unless AA_FORCED (see top).
 export DEPTH_L1_WEIGHT_INIT=0             # depth-free
 export DEPTH_L1_WEIGHT_FINAL=0
 export DEPTH_ALIGN_SFM_ON_DEMAND=0
@@ -77,8 +90,6 @@ export DENSIFICATION_INTERVAL=${DENSIFICATION_INTERVAL:-200}
 export RUN_EVAL=${RUN_EVAL:-1}            # train -> render.py -> metrics.py
 export TIMING_BREAKDOWN=${TIMING_BREAKDOWN:-1}
 
-AA_TAG=""; [ "${ANTIALIASING}" = "1" ] && AA_TAG="_aa"
-
 # per-scene Gaussian cap (3DGS-MCMC tuned counts); fallback for other datasets' scenes
 scene_cap() { case "$1" in
     bicycle) echo 5000000 ;; stump) echo 4200000 ;; garden) echo 4000000 ;;
@@ -87,19 +98,36 @@ scene_cap() { case "$1" in
     *) echo "${DEFAULT_CAP:-3000000}" ;;
 esac ; }
 
+# indoor scenes use antialiasing by default (outdoor do not)
+is_indoor() { case "$1" in bonsai|counter|kitchen|room) return 0 ;; *) return 1 ;; esac ; }
+
 # run_best  dataset scene bias source_path test_selection test_path
 run_best() {
     local ds=$1 sc=$2 bias=$3 srcp=$4 tsel=$5 tpath=$6
     local cap="${CAP_OVERRIDE:-$(scene_cap "$sc")}"
     local imgs=images_4; [ -d "$srcp/images_4" ] || imgs=images   # auto-detect resolution dir
     local dpth=dav2_4;   [ -d "$srcp/dav2_4"  ] || dpth=""         # depth-free anyway; load only if present
+    # per-scene AA: forced if the caller set ANTIALIASING, else auto (indoor -> AA)
+    local aa
+    if [ -n "$AA_FORCED" ]; then aa="$AA_FORCED"; elif is_indoor "$sc"; then aa=1; else aa=0; fi
+    export ANTIALIASING="$aa"
+    local AA_TAG=""; [ "$aa" = "1" ] && AA_TAG="_aa"
     export SCENE="$sc" SOURCE_PATH="$srcp" CAP_MAX="$cap" IMAGES="$imgs" DEPTHS="$dpth"
     export TEST_SELECTION="$tsel" TEST_PATH="$tpath"
     export LABEL="${ds}_${sc}_${bias}_cpf_best_i${ITERATIONS}${AA_TAG}"
-    export MODEL_PATH="${OUT_ROOT}/${ds}/${sc}_${bias}_i${ITERATIONS}${AA_TAG}"
-    echo "======== BEST GS-LSS: ${ds}/${sc} [${bias}]  (cap ${cap}, img ${imgs}, AA=${ANTIALIASING}) ========"
+    local run_name="${sc}_${bias}_i${ITERATIONS}${AA_TAG}"
+    export MODEL_PATH="${OUT_ROOT}/${ds}/${run_name}"
+    echo "======== BEST GS-LSS: ${ds}/${sc} [${bias}]  (cap ${cap}, img ${imgs}, AA=${aa}) ========"
     PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True bash run_fast_lss_dev.sh \
         || echo "[run.sh] WARN: ${ds}/${sc} [${bias}] failed; continuing"
+    # collect a light metrics-only copy (easy to copy back from another machine)
+    if [ -f "${MODEL_PATH}/metrics.csv" ]; then
+        mkdir -p "${SWEEP_RESULTS}/${ds}/${run_name}"
+        cp -f "${MODEL_PATH}/metrics.csv" "${SWEEP_RESULTS}/${ds}/${run_name}/metrics.csv"
+        echo "[run.sh] metrics -> ${SWEEP_RESULTS}/${ds}/${run_name}/metrics.csv"
+    else
+        echo "[run.sh] WARN: no metrics.csv for ${ds}/${run_name}"
+    fi
 }
 
 for dataset in $DATASETS; do
