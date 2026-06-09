@@ -35,10 +35,12 @@ DATA_ROOT=${DATA_ROOT:-/data1/zhangao/DATA}
 OUT_ROOT=${OUT_ROOT:-${REPO_DIR}/outputs/sweep_models}
 SWEEP_RESULTS=${SWEEP_RESULTS:-${REPO_DIR}/outputs/sweep_results}
 
-DATASETS=${DATASETS:-"mipnerf360 tandt large_angle"}
+# Default run: Mip-NeRF 360, coverage-gap (angle) bias, at the 5 evaluated angles 20/40/60/80/100.
+# (Override with DATASETS=/BIASES=/SCENES=/ANGLES= to widen scope.)
+DATASETS=${DATASETS:-"mipnerf360"}
 SCENES=${SCENES:-}                                       # empty => auto-discover per dataset
-BIASES=${BIASES:-"angle discontinuous traintest"}        # which bias setups to run
-ANGLES=${ANGLES:-"20.0 40.0 60.0 80.0 100.0"} # angle splits (for the 'angle' bias)
+BIASES=${BIASES:-"angle"}                                # coverage-gap angle splits
+ANGLES=${ANGLES:-"20.0 40.0 60.0 80.0 100.0"} # the 5 coverage angles
 export ITERATIONS=${ITERATIONS:-30000}
 CAP_OVERRIDE=${CAP_MAX:-}
 
