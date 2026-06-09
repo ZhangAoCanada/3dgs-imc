@@ -33,13 +33,13 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
     --noise_lr 5e5 \
     --densify_from_iter 500 \
     --densification_interval 200 \
-    --depth_l1_weight_init 0.3 \
-    --depth_l1_weight_final 0.003 \
+    --depth_l1_weight_init "${DEPTH_INIT:-0.3}" \
+    --depth_l1_weight_final "${DEPTH_FINAL:-0.003}" \
     --nn_type allviews \
     --bound_type local \
     --partial_scaling 1e0 \
     --sigma_scaling 1e-6 \
-    --eps 0.25 \
+    --eps "${EPS:-0.25}" \
     --min_samples 500 \
     --range_scale 1 \
     --minmax wholeonly \

@@ -425,6 +425,23 @@ class GaussianModel:
         # well-constrained, large where the biased views leave it ambiguous. Env-wired (default off).
         self.cpf_noise_train_weight = float(getattr(training_args, "cpf_noise_train_weight", os.environ.get("CPF_NOISE_TRAIN_WEIGHT", 0.0)))
         self.cpf_noise_entropy_weight = float(getattr(training_args, "cpf_noise_entropy_weight", os.environ.get("CPF_NOISE_ENTROPY_WEIGHT", 0.01)))
+        # Design 1: view-direction-aware noise. Accumulate per-Gaussian observed view directions;
+        # concentration ||mean_dir|| in [0,1] measures triangulation quality (1=narrow observed cone
+        # -> geometry poorly constrained -> floater-prone; ~0=well-spread). Boost the (tangent) noise
+        # where concentration is high. Sharper "where" signal than the count-based obs-gate. Env-wired.
+        self.cpf_noise_viewdir = float(getattr(training_args, "cpf_noise_viewdir", os.environ.get("CPF_NOISE_VIEWDIR", 0.0)))
+        self._track_view_dirs = self.cpf_noise_viewdir > 0.0
+        self._view_dir_sum = None
+        # NEW DIRECTION: use the CPF field as a GEOMETRY CONSENSUS (its real purpose), not a noise source.
+        # Suppress opacity where the field says EMPTY -> prune over-fit FLOATERS (the dominant novel-view
+        # artifact under view bias). Unlike the failed position-PULL (which moves Gaussians toward the
+        # biased field geometry), this only DELETES inconsistent floaters (lowers opacity) and leaves
+        # valid surface geometry untouched. Env-wired CPF_FIELD_OPACITY_REG, default off.
+        self.cpf_field_opacity_reg = float(getattr(training_args, "cpf_field_opacity_reg", os.environ.get("CPF_FIELD_OPACITY_REG", 0.0)))
+        # Confidence threshold for floater pruning: only penalize Gaussians where the field is CONFIDENTLY
+        # empty (sigma < thresh) -> prunes clear floaters but SPARES fine geometry the field is merely
+        # uncertain about (moderate sigma), so it stops hurting detailed outdoor scenes. 0 = soft (1-sigma).
+        self.cpf_field_opacity_thresh = float(getattr(training_args, "cpf_field_opacity_thresh", os.environ.get("CPF_FIELD_OPACITY_THRESH", 0.0)))
         self.cpf_stop_iter = training_args.cpf_stop_iter
         self.cpf_refresh_stop_iter = training_args.cpf_refresh_stop_iter
         self.cpf_train_stop_iter = training_args.cpf_train_stop_iter
@@ -572,6 +589,14 @@ class GaussianModel:
             n_hat = torch.nn.functional.normalize(nrm, dim=-1, eps=1e-8)
             along = (xyz_noise * n_hat).sum(dim=-1, keepdim=True)
             xyz_noise = xyz_noise - self.cpf_noise_tangent * along * n_hat
+        # Design 1: boost the (tangent) noise where the observed view cone is NARROW (poorly
+        # triangulated -> geometry under-constrained). conc=||mean view dir|| in [0,1]. The clamp
+        # below caps the result, so this only redistributes magnitude toward floater-prone Gaussians.
+        if self.cpf_noise_viewdir > 0.0 and self._view_dir_sum is not None and self._view_dir_sum.shape[0] == self._xyz.shape[0]:
+            vds = self._view_dir_sum[gs_mask]
+            obs_c = self._obs_count[gs_mask].clamp_min(1.0)
+            conc = (vds.norm(dim=-1) / obs_c).clamp(0.0, 1.0)
+            xyz_noise = xyz_noise * (1.0 + self.cpf_noise_viewdir * conc).unsqueeze(-1)
         xyz_noise = xyz_noise * self.cpf_noise_weight
         xyz_noise = self._clamp_update_norm(xyz_noise, self.cpf_max_noise_norm)
         # THESIS: the CPF's value is filling the supervision gap, which widens with view-angle.
@@ -948,13 +973,44 @@ class GaussianModel:
             elif self._xyz.grad is not None and g.shape == self._xyz.grad.shape:
                 self._xyz.grad.add_(g)   # optimizer-routed pull: LR-scheduled, fades late
 
-    def add_obs(self, visibility_filter):
+    def field_floater_reg(self, iteration, max_pts=100000):
+        # Loss that suppresses the opacity of Gaussians the CPF field-consensus marks EMPTY (floaters).
+        # The field is the multi-view consensus geometry; a high-opacity Gaussian sitting where the field
+        # predicts empty is an over-fit floater (fits a biased view, breaks novel views). Penalize its
+        # opacity -> it fades. Field is queried under no_grad (detached) so this only trains opacity, never
+        # corrupts the field. Returns None when inactive.
+        if self.cpf_field_opacity_reg <= 0.0:
+            return None
+        if iteration < self.nn_derivatives_iter or self.net.xyz_lowerbound is None:
+            return None
+        n = self.get_xyz.shape[0]
+        gs_mask = self.mask_pts(n, cap=max_pts)
+        with torch.no_grad():
+            sigma = self.net(self.get_xyz[gs_mask].detach())['sigma']   # field occupancy (consensus), detached
+        op = self.get_opacity[gs_mask]                                   # grad -> opacity only
+        t = self.cpf_field_opacity_thresh
+        if t > 0.0:
+            penalty = torch.clamp((t - sigma) / t, min=0.0)             # 1 at sigma=0 -> 0 at sigma>=t (spare uncertain/fine geom)
+        else:
+            penalty = 1.0 - sigma                                       # soft (original)
+        return self.cpf_field_opacity_reg * (op * penalty).mean()
+
+    def add_obs(self, visibility_filter, view=None):
         # accumulate per-Gaussian observation count for the pull's observation gate
         # (resets on size change from densification; the stable late-training window dominates)
         n = self._xyz.shape[0]
         if self._obs_count is None or self._obs_count.shape[0] != n:
             self._obs_count = torch.zeros(n, device="cuda")
+            self._view_dir_sum = None
         self._obs_count[visibility_filter] += 1.0
+        # Design 1: accumulate observed view directions (only when cpf_noise_viewdir>0)
+        if getattr(self, "_track_view_dirs", False) and view is not None:
+            if self._view_dir_sum is None or self._view_dir_sum.shape[0] != n:
+                self._view_dir_sum = torch.zeros((n, 3), device="cuda")
+            with torch.no_grad():
+                cc = view.camera_center.to(self._xyz.device)
+                d = torch.nn.functional.normalize(self._xyz.detach()[visibility_filter] - cc, dim=-1, eps=1e-8)
+                self._view_dir_sum[visibility_filter] += d
 
     def update_nnpts(self, all_views, pipe, bg, align=True):
         assert self.nn_type in ["singleview", "allviews"]

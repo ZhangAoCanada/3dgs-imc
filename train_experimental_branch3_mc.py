@@ -279,6 +279,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         timing_add("cpf_training", segment_start)
         if continuous_l is not None:
             loss += continuous_l
+        floater_l = gaussians.field_floater_reg(iteration)   # field-consensus floater suppression
+        if floater_l is not None:
+            loss = loss + floater_l
         loss = torch.where(torch.isnan(loss), torch.zeros_like(loss), loss)
         loss = torch.where(torch.isinf(loss), torch.zeros_like(loss), loss)
 
@@ -289,8 +292,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         if iteration > 2450:
             gaussians.remove_nan_grad()
         gaussians.apply_cpf_pull_grad()   # route the CPF pull through the optimizer (was a no-op manual drift)
-        if int(getattr(opt, "cpf_pull_obs_gate", 0)) or int(getattr(opt, "cpf_noise_obs_gate", 0)):
-            gaussians.add_obs(visibility_filter)
+        if int(getattr(opt, "cpf_pull_obs_gate", 0)) or int(getattr(opt, "cpf_noise_obs_gate", 0)) or getattr(gaussians, "_track_view_dirs", False):
+            gaussians.add_obs(visibility_filter, viewpoint_cam)
         guided_stats_active = (
             getattr(opt, "cpf_densify", False)
             and int(getattr(opt, "cpf_densify_guided_clone", 0)) != 0
