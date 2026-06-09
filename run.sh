@@ -45,6 +45,9 @@ CAP_OVERRIDE=${CAP_MAX:-}
 # AA policy: indoor scenes benefit from antialiasing, outdoor do not. By DEFAULT auto-select per
 # scene (indoor -> AA, outdoor -> no-AA). Set ANTIALIASING=0 or =1 to FORCE one mode for all scenes.
 if [ -n "${ANTIALIASING+x}" ]; then AA_FORCED="${ANTIALIASING}"; else AA_FORCED=""; fi
+# Field-consensus floater pruning: indoor-gated by default (helps indoor extreme-angle over-fit,
+# hurts detailed outdoor). Set CPF_FIELD_OPACITY_REG to force a value for ALL scenes.
+if [ -n "${CPF_FIELD_OPACITY_REG+x}" ]; then FLOATER_FORCED="${CPF_FIELD_OPACITY_REG}"; else FLOATER_FORCED=""; fi
 
 # ---- BEST CPF config (scene-agnostic; do not change without re-verifying vs real 3dgs-mcmc) ----
 export CPF_PRIOR_SOURCE=render            # depth-free rendered-depth prior (NOT DAV2)
@@ -112,6 +115,11 @@ run_best() {
     if [ -n "$AA_FORCED" ]; then aa="$AA_FORCED"; elif is_indoor "$sc"; then aa=1; else aa=0; fi
     export ANTIALIASING="$aa"
     local AA_TAG=""; [ "$aa" = "1" ] && AA_TAG="_aa"
+    # field-consensus floater pruning: wins indoor extreme-angle over-fit (bonsai@100 17.39->17.98,
+    # beats MH); the smooth field false-prunes detailed OUTDOOR geometry -> indoor only by default.
+    local floater=0; is_indoor "$sc" && floater=0.1
+    [ -n "$FLOATER_FORCED" ] && floater="$FLOATER_FORCED"
+    export CPF_FIELD_OPACITY_REG="$floater"
     export SCENE="$sc" SOURCE_PATH="$srcp" CAP_MAX="$cap" IMAGES="$imgs" DEPTHS="$dpth"
     export TEST_SELECTION="$tsel" TEST_PATH="$tpath"
     export LABEL="${ds}_${sc}_${bias}_cpf_best_i${ITERATIONS}${AA_TAG}"
