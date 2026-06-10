@@ -50,6 +50,11 @@ if [ -n "${ANTIALIASING+x}" ]; then AA_FORCED="${ANTIALIASING}"; else AA_FORCED=
 # Field-consensus floater pruning: indoor-gated by default (helps indoor extreme-angle over-fit,
 # hurts detailed outdoor). Set CPF_FIELD_OPACITY_REG to force a value for ALL scenes.
 if [ -n "${CPF_FIELD_OPACITY_REG+x}" ]; then FLOATER_FORCED="${CPF_FIELD_OPACITY_REG}"; else FLOATER_FORCED=""; fi
+# Random-batch size: room needs 3-view gradient de-biasing (gap-edge consolidation; room@60
+# 15.27 -> 16.63 confirmed @30k). Does NOT transfer to treehill, neutral-to-negative elsewhere
+# (counter@80 +0.09, bicycle@20 -0.17 PSNR / better LPIPS) -> room only. ~2.5x per-iter cost.
+# Set RANDOM_VIEW_NUM to force one value for ALL scenes.
+if [ -n "${RANDOM_VIEW_NUM+x}" ]; then NVIEW_FORCED="${RANDOM_VIEW_NUM}"; else NVIEW_FORCED=""; fi
 
 # ---- BEST CPF config (scene-agnostic; do not change without re-verifying vs real 3dgs-mcmc) ----
 export CPF_PRIOR_SOURCE=render            # depth-free rendered-depth prior (NOT DAV2)
@@ -81,7 +86,7 @@ export CPF_NOISE_OBS_GATE=${CPF_NOISE_OBS_GATE:-1}
 export CPF_MAX_NOISE_NORM=${CPF_MAX_NOISE_NORM:-0.005}
 export CPF_NOISE_WEIGHT=${CPF_NOISE_WEIGHT:-1.0}
 export CPF_NOISE_TRAIN_WEIGHT=${CPF_NOISE_TRAIN_WEIGHT:-0}   # trained head OFF (hand-shaping beat it)
-export RANDOM_VIEW_NUM=${RANDOM_VIEW_NUM:-1}
+# RANDOM_VIEW_NUM is set PER SCENE in run_best (room->3) unless NVIEW_FORCED (see top).
 # Densification schedule MUST reach the per-scene cap_max. add_new_gs grows the
 # Gaussian set only +5%/step, so #steps = (until-from)/interval sets the final count:
 # the old until=12000/interval=400 gave ~28 steps = 1.05^28 ~= 3.9x SFM (bicycle@20
@@ -94,6 +99,12 @@ export DENSIFY_UNTIL_ITER=${DENSIFY_UNTIL_ITER:-25000}
 export DENSIFICATION_INTERVAL=${DENSIFICATION_INTERVAL:-200}
 export RUN_EVAL=${RUN_EVAL:-1}            # train -> render.py -> metrics.py
 export TIMING_BREAKDOWN=${TIMING_BREAKDOWN:-1}
+# Dual-row final protocol: save AND evaluate both the 15k and the final checkpoint
+# (metrics.csv gets one row per checkpoint -> "GS-LSS-Eff@15k" + "@30k" table rows).
+if [ -z "${SAVE_ITERATIONS+x}" ]; then
+    if [ "${ITERATIONS}" != "15000" ]; then SAVE_ITERATIONS="15000 ${ITERATIONS}"; else SAVE_ITERATIONS="${ITERATIONS}"; fi
+fi
+export SAVE_ITERATIONS
 
 # per-scene Gaussian cap (3DGS-MCMC tuned counts); fallback for other datasets' scenes
 scene_cap() { case "$1" in
@@ -105,6 +116,9 @@ esac ; }
 
 # indoor scenes use antialiasing by default (outdoor do not)
 is_indoor() { case "$1" in bonsai|counter|kitchen|room) return 0 ;; *) return 1 ;; esac ; }
+
+# per-scene random-batch size (see NVIEW_FORCED note above)
+scene_nview() { case "$1" in room) echo 3 ;; *) echo 1 ;; esac ; }
 
 # run_best  dataset scene bias source_path test_selection test_path
 run_best() {
@@ -122,6 +136,10 @@ run_best() {
     local floater=0; is_indoor "$sc" && floater=0.1
     [ -n "$FLOATER_FORCED" ] && floater="$FLOATER_FORCED"
     export CPF_FIELD_OPACITY_REG="$floater"
+    # per-scene random-batch size (room -> 3-view de-biasing)
+    local nv; nv=$(scene_nview "$sc")
+    [ -n "$NVIEW_FORCED" ] && nv="$NVIEW_FORCED"
+    export RANDOM_VIEW_NUM="$nv"
     export SCENE="$sc" SOURCE_PATH="$srcp" CAP_MAX="$cap" IMAGES="$imgs" DEPTHS="$dpth"
     export TEST_SELECTION="$tsel" TEST_PATH="$tpath"
     export LABEL="${ds}_${sc}_${bias}_cpf_best_i${ITERATIONS}${AA_TAG}"

@@ -129,6 +129,11 @@ class NetworksA(nn.Module):
             net_in2 = torch.cat([sigma_pred, attributes], dim=-1)
             pred2 = self.body2(net_in2)
             pred2_std = self.linear_std2(pred2)
+            # CPF_NOISE_UNIT_STD=1: bypass the std head. body2/linear_std2 are never trained
+            # (train_continuous calls the net without attributes), so exp(pred2_std) applies an
+            # arbitrary frozen per-axis scaling to the noise; exp(0)=1 removes it.
+            if os.environ.get("CPF_NOISE_UNIT_STD", "0") == "1":
+                pred2_std = torch.zeros_like(pred2_std)
 
             if noise_method == 'opacity-detach':
                 xyz_noise = torch.exp(pred2_std) * torch.randn_like(pred2_std) * attributes.detach().clone()

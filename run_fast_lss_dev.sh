@@ -98,6 +98,9 @@ SCALE_REG=${SCALE_REG:-0.0}
 OPACITY_REG=${OPACITY_REG:-0.0}
 LOAD_ITERATION=${LOAD_ITERATION:-0}
 LOAD_MODEL_PATH=${LOAD_MODEL_PATH:-}
+# Space-separated list of checkpoint iterations to save AND evaluate (e.g. "15000 30000"
+# for the dual-row final protocol). Default: final iteration only.
+SAVE_ITERATIONS=${SAVE_ITERATIONS:-${ITERATIONS}}
 
 MODEL_PATH=${MODEL_PATH:-${MODEL_ROOT}/${SCENE}_angle80_lss_sfmdepth_i${ITERATIONS}_depth1_aligndepth_best_images4}
 
@@ -233,20 +236,23 @@ fi
     --eps "${EPS:-0.25}" \
     --min_samples "${MIN_SAMPLES:-500}" \
     --test_iterations 99999999 \
-    --save_iterations "${ITERATIONS}" \
+    --save_iterations ${SAVE_ITERATIONS} \
     "${TIMING_ARGS[@]}" \
     "${PIPELINE_ARGS[@]}" \
     --disable_viewer \
     --quiet
 
 if [[ "${RUN_EVAL:-1}" == "1" ]]; then
-    "${CONDA_EXE}" run -n "${ENV_NAME}" python render.py \
-        --model_path "${MODEL_PATH}" \
-        --iteration "${ITERATIONS}" \
-        --skip_train \
-        "${PIPELINE_ARGS[@]}" \
-        --quiet
+    for eval_it in ${SAVE_ITERATIONS}; do
+        "${CONDA_EXE}" run -n "${ENV_NAME}" python render.py \
+            --model_path "${MODEL_PATH}" \
+            --iteration "${eval_it}" \
+            --skip_train \
+            "${PIPELINE_ARGS[@]}" \
+            --quiet
+    done
 
+    # metrics.py emits one CSV row per rendered checkpoint (test/ours_<it>/)
     "${CONDA_EXE}" run -n "${ENV_NAME}" python metrics.py \
         --model_paths "${MODEL_PATH}" \
         --metrics_save_path "${MODEL_PATH}/metrics.csv"
