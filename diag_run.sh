@@ -3,7 +3,8 @@
 # with selected knobs overridable from the caller's env, to root-cause the
 # regression vs the develop3 (paper) GS-LSS runs. GPU 1 only.
 set -uo pipefail
-export CUDA_VISIBLE_DEVICES=1
+# default GPU 1 (dev server rule); workers on other machines override via env
+export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-1}
 
 SCENE=${SCENE:?set SCENE}
 ANGLE=${ANGLE:?set ANGLE}

@@ -161,6 +161,7 @@ def evaluate(model_paths, keyword="test", metrics_save_path=None):
                 niqes = []
                 piqes = []
 
+                skip_noref = os.environ.get("METRICS_SKIP_NOREF", "0") == "1"
                 for idx in tqdm(range(len(renders)), desc="Metric evaluation progress"):
                     # ssims.append(ssim(renders[idx], gts[idx]))
                     # psnrs.append(psnr(renders[idx], gts[idx]))
@@ -168,6 +169,9 @@ def evaluate(model_paths, keyword="test", metrics_save_path=None):
                     ssims.append(ssim(renders[idx].cuda(), gts[idx].cuda()))
                     psnrs.append(psnr(renders[idx].cuda(), gts[idx].cuda()))
                     lpipss.append(lpips(renders[idx].cuda(), gts[idx].cuda(), net_type='vgg'))
+                    if skip_noref:  # probe mode: BRISQUE/NIQE/PIQE never drive decisions and dominate eval time
+                        brisques.append(torch.tensor(0.0)); niqes.append(torch.tensor(0.0)); piqes.append(torch.tensor(0.0))
+                        continue
                     brisques.append(brisque(renders[idx].cuda()))
                     niqes.append(niqe(renders[idx].cuda()))
                     piqes.append(piqe(renders[idx].cuda()))

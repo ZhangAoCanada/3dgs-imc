@@ -442,6 +442,11 @@ class GaussianModel:
         # empty (sigma < thresh) -> prunes clear floaters but SPARES fine geometry the field is merely
         # uncertain about (moderate sigma), so it stops hurting detailed outdoor scenes. 0 = soft (1-sigma).
         self.cpf_field_opacity_thresh = float(getattr(training_args, "cpf_field_opacity_thresh", os.environ.get("CPF_FIELD_OPACITY_THRESH", 0.0)))
+        # Appearance consensus: supervise the DC (diffuse) color of UNDER-observed Gaussians with the
+        # field's aggregated rgb (needs CPF_FIELD_RGB_LOSS>0 so the rgb head is trained). Gap Gaussians
+        # get photometric supervision only from grazing views -> their DC color is extrapolated; the
+        # field's rgb is the scene-level color consensus. Env-wired CPF_FIELD_COLOR_REG, default off.
+        self.cpf_field_color_reg = float(getattr(training_args, "cpf_field_color_reg", os.environ.get("CPF_FIELD_COLOR_REG", 0.0)))
         self.cpf_stop_iter = training_args.cpf_stop_iter
         self.cpf_refresh_stop_iter = training_args.cpf_refresh_stop_iter
         self.cpf_train_stop_iter = training_args.cpf_train_stop_iter
@@ -838,12 +843,20 @@ class GaussianModel:
         gradient = diff_operators.gradient(pred_opacity, net_in)
         opacity_constraint = F.l1_loss(pred_opacity, gt_opacity).mean()
         normal_constraint = (1. - F.cosine_similarity(gradient, gt_norm, dim=-1)[..., None]).mean()
-        # color_constraint = F.l1_loss(pred_color, gt_color).mean()
         # gradient_constraint = torch.abs(gradient.norm(dim=-1) - 1).mean()
         l = opacity_constraint * 3e3 + \
             normal_constraint * 1e2
-            # color_constraint * 1e3 + \
             # gradient_constraint * 5e1
+        # CPF_FIELD_RGB_LOSS>0 trains the field's rgb head (appearance consensus aggregated across
+        # all prior views). Off by default: color gradients share the trunk that produces the
+        # occupancy consensus, so enabling requires a geometry-regression check on floater cells.
+        rgb_w = getattr(self, "_cpf_field_rgb_loss_w", None)
+        if rgb_w is None:
+            rgb_w = float(os.environ.get("CPF_FIELD_RGB_LOSS", "0"))
+            self._cpf_field_rgb_loss_w = rgb_w
+        if rgb_w > 0:
+            color_constraint = F.l1_loss(pred_color, gt_color).mean()
+            l = l + color_constraint * rgb_w
 
         return l
     
@@ -994,6 +1007,27 @@ class GaussianModel:
         else:
             penalty = 1.0 - sigma                                       # soft (original)
         return self.cpf_field_opacity_reg * (op * penalty).mean()
+
+    def field_appearance_reg(self, iteration, max_pts=100000):
+        # Appearance consensus (CPF_FIELD_COLOR_REG): L1 between each Gaussian's DC (diffuse) color
+        # and the field's rgb at its position, weighted toward UNDER-observed Gaussians (same soft
+        # obs gate as the noise). DC-only -> never fights legitimate view dependence. Field queried
+        # under no_grad -> trains Gaussian colors only, never the field.
+        if self.cpf_field_color_reg <= 0.0:
+            return None
+        if iteration < self.nn_derivatives_iter or self.net.xyz_lowerbound is None:
+            return None
+        n = self.get_xyz.shape[0]
+        gs_mask = self.mask_pts(n, cap=max_pts)
+        with torch.no_grad():
+            field_rgb = self.net(self.get_xyz[gs_mask].detach())['rgb']
+        dc_rgb = self._features_dc[gs_mask].squeeze(1) * 0.28209479177387814 + 0.5   # SH2RGB on the DC term
+        err = torch.abs(dc_rgb - field_rgb).mean(dim=-1)
+        if self._obs_count is not None and self._obs_count.shape[0] == n:
+            obs = self._obs_count[gs_mask]
+            m = obs.mean().clamp_min(1.0)
+            err = err * (m / (obs + m))      # ~1 for under-observed, ->0 for well-observed
+        return self.cpf_field_color_reg * err.mean()
 
     def add_obs(self, visibility_filter, view=None):
         # accumulate per-Gaussian observation count for the pull's observation gate

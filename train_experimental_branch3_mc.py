@@ -69,6 +69,23 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     bg_color = [1, 1, 1] if dataset.white_background else [0, 0, 0]
     background = torch.tensor(bg_color, dtype=torch.float32, device="cuda")
 
+    # Phase-2 novel-view supervision in the coverage gap (env-gated NVS_WEIGHT, default off)
+    # NOTE: diagnostics go to stderr — safe_state(--quiet) silences stdout.
+    from scene_experimental_branch3.gap_poses import NVSupervisor
+    try:
+        nvs = NVSupervisor(scene.getTrainCameras(),
+                           scene_center=gaussians.get_xyz.detach().median(0).values.cpu().numpy())
+        if nvs.enabled:
+            sys.stderr.write(f"[NVS] gap width {math.degrees(nvs.sector['gap_width']):.1f} deg, "
+                             f"{len(nvs.cams)} synth poses, weight={nvs.weight}\n")
+    except Exception as e:
+        import traceback
+        sys.stderr.write(f"[NVS] disabled (init failed: {e})\n{traceback.format_exc()}\n")
+        class _Off:  # noqa
+            enabled = False
+            def loss(self, *a, **k): return None
+        nvs = _Off()
+
     iter_start = torch.cuda.Event(enable_timing = True)
     iter_end = torch.cuda.Event(enable_timing = True)
 
@@ -282,6 +299,14 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         floater_l = gaussians.field_floater_reg(iteration)   # field-consensus floater suppression
         if floater_l is not None:
             loss = loss + floater_l
+        color_l = gaussians.field_appearance_reg(iteration)  # field-consensus DC-color supervision
+        if color_l is not None:
+            loss = loss + color_l
+        nvs_l = nvs.loss(gaussians, render, pipe, background, iteration)  # gap pseudo-view supervision
+        if nvs_l is not None:
+            loss = loss + nvs_l
+            if tb_writer is not None and iteration % 200 == 0:
+                tb_writer.add_scalar("nn_l/nvs_loss", nvs_l.item(), iteration)
         loss = torch.where(torch.isnan(loss), torch.zeros_like(loss), loss)
         loss = torch.where(torch.isinf(loss), torch.zeros_like(loss), loss)
 
