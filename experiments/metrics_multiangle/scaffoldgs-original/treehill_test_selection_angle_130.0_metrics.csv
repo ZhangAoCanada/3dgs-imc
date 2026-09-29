@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/treehill/scaffoldgs-original-test_selection_angle_130.0,test,ours_30000,0.34676963090896606,12.309025764465332,0.5244374871253967,18.405315399169922,3.098394263207141,38.12192153930664

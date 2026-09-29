@@ -1,0 +1,278 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{3dgs}
+\citation{pgsr,hierarchical,mpgs}
+\citation{mcmc,mh3dgs}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Typical biased viewpoint settings. (a) Viewing angle disparities: 3DGS trained only with aerial-level views struggles to render consistent ground-level perspectives. (b) Discontinuous camera trajectories: unevenly sampled camera paths lead to fragmented scene reconstruction with blurring artifacts in synthesized views. (c) Systematic coverage gaps: missing observations in specific regions leave parts of the scene weakly supervised.}}{1}{figure.1}\protected@file@percent }
+\newlabel{fig_1}{{1}{1}{Typical biased viewpoint settings. (a) Viewing angle disparities: 3DGS trained only with aerial-level views struggles to render consistent ground-level perspectives. (b) Discontinuous camera trajectories: unevenly sampled camera paths lead to fragmented scene reconstruction with blurring artifacts in synthesized views. (c) Systematic coverage gaps: missing observations in specific regions leave parts of the scene weakly supervised}{figure.1}{}}
+\citation{mcmc,mh3dgs}
+\citation{3dgs}
+\citation{nerf}
+\citation{ewa}
+\citation{mipsplatting}
+\citation{scaffold,hi-lsplat}
+\citation{ekf-gs,densesplat,steepgs,mcmc}
+\citation{sketchfacegs}
+\citation{ssdgs}
+\citation{drgs}
+\citation{pgsr}
+\citation{hierarchical}
+\citation{dav2}
+\citation{hierarchical,citygaussian}
+\citation{difix3d+}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Gaussian Splatting and its Variants}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Regularized and Guided 3DGS Optimization}{2}{subsection.2.2}\protected@file@percent }
+\citation{pgsr}
+\citation{mvgs}
+\citation{splatformer}
+\citation{accelerating,mcmc,beta,mh3dgs}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{beta}
+\citation{accelerating}
+\citation{mcmc}
+\citation{sgld}
+\citation{mcmc}
+\citation{mcmc}
+\citation{mcmc}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Exploring Global Consistency in 3DGS}{3}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {III}Method}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Preliminary}{3}{subsection.3.1}\protected@file@percent }
+\newlabel{eq1}{{1}{3}{Preliminary}{equation.1}{}}
+\newlabel{eq2}{{2}{3}{Preliminary}{equation.2}{}}
+\newlabel{eq3}{{3}{3}{Preliminary}{equation.3}{}}
+\newlabel{eq4}{{4}{3}{Preliminary}{equation.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Learned Stochastic Sampling}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-B}1}Problem Statement}{3}{subsubsection.3.2.1}\protected@file@percent }
+\newlabel{eq5}{{5}{3}{Problem Statement}{equation.5}{}}
+\newlabel{eq5.1}{{6}{3}{Problem Statement}{equation.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The pipeline of our proposed GS-LSS. We optimize Gaussian primitives as a learned stochastic sampling process, where the deterministic and stochastic parameters are learned from the Continuous Probability Field (CPF). The CPF is trained from a probabilized geometry field, which includes points, colors, normals, and corresponding probabilities.}}{4}{figure.2}\protected@file@percent }
+\newlabel{fig_2}{{2}{4}{The pipeline of our proposed GS-LSS. We optimize Gaussian primitives as a learned stochastic sampling process, where the deterministic and stochastic parameters are learned from the Continuous Probability Field (CPF). The CPF is trained from a probabilized geometry field, which includes points, colors, normals, and corresponding probabilities}{figure.2}{}}
+\newlabel{eq6.5}{{7}{4}{Problem Statement}{equation.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-B}2}Parameterization of $\mu _{\theta }$}{4}{subsubsection.3.2.2}\protected@file@percent }
+\newlabel{eq7}{{8}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.8}{}}
+\newlabel{eq8}{{9}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.9}{}}
+\newlabel{eq9}{{10}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.10}{}}
+\newlabel{eq10}{{11}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.11}{}}
+\newlabel{eq11}{{12}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.12}{}}
+\newlabel{eq12}{{13}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.13}{}}
+\newlabel{eq13}{{14}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.14}{}}
+\newlabel{eq13.1}{{15}{4}{Parameterization of \texorpdfstring {$\mu _{\theta }$}{mu-theta}}{equation.15}{}}
+\citation{sgld2}
+\citation{mcmc}
+\citation{implicit}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-B}3}Parameterization of $\sigma _{\theta }$}{5}{subsubsection.3.2.3}\protected@file@percent }
+\newlabel{eq15}{{16}{5}{Parameterization of \texorpdfstring {$\sigma _{\theta }$}{sigma-theta}}{equation.16}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-B}4}Final Formulation}{5}{subsubsection.3.2.4}\protected@file@percent }
+\newlabel{eq16}{{17}{5}{Final Formulation}{equation.17}{}}
+\newlabel{eq17}{{18}{5}{Final Formulation}{equation.18}{}}
+\newlabel{eq18}{{19}{5}{Final Formulation}{equation.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Continuous Probability Field}{5}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:cpf}{{\mbox  {III-C}}{5}{Continuous Probability Field}{subsection.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A visual example of a trained Continuous Probability Field (CPF). The panels show $x-y$, $x-z$, and $y-z$ slices, {\color  {blue}blue} and {\color  {red}{red}} denote high and low observed-support probability, respectively.}}{5}{figure.3}\protected@file@percent }
+\newlabel{fig_3}{{3}{5}{A visual example of a trained Continuous Probability Field (CPF). The panels show $x-y$, $x-z$, and $y-z$ slices, {\color {blue}blue} and {\color {red}{red}} denote high and low observed-support probability, respectively}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}1}In-training Geometric Field}{5}{subsubsection.3.3.1}\protected@file@percent }
+\newlabel{eq19}{{20}{5}{In-training Geometric Field}{equation.20}{}}
+\newlabel{eq20}{{21}{5}{In-training Geometric Field}{equation.21}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}2}CPF network and Loss Function}{5}{subsubsection.3.3.2}\protected@file@percent }
+\newlabel{eq21}{{22}{5}{CPF network and Loss Function}{equation.22}{}}
+\citation{mcmc}
+\citation{mcmc}
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{meganerf}
+\citation{matrixcity}
+\citation{isprs}
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{3dgs}
+\citation{scaffold}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{3dgs}
+\citation{scaffold}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{mipnerf360}
+\citation{tankstemples}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}3}Computation of $\mu _{\theta }$ and $\sigma _{\theta }$}{6}{subsubsection.3.3.3}\protected@file@percent }
+\newlabel{eq22}{{23}{6}{Computation of \texorpdfstring {$\mu _{\theta }$ and $\sigma _{\theta }$}{mu-theta and sigma-theta}}{equation.23}{}}
+\newlabel{eq23}{{24}{6}{Computation of \texorpdfstring {$\mu _{\theta }$ and $\sigma _{\theta }$}{mu-theta and sigma-theta}}{equation.24}{}}
+\newlabel{eq24}{{25}{6}{Computation of \texorpdfstring {$\mu _{\theta }$ and $\sigma _{\theta }$}{mu-theta and sigma-theta}}{equation.25}{}}
+\newlabel{eq25.01}{{26}{6}{Computation of \texorpdfstring {$\mu _{\theta }$ and $\sigma _{\theta }$}{mu-theta and sigma-theta}}{equation.26}{}}
+\newlabel{eq25}{{27}{6}{Computation of \texorpdfstring {$\mu _{\theta }$ and $\sigma _{\theta }$}{mu-theta and sigma-theta}}{equation.27}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces CPF-guided stochastic optimization in GS-LSS}}{6}{algorithm.1}\protected@file@percent }
+\newlabel{alg:gslss}{{1}{6}{Training Objectives}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Training Objectives}{6}{subsection.3.4}\protected@file@percent }
+\newlabel{eq26}{{28}{6}{Training Objectives}{equation.28}{}}
+\newlabel{sec:experiments}{{IV}{6}{Experiments}{section.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Experiments}{6}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Implementation Details}{6}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}1}Datasets}{6}{subsubsection.4.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}2}Biased Viewpoint Settings}{6}{subsubsection.4.1.2}\protected@file@percent }
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{meganerf}
+\citation{matrixcity}
+\citation{isprs}
+\citation{3dgs}
+\citation{scaffold}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{hierarchical}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Evaluation for systematic coverage gaps on Mip-NeRF 360~\cite  {mipnerf360} and Tanks \& Temples~\cite  {tankstemples}, with angular gaps 20$^\circ $, 40$^\circ $, 60$^\circ $, 80$^\circ $ and 100$^\circ $. Best results are in \textbf  {bold} and second-best are \underline  {underlined}.}}{7}{table.1}\protected@file@percent }
+\newlabel{tab:coverage_gap}{{I}{7}{Evaluation for systematic coverage gaps on Mip-NeRF 360~\cite {mipnerf360} and Tanks \& Temples~\cite {tankstemples}, with angular gaps 20$^\circ $, 40$^\circ $, 60$^\circ $, 80$^\circ $ and 100$^\circ $. Best results are in \textbf {bold} and second-best are \underline {underlined}}{table.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Visualization of the performance trends under systematic coverage gaps, with gap size ranging from 20$^\circ $ to 100$^\circ $. The first row corresponds to Mip-NeRF 360~\cite  {mipnerf360} dataset and the second row corresponds to Tanks \& Temples~\cite  {tankstemples} dataset.}}{7}{figure.4}\protected@file@percent }
+\newlabel{coverage_gap_trend}{{4}{7}{Visualization of the performance trends under systematic coverage gaps, with gap size ranging from 20$^\circ $ to 100$^\circ $. The first row corresponds to Mip-NeRF 360~\cite {mipnerf360} dataset and the second row corresponds to Tanks \& Temples~\cite {tankstemples} dataset}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}3}Competitors and Hyperparameters}{7}{subsubsection.4.1.3}\protected@file@percent }
+\citation{mcmc}
+\citation{mipnerf360}
+\citation{mipnerf360}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mipnerf360}
+\citation{hierarchical}
+\citation{pgsr}
+\citation{matrixcity}
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{meganerf}
+\citation{3dgs}
+\citation{scaffold}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{matrixcity}
+\citation{isprs}
+\citation{3dgs}
+\citation{scaffold}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{mcmc}
+\citation{mipnerf360}
+\citation{mcmc}
+\citation{tankstemples}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Top-down bird's eye view of free-space floaters for the Bonsai scene in Mip-NeRF 360~\cite  {mipnerf360} under different systematic coverage gap settings. The faint gray shows the SfM footprint, and the hot color map shows the relative density of Gaussians identified as free-space floaters by the visualization protocol. }}{8}{figure.5}\protected@file@percent }
+\newlabel{perspective_overfitting}{{5}{8}{Top-down bird's eye view of free-space floaters for the Bonsai scene in Mip-NeRF 360~\cite {mipnerf360} under different systematic coverage gap settings. The faint gray shows the SfM footprint, and the hot color map shows the relative density of Gaussians identified as free-space floaters by the visualization protocol}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Main Results}{8}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}1}Claim 1: Biased viewpoints induce perspective overfitting}{8}{subsubsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}2}Claim 2: Stochasticity alone provides limited improvements}{8}{subsubsection.4.2.2}\protected@file@percent }
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{mcmc}
+\citation{mipnerf360}
+\citation{tankstemples}
+\citation{meganerf}
+\citation{matrixcity}
+\citation{isprs}
+\citation{3dgs}
+\citation{scaffold}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{mipnerf360}
+\citation{3dgs}
+\citation{scaffold}
+\citation{hierarchical}
+\citation{mvgs}
+\citation{pgsr}
+\citation{mcmc}
+\citation{mh3dgs}
+\citation{mipnerf360}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Evaluation for discontinuous trajectories on Mip-NeRF 360~\cite  {mipnerf360}, Tanks \& Temples~\cite  {tankstemples} and Mill 19~\cite  {meganerf}. Best results are in \textbf  {bold} and second-best are \underline  {underlined}.}}{9}{table.2}\protected@file@percent }
+\newlabel{tab:discontinuous}{{II}{9}{Evaluation for discontinuous trajectories on Mip-NeRF 360~\cite {mipnerf360}, Tanks \& Temples~\cite {tankstemples} and Mill 19~\cite {meganerf}. Best results are in \textbf {bold} and second-best are \underline {underlined}}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Evaluation for viewing angle disparities on MatrixCity~\cite  {matrixcity} and Zeche~\cite  {isprs} datasets. Best results are in \textbf  {bold} and second-best are \underline  {underlined}.}}{9}{table.3}\protected@file@percent }
+\newlabel{tab:angle_disparity}{{III}{9}{Evaluation for viewing angle disparities on MatrixCity~\cite {matrixcity} and Zeche~\cite {isprs} datasets. Best results are in \textbf {bold} and second-best are \underline {underlined}}{table.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}3}Claim 3: CPF-guided observed-support regularization improves biased-view robustness}{9}{subsubsection.4.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Ablation Study}{9}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Free-space Floater Ratio}{9}{table.4}\protected@file@percent }
+\citation{matrixcity}
+\citation{mcmc}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Visual comparison on three biased viewpoint settings, including discontinuous trajectories, systematic coverage gaps, and viewing angle disparities.}}{10}{figure.6}\protected@file@percent }
+\newlabel{visual_comparison}{{6}{10}{Visual comparison on three biased viewpoint settings, including discontinuous trajectories, systematic coverage gaps, and viewing angle disparities}{figure.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Free-space floater ratio (FFR, \%) on Mip-NeRF 360~\cite  {mipnerf360} under systematic coverage gaps. Lower is better.}}{10}{table.4}\protected@file@percent }
+\newlabel{tab:ffr}{{IV}{10}{Free-space floater ratio (FFR, \%) on Mip-NeRF 360~\cite {mipnerf360} under systematic coverage gaps. Lower is better}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Ablation studies of LSS parameterization, evaluated on MatrixCity~\cite  {matrixcity}. Best results highlighted in bold.}}{10}{table.5}\protected@file@percent }
+\newlabel{tab:ablation_LSS}{{V}{10}{Ablation studies of LSS parameterization, evaluated on MatrixCity~\cite {matrixcity}. Best results highlighted in bold}{table.5}{}}
+\citation{tankstemples}
+\citation{implicit}
+\citation{tankstemples}
+\citation{tankstemples}
+\citation{3dgs}
+\citation{pgsr}
+\citation{mvgs}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}LSS Component Ablation}{11}{table.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Ablation studies of geometric field and CPF model, evaluated on Tanks \& Temples~\cite  {tankstemples} with coverage gap of 60$^\circ $.}}{11}{table.6}\protected@file@percent }
+\newlabel{tab:ablation_CPF}{{VI}{11}{Ablation studies of geometric field and CPF model, evaluated on Tanks \& Temples~\cite {tankstemples} with coverage gap of 60$^\circ $}{table.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}3}CPF Construction Sensitivity}{11}{table.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Results over five independent trials on Tanks \& Temples~\cite  {tankstemples} with a 60$^\circ $ coverage gap.}}{11}{table.7}\protected@file@percent }
+\newlabel{tab:detailed_metrics}{{VII}{11}{Results over five independent trials on Tanks \& Temples~\cite {tankstemples} with a 60$^\circ $ coverage gap}{table.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}4}LSS Stochastic Stability}{11}{table.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Relative training cost and rendering quality comparison on Tanks \& Temples~\cite  {tankstemples} with a 60$^\circ $ coverage gap. Training cost is normalized by vanilla 3DGS.}}{11}{table.8}\protected@file@percent }
+\newlabel{tab:training-time}{{VIII}{11}{Relative training cost and rendering quality comparison on Tanks \& Temples~\cite {tankstemples} with a 60$^\circ $ coverage gap. Training cost is normalized by vanilla 3DGS}{table.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}5}Efficiency Trade-off}{11}{table.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Limitations}{11}{section.5}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{citations}
+\bibcite{3dgs}{1}
+\bibcite{pgsr}{2}
+\bibcite{hierarchical}{3}
+\bibcite{mpgs}{4}
+\bibcite{mcmc}{5}
+\bibcite{mh3dgs}{6}
+\bibcite{nerf}{7}
+\bibcite{ewa}{8}
+\bibcite{mipsplatting}{9}
+\bibcite{scaffold}{10}
+\bibcite{hi-lsplat}{11}
+\bibcite{ekf-gs}{12}
+\bibcite{densesplat}{13}
+\bibcite{steepgs}{14}
+\bibcite{sketchfacegs}{15}
+\bibcite{ssdgs}{16}
+\bibcite{drgs}{17}
+\bibcite{dav2}{18}
+\bibcite{citygaussian}{19}
+\bibcite{difix3d+}{20}
+\bibcite{mvgs}{21}
+\bibcite{splatformer}{22}
+\bibcite{accelerating}{23}
+\bibcite{beta}{24}
+\bibcite{sgld}{25}
+\bibcite{sgld2}{26}
+\bibcite{implicit}{27}
+\bibcite{mipnerf360}{28}
+\bibcite{tankstemples}{29}
+\bibcite{meganerf}{30}
+\bibcite{matrixcity}{31}
+\bibcite{isprs}{32}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{12}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{12}{section*.2}\protected@file@percent }
+\gdef \@abspage@last{12}

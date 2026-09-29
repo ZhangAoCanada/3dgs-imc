@@ -1,0 +1,19 @@
+{
+  "original_checkpoints_and_provenance": 25,
+  "render_and_metric_counts": 25,
+  "remote_execution_states": {
+    "status.json": "complete",
+    "saved_gt_attempt2_status.json": "complete",
+    "metric_control_status.json": "complete",
+    "main_rasterizer_status.json": "complete"
+  },
+  "local_model_links": 5,
+  "original_dataset_input_hashes": 131,
+  "imported_output_files_sha256_verified": 699,
+  "original_environment_binaries_unchanged": {
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/diff_gaussian_rasterization/__init__.py": "f16b0d4ee29bccab0ac8b2c904de7c0e73338166f17496f1efa1f45dddd6f707",
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/diff_gaussian_rasterization/_C.cpython-310-x86_64-linux-gnu.so": "47170109d68381c9538fb3cb3a2c06dc2366dabd2d9184691f4398d4e73ad387",
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/simple_knn/_C.cpython-310-x86_64-linux-gnu.so": "12b3468ce8732a2e864e9aa06a15a97e5d479f293383e3ad258735dba2544ca7"
+  },
+  "result": "PASS"
+}

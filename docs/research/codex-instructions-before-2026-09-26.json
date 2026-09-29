@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-26",
+  "purpose": "Instruction backup; historical contents are not active instructions. The hust2 user-wide AGENTS.md was reviewed but is unchanged.",
+  "files": [
+    {
+      "host": "hust10",
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/AGENTS.md",
+      "member": "local/AGENTS.md",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "host": "hust10",
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/AGENTS.override.md",
+      "member": "local/AGENTS.override.md",
+      "bytes": 8184,
+      "sha256": "63e703be970c6389264365426fcd15d851d1867873821dac6bab50aef3290e70"
+    },
+    {
+      "host": "hust2",
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/AGENTS.override.md",
+      "member": "hust2/AGENTS.override.md",
+      "bytes": 30236,
+      "sha256": "984e3f02b79dd983b04f64832c15eeca32319c0583302ce5dbbab4bf948901c8"
+    },
+    {
+      "host": "hust2",
+      "path": "/data1/ZHANGAo_2024/.codex/AGENTS.md",
+      "member": "hust2-user/AGENTS.md",
+      "bytes": 6608,
+      "sha256": "efcd7ee0906ac1c4e916a4832b5e2d2632bf6f5de89f2d246ba910dc42013e3d"
+    }
+  ]
+}

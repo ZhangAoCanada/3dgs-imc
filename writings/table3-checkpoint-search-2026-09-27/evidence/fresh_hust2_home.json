@@ -1,0 +1,1 @@
+{"roots": ["/home/ZHANGAo_2024"], "hostname": "user-server", "started": 1790518973.9693193, "finished": 1790518973.969486, "command": ["python-os.walk-fallback", "0 directories"], "returncode": 0, "stderr": "[Errno 13] Permission denied: '/home/ZHANGAo_2024'", "artifacts": [], "metadata": [], "errors": []}

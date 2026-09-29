@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/treehill/scaffoldgs-original,test,ours_30000,0.4953501224517822,18.077978134155273,0.4256424903869629,21.0594425201416,2.7404113890994743,34.21535110473633

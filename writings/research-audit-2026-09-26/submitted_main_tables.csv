@@ -1,0 +1,121 @@
+table,method,dataset,protocol,angle,SSIM,PSNR,LPIPS
+I,3DGS,Mip-NeRF 360,coverage_gap,20,0.787,24.936,0.202
+I,3DGS,Mip-NeRF 360,coverage_gap,40,0.726,22.137,0.249
+I,3DGS,Mip-NeRF 360,coverage_gap,60,0.674,20.499,0.291
+I,3DGS,Mip-NeRF 360,coverage_gap,80,0.63,19.46,0.324
+I,3DGS,Mip-NeRF 360,coverage_gap,100,0.584,17.597,0.358
+I,Scaffold-GS,Mip-NeRF 360,coverage_gap,20,0.76,23.844,0.231
+I,Scaffold-GS,Mip-NeRF 360,coverage_gap,40,0.706,21.835,0.273
+I,Scaffold-GS,Mip-NeRF 360,coverage_gap,60,0.653,20.418,0.315
+I,Scaffold-GS,Mip-NeRF 360,coverage_gap,80,0.616,19.574,0.344
+I,Scaffold-GS,Mip-NeRF 360,coverage_gap,100,0.571,17.751,0.378
+I,Hierarchical-GS,Mip-NeRF 360,coverage_gap,20,0.787,25.044,0.203
+I,Hierarchical-GS,Mip-NeRF 360,coverage_gap,40,0.725,22.314,0.25
+I,Hierarchical-GS,Mip-NeRF 360,coverage_gap,60,0.671,20.611,0.291
+I,Hierarchical-GS,Mip-NeRF 360,coverage_gap,80,0.624,19.339,0.326
+I,Hierarchical-GS,Mip-NeRF 360,coverage_gap,100,0.581,17.463,0.359
+I,MVGS,Mip-NeRF 360,coverage_gap,20,0.784,24.827,0.203
+I,MVGS,Mip-NeRF 360,coverage_gap,40,0.715,22.13,0.256
+I,MVGS,Mip-NeRF 360,coverage_gap,60,0.658,20.458,0.303
+I,MVGS,Mip-NeRF 360,coverage_gap,80,0.608,19.081,0.34
+I,MVGS,Mip-NeRF 360,coverage_gap,100,0.561,17.164,0.374
+I,PGSR,Mip-NeRF 360,coverage_gap,20,0.771,24.203,0.231
+I,PGSR,Mip-NeRF 360,coverage_gap,40,0.706,21.588,0.28
+I,PGSR,Mip-NeRF 360,coverage_gap,60,0.662,20.179,0.307
+I,PGSR,Mip-NeRF 360,coverage_gap,80,0.611,18.834,0.343
+I,PGSR,Mip-NeRF 360,coverage_gap,100,0.553,16.808,0.375
+I,3DGS-MCMC,Mip-NeRF 360,coverage_gap,20,0.801,25.323,0.194
+I,3DGS-MCMC,Mip-NeRF 360,coverage_gap,40,0.739,22.369,0.239
+I,3DGS-MCMC,Mip-NeRF 360,coverage_gap,60,0.679,20.732,0.283
+I,3DGS-MCMC,Mip-NeRF 360,coverage_gap,80,0.632,19.344,0.319
+I,3DGS-MCMC,Mip-NeRF 360,coverage_gap,100,0.572,17.204,0.355
+I,MH-3DGS,Mip-NeRF 360,coverage_gap,20,0.784,25.122,0.224
+I,MH-3DGS,Mip-NeRF 360,coverage_gap,40,0.728,22.365,0.265
+I,MH-3DGS,Mip-NeRF 360,coverage_gap,60,0.683,20.855,0.3
+I,MH-3DGS,Mip-NeRF 360,coverage_gap,80,0.65,20.008,0.328
+I,MH-3DGS,Mip-NeRF 360,coverage_gap,100,0.608,18.352,0.36
+I,GS-LSS,Mip-NeRF 360,coverage_gap,20,0.808,25.839,0.188
+I,GS-LSS,Mip-NeRF 360,coverage_gap,40,0.752,23.152,0.236
+I,GS-LSS,Mip-NeRF 360,coverage_gap,60,0.708,21.615,0.273
+I,GS-LSS,Mip-NeRF 360,coverage_gap,80,0.667,20.235,0.307
+I,GS-LSS,Mip-NeRF 360,coverage_gap,100,0.631,18.805,0.34
+I,3DGS,Tanks & Temples,coverage_gap,20,0.771,20.411,0.209
+I,3DGS,Tanks & Temples,coverage_gap,40,0.741,19.464,0.234
+I,3DGS,Tanks & Temples,coverage_gap,60,0.695,18.651,0.269
+I,3DGS,Tanks & Temples,coverage_gap,80,0.663,17.945,0.294
+I,3DGS,Tanks & Temples,coverage_gap,100,0.632,17.422,0.323
+I,Scaffold-GS,Tanks & Temples,coverage_gap,20,0.744,19.331,0.222
+I,Scaffold-GS,Tanks & Temples,coverage_gap,40,0.743,19.945,0.232
+I,Scaffold-GS,Tanks & Temples,coverage_gap,60,0.692,18.658,0.269
+I,Scaffold-GS,Tanks & Temples,coverage_gap,80,0.653,17.589,0.301
+I,Scaffold-GS,Tanks & Temples,coverage_gap,100,0.615,17.082,0.334
+I,Hierarchical-GS,Tanks & Temples,coverage_gap,20,0.766,20.418,0.208
+I,Hierarchical-GS,Tanks & Temples,coverage_gap,40,0.743,19.64,0.229
+I,Hierarchical-GS,Tanks & Temples,coverage_gap,60,0.694,18.728,0.267
+I,Hierarchical-GS,Tanks & Temples,coverage_gap,80,0.657,17.811,0.296
+I,Hierarchical-GS,Tanks & Temples,coverage_gap,100,0.63,17.226,0.321
+I,MVGS,Tanks & Temples,coverage_gap,20,0.756,20.211,0.199
+I,MVGS,Tanks & Temples,coverage_gap,40,0.721,19.15,0.229
+I,MVGS,Tanks & Temples,coverage_gap,60,0.668,18.323,0.275
+I,MVGS,Tanks & Temples,coverage_gap,80,0.625,17.549,0.309
+I,MVGS,Tanks & Temples,coverage_gap,100,0.59,16.875,0.34
+I,PGSR,Tanks & Temples,coverage_gap,20,0.765,20.119,0.234
+I,PGSR,Tanks & Temples,coverage_gap,40,0.737,19.182,0.258
+I,PGSR,Tanks & Temples,coverage_gap,60,0.687,18.02,0.295
+I,PGSR,Tanks & Temples,coverage_gap,80,0.653,17.305,0.313
+I,PGSR,Tanks & Temples,coverage_gap,100,0.634,17.206,0.338
+I,3DGS-MCMC,Tanks & Temples,coverage_gap,20,0.782,21.026,0.202
+I,3DGS-MCMC,Tanks & Temples,coverage_gap,40,0.754,20.018,0.22
+I,3DGS-MCMC,Tanks & Temples,coverage_gap,60,0.702,18.973,0.257
+I,3DGS-MCMC,Tanks & Temples,coverage_gap,80,0.665,18.014,0.285
+I,3DGS-MCMC,Tanks & Temples,coverage_gap,100,0.632,17.406,0.317
+I,MH-3DGS,Tanks & Temples,coverage_gap,20,0.754,19.967,0.221
+I,MH-3DGS,Tanks & Temples,coverage_gap,40,0.726,19.205,0.241
+I,MH-3DGS,Tanks & Temples,coverage_gap,60,0.649,17.404,0.291
+I,MH-3DGS,Tanks & Temples,coverage_gap,80,0.652,17.299,0.298
+I,MH-3DGS,Tanks & Temples,coverage_gap,100,0.612,16.627,0.331
+I,GS-LSS,Tanks & Temples,coverage_gap,20,0.787,21.451,0.191
+I,GS-LSS,Tanks & Temples,coverage_gap,40,0.757,20.253,0.21
+I,GS-LSS,Tanks & Temples,coverage_gap,60,0.709,19.345,0.247
+I,GS-LSS,Tanks & Temples,coverage_gap,80,0.672,18.113,0.274
+I,GS-LSS,Tanks & Temples,coverage_gap,100,0.643,17.818,0.304
+II,3DGS,Mip-NeRF 360,discontinuous,,0.826,26.979,0.169
+II,3DGS,Tanks & Temples,discontinuous,,0.778,20.914,0.216
+II,3DGS,Mill 19,discontinuous,,0.754,21.503,0.217
+II,Scaffold-GS,Mip-NeRF 360,discontinuous,,0.783,25.356,0.205
+II,Scaffold-GS,Tanks & Temples,discontinuous,,0.745,19.496,0.237
+II,Scaffold-GS,Mill 19,discontinuous,,0.755,21.081,0.226
+II,Hierarchical-GS,Mip-NeRF 360,discontinuous,,0.827,27.046,0.168
+II,Hierarchical-GS,Tanks & Temples,discontinuous,,0.787,21.521,0.21
+II,Hierarchical-GS,Mill 19,discontinuous,,0.762,22.263,0.21
+II,MVGS,Mip-NeRF 360,discontinuous,,0.828,27.288,0.164
+II,MVGS,Tanks & Temples,discontinuous,,0.776,20.744,0.196
+II,MVGS,Mill 19,discontinuous,,0.746,21.311,0.227
+II,PGSR,Mip-NeRF 360,discontinuous,,0.821,26.269,0.188
+II,PGSR,Tanks & Temples,discontinuous,,0.786,21.093,0.231
+II,PGSR,Mill 19,discontinuous,,0.717,20.336,0.265
+II,3DGS-MCMC,Mip-NeRF 360,discontinuous,,0.843,27.517,0.153
+II,3DGS-MCMC,Tanks & Temples,discontinuous,,0.799,21.955,0.196
+II,3DGS-MCMC,Mill 19,discontinuous,,0.766,22.532,0.207
+II,MH-3DGS,Mip-NeRF 360,discontinuous,,0.817,26.895,0.191
+II,MH-3DGS,Tanks & Temples,discontinuous,,0.767,20.895,0.218
+II,MH-3DGS,Mill 19,discontinuous,,0.747,22.394,0.249
+II,GS-LSS,Mip-NeRF 360,discontinuous,,0.845,28.018,0.151
+II,GS-LSS,Tanks & Temples,discontinuous,,0.805,22.16,0.18
+II,GS-LSS,Mill 19,discontinuous,,0.775,22.893,0.198
+III,3DGS,MatrixCity,aerial_ground,,0.578,16.146,0.495
+III,3DGS,Zeche,aerial_ground,,0.33,9.431,0.568
+III,Scaffold-GS,MatrixCity,aerial_ground,,0.562,16.193,0.493
+III,Scaffold-GS,Zeche,aerial_ground,,0.337,9.806,0.591
+III,Hierarchical-GS,MatrixCity,aerial_ground,,0.458,12.943,0.532
+III,Hierarchical-GS,Zeche,aerial_ground,,0.341,9.646,0.577
+III,MVGS,MatrixCity,aerial_ground,,0.541,15.61,0.49
+III,MVGS,Zeche,aerial_ground,,0.34,9.494,0.581
+III,PGSR,MatrixCity,aerial_ground,,0.417,13.072,0.531
+III,PGSR,Zeche,aerial_ground,,0.261,8.499,0.538
+III,3DGS-MCMC,MatrixCity,aerial_ground,,0.586,16.225,0.48
+III,3DGS-MCMC,Zeche,aerial_ground,,0.373,10.133,0.534
+III,MH-3DGS,MatrixCity,aerial_ground,,0.56,15.297,0.502
+III,MH-3DGS,Zeche,aerial_ground,,0.481,12.703,0.546
+III,GS-LSS,MatrixCity,aerial_ground,,0.594,16.951,0.462
+III,GS-LSS,Zeche,aerial_ground,,0.481,12.879,0.53

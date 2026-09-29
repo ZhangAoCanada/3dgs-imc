@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/truck_resize/scaffoldgs-original,test,ours_30000,0.8058130145072937,21.88117027282715,0.19867374002933502,27.733243942260742,3.0133459573874806,57.75839614868164

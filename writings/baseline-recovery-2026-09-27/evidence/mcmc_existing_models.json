@@ -1,0 +1,187 @@
+[
+  {
+    "scene": "bicycle",
+    "run": "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000",
+    "checkpoint": "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/point_cloud/iteration_30000/point_cloud.ply",
+    "checkpoint_mtime": "2026-02-28T17:18:10.904475+00:00",
+    "config": {
+      "sh_degree": 3,
+      "source_path": "/data1/zhangao/DATA/mipnerf360/bicycle",
+      "model_path": "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000",
+      "images": "images_4",
+      "resolution": 1,
+      "white_background": false,
+      "data_device": "cpu",
+      "eval": false,
+      "cap_max": 5000000,
+      "init_type": "sfm",
+      "test_path": "",
+      "test_selection_path": "/data1/zhangao/DATA/mipnerf360/bicycle/discontinuous.txt"
+    },
+    "metric_files": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/cfg_args",
+        "mtime": "2026-02-28T16:35:28.174040+00:00",
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/mipnerf360/bicycle', model_path='/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000', images='images_4', resolution=1, white_background=False, data_device='cpu', eval=False, cap_max=5000000, init_type='sfm', test_path='', test_selection_path='/data1/zhangao/DATA/mipnerf360/bicycle/discontinuous.txt')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/results.json",
+        "mtime": "2026-03-01T00:43:01.059504+00:00",
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.7501610517501831,\n  \"PSNR\": 23.367929458618164,\n  \"LPIPS\": 0.20259800553321838,\n  \"BRISQUE\": 19.349878311157227,\n  \"NIQE\": 2.2013101241474144,\n  \"PIQE\": 34.70906448364258\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/per_view.json",
+        "mtime": "2026-03-01T00:43:01.059504+00:00",
+        "text": ""
+      }
+    ]
+  },
+  {
+    "scene": "stump",
+    "run": "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000",
+    "checkpoint": "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/point_cloud/iteration_30000/point_cloud.ply",
+    "checkpoint_mtime": "2026-02-28T19:42:40.922964+00:00",
+    "config": {
+      "sh_degree": 3,
+      "source_path": "/data1/zhangao/DATA/mipnerf360/stump",
+      "model_path": "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000",
+      "images": "images_4",
+      "resolution": 1,
+      "white_background": false,
+      "data_device": "cpu",
+      "eval": false,
+      "cap_max": 4200000,
+      "init_type": "sfm",
+      "test_path": "",
+      "test_selection_path": "/data1/zhangao/DATA/mipnerf360/stump/discontinuous.txt"
+    },
+    "metric_files": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/cfg_args",
+        "mtime": "2026-02-28T19:15:53.980692+00:00",
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/mipnerf360/stump', model_path='/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000', images='images_4', resolution=1, white_background=False, data_device='cpu', eval=False, cap_max=4200000, init_type='sfm', test_path='', test_selection_path='/data1/zhangao/DATA/mipnerf360/stump/discontinuous.txt')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/results.json",
+        "mtime": "2026-03-01T00:58:33.298854+00:00",
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.7246525883674622,\n  \"PSNR\": 24.644033432006836,\n  \"LPIPS\": 0.26204368472099304,\n  \"BRISQUE\": 29.422504425048828,\n  \"NIQE\": 3.513794455849524,\n  \"PIQE\": 34.447296142578125\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/per_view.json",
+        "mtime": "2026-03-01T00:58:33.298854+00:00",
+        "text": ""
+      }
+    ]
+  },
+  {
+    "scene": "treehill",
+    "run": "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000",
+    "checkpoint": "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/point_cloud/iteration_30000/point_cloud.ply",
+    "checkpoint_mtime": "2026-02-28T20:08:22.260000+00:00",
+    "config": {
+      "sh_degree": 3,
+      "source_path": "/data1/zhangao/DATA/mipnerf360/treehill",
+      "model_path": "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000",
+      "images": "images_4",
+      "resolution": 1,
+      "white_background": false,
+      "data_device": "cpu",
+      "eval": false,
+      "cap_max": 3300000,
+      "init_type": "sfm",
+      "test_path": "",
+      "test_selection_path": "/data1/zhangao/DATA/mipnerf360/treehill/discontinuous.txt"
+    },
+    "metric_files": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/cfg_args",
+        "mtime": "2026-02-28T19:42:56.394983+00:00",
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/mipnerf360/treehill', model_path='/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000', images='images_4', resolution=1, white_background=False, data_device='cpu', eval=False, cap_max=3300000, init_type='sfm', test_path='', test_selection_path='/data1/zhangao/DATA/mipnerf360/treehill/discontinuous.txt')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/results.json",
+        "mtime": "2026-03-01T01:00:30.589704+00:00",
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.6420001983642578,\n  \"PSNR\": 21.14537239074707,\n  \"LPIPS\": 0.2905033826828003,\n  \"BRISQUE\": 19.090679168701172,\n  \"NIQE\": 2.280048653718749,\n  \"PIQE\": 28.444351196289062\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/per_view.json",
+        "mtime": "2026-03-01T01:00:30.589704+00:00",
+        "text": ""
+      }
+    ]
+  },
+  {
+    "scene": "truck_resize",
+    "run": "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000",
+    "checkpoint": "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/point_cloud/iteration_30000/point_cloud.ply",
+    "checkpoint_mtime": "2026-03-05T07:13:31.749938+00:00",
+    "config": {
+      "sh_degree": 3,
+      "source_path": "/data1/zhangao/DATA/tandt/truck_resize",
+      "model_path": "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000",
+      "images": "images",
+      "resolution": 1,
+      "white_background": false,
+      "data_device": "cpu",
+      "eval": false,
+      "cap_max": 2000000,
+      "init_type": "sfm",
+      "test_path": "",
+      "test_selection_path": "/data1/zhangao/DATA/tandt/truck_resize/discontinuous.txt"
+    },
+    "metric_files": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/cfg_args",
+        "mtime": "2026-03-05T06:57:24.563731+00:00",
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/tandt/truck_resize', model_path='/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000', images='images', resolution=1, white_background=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='', test_selection_path='/data1/zhangao/DATA/tandt/truck_resize/discontinuous.txt')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/results.json",
+        "mtime": "2026-03-05T07:14:29.689832+00:00",
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.8510012030601501,\n  \"PSNR\": 24.088136672973633,\n  \"LPIPS\": 0.15360823273658752,\n  \"BRISQUE\": 27.908296585083008,\n  \"NIQE\": 2.9833316984367384,\n  \"PIQE\": 58.30458068847656\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/per_view.json",
+        "mtime": "2026-03-05T07:14:29.689832+00:00",
+        "text": ""
+      }
+    ]
+  },
+  {
+    "scene": "train_resize",
+    "run": "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000",
+    "checkpoint": "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/point_cloud/iteration_30000/point_cloud.ply",
+    "checkpoint_mtime": "2026-03-04T06:36:56.242782+00:00",
+    "config": {
+      "sh_degree": 3,
+      "source_path": "/data1/zhangao/DATA/tandt/train_resize",
+      "model_path": "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000",
+      "images": "images",
+      "resolution": 1,
+      "white_background": false,
+      "data_device": "cpu",
+      "eval": false,
+      "cap_max": 1000000,
+      "init_type": "sfm",
+      "test_path": "",
+      "test_selection_path": "/data1/zhangao/DATA/tandt/train_resize/discontinuous.txt"
+    },
+    "metric_files": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/cfg_args",
+        "mtime": "2026-03-05T07:14:33.005826+00:00",
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/tandt/train_resize', model_path='/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000', images='images', resolution=1, white_background=False, data_device='cpu', eval=False, cap_max=1000000, init_type='sfm', test_path='', test_selection_path='/data1/zhangao/DATA/tandt/train_resize/discontinuous.txt')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/results.json",
+        "mtime": "2026-03-04T06:38:45.315436+00:00",
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.7499845027923584,\n  \"PSNR\": 19.942537307739258,\n  \"LPIPS\": 0.2382800132036209,\n  \"BRISQUE\": 33.02627182006836,\n  \"NIQE\": 3.1555319951059237,\n  \"PIQE\": 57.142635345458984\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/per_view.json",
+        "mtime": "2026-03-04T06:38:45.315436+00:00",
+        "text": ""
+      }
+    ]
+  }
+]

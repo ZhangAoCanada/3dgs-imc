@@ -1,0 +1,890 @@
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                                                          1
+
+
+
+
+        GS-LSS: Learned Stochastic Sampling for 3D
+         Gaussian Splatting under Biased Viewpoints
+       Ao Zhang, Qiong Liu, Senior Member, IEEE, Wenxuan He, Jiabo Wu, and You Yang, Fellow, Optica
+
+
+
+
+   Abstract—3D Gaussian Splatting (3DGS) achieves high-fidelity                   Biased Training Viewpoints        Unseen Novel Target Views         Gaussian Primitives
+
+rendering when trained with sufficient observations and complete             (a) Viewing Angle Disparities     (b) Discontinuous Trajectory     (c) Systematic Coverage Gap
+scene coverage. However, real-world data acquisition is often
+subject to biased viewpoints, including viewing angle dispari-
+ties, discontinuous trajectories, and systematic coverage gaps.
+Under such bias, per-frame 3DGS optimization becomes under-
+determined in weakly observed regions, where Gaussian primi-
+tives can collapse onto globally inconsistent local minima, leading
+                                                                              Missing Ground-level Views        Panoramas with Occlusions            Unobserved Region
+to perspective overfitting that manifests as ghosting artifacts,
+hollow structures, and floating noise in unseen views. We argue              Defects: Hollowing Structure.     Defects: Blurring Artifacts.     Defects: Floating Noise.
+
+that addressing this challenge requires regularizing the per-                3DGS-MCMC              ours        MH-3DGS                 ours     MH-3DGS               ours
+frame objective with an observed-support consistency criterion,
+rather than attempting to recover unobservable geometry solely
+from biased observations. To this end, we propose GS-LSS,
+                                                                              hollowing                          Blurring                        Floaters
+an observed-support regularized learned stochastic optimization
+framework that reformulates 3DGS training as a Learned
+Stochastic Sampling (LSS) process, combining a deterministic                Fig. 1. Typical biased viewpoint settings. (a) Viewing angle disparities: 3DGS
+drift that regularizes Gaussian primitives toward aggregated                trained only with aerial-level views struggles to render consistent ground-
+observed support with adaptive stochasticity that explores weakly           level perspectives. (b) Discontinuous camera trajectories: unevenly sampled
+                                                                            camera paths lead to fragmented scene reconstruction with blurring artifacts
+constrained regions. The observed support is instantiated by
+                                                                            in synthesized views. (c) Systematic coverage gaps: missing observations in
+a Continuous Probability Field (CPF), a continuous, globally                specific regions leave parts of the scene weakly supervised.
+aggregated structural field that serves as a data-adaptive consis-
+tency prior for Gaussian relocation and reshaping. Importantly,
+CPF is not designed to hallucinate fully unseen geometry.
+Instead, it estimates reliable observed support as a stabilizer                However, obtaining full-range data coverage is often im-
+whose approximation error acts as a local perturbation to the               practical in real-world scenarios due to limited hardware
+regularized objective, thereby reducing local sampling bias and             accessibility, physical restrictions and environmental factors.
+suppressing view-specific overfitting artifacts. Experiments on             Common examples include top-down drone imagery with
+three representative biased viewpoint scenarios show that GS-               missing ground-level views, or street-level panoramas with
+LSS achieves competitive or superior quantitative results among
+the evaluated Gaussian Splatting baselines, particularly under              blind spots and occlusions. These limitations often lead to
+severe sampling bias.                                                       biased viewpoints, which manifest as viewing angle disparities,
+                                                                            discontinuous camera trajectories and systematic coverage
+  Index Terms—Biased Viewpoints, Gaussian Splatting, Learned
+Stochastic Sampling, Continuous Probability Field, Observed                 gaps, as shown in Fig. 1.
+Support Regularization                                                         Under biased viewpoints, most existing 3DGS methods
+                                                                            struggle to generalize beyond the observed perspectives. Since
+                                                                            their optimizations are dominated by per-frame photometric
+                         I. I NTRODUCTION                                   constraints, Gaussian primitives tend to overfit to the biased
+                                                                            observations, leading to suboptimal scene structure and limited
+N     OVEL view synthesis has achieved significant progress
+      since the introduction of 3D Gaussian Splatting
+(3DGS) [1]. The discrete representation and pixel-wise op-
+                                                                            global consistency. We refer to this phenomenon as perspective
+                                                                            overfitting. As a result, the synthesized views from unseen
+timization scheme enable high-fidelity real-time rasterization              viewpoints often exhibit severe artifacts, including ghosting,
+at reasonable cost. Consequently, numerous variants have been               floating noise, and hollowing effects, limiting the immersive
+proposed to integrate 3DGS into real-world applications, such               experience during free navigation with 6 Degrees of Freedom.
+as virtual tourism and cultural heritage preservation. The                     Recent efforts attempt to alleviate this issue via additional
+quality of scene reconstruction is strongly correlated with                 regularization or stochastic exploration. Regularization-based
+the completeness of data sampling, where broader viewpoint                  approaches such as depth regularization [2]–[4] are still tightly
+coverage typically leads to more faithful rendering quality.                coupled to pixel-wise supervision from biased viewpoints,
+                                                                            leading to fragmented geometry where Gaussian primitives
+  A. Zhang, Q. Liu, W. He, J. Wu, and Y. Yang are with the School of        are dense in observed regions but sparse in unseen areas.
+Electronic Information and Communications, Huazhong University of Science
+and Technology, Wuhan 430074, China. (e-mail: {zhangao, q.liu, wxhe,        In addition, the oversmoothed depth estimation can further
+d202381108, yangyou}@hust.edu.cn). Prof. Yang is a Fellow of Optica.        introduce artifacts such as floating noise and blurring. Al-
+                                                         0000–0000/00$00.00 © 2026 IEEE
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                2
+
+
+
+ternatively, MCMC-based methods [5], [6] introduce stochas-             LSS framework for 3DGS that mitigates perspective
+ticity into 3DGS optimization, improving exploration around             overfitting by complementing view-dependent supervi-
+the photometric gradients. However, this stochasticity is still         sion with per-primitive deterministic drift and adaptive
+primarily guided by photometric constraints with only hand-             stochastic perturbation.
+crafted rules, leading to limited global exploration around the       • We propose a Continuous Probability Field (CPF) that
+view-dependent gradients and insufficient correction toward             serves as a data-adaptive consistency prior, approximating
+scene-level consistency.                                                aggregated observed support as a smooth and continuous
+   Fundamentally, synthesizing faithful novel views from bi-            field for Gaussian relocation and reshaping.
+ased viewpoints is an ill-posed problem. In weakly observed
+regions, the photometric supervision is under-determined,
+                                                                                         II. R ELATED W ORK
+where Gaussian primitives fit the available views equally well
+but may disagree on the unseen ones. As a result, the per-frame        We review recent 3DGS improvements in scene consis-
+optimization, which minimizes the training loss but violates        tency and rendering quality along three directions: Gaussian
+scene-level coherence, collapses onto globally inconsistent         Splatting and its Variants, Regularized and Guided 3DGS
+structures, causing severe view-specific overfitting artifacts. A   Optimization, and Exploring Global Consistency in 3DGS. ,
+practical solution to the biased viewpoint problem should not       and discuss why biased viewpoints remain challenging.
+invent unobserved scene structure from biased observations,
+but should regularize the under-determined optimization to-
+                                                                    A. Gaussian Splatting and its Variants
+ward a more consistent prior. This requires a shift from purely
+local photometric constraints to a scene-level consistency             3D Gaussian Splatting (3DGS) [1] has emerged as a fast
+criterion that constrains the Gaussian primitives wherever the      alternative to Neural Radiance Fields [7], building on volume
+per-view supervision is insufficient.                               rendering principles [8] with an efficient splatting representa-
+   In this work, we propose GS-LSS, a Learned Stochas-              tion. Subsequent work mitigates aliasing with band-limit filter-
+tic Sampling (LSS) framework for Gaussian Splatting that            ing [9], reduces memory through compact representations [10],
+augments the standard photometric objective with observed-          [11], improves convergence with redefined densification [5],
+support regularized stochastic optimization. Specifically, our      [12]–[14], and adapts 3DGS to tasks such as sketch-driven
+method minimizes a one-sided observed-support penalty be-           face editing [15] and relightable rendering [16].
+tween Gaussian primitives and an aggregated support field,             Nevertheless, the optimization scheme of these methods is
+with a deterministic drift that pulls weakly constrained primi-     primarily driven by view-dependent photometric supervision.
+tives toward reliable support and an adaptive stochasticity that    Under biased viewpoint scenarios, this behavior can lead to
+explores the under-determined space. To instantiate the support     perspective overfitting, where Gaussian primitives converge
+field, we introduce Continuous Probability Field (CPF), a data-     to biased observations rather than a view-consistent scene
+adaptive consistency prior that aggregates geometric evidence       support. As a result, rendering from unseen viewpoints often
+from all training views into a continuous structural field, and     suffers from visual degradation and inconsistency, exhibiting
+predicts whether a given Gaussian primitive is consistent with      severe artifacts such as ghosting, hollowing, and floating noise.
+this aggregated observed support. Aligning the discrete Gaus-
+sians to this field provides explicit observed-support guidance
+for Gaussian relocation and reshaping in weakly observed re-        B. Regularized and Guided 3DGS Optimization
+gions, while an observation-aware gating mechanism prevents            To alleviate the limitations of purely photometric supervi-
+over-regularization in well-observed areas. Unlike MCMC-            sion, various regularization techniques have been introduced
+based methods [5], [6], which inject hand-crafted stochas-          to improve the geometric fidelity and cross-view coherence,
+ticity into the optimization but remain primarily driven by         including depth regularization, generative enhancement, and
+local photometric residuals, GS-LSS introduces explicit scene-      multi-view regularization.
+aware deterministic and stochastic updates that concentrate            Depth regularization is a common approach to enforce
+Gaussian relocation and exploration where biased supervision        scene geometry fidelity. For instance, DRGS [17], PGSR [2]
+is weak. CPF is used as an observed-support stabilizer and          and Hierarchical-GS [3] incorporate depth estimation priors,
+is not claimed to reconstruct completely unobserved geome-          such as Depth Anything [18], to supervise the scene geom-
+try. Extensive experiments on three typical biased viewpoint        etry represented by Gaussian primitives. Similar approaches
+scenarios show that GS-LSS improves scene consistency and           have been adopted in large-scale scene reconstruction [3],
+rendering quality for unseen viewpoints compared with the           [19], where both estimated depth priors and normal maps
+evaluated Gaussian Splatting baselines. The main contributions      are leveraged to improve the geometric accuracy and view
+of this work are summarized as follows:                             consistency. Although depth regularization can improve scene
+   • We investigate the behavior of representative 3DGS meth-       geometry, it is still driven by the pixel-wise depth supervision
+      ods under various biased viewpoint scenarios, showing         from biased viewpoints. As a result, the reconstructed scene
+      that perspective overfitting is a recurring issue caused by   often becomes fragmented, with Gaussian primitives located
+      the under-determination of the per-frame optimization in      mainly in the observed regions. Moreover, the inaccuracies and
+      weakly observed regions.                                      oversmoothing in learned priors can further introduce artifacts
+   • We propose GS-LSS, an observed-support regularized             including floating noise and blurring.
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                   3
+
+
+
+   Another guided method uses generative priors to provide         A. Preliminary
+direct enhancement for synthetic views. For example, Di-              Let G = {gi }N                                            M
+                                                                                    i=1 denote the Gaussian field, I = {Ij }j=1
+fix3D [20] leverages diffusion model to refine the visual          denote the training view distribution where Ij is the j-th
+quality of the renderings. However, excessive reliance on          training view, S denote the reliable scene support, and P(G|S)
+uncontrollable generative priors can introduce severe hallu-       denote the posterior distribution of the Gaussian field given the
+cination artifacts, which are undesirable in many applications.    S.
+   Multi-view regularization is another effective approach to         3DGS-MCMC [5] reformulates Gaussian updates as a
+enforce cross-view consistency. For example, PGSR [2] in-          stochastic optimization process. Its update can be written in a
+troduces geometric consistency constraints by minimizing the       Langevin Monte Carlo (LMC) [25] form as follows:
+reprojection error of Gaussian primitives across neighboring
+views, while MVGS [21] further extends this approach by                    Gt+1 = Gt + α · ∇Gt log P(Gt |S) + β · ϵGt |S ,           (1)
+introducing cross-intrinsic guidance to handle more distant        where the gradient term provides a deterministic drift and ϵGt |S
+views. By contrast, feed-forward multi-view methods, such as       enables stochastic exploration to escape local minima.
+SplatFormer [22], employ transformer-based deep networks to           In practice, 3DGS-MCMC [5] approximates this update
+process multiple views simultaneously, but require excessive       primarily through the photometric loss, which is reliable only
+computational resources, thus limiting their practical appli-      when the viewpoint distribution I sufficiently covers the scene
+cability. Although multi-view regularization improves local        support.
+consistency of neighboring views, it remains driven by the                             P(G|S) ∝ exp (−LI ) ,                    (2)
+available training samples. Under severely biased viewpoints,                                                         p
+the optimization stays trapped in the observed regions, result-     LI = (1 − ηI ) · L1 + ηI · Lssim + ηo · |o| + ηΣ | eig(Σ)|, (3)
+ing in limited improvement for unseen viewpoints.                  where I ∼ I are the training views; LI is the pixel-wise
+                                                                   loss function; eig(·) denotes the eigenvalues of the covariance
+C. Exploring Global Consistency in 3DGS                            matrix; η terms are hyperparameters. The stochastic perturba-
+   Apart from the regularization-based methods, another line       tion σmc , which samples around the photometric gradients, is
+of research focuses on improving the global consistency of         defined exclusively on the locations of the Gaussians with
+3DGS by introducing stochastic exploration mechanisms.                                            λlr · Σ
+   Stochastic sampling methods [5], [6], [23], [24] aim to                            σmc =                     .             (4)
+                                                                                             1 + e100·(0.995−o)
+improve global consistency by introducing stochasticity into          Although 3DGS-MCMC [5] improves the robustness of
+the optimization, allowing Gaussian primitives to escape           view synthesis through stochastic optimization, its practical
+local minima around biased photometric gradients. 3DGS-            update is still dominated by photometric gradients, and its
+MCMC [5] and MH-3DGS [6] reformulate Gaussian optimiza-            hand-crafted stochasticity provides only limited exploration
+tion as a Markov Chain Monte Carlo (MCMC) process, adding          around the optimization bias. Therefore, we approximate an
+random perturbation to Gaussian locations to encourage global      aggregated observed-support field and use it to regularize the
+exploration. Subsequent methods, including DBS [24] and Ac-        stochastic Gaussian optimization process.
+celerating [23], further adapt stochasticity to the optimization
+of other Gaussian attributes, such as covariance and opacity,
+                                                                   B. Learned Stochastic Sampling
+to enhance the global coherence of Gaussian shapes and ap-
+pearances. These methods have demonstrated that introducing           1) Problem Statement: The key assumption behind the
+stochasticity into 3DGS optimization improves robustness and       3DGS-MCMC [5] stochastic optimization is that the viewpoint
+global consistency. However, their stochasticity is typically      distribution I sufficiently covers the reliable scene support
+computed from Gaussian states that remain strongly controlled      S. However, in biased viewpoint scenarios, the training ob-
+by the photometric gradients. With the limited flexibility of      servations represent a severely biased sampling of the scene
+hand-crafted rules, the stochasticity provides only limited        support,
+exploration around the photometric gradients, which is insuf-                             Ibias ̸= Iideal ∼ S.               (5)
+ficient to regularize the Gaussians toward a coherent scene        where Ibias and Iideal denote the biased and ideal viewpoint
+support under severely biased observations.                        distributions, respectively. As a result, minimizing the photo-
+   In this work, we propose a Learned Stochastic Sampling          metric loss alone from biased samples cannot enforce reliable
+(LSS) framework that augments view-dependent photometric           scene consistency. We refer to this phenomenon as perspective
+supervision with CPF-guided observed-support regularization,       overfitting. One way to quantify this mismatch is the gap
+providing a practical consistency criterion that regularizes       ∆overfit between the expected loss under ideal and biased
+Gaussian primitives toward a less biased scene representation      viewpoint distributions,
+and mitigates perspective overfitting under biased viewpoints.
+                                                                         ∆overfit = EI∼Iideal [LI (G; I)] − EI∼Ibias [LI (G; I)] ,   (6)
+                        III. M ETHOD                               where |∆overfit | is expected to grow with the bias severity of
+   Our approach addresses the biased observation problem by        the viewpoint coverage, so the photometric gradients derived
+introducing observed-support regularized Learned Stochastic        from severely biased observations can become poorly aligned
+Sampling. The overall workflow is illustrated in Fig. 2.           with reliable scene support.
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                                                                    4
+
+
+
+
+      Splatting with Biased Viewpoints                                     Continuous Probability Field (CPF)                            Learned Stochastic Sampling (LSS)
+                                                                                        Geometric Preprocessing                           Gaussian Ellipsoid
+
+                                                                           DBSCAN            Projection
+                                                                            Noise
+                                                                           Filtering
+                                                                                                            Global Point Cloud            Point Sampling               Probability
+
+                                                                                             Aggregation                                                 Parameterization
+       Biased Viewpoint                     RGB Renderings
+           Sampling
+                                                                                        Probability Modeling
+                            Rasterization
+           SfM
+
+
+
+
+                                                                                           Normal Distribution                            Partial Derivatives         Variance Net
+                                                                                               Sampling
+                                            Depth Renderings             Discrete Points                         Geometric Field
+
+
+                                                                                        Continuous Probability
+                                                                                                                                            Deterministic               Stochastic
+                                                                                        Field Networks (CPF)
+                                                                                                                                               Mean                     Variance
+
+     Gaussian Primitives
+                                                                                                                                               Learned Stochastic Sampling (LSS)
+                                                                        Field Samples
+                                              Normal Maps                                     Networks           Probability Field
+
+
+
+
+Fig. 2. The pipeline of our proposed GS-LSS. We optimize Gaussian primitives as a learned stochastic sampling process, where the deterministic and stochastic
+parameters are learned from the Continuous Probability Field (CPF). The CPF is trained from a probabilized geometry field, which includes points, colors,
+normals, and corresponding probabilities.
+
+
+
+   Addressing this challenge requires a direct constraint that                                               In practice, S is often unavailable under biased viewpoints.
+regularizes the Gaussian field G toward reliable observed                                                 Therefore, we use a neural network to estimate an observed
+support, without assuming that fully unobserved structure can                                             support surrogate from in-training geometric priors. We name
+be recovered from biased views. Therefore, we define the                                                  this model Continuous Probability Field (CPF), denoted fθ ,
+following observed-support regularized surrogate objective,
+                                                                                                                                         S(g) ≈ fθ (g),                              (11)
+       π ⋆ (G) ∝ exp (−EI∼Ibias [LI (G; I)] − λs R(G; S)) ,                                    (7)
+                                                                                                          where fθ (g) predicts the probability of a given 3D primitive
+where R(·) is a one-sided observed-support penalty and λs                                                 being supported by the aggregated observed scene structure. A
+balances the photometric loss and the support regularization.                                             larger deviation of the Gaussian primitive from this observed
+Eq. 7 should be understood as a practical optimization surro-                                             support corresponds to a lower probability.
+gate rather than a claim that the full scene support is exactly                                              Now, we can obtain a tractable observed-support penalty:
+recovered.
+                                                                                                                                 R(G;
+                                                                                                                                 b    S) = Eg∼G [1 − fθ (g)] .                       (12)
+   2) Parameterization of µθ : Assuming an ideal support field
+S is given, we then rewrite the negative log of the surrogate                                             Let δ(g) = fθ (g) − S(g) denote the CPF approximation error.
+density as,                                                                                               Then, we have
+  − log π ⋆ (G) ≜ EI∼I [LI (G; I)] +λs                             R(G; S)            +C, (8)                ∇Gt R(G
+                                                                                                                 b t ; S) − ∇G R(Gt ; S) = ∇G Eg∼G [δ(g)] ,
+                                                                                                                              t              t    t
+                                                                                                                                                                                     (13)
+                  |     {z       }                                 | {z }
+                            view-dependent                     observed-support reg                       This term measures the local sensitivity of the CPF, not a
+where C is a constant independent of G. The view-dependent                                                convergence guarantee. Replacing the ideal support S with
+term preserves faithfulness to the training views, while the                                              CPF changes the support gradient direction by the residual
+support term regularizes the Gaussian field toward reliable                                               drift in Eq. 13. When the aggregated priors are reliable,
+observed support. Substituting Eq. 8 into Eq. 1 gives,                                                    this drift is small and the CPF mainly stabilizes weakly
+                                                                                                          observed Gaussians. The global aggregation, delayed start,
+             Gt+1 =Gt − α · ∇Gt EI∼Ibias [LI (Gt ; I)]                                                    normal smoothness, DBSCAN filtering, and observation-aware
+                                                                                               (9)
+                           − αλs · ∇Gt R(Gt ; S) + β · ϵGt |S .                                           gating in Section III-C are therefore safeguards that reduce, but
+                                                                                                          do not eliminate, CPF error.
+  To regularize the Gaussian field G with the support field S,
+                                                                                                             By replacing R(·) with R(·)
+                                                                                                                                       b in Eq. 9, we have,
+we define the one-sided observed-support penalty R(·) as the
+expectation over Gaussian primitives,                                                                        Gt+1 =Gt − α · ∇Gt EI∼Ibias [LI (Gt ; I)]
+                                                                                                                                                                                     (14)
+                     R(G; S) = Eg∼G [1 − S(g)] ,                                             (10)                       − αλs · ∇Gt Eg∼Gt [1 − fθ (g)] + β · ϵGt |S .
+                                                                                                          Therefore, the learned deterministic drift is defined as,
+where S(g) ∈ [0, 1] denotes the ideal support probability, i.e.,
+the compatibility of Gaussian g with reliable scene support.                                                                         µθ = −∇g (1 − fθ (g)).                          (15)
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                        5
+
+
+
+The parameterization of µθ provides explicit observed-support
+guidance for the Gaussians by regularizing them toward the
+observed-support field.
+   3) Parameterization of σθ : The stochasticity of the LMC
+sampling process is crucial for global exploration. Under
+biased viewpoints, a good perturbation should depend on both
+the observed support field and the current Gaussian states. In
+addition, as discussed in [26], the variance should be adaptive
+                                                                          XY Slice                XZ Slice             YZ Slice
+to the training state. Therefore, we propose to parameterize
+ϵGt |S with a variance network gθ that takes the predicted          Fig. 3. A visual example of a trained Continuous Probability Field (CPF)
+probability from fθ and the Gaussian field Gt as input,             sectional views in the x − y, x − z, and y − z planes. The colors indicate
+                                                                   the observed-support probability, with high and low values.
+            ϵGt |S = N (0, σθ ), σθ = gθ fθ (Gt ); Gt .    (16)
+Compared with the hand-crafted stochasticity in 3DGS-               under-determined. In our training schedule, CPF supervision
+MCMC [5], the parameterization of σθ is conditioned on              starts after the initial Gaussian field has stabilized, and learned
+both the observed support field and the Gaussian states. When       LSS sampling is enabled only after the CPF has received
+Gaussian primitives are far from the observed support, the low      its first supervision stage. The global aggregation, DBSCAN
+probability predicted by the CPF model yields a large variance,     outlier filtering, normal-driven smoothness, and observation-
+encouraging stronger exploration to escape local minima.            aware gating reduce the risk that a single biased view domi-
+   4) Final Formulation: Combining Eq. 15 and Eq. 16,               nates the field.
+we implement GS-LSS as a per-primitive reparameterized                 1) In-training Geometric Field: Given Gaussian ellipsoids
+stochastic update. For primitive i, let τ i = [pi , ρi , qi ] de-   Gt = {gi }N   i=1 , where gi = {p, o, Σ, c} at training iteration
+note the center, log-scale, and normalized-rotation parameters      t, we first render RGB images IG and depth maps DG from
+defined in Sec. III-C. The update is                                the training views, and compute the normal maps N from the
+                                                                    depth maps. After DBSCAN outlier filtering, we project these
+           τ t+1
+             i   = τ ti − λlr ∇τ i LI + λs µθ,i
+                                                                    maps and aggregate them into the world coordinate system to
+                    + λϵ σθ,i ⊙ ξ i ,   ξ i ∼ N (0, I),     (17)    construct a global sparse point cloud X = {x, c, n}, where x
+             µθ,i = ∇τ i fθ (xG,i ),                        (18)    is the 3D coordinate, c is color, and n is normal.
+                                                                       To obtain probabilistic supervision without making the field
+                                            
+             σθ,i = gθ fθ (xG,i ), αG,i ; τ i .             (19)
+                                                                    dependent on the absolute scene scale, we first normalize the
+This form makes the role of σθ,i explicit: it scales the sampled    scene coordinates by the scene center csc and diagonal length
+noise rather than disappearing inside an expectation. We use        dsc , i.e., x̃ = (x − csc )/dsc . We then sample around each
+the stochastic formulation as a learned optimizer rather than an    normalized point and compute its probability,
+exact Langevin or Metropolis-Hastings sampler, and therefore
+do not claim a stationary sampling distribution.                                        x̃s ∼ N (x̃, σs2 I3 ),                           (20)
+                                                                                                        ∥x̃s − x̃∥22
+                                                                                                                    
+   The effectiveness of µθ and σθ depends on the accuracy
+of the observed support approximation by the CPF model.                                 Ps = exp −                     ,                 (21)
+                                                                                                             2σs2
+Therefore, the training priors and loss functions for the CPF
+                                                                    where σs is set proportional to the median nearest-neighbor
+model are crucial for the performance of our LSS method.
+                                                                    distance of the aggregated point cloud in normalized coordi-
+                                                                    nates. We thus acquire the geometry field Xs = {x̃s , Ps , c, n}
+C. Continuous Probability Field                                     as the training priors. This normalization makes the CPF
+   The target of the CPF model fθ is to provide a data-             supervision comparable across datasets with different physical
+driven approximation of the aggregated observed-support field       scales.
+S(g) (Eq. 11). Operationally, the CPF probability Pθ is                2) CPF network and Loss Function: We build the CPF
+queried at points sampled from Gaussian primitives, which           network fθ with a 3-layer SIREN [27]-style MLP, which
+denotes observed-support probability rather than a posterior        maps sampled points xs to the probability Pθ and color cθ .
+over unseen geometry. The accuracy of the CPF model is              During training, the depth normals are consistently oriented
+reflected in the residual drift in Eq. 13. To construct this        before aggregation, and the normalized CPF gradient n̂θ =
+approximation from biased training samples, we supervise            ∇x Pθ /(∥∇x Pθ ∥2 + ϵn ) is regularized by n to encourage field
+fθ with an in-training probabilized geometry field aggregated       continuity and smoothness. The loss function is defined as:
+from all training views.                                                             X                X
+                                                                             Lcpf =     |Pθ − Ps | +      |1 − ⟨n, ∇x Pθ ⟩|
+   The geometry that supervises the CPF model is itself derived
+                                                                                         x                   x
+from 3DGS under biased viewpoints, so the CPF model is                                       X                                           (22)
+not claimed to recover fully unobserved geometry. Instead,                             +         |cθ − c|
+                                                                                             x
+it estimates a smooth observed-support field from evidence
+aggregated across all available training views, and uses this       where ⟨·, ·⟩ denotes cosine similarity. Fig. 3 shows an example
+field to regularize updates only where per-view supervision is      of the trained CPF model.
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                               6
+
+
+
+   Since the loss function is built upon globally aggregated              Algorithm 1 CPF-guided stochastic optimization in GS-LSS
+geometric priors, it encourages the CPF network fθ to be-                  1: Initialize G from SfM points and train with LI .
+                                                                           2: for t = 1, . . . , T do
+have as an observed-support estimator rather than a per-view               3:    Render RGB/depth/normal maps from training views.
+regressor, which reduces the magnitude of the gradient drift               4:    if t ≥ TCPF then
+∇Gt Eg∼Gt [δ(g)] in Eq. 13 when the priors are reliable. This is           5:        Aggregate geometry; apply DBSCAN; update CPF with Eq. 22.
+                                                                           6:    end if
+the fundamental difference from regularization-based methods,              7:     Update ordinary 3DGS attributes with the photometric loss.
+whose regularization is derived from per-view perspectives.                8:    if t ≥ TLSS then
+   3) Computation of µθ and σθ : To make the LSS update                    9:        Sample xG,i from selected Gaussian ellipsoids.
+                                                                          10:         Query CPF, compute µθ,i by Eq. 25, compute σθ,i by Eq. 27.
+of Eq. 17 concrete, we compute the deterministic drift µθ,i               11:         Sample ξi ∼ N (0, I) and update τ i with Eq. 17.
+and the stochastic scale σθ,i as explicit, differentiable func-           12:         Normalize rotations and keep covariance positive definite.
+tions of the CPF predictions and the Gaussian states. Dif-                13:     end if
+                                                                          14: end for
+ferent from 3DGS-MCMC [5], we update both the locations                   15: Discard CPF, gθ and hθ for inference.
+and shapes of the Gaussian ellipsoids through the gradients               16: return optimized Gaussian field G.
+provided by the CPF model. For each Gaussian ellipsoid
+gi = {pi , oi , Σi , ci } ∼ G, we randomly sample a point within
+it and compute its opacity,                                               posterior variance, replacing the hand-crafted opacity rule in
+                                                                          Eq. 4 with a learned observation-conditioned gate.
+            xG,i ∼ N (pi , Σi ) ,                                  (23)
+                                                                             The LSS process is then performed using Eq. 17, where
+                       − 12 (xG,i −pi )T Σ−1
+                                          i (xG,i −pi )
+            αG,i = e                                      · oi .   (24)   µθ,i serves as an observed-support drift and σθ,i as an adaptive
+                                                                          stochastic perturbation.
+The CPF then gives the per-Gaussian support probability
+Pθ,i = fθ (xG,i ).
+   These points are fed into the CPF model to obtain the prob-            D. Training Objectives
+ability Pθ = fθ (xG ). In implementation, we do not directly                GS-LSS jointly optimizes the Gaussian field G and the CPF
+update the raw covariance matrix. Instead, the covariance is              model fθ , details are provided in Algorithm 1. Following the
+parameterized as Σi = R(qi ) diag(exp(2ρi ))R(qi )T , where               surrogate objective in Eq. 8, the Gaussian field is optimized
+ρi are log-scales and qi is a normalized quaternion. Therefore,           by the observed-support regularized objective,
+the LSS geometry parameter is τ i = [pi , ρi , qi ], which
+preserves the positive definiteness of Σi during optimization.                         LG = EI∼Ibias [LI (G; I)] + λs R(G;
+                                                                                                                      b    S),               (28)
+Following Eq. 18, the deterministic drift is obtained by back-
+                                                                          which combines the photometric loss LI (Eq. 3) with the
+propagating the CPF probability to these parameters:
+                                                                          observed-support penalty R   b (Eq. 12). The minimization of
+              µθ,i = −∇τ i (1 − Pθ,i ) = ∇τ i Pθ,i .               (25)   LG is realized through the LSS update in Eq. 17, where
+                                                                          the deterministic drift µθ,i decreases the support penalty and
+This drift moves each Gaussian toward higher support Pθ,i                 the adaptive perturbation σθ,i injects scene-aware stochas-
+while keeping the covariance representation valid.                        tic exploration. The CPF networks are optimized by the
+   The variance module is implemented with two lightweight                geometric-field loss Lcpf (Eq. 22), which fits fθ to the globally
+2-layer MLP heads. The scale head gθ predicts a learnable                 aggregated probability, color and normal priors. We optimize
+scale aθ,i , and the gate head hθ predicts an observation-                the two objectives jointly so that observed-support estimation
+aware confidence gate ∆θ,i from the observed support Pθ,i                 and Gaussian optimization remain coupled during training.
+and sampled opacity αG,i :                                                Importantly, the CPF and stochastic heads are used only
+     aθ,i = gθ (Pθ,i , αG,i ) ,    ∆θ,i = hθ (Pθ,i , αG,i ) ,      (26)   during training. Inference is performed with only the optimized
+                                                                          Gaussian field G with standard 3DGS renderer.
+                               aθ,i · Di
+                       σθ,i =              ,                (27)
+                             1 + e100·∆θ,i
+                                                                                                  IV. E XPERIMENTS
+where Di is a diagonal parameter-space scale matrix: its posi-
+tion block uses the current Gaussian axis scales exp(ρi ), while          A. Implementation Details
+the log-scale and rotation blocks use fixed small constants.                 1) Datasets: We evaluate our method on 16 scenes from
+Pθ measures support from the CPF field, and αG measures                   5 widely used datasets, including 8 surrounding scenes from
+primitive support at the sampled point. The learned gate                  Mip-NeRF 360 [28], 2 outdoor scenes (Truck and Train) from
+suppresses σθ,i for well-observed primitives and allows larger            Tanks & Temples [29], 4 large-scale scenes with planar trajec-
+perturbations for weakly supported primitives. The factor 100             tories from Mill 19 [30], and 2 urban scenes with both aerial
+follows the sharp confidence gate used in 3DGS-MCMC [5].                  and ground views from MatrixCity [31] and Zeche [32]. These
+We clamp the exponent for numerical stability. The heads gθ               datasets cover a wide range of scene types and viewpoint
+and hθ are not trained with a separate variance target. After             distributions, providing a comprehensive benchmark.
+the one-step reparameterized update in Eq. 17, Eq. 28 is back-               2) Biased Viewpoint Settings: To evaluate the robustness
+propagated through µθ,i and σθ,i using first-order gradients,             of our method under various biased viewpoint scenarios, we
+without multi-step unrolling or second-order derivatives. Thus,           design three representative settings: systematic coverage gap,
+σθ,i is a train-time perturbation scale rather than a calibrated          discontinuous trajectory and viewing angle disparities.
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                                                   7
+
+
+
+                                                               TABLE I
+E VALUATION FOR SYSTEMATIC COVERAGE GAPS ON M IP -N E RF 360 [28] AND TANKS & T EMPLES [29], WITH ANGULAR GAPS 20◦ , 40◦ , 60◦ , 80◦ AND
+                                   ◦
+                                100 . B EST RESULTS ARE IN BOLD AND SECOND - BEST ARE UNDERLINED .
+
+                                                   20◦                      40◦                      60◦                      80◦                      100◦
+Method
+                                  SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓
+                                                                                      Mip-NeRF 360
+3DGS [1]                          0.787           24.936   0.202   0.726   22.137   0.249   0.674   20.499   0.291   0.630   19.460   0.324   0.584   17.597   0.358
+Scaffold-GS [10]                  0.760           23.844   0.231   0.706   21.835   0.273   0.653   20.418   0.315   0.616   19.574   0.344   0.571   17.751   0.378
+Hierarchical-GS [3]               0.787           25.044   0.203   0.725   22.314   0.250   0.671   20.611   0.291   0.624   19.339   0.326   0.581   17.463   0.359
+MVGS [21]                         0.784           24.827   0.203   0.715   22.130   0.256   0.658   20.458   0.303   0.608   19.081   0.340   0.561   17.164   0.374
+PGSR [2]                          0.771           24.203   0.231   0.706   21.588   0.280   0.662   20.179   0.307   0.611   18.834   0.343   0.553   16.808   0.375
+3DGS-MCMC [5]                     0.801           25.323   0.194   0.739   22.369   0.239   0.679   20.732   0.283   0.632   19.344   0.319   0.572   17.204   0.355
+MH-3DGS [6]                       0.784           25.122   0.224   0.728   22.365   0.265   0.683   20.855   0.300   0.650   20.008   0.328   0.608   18.352   0.360
+GS-LSS (Ours)                     0.808           25.839   0.188   0.752   23.152   0.236   0.708   21.615   0.273   0.667   20.235   0.307   0.631   18.805   0.340
+
+                                                                                     Tanks & Temples
+3DGS [1]                          0.771           20.411   0.209   0.741   19.464   0.234   0.695   18.651   0.269   0.663   17.945   0.294   0.632   17.422   0.323
+Scaffold-GS [10]                  0.744           19.331   0.222   0.743   19.945   0.232   0.692   18.658   0.269   0.653   17.589   0.301   0.615   17.082   0.334
+Hierarchical-GS [3]               0.766           20.418   0.208   0.743   19.640   0.229   0.694   18.728   0.267   0.657   17.811   0.296   0.630   17.226   0.321
+MVGS [21]                         0.756           20.211   0.199   0.721   19.150   0.229   0.668   18.323   0.275   0.625   17.549   0.309   0.590   16.875   0.340
+PGSR [2]                          0.765           20.119   0.234   0.737   19.182   0.258   0.687   18.020   0.295   0.653   17.305   0.313   0.634   17.206   0.338
+3DGS-MCMC [5]                     0.782           21.026   0.202   0.754   20.018   0.220   0.702   18.973   0.257   0.665   18.014   0.285   0.632   17.406   0.317
+MH-3DGS [6]                       0.754           19.967   0.221   0.726   19.205   0.241   0.649   17.404   0.291   0.652   17.299   0.298   0.612   16.627   0.331
+GS-LSS (Ours)                     0.787           21.451   0.191   0.757   20.253   0.210   0.709   19.345   0.247   0.672   18.113   0.274   0.643   17.818   0.304
+
+
+                 Coverage Gap (bicycle)
+
+                                       Training
+                                        Views
+
+
+
+
+                    θ
+
+      Testing
+      Views
+
+
+
+                Coverage Gap (truck)
+
+
+                                    Training
+                                     Views
+
+
+
+
+                        θ
+
+                        Testing
+                        Views
+
+
+
+Fig. 4. Visualization of the performance trends under systematic coverage gaps, with gap size ranging from 20◦ to 100◦ . The first row corresponds to
+Mip-NeRF 360 [28] dataset and the second row corresponds to Tanks & Temples [29] dataset.
+
+
+
+   Systematic coverage gap. On Mip-NeRF 360 [28] and                                           periments, all methods are trained exclusively on aerial views
+Tanks & Temples [29], we randomly remove consecutive                                           and evaluated on ground views to assess robustness against
+segments of training views to create angular coverage gaps,                                    large view angle disparities. For all settings, the train/test split
+where the removed viewpoints are used for evaluation. The                                      is applied before SfM-based initialization. The sparse points
+size of the angular gap is set to a range from 20◦ to 100◦ to                                  for Gaussian initialization, the footprint in Fig. 5, and the FFR
+simulate different severities of systematic coverage gaps.                                     support in Table IV are computed from the selected training
+  Discontinuous trajectory. We evaluate this setting on both                                   views only. No held-out views are used by any method during
+surrounding and planar camera trajectories using Mip-NeRF                                      training or support construction.
+360 [28], Tanks & Temples [29] and Mill 19 [30]. Specifically,                                    3) Competitors and Hyperparameters: We compare our
+we randomly select several disjoint regions of the viewpoint                                   method against representative 3DGS baselines from three fam-
+coverage to form unevenly distributed training views, where                                    ilies. Among them, 3DGS [1] and Scaffold-GS [10] are two
+each region contains a local cluster of neighboring viewpoints.                                widely used photometric optimization baselines. Hierarchical-
+  Viewing angle disparities. For this setting, we use Block                                    GS [3], MVGS [21] and PGSR [2] are three representative ge-
+A of MatrixCity [31] and Zeche [32], as they both contain                                      ometric regularization methods for 3DGS. 3DGS-MCMC [5]
+substantial collections of aerial and ground views. In our ex-                                 and MH-3DGS [6] are two state-of-the-art stochastic optimiza-
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                                         8
+
+
+
+                        train
+                        test
+
+
+
+
+  20°
+  gap
+
+
+                        train
+                        test
+
+
+
+
+  60°
+  gap
+
+
+                        train
+                        test
+
+
+
+
+  100°
+  gap
+
+
+
+           SfM points           3DGS        Scaffold-GS    Hierarchical-GS     MVGS            PGSR         3DGS-MCMC         MH-3DGS      3DGS-LSS (ours)
+
+
+Fig. 5. Top-down bird’s eye view of free-space floaters for the Bonsai scene in Mip-NeRF 360 [28] under different systematic coverage gap settings. The faint
+gray shows the SfM footprint, and the hot color map shows the relative density of Gaussians identified as free-space floaters by the visualization protocol.
+
+
+
+tion baselines. Particularly, for Hierarchical-GS [3], we enable                to the available viewpoints. As a result, the learned structures
+only depth regularization to ensure a fair comparison. Methods                  are locally consistent with the observed perspectives while
+that require explicit control over the number of Gaussian                       leaving the unseen regions weakly constrained. The qualitative
+primitives use the same total count across all competitors.                     comparisons in Fig. 6 support this explanation. The rendered
+   All baselines are trained with their official implementations                images from MVGS [21] and PGSR [2] commonly exhibit
+and default configurations under the same training iteration                    significant hollowing artifacts in the gap regions, which is a
+budget, image resolution, fixed train/test split, and the same                  typical symptom of perspective overfitting.
+initialization point cloud. Scaffold-GS uses its official anchor                   More direct evidence of perspective overfitting is shown in
+and view-adaptive rendering settings. For our method, CPF                       Fig. 5 and Table IV, which visualize and quantify the free-
+training begins at iteration 2000 with a learning rate of                       space floaters of different methods on Mip-NeRF 360 [28].
+1 × 10−4 , and the learned sampling of µθ and σθ begins at                      Under large coverage gaps, most methods place many spurious
+iteration 2500. Unless otherwise stated, the photometric loss                   Gaussians in free space that are far away from the real sur-
+of GS-LSS is computed from one randomly sampled training                        faces, indicating that their optimization creates unconstrained
+view per iteration, following the standard 3DGS-MCMC [5]                        geometry in the unobserved regions. By contrast, our GS-
+protocol. Other hyperparameters are set as follows: CPF net fθ                  LSS method visibly reduces free-space floater density in the
+is a 3-layer SIREN-style MLP, gθ and hθ are 2-layer MLPs;                       displayed gap settings, suggesting that the observed-support
+DBSCAN ϵ = 0.25 in normalized coordinates; λs = 0.1; and                        guidance helps suppress the unconstrained densification in-
+λϵ = 1. All experiments are conducted on a single NVIDIA                        duced by biased sampling. This phenomenon is not limited
+RTX 4090 GPU with 24 GB memory.                                                 to the systematic coverage gap setting. Under aerial-ground
+                                                                                view disparities (Table III), where the training and testing
+B. Main Results                                                                 views differ dramatically in elevation angles, geometric regu-
+   We organize the experiments to test our core claims: 1)                      larization methods commonly suffer from inferior performance
+performance degradation under biased viewpoints is consis-                      compared to other methods. Hierarchical-GS [3] and PGSR [2]
+tent with perspective overfitting. 2) hand-crafted stochastic                   drop below 13.1 dB PSNR on MatrixCity [31], far worse than
+exploration alleviates this issue, but remains limited with-                    the photometric and stochastic baselines that all remain above
+out an explicit observed-support guidance. 3) CPF-guided                        15 dB. This further suggests that perspective overfitting is a
+observed-support regularization provides an effective stabilizer                common issue under severely biased viewpoints.
+for 3DGS optimization under biased viewpoints.                                     Together, these results are consistent with our claim that
+   1) Claim 1: Biased viewpoints induce perspective overfit-                    optimization bias toward observed perspectives is a major
+ting: Table I and Fig. 4 summarize the quantitative results for                 cause of 3DGS deterioration under biased viewpoints, and
+the systematic coverage gap setting. These results show that                    that simply adding observation-driven geometric constraints
+all methods degrade substantially as the coverage gap widens,                   is insufficient to remove this bias.
+which indicates that the deterioration is not a dataset-specific                   2) Claim 2: Stochasticity alone provides limited improve-
+or method-specific phenomenon, but a general issue for 3DGS                     ments: Table I, II, and III show that stochastic exploration can
+under biased viewpoints. Geometric regularization methods,                      improve over purely photometric optimization and geometric
+including Hierarchical-GS [3], MVGS [21] and PGSR [2],                          regularization baselines. In particular, 3DGS-MCMC [5] is
+also remain vulnerable under large gaps. This indicates that                    consistently competitive across all biased viewpoint settings,
+observation-driven regularization constraints, such as depth su-                suggesting that stochastic updates help Gaussian primitives
+pervision and multi-view reprojection, remain tightly coupled                   escape locally biased optimization.
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                               9
+
+
+
+                                                              TABLE II
+E VALUATION FOR DISCONTINUOUS TRAJECTORIES ON M IP -N E RF 360 [28], TANKS & T EMPLES [29] AND M ILL 19 [30]. B EST RESULTS ARE IN BOLD
+                                               AND SECOND - BEST ARE UNDERLINED .
+
+
+                                              Mip-NeRF 360                           Tanks & Temples                          Mill 19
+   Method
+                                 SSIM↑          PSNR↑         LPIPS↓       SSIM↑         PSNR↑         LPIPS↓     SSIM↑       PSNR↑       LPIPS↓
+   3DGS [1]                       0.826          26.979       0.169        0.778         20.914        0.216      0.754       21.503       0.217
+   Scaffold-GS [10]               0.783          25.356       0.205        0.745         19.496        0.237      0.755       21.081       0.226
+   Hierarchical-GS [3]            0.827          27.046       0.168        0.787         21.521        0.210      0.762       22.263       0.210
+   MVGS [21]                      0.828          27.288       0.164        0.776         20.744        0.196      0.746       21.311       0.227
+   PGSR [2]                       0.821          26.269       0.188        0.786         21.093        0.231      0.717       20.336       0.265
+   3DGS-MCMC [5]                  0.843          27.517       0.153        0.799         21.955        0.196      0.766       22.532       0.207
+   MH-3DGS [6]                    0.817          26.895       0.191        0.767         20.895        0.218      0.747       22.394       0.249
+   GS-LSS (Ours)                  0.845          28.018       0.151        0.805         22.160        0.180      0.775       22.893       0.198
+
+
+
+                             TABLE III                                             biased viewpoint settings are consistent with our third claim
+ E VALUATION FOR VIEWING ANGLE DISPARITIES ON M ATRIX C ITY [31]                   that CPF-guided observed-support regularization provides ef-
+     AND Z ECHE [32] DATASETS . B EST RESULTS ARE IN BOLD AND
+                  SECOND - BEST ARE UNDERLINED .                                   fective guidance for 3DGS optimization. For example, under
+                                                                                   systematic coverage gaps (Table I), our method achieves the
+                                 MatrixCity                   Zeche                best performance across gap sizes and metrics on both Mip-
+Method
+                      SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓
+                                                                                   NeRF 360 [28] and Tanks & Temples [29]. Fig. 4 further
+                                                                                   shows that our method maintains a clear advantage as the
+3DGS [1]                 0.578    16.146      0.495   0.330    9.431   0.568
+Scaffold-GS [10]         0.562    16.193      0.493   0.337    9.806   0.591       coverage gap becomes more severe. Under discontinuous tra-
+Hierarchical-GS [3]      0.458    12.943      0.532   0.341    9.646   0.577       jectories (Table II), our method obtains the best average perfor-
+MVGS [21]                0.541    15.610      0.490   0.340    9.494   0.581       mance across all three datasets, outperforming the second-best
+PGSR [2]                 0.417    13.072      0.531   0.261    8.499   0.538
+3DGS-MCMC [5]            0.586    16.225      0.480   0.373   10.133   0.534       method 3DGS-MCMC [5] by 0.501 dB, 0.205 dB and 0.361
+MH-3DGS [6]              0.560    15.297      0.502   0.481   12.703   0.546       dB PSNR on Mip-NeRF 360 [28], Tanks & Temples [29]
+GS-LSS (Ours)            0.594    16.951      0.462   0.481   12.879   0.530       and Mill 19 [30] respectively. Under viewing angle disparities
+                                                                                   (Table III), our method achieves the best performance on both
+                                                                                   MatrixCity [31] and Zeche [32], improving the PSNR over the
+   However, these results also suggest that hand-crafted                           second-best baseline by 0.468 dB and 0.176 dB, respectively.
+stochasticity alone is still limited, as the performance of                           The performance rankings further support the design of GS-
+MCMC-based methods often remains below GS-LSS in the                               LSS. The improvement over deterministic-only methods, such
+reported settings, and the performance gap widens as the bias                      as 3DGS [1] and Scaffold-GS [10], supports the view that
+becomes more severe. Taking the systematic coverage gap as                         photometric optimization alone is insufficient under biased
+an example, on Mip-NeRF 360 [28] the PSNR advantage of                             viewpoints. The improvement over geometric methods, such
+GS-LSS over 3DGS-MCMC [5] grows monotonically with the                             as Hierarchical-GS [3], MVGS [21] and PGSR [2], suggests
+gap size, widening from 0.52 dB at the mildest 20◦ gap to                          that observation-driven regularization alone may not provide
+1.60 dB at 100◦ . A consistent advantage is also observed on                       sufficient scene-level guidance under biased viewpoints. The
+Tanks & Temples [29], where GS-LSS outperforms 3DGS-                               improvement over MCMC-based methods, such as 3DGS-
+MCMC at every gap size by 0.10-0.43 dB PSNR. The limited                           MCMC [5] and MH-3DGS [6], indicates that stochasticity
+improvement of purely stochastic methods suggests that their                       alone provides limited global exploration. Instead, CPF-guided
+optimization remains strongly influenced by view-dependent                         observed-support regularization provides explicit guidance for
+photometric gradients, which limits global coherence under                         3DGS optimization, helping mitigate perspective overfitting
+severe sampling bias. Results from the discontinuous trajectory                    and improve novel view synthesis under various biased view-
+setting (Table II) and the viewing angle disparity setting                         point scenarios.
+(Table III) further support this observation with the same trend.                     Qualitative results in Fig. 6 further support the advantages
+   The qualitative comparison in Fig. 6 leads to the same                          of GS-LSS. Our method produces more coherent geometry,
+conclusion. MCMC-based methods show relatively higher                              sharper textures and fewer artifacts in unseen regions than
+rendering quality than deterministic methods, but still exhibit                    the competitors, consistent with the reduced free-space floater
+blurry textures, incomplete geometry and hollow structures in                      density in Fig. 5.
+severely unobserved regions.
+   These results support our second claim that hand-crafted
+stochastic exploration improves robustness to biased photo-                        C. Ablation Study
+metric updates, but is insufficient to enforce a coherent scene                       We conduct ablation experiments to evaluate the effective-
+structure under severe sampling bias, as the optimization                          ness of LSS on floater reduction and the effectiveness of each
+remains predominantly driven by view-dependent constraints.                        component in GS-LSS, including the sampling parameteriza-
+   3) Claim 3: CPF-guided observed-support regularization                          tion, the CPF networks, and the stability of the stochastic
+improves biased-view robustness: Results across all three                          optimization.
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                                            10
+
+
+
+  Discontinuous Viewpoints
+  Coverage Gap
+  Angle Disparity
+
+
+
+
+                             3DGS    Scaffold      Hierarchical-GS     MVGS            PGSR      3DGS-MCMC   MH-3DGS   3DGS-LSS (ours)   GT       Full Image
+
+
+Fig. 6. Visual comparison on three biased viewpoint settings, including discontinuous trajectories, systematic coverage gaps, and viewing angle disparities.
+
+
+
+                              TABLE IV                                                             from SfM support inside the evaluated gap region. This metric
+ F REE - SPACE FLOATER RATIO (FFR, %) ON M IP -N E RF 360 [28] UNDER                               is independent of CPF and directly measures unsupported
+            SYSTEMATIC COVERAGE GAPS . L OWER IS BETTER .
+                                                                                                   primitives in the weakly observed region shown in Fig. 5.
+ Method                              20◦         40◦       60◦        80◦     100◦       Avg.      Results in Table IV show that GS-LSS achieves the lowest
+                                                                                                   average FFR across all gap sizes. This ablation supports the
+ 3DGS [1]                           3.914        3.918    3.932       3.866    3.792     3.884
+ Scaffold-GS [10]                   11.852      11.818   12.287      12.098   12.469    12.105     claim that CPF-guided optimization reduces unsupported free-
+ Hierarchical-GS [3]                12.129      12.165   18.589      12.357   11.725    13.393     space primitives, while Table V further identifies which update
+ MVGS [21]                          13.967      13.568   13.024      13.091   12.692    13.268
+ PGSR [2]                           14.638      14.732   15.381      14.618   15.985    15.071
+                                                                                                   and observed-support components contribute to this behavior.
+ 3DGS-MCMC [5]                       7.596       7.263    7.557       7.142    7.091     7.330        2) LSS Component Ablation: We ablate the two main
+ MH-3DGS [6]                         3.842       4.104    3.715       3.753    3.741     3.831
+ GS-LSS (Ours)                      1.867       2.223    2.723        2.382   3.028     3.444
+                                                                                                   components of the proposed LSS process, namely the CPF
+                                                                                                   network fθ and the variance network gθ , with results pre-
+                                                                                                   sented in Tab. V. In the table, 3DGS-MCMC [5] is denoted
+                                                                                                   by N (0, σmc ), where σmc is the hand-crafted variance. For
+   1) Free-space Floater Ratio: We ablate free-space floater                                       the N (0, σθ ) (without CPF), the support input is replaced
+ratio (FFR) on Mip-NeRF 360 [28] under systematic coverage                                         by a constant and the gate is conditioned on opacity and
+gaps to examine whether GS-LSS reduces support structural                                          Gaussian state only. Replacing the hand-crafted variance with
+floaters. FFR is defined as the opacity-weighted percentage                                        this learned stochastic proposal improves SSIM, PSNR, and
+of Gaussian centers farther than 1.5% of the scene diagonal                                        LPIPS over the MCMC-variance row, indicating that adaptive
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                       11
+
+
+
+                               TABLE V                             network design. Given this advantage at a comparable model
+   A BLATION STUDIES OF LSS PARAMETERIZATION , EVALUATED ON        size, we adopt the SIREN-style network in our method.
+      M ATRIX C ITY [31]. B EST RESULTS HIGHLIGHTED IN BOLD .
+
+ Method           Ablation          SSIM ↑    PSNR ↑     LPIPS ↓                               TABLE VII
+                                                                    R ESULTS OVER FIVE INDEPENDENT TRIALS ON TANKS & T EMPLES [29]
+                 Ablation on LSS Parameterization                                       WITH A 60 ◦ COVERAGE GAP.
+
+ N (0, σmc )      w/o fθ , w/o gθ    0.586    16.225       0.480
+                                                                   Trial               SSIM ↑               PSNR ↑              LPIPS ↓
+ N (0, σθ )       w/o fθ , w/ gθ     0.609    16.544       0.474
+ N (µθ , σmc )    w/ fθ , w/o gθ     0.594    16.599       0.478   Trial 1             0.7052               19.3795             0.2476
+ N (µθ , σθ )     w/ fθ , w/ gθ      0.592    16.693       0.470   Trial 2             0.7030               19.1766             0.2514
+                                                                   Trial 3             0.7070               19.3917             0.2486
+                                                                   Trial 4             0.7040               19.3068             0.2461
+                                                                   Trial 5             0.7075               19.3454             0.2474
+stochasticity is beneficial under biased viewpoints. Introducing
+the CPF-conditioned mean term µθ while keeping the original        Mean                 0.7053              19.3200              0.2482
+                                                                   Variance          3.68 × 10−6             0.0075           3.95 × 10−6
+variance, denoted by N (µθ , σmc ), improves PSNR over both
+variance-only rows, indicating that the CPF model provides
+observed-support guidance beyond pixel-wise supervision. The          4) LSS Stochastic Stability: To evaluate the sensitivity of
+full LSS process, denoted by N (µθ , σθ ), achieves the best       our method to stochastic optimization, we repeatedly train GS-
+PSNR and LPIPS, while the learned-variance-only variant ob-        LSS with the same settings for five independent trials. Results
+tains the highest SSIM. This suggests that CPF drift improves      in Table VII show only minor performance fluctuations across
+photometric fidelity and artifact suppression, whereas stochas-    trials. The PSNR of each trial stays within approximately
+tic adaptation better preserves local structural similarity.       ±0.15 dB of the mean, while the SSIM and LPIPS variances
+                                                                   remain on the order of 10−6 . These results indicate that
+                          TABLE VI                                 our method exhibits stable optimization behavior despite its
+A BLATION STUDIES OF GEOMETRIC FIELD AND CPF MODEL , EVALUATED     stochastic nature.
+      ON TANKS & T EMPLES [29] WITH COVERAGE GAP OF 60 ◦ .
+
+                                                                                            TABLE VIII
+Ablation             SSIM ↑         PSNR ↑             LPIPS ↓      AVERAGE TRAINING TIME AND RENDERING QUALITY COMPARISON ON
+                                                                          TANKS & T EMPLES [29] WITH A 60◦ COVERAGE GAP.
+                   Ablation on DBSCAN ϵ value
+ϵ = 0.1              0.7058         19.1690            0.2458      Method             PSNR ↑       SSIM ↑      Time (min) ↓      vs. 3DGS
+ϵ = 0.25             0.7112         19.4428            0.2461
+                                                                   3DGS                18.651      0.695              14.00        1.00×
+ϵ = 0.5              0.7058         19.1871            0.2485      Scaffold-GS         18.658      0.692              18.02        1.29×
+ϵ = 0.75             0.7048         18.9888            0.2527      Hierarchical-GS     18.728      0.694              14.68        1.05×
+ϵ = 1.0              0.7004         18.9240            0.2550      3DGS-MCMC           18.973      0.702              17.37        1.24×
+           Ablation on Network Architecture of CPF Model           MH-3DGS             17.404      0.649              13.88        0.99×
+                                                                   MVGS                18.323      0.668              70.23        5.02×
+MLP                  0.7070         19.2183            0.2463      PGSR                18.020      0.687              37.35        2.67×
+SIREN-style          0.7112         19.4228            0.2461      GS-LSS (Ours)       19.345      0.709              38.76        2.77×
+
+   3) CPF Construction Sensitivity: The effectiveness of the
+                                                                      5) Efficiency Trade-off: Table VIII shows that our method
+CPF model determines the quality of µθ . We therefore ablate
+                                                                   takes an average of 38.76 minutes for training, approxi-
+two deciding factors of the CPF model, namely the prob-
+                                                                   mately 2.77× vanilla 3DGS [1]. This additional training
+abilized geometric field and the CPF network architecture.
+                                                                   time mainly arises from the CPF training, CPF queries, and
+Since the density and accuracy of the geometric field are
+                                                                   the per-primitive LSS updates. Note that the cost of our
+determined by the DBSCAN parameter ϵ which controls the
+                                                                   method is comparable to the geometric regularization method
+maximum neighborhood distance, we first ablate different ϵ
+                                                                   PGSR [2] (37.35 minutes, 2.67×), and substantially lower than
+values to assess the effect of geometric field quality on CPF
+                                                                   MVGS [21] (70.23 minutes, 5.02×), while achieving higher
+performance. Results in Table VI show that performance peaks
+                                                                   PSNR and SSIM under biased viewpoints. For inference, the
+around ϵ = 0.25 and gradually drops as ϵ increases, except
+                                                                   CPF and stochastic heads are disabled, so the training overhead
+for ϵ = 0.1. This trend has two likely causes. First, when ϵ is
+                                                                   does not affect rendering speed. We therefore consider the
+below a certain threshold, DBSCAN fails to capture sufficient
+                                                                   training cost as a reasonable trade-off for the challenging
+clusters, leading to too sparse or even empty geometric field
+                                                                   biased viewpoint scenarios, where reconstruction fidelity and
+that dampens CPF supervision. Second, larger ϵ values com-
+                                                                   synthesized view quality matter more than training speed.
+monly lead to noisier clusters, which may introduce inaccurate
+guidance for CPF training. Based on these observations, we
+choose ϵ = 0.25 for the best overall performance trade-off.                                 V. L IMITATIONS
+   The second part of Table VI compares different network ar-         GS-LSS regularizes Gaussian primitives toward aggregated
+chitectures for the CPF model. The SIREN [27]-style network        observed support, but it does not recover geometry that is
+achieves slightly better performance than a standard MLP,          completely unsupported by the input views. The CPF field
+which suggests that CPF training is not highly sensitive to the    is derived from filtered in-training geometry, so its reliability
+IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, APRIL 2026                                                                                          12
+
+
+
+depends on the quality of the stabilized Gaussian field and                      [11] C. Zhan, Y. Zhang, G. Wang, and H. Wang, “Hi-lsplat: Hierarchical 3d
+the effectiveness of outlier filtering. The method also increases                     language gaussian splatting,” IEEE Transactions on Visualization and
+                                                                                      Computer Graphics, 2026.
+training cost because the CPF supervision and queries. Reduc-                    [12] K. Wang, J. Wang, and Z. Chen, “Ekf-gs: An improved 3d gaussian
+ing this cost and improving CPF reliability under extremely                           splatting using extended kalman filter,” IEEE Transactions on Visual-
+sparse captures are important directions for future work.                             ization and Computer Graphics, 2025.
+                                                                                 [13] M. Li, S. Liu, T. Deng, and H. Wang, “Densesplat: Densifying gaus-
+                                                                                      sian splatting slam with neural radiance prior,” IEEE Transactions on
+                           VI. C ONCLUSION                                            Visualization and Computer Graphics, 2025.
+                                                                                 [14] P. Wang, Y. Wang, D. Wang, S. Mohan, Z. Fan, L. Wu, R. Cai, Y.-
+   We present GS-LSS, an observed-support regularized                                 Y. Yeh, Z. Wang, Q. Liu et al., “Steepest descent density control for
+learned stochastic optimization framework for Gaussian Splat-                         compact 3d gaussian splatting,” in Proceedings of the Computer Vision
+                                                                                      and Pattern Recognition Conference, 2025, pp. 26 663–26 672.
+ting under biased viewpoints. Rather than relying solely                         [15] B. Li, J. Kang, Y. Ma, F.-L. Liu, B. Liu, F.-L. Zhang, and L. Gao,
+on view-dependent photometric supervision, GS-LSS aligns                              “Sketchfacegs: Real-time sketch-driven face editing and generation with
+Gaussian primitives with an aggregated observed-support field                         gaussian splatting,” in Proceedings of the IEEE/CVF Conference on
+                                                                                      Computer Vision and Pattern Recognition, 2026, pp. 40 020–40 030.
+through a Learned Stochastic Sampling process. Its Con-                          [16] I. Zheng, G. Tang, A. Doronin, P. Teal, and F.-L. Zhang, “Ssd-
+tinuous Probability Field estimates observed support from                             gs: Scattering and shadow decomposition for relightable 3d gaussian
+globally aggregated geometric priors and provides gradient-                           splatting,” arXiv preprint arXiv:2604.13333, 2026.
+                                                                                 [17] J. Chung, J. Oh, and K. M. Lee, “Depth-regularized optimization for 3d
+based drift with adaptive stochastic exploration. Experiments                         gaussian splatting in few-shot images,” in Proceedings of the IEEE/CVF
+on three biased viewpoint scenarios show strong quantitative                          Conference on Computer Vision and Pattern Recognition, 2024, pp. 811–
+and qualitative results among the evaluated baselines, miti-                          820.
+                                                                                 [18] L. Yang, B. Kang, Z. Huang, Z. Zhao, X. Xu, J. Feng, and H. Zhao,
+gating perspective overfitting and improving observed-support                         “Depth anything v2,” Advances in Neural Information Processing Sys-
+consistency at moderate training overhead. Future work will                           tems, vol. 37, pp. 21 875–21 911, 2024.
+improve the efficiency and reliability of support estimation                     [19] Y. Liu, C. Luo, L. Fan, N. Wang, J. Peng, and Z. Zhang, “Citygaussian:
+                                                                                      Real-time high-quality large-scale scene rendering with gaussians,” in
+while maintaining high-quality rendering.                                             European Conference on Computer Vision. Springer, 2024, pp. 265–
+                                                                                      282.
+                                                                                 [20] J. Zhangjie Wu, Y. Zhang, H. Turki, X. Ren, J. Gao, M. Z. Shou, S. Fi-
+                        ACKNOWLEDGEMENT                                               dler, Z. Gojcic, and H. Ling, “Difix3d+: Improving 3d reconstructions
+   This work was supported by the Guangdong Provin-                                   with single-step diffusion models,” arXiv e-prints, pp. arXiv–2503, 2025.
+                                                                                 [21] X. Du, Y. Wang, and X. Yu, “Mvgs: Multi-view-regulated gaussian
+cial Science and Technology Program under Grant No.                                   splatting for novel view synthesis,” arXiv preprint arXiv:2410.02103,
+2023A1111120006 (Acceptance No. c23201809261900030;                                   2024.
+Document No. Yue Ke Zi Zi (2024) No. 24).                                        [22] Y. Chen, M. Mihajlovic, X. Chen, Y. Wang, S. Prokudin, and S. Tang,
+                                                                                      “Splatformer: Point transformer for robust 3d gaussian splatting,” arXiv
+                                                                                      preprint arXiv:2411.06390, 2024.
+                              R EFERENCES                                        [23] S. Kheradmand, D. Rebain, G. Sharma, H. Isack, A. Kar, A. Tagliasac-
+                                                                                      chi, and K. M. Yi, “Accelerating neural field training via soft mining,”
+ [1] B. Kerbl, G. Kopanas, T. Leimkühler, and G. Drettakis, “3d gaussian             in Proceedings of the IEEE/CVF Conference on Computer Vision and
+     splatting for real-time radiance field rendering.” ACM Trans. Graph.,            Pattern Recognition, 2024, pp. 20 071–20 080.
+     vol. 42, no. 4, pp. 139–1, 2023.                                            [24] R. Liu, D. Sun, M. Chen, Y. Wang, and A. Feng, “Deformable beta
+ [2] D. Chen, H. Li, W. Ye, Y. Wang, W. Xie, S. Zhai, N. Wang, H. Liu,                splatting,” arXiv preprint arXiv:2501.18630, 2025.
+     H. Bao, and G. Zhang, “Pgsr: Planar-based gaussian splatting for            [25] N. Brosse, A. Durmus, and E. Moulines, “The promises and pitfalls of
+     efficient and high-fidelity surface reconstruction,” IEEE Transactions on        stochastic gradient langevin dynamics,” Advances in Neural Information
+     Visualization and Computer Graphics, 2024.                                       Processing Systems, vol. 31, 2018.
+ [3] B. Kerbl, A. Meuleman, G. Kopanas, M. Wimmer, A. Lanvin, and                [26] Y. W. Teh, A. H. Thiery, and S. J. Vollmer, “Consistency and fluctuations
+     G. Drettakis, “A hierarchical 3d gaussian representation for real-time           for stochastic gradient langevin dynamics,” The Journal of Machine
+     rendering of very large datasets,” ACM Transactions on Graphics (TOG),           Learning Research, vol. 17, no. 1, pp. 193–225, 2016.
+     vol. 43, no. 4, pp. 1–15, 2024.                                             [27] V. Sitzmann, J. Martel, A. Bergman, D. Lindell, and G. Wetzstein,
+ [4] D. Li, S.-S. Huang, and H. Huang, “Mpgs: Multi-plane gaussian splat-             “Implicit neural representations with periodic activation functions,”
+     ting for compact scenes rendering,” IEEE Transactions on Visualization           Advances in neural information processing systems, vol. 33, pp. 7462–
+     and Computer Graphics, 2025.                                                     7473, 2020.
+ [5] S. Kheradmand, D. Rebain, G. Sharma, W. Sun, Y.-C. Tseng, H. Isack,         [28] J. T. Barron, B. Mildenhall, D. Verbin, P. P. Srinivasan, and P. Hedman,
+     A. Kar, A. Tagliasacchi, and K. M. Yi, “3d gaussian splatting as markov          “Mip-nerf 360: Unbounded anti-aliased neural radiance fields,” in Pro-
+     chain monte carlo,” Advances in Neural Information Processing Systems,           ceedings of the IEEE/CVF conference on computer vision and pattern
+     vol. 37, pp. 80 965–80 986, 2024.                                                recognition, 2022, pp. 5470–5479.
+ [6] H. Kim, H. Jung, and J. Park, “Metropolis-hastings sampling for 3d          [29] A. Knapitsch, J. Park, Q.-Y. Zhou, and V. Koltun, “Tanks and temples:
+     gaussian reconstruction,” arXiv preprint arXiv:2506.12945, 2025.                 Benchmarking large-scale scene reconstruction,” ACM Transactions on
+ [7] B. Mildenhall, P. P. Srinivasan, M. Tancik, J. T. Barron, R. Ramamoorthi,        Graphics (ToG), vol. 36, no. 4, pp. 1–13, 2017.
+     and R. Ng, “Nerf: Representing scenes as neural radiance fields for view    [30] H. Turki, D. Ramanan, and M. Satyanarayanan, “Mega-nerf: Scalable
+     synthesis,” Communications of the ACM, vol. 65, no. 1, pp. 99–106,               construction of large-scale nerfs for virtual fly-throughs,” in Proceedings
+     2021.                                                                            of the IEEE/CVF conference on computer vision and pattern recognition,
+ [8] M. Zwicker, H. Pfister, J. Van Baar, and M. Gross, “Ewa splatting,” IEEE         2022, pp. 12 922–12 931.
+     Transactions on Visualization & Computer Graphics, vol. 8, no. 03, pp.      [31] Y. Li, L. Jiang, L. Xu, Y. Xiangli, Z. Wang, D. Lin, and B. Dai,
+     223–238, 2002.                                                                   “Matrixcity: A large-scale city dataset for city-scale neural rendering
+ [9] Z. Yu, A. Chen, B. Huang, T. Sattler, and A. Geiger, “Mip-splatting:             and beyond,” in Proceedings of the IEEE/CVF International Conference
+     Alias-free 3d gaussian splatting,” in Proceedings of the IEEE/CVF                on Computer Vision, 2023, pp. 3205–3215.
+     conference on computer vision and pattern recognition, 2024, pp.            [32] F. Nex, M. Gerke, F. Remondino, H.-J. Przybilla, M. Bäumker, and
+     19 447–19 456.                                                                   A. Zurhorst, “Isprs benchmark for multi-platform photogrammetry,”
+[10] T. Lu, M. Yu, L. Xu, Y. Xiangli, L. Wang, D. Lin, and B. Dai,                    ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial
+     “Scaffold-gs: Structured 3d gaussians for view-adaptive rendering,” in           Information Sciences, vol. 2, pp. 135–142, 2015.
+     Proceedings of the IEEE/CVF Conference on Computer Vision and
+     Pattern Recognition, 2024, pp. 20 654–20 664.
+

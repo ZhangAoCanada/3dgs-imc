@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/sci-art-small/scaffoldgs-original-test_selection_45,test,ours_30000,0.7982655167579651,20.106393814086914,0.2609178423881531,44.6889533996582,5.021855011351799,71.02098083496094

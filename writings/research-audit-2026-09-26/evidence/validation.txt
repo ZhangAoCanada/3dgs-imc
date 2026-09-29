@@ -1,0 +1,1 @@
+PASS: 1,584 expected main-table source positions; 360 aggregate checks; 39 matching GS-LSS Table I/II values; 131 selected PLYs re-statted; 14 WSL files; 64 Scaffold sidecar sets; 48 FFR entries; 8 timing ratios; session counts; script syntax; all absolute Markdown file links.

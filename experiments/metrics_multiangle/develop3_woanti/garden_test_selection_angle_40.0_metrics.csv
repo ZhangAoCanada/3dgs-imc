@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi/garden/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-10_sigma-detach_nview3_4000000_test_selection_angle_40.0_0.001_raw,test,ours_30000,0.7560942769050598,22.91712760925293,0.17501114308834076,11.30327320098877,2.233286137761794,28.83250617980957

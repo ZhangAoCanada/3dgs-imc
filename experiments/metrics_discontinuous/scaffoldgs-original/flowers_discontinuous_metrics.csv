@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/flowers/scaffoldgs-original,test,ours_30000,0.5366948246955872,19.3161563873291,0.36197420954704285,21.493999481201172,2.523685253514679,37.24211502075195

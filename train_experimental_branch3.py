@@ -10,6 +10,7 @@
 #
 
 import os
+import time
 import shutil
 import json
 import torch
@@ -77,6 +78,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
     progress_bar = tqdm(range(first_iter, opt.iterations), desc="Training progress")
     first_iter += 1
+    # Stage-3 diagnostic (default OFF): CPF_DISABLE=1 nulls the CPF-derived noise + continuous loss,
+    # leaving the MCMC base (+densify+depth) to isolate whether the CPF mechanism hurts aerial-ground.
+    CPF_DISABLE = os.environ.get("CPF_DISABLE", "0") == "1"
+    total_time_start = time.time()   # Table 7 wall-clock training timer (writes training_time.txt at the end)
 
     # if opt.nndebug:
     #     if os.path.exists("tmp"):
@@ -133,7 +138,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         # gaussians.derivatives(viewpoint_cam, tb_writer, iteration)
         # render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
 
-        noise, noise_mask = gaussians.derivatives(viewpoint_cameras[0], tb_writer, iteration)
+        if CPF_DISABLE:
+            noise, noise_mask = None, None
+        else:
+            noise, noise_mask = gaussians.derivatives(viewpoint_cameras[0], tb_writer, iteration)
         total_l = 0.0
         for viewpoint_cam in viewpoint_cameras:
             render_pkg = render_noise(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE, noise=noise)
@@ -195,9 +203,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         loss = total_l / random_view_num
 
         ############### NOTE: IMC ###############
-        continuous_l = gaussians.train_continuous(scene.getTrainCameras().copy(), viewpoint_cam, pipe, background, tb_writer, iteration)
-        if continuous_l is not None:
-            loss += continuous_l
+        if not CPF_DISABLE:
+            continuous_l = gaussians.train_continuous(scene.getTrainCameras().copy(), viewpoint_cam, pipe, background, tb_writer, iteration)
+            if continuous_l is not None:
+                loss += continuous_l
         loss = torch.where(torch.isnan(loss), torch.zeros_like(loss), loss)
         loss = torch.where(torch.isinf(loss), torch.zeros_like(loss), loss)
 
@@ -230,6 +239,11 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 scene.save(iteration)
                 ############### NOTE: IMC ###############
                 gaussians.save_nn(scene.model_path)
+                if iteration >= opt.iterations:   # Table 7 timer: record total wall-clock at final save
+                    total_time = time.time() - total_time_start
+                    print(f"\n[INFO] Total training time: {total_time:.2f}seconds")
+                    with open(os.path.join(dataset.model_path, "training_time.txt"), "w") as _tf:
+                        _tf.write(f"Total training time: {total_time:.2f}seconds\n")
 
             ############### NOTE: IMC ###############
             L = build_scaling_rotation(gaussians.get_scaling, gaussians.get_rotation)

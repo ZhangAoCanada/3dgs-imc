@@ -86,6 +86,9 @@ export CPF_NOISE_OBS_GATE=${CPF_NOISE_OBS_GATE:-1}
 export CPF_MAX_NOISE_NORM=${CPF_MAX_NOISE_NORM:-0.005}
 export CPF_NOISE_WEIGHT=${CPF_NOISE_WEIGHT:-1.0}
 export CPF_NOISE_TRAIN_WEIGHT=${CPF_NOISE_TRAIN_WEIGHT:-0}   # trained head OFF (hand-shaping beat it)
+# NOTE: field-freshness (NN_UPDATE_INTERVAL 3000->1000) was TESTED and REVERTED — a paired
+# SEED=42 test showed it HURTS (room@60 -0.66, kitchen@20 -0.07); the +0.61 that justified it was
+# a single lucky run. Pipeline default (3000) restored.
 # RANDOM_VIEW_NUM is set PER SCENE in run_best (room->3) unless NVIEW_FORCED (see top).
 # Densification schedule MUST reach the per-scene cap_max. add_new_gs grows the
 # Gaussian set only +5%/step, so #steps = (until-from)/interval sets the final count:

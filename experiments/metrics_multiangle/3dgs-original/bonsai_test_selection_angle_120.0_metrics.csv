@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-original-test_selection_angle_120.0,test,ours_30000,0.6356532573699951,13.019822120666504,0.3217049241065979,20.385305404663086,3.300192870669975,48.68657302856445

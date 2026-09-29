@@ -1,0 +1,1091 @@
+{
+  "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/there-is-an-ongoing-research-on-2/work/repo_snapshot.tar.gz",
+  "bytes": 590643200,
+  "members": [
+    {
+      "name": "AGENTS.md",
+      "size": 11141
+    },
+    {
+      "name": "README.md",
+      "size": 2329
+    },
+    {
+      "name": "designs",
+      "size": 0
+    },
+    {
+      "name": "designs/design_direction.md",
+      "size": 8941
+    },
+    {
+      "name": "designs/archive",
+      "size": 0
+    },
+    {
+      "name": "designs/archive/failed",
+      "size": 0
+    },
+    {
+      "name": "designs/archive/failed/design_B.md",
+      "size": 8820
+    },
+    {
+      "name": "designs/archive/failed/design_C.md",
+      "size": 12278
+    },
+    {
+      "name": "designs/archive/failed/design_direction_backup.md",
+      "size": 10006
+    },
+    {
+      "name": "designs/archive/failed/design_A.md",
+      "size": 9877
+    },
+    {
+      "name": "designs/archive/failed/design_settling_fpggg.md",
+      "size": 6197
+    },
+    {
+      "name": "designs/archive/failed/design_settling_vlrnglf.md",
+      "size": 6309
+    },
+    {
+      "name": "designs/archive/failed/design_settling_osgwf.md",
+      "size": 5878
+    },
+    {
+      "name": "designs/archive/rejected",
+      "size": 0
+    },
+    {
+      "name": "designs/archive/rejected/centerpiece_A.md",
+      "size": 12388
+    },
+    {
+      "name": "designs/archive/blocked_nonreproducible",
+      "size": 0
+    },
+    {
+      "name": "designs/archive/blocked_nonreproducible/centerpiece_B.md",
+      "size": 6519
+    },
+    {
+      "name": "designs/centerpiece_JNDA.md",
+      "size": 4683
+    },
+    {
+      "name": "reports",
+      "size": 0
+    },
+    {
+      "name": "reports/hcbglt_parseval_operator_audit_loop_2026-08-31.md",
+      "size": 2640
+    },
+    {
+      "name": "reports/decisive_failure_cause_and_centerpiece_audit_2026-09-04_v5.md",
+      "size": 4939
+    },
+    {
+      "name": "reports/saebl_k4_schedule_sufficiency_loop_2026-08-30.md",
+      "size": 6053
+    },
+    {
+      "name": "reports/abglt_fixed_count_convergence_loop_2026-08-31.md",
+      "size": 4572
+    },
+    {
+      "name": "reports/sc_fnglt_h9_frozen_exact_synthesis_loop_2026-08-31.md",
+      "size": 3812
+    },
+    {
+      "name": "reports/hcbglt_h0_h1_parameterization_loop_2026-08-31.md",
+      "size": 5879
+    },
+    {
+      "name": "reports/clean_matched_k4_4000_closure_loop_2026-08-30.md",
+      "size": 6174
+    },
+    {
+      "name": "reports/same_topology_state_lifting_loop_2026-08-30.md",
+      "size": 5591
+    },
+    {
+      "name": "reports/fixed_state_reachability_loop_2026-08-30.md",
+      "size": 5281
+    },
+    {
+      "name": "reports/jnda_positive_split_preflight_2026-09-03.md",
+      "size": 3263
+    },
+    {
+      "name": "reports/jnda_assumption_audit_2026-09-03.md",
+      "size": 21771
+    },
+    {
+      "name": "reports/decisive_failure_cause_and_centerpiece_audit_2026-09-03_v3.md",
+      "size": 22256
+    },
+    {
+      "name": "reports/compactness_hypothesis_mechanism_map_2026-09-02.md",
+      "size": 27731
+    },
+    {
+      "name": "reports/saebl_bounded_from_lr_confirmation_loop_2026-08-30.md",
+      "size": 6466
+    },
+    {
+      "name": "reports/three_direction_settling_comparison_2026-09-01.md",
+      "size": 15615
+    },
+    {
+      "name": "reports/saebl_recompute_backward_loop_2026-08-29.md",
+      "size": 2821
+    },
+    {
+      "name": "reports/opgfl_free_map_oracle_loop_2026-08-31.md",
+      "size": 2504
+    },
+    {
+      "name": "reports/boagl_ownership_closure_loop_2026-08-30.md",
+      "size": 2051
+    },
+    {
+      "name": "reports/scgrt_m0_m3_loop_2026-08-31.md",
+      "size": 4357
+    },
+    {
+      "name": "reports/fngst_anchored_frequency_native_k4_loop_2026-08-31.md",
+      "size": 6373
+    },
+    {
+      "name": "reports/fp_ghlod_analytic_projection_loop_2026-09-01.md",
+      "size": 3458
+    },
+    {
+      "name": "reports/cv_ogslod_fixed_spectral_ladder_loop_2026-09-01.md",
+      "size": 3183
+    },
+    {
+      "name": "reports/three_direction_settling_r2_comparison_2026-09-01.md",
+      "size": 16577
+    },
+    {
+      "name": "reports/training_initialization_integrity_audit_2026-08-30.md",
+      "size": 12695
+    },
+    {
+      "name": "reports/csbl_structural_band_1000_closure_loop_2026-08-31.md",
+      "size": 5293
+    },
+    {
+      "name": "reports/opgfl_shared_code_absorption_loop_2026-08-31.md",
+      "size": 13467
+    },
+    {
+      "name": "reports/clean_foundation_jnda_manifest_2026-09-03.json",
+      "size": 3599
+    },
+    {
+      "name": "reports/eb_rpp_k2_1000_loop_2026-08-30.md",
+      "size": 7231
+    },
+    {
+      "name": "reports/vmgrt_frozen_replacement_lod_loop_2026-09-01.md",
+      "size": 7751
+    },
+    {
+      "name": "reports/saebl_bounded_signed_haar_k4_loop_2026-08-30.md",
+      "size": 3401
+    },
+    {
+      "name": "reports/packet_carrier_validity_reset_loop_2026-08-31.md",
+      "size": 6101
+    },
+    {
+      "name": "reports/boagl_first_adaptive_band_loop_2026-08-30.md",
+      "size": 6275
+    },
+    {
+      "name": "reports/saebl_anchored_residual_loop_2026-08-30.md",
+      "size": 7601
+    },
+    {
+      "name": "reports/hcbglt_h5_synthesized_highband_k4_loop_2026-08-31.md",
+      "size": 2863
+    },
+    {
+      "name": "reports/neighborhood_shared_state_loop_2026-08-30.md",
+      "size": 2724
+    },
+    {
+      "name": "reports/clean_matched_local_k4_integrity_loop_2026-08-30.md",
+      "size": 9691
+    },
+    {
+      "name": "reports/clean_foundation_manifest_2026-09-03.json",
+      "size": 4628
+    },
+    {
+      "name": "reports/neighborhood_accumulation_closure_loop_2026-08-30.md",
+      "size": 3304
+    },
+    {
+      "name": "reports/decisive_failure_cause_and_centerpiece_audit_2026-09-03_v2.md",
+      "size": 19766
+    },
+    {
+      "name": "reports/clean_four_phase_exact_band_capacity_loop_2026-08-30.md",
+      "size": 4675
+    },
+    {
+      "name": "reports/clean_foundation_gate_2026-09-03.md",
+      "size": 5940
+    },
+    {
+      "name": "reports/sc_fnglt_h12_channel_separable_loop_2026-09-01.md",
+      "size": 3139
+    },
+    {
+      "name": "reports/saebl_bounded_morphology_loop_2026-08-30.md",
+      "size": 2996
+    },
+    {
+      "name": "reports/hcbglt_h5_h3_pareto_ceiling_loop_2026-08-31.md",
+      "size": 3452
+    },
+    {
+      "name": "reports/hcbglt_h4_analysis_synthesis_k4_loop_2026-08-31.md",
+      "size": 3195
+    },
+    {
+      "name": "reports/rbglt_rejection_loop_2026-09-01.md",
+      "size": 5725
+    },
+    {
+      "name": "reports/saebl_smooth_bounded_chart_loop_2026-08-30.md",
+      "size": 3519
+    },
+    {
+      "name": "reports/sc_fnglt_h11_frequency_consistent_loop_2026-09-01.md",
+      "size": 4185
+    },
+    {
+      "name": "reports/sbgl_phase_robust_energy_1000_closure_loop_2026-08-31.md",
+      "size": 2856
+    },
+    {
+      "name": "reports/cv_ogslod_calibrated_spectral_ladder_loop_2026-09-01.md",
+      "size": 3627
+    },
+    {
+      "name": "reports/three_direction_settling_comparison_2026-09-01.csv",
+      "size": 2484
+    },
+    {
+      "name": "reports/bpgrt_m0_m2_loop_2026-08-31.md",
+      "size": 5355
+    },
+    {
+      "name": "reports/mrnglt_k4_loop_2026-09-01.json",
+      "size": 2104
+    },
+    {
+      "name": "reports/decisive_failure_cause_and_centerpiece_audit_2026-09-03.md",
+      "size": 10093
+    },
+    {
+      "name": "reports/rp2_exact_band_attribution_loop_2026-08-30.md",
+      "size": 8241
+    },
+    {
+      "name": "reports/free_ownership_k4_falsification_loop_2026-08-31.md",
+      "size": 5980
+    },
+    {
+      "name": "reports/cbogl_calibrated_appearance_1000_closure_loop_2026-08-31.md",
+      "size": 5114
+    },
+    {
+      "name": "reports/decisive_failure_cause_and_centerpiece_audit_2026-09-04_v6.md",
+      "size": 13407
+    },
+    {
+      "name": "reports/sc_fnglt_h10_exact_forward_loop_2026-08-31.md",
+      "size": 4292
+    },
+    {
+      "name": "reports/decisive_failure_cause_and_centerpiece_audit_2026-09-03_v4.md",
+      "size": 18570
+    },
+    {
+      "name": "reports/mrnglt_k4_loop_2026-09-01.csv",
+      "size": 1400
+    },
+    {
+      "name": "reports/jnda_historical_evidence_gate_2026-09-03.md",
+      "size": 4551
+    },
+    {
+      "name": "reports/anchored_broadband_maximal_k4_loop_2026-08-31.md",
+      "size": 5283
+    },
+    {
+      "name": "reports/cross_view_native_block_conflict_audit_2026-08-31.md",
+      "size": 5141
+    },
+    {
+      "name": "reports/saebl_state_exact_envelope_loop_2026-08-30.md",
+      "size": 3646
+    },
+    {
+      "name": "reports/three_direction_settling_r2_comparison_2026-09-01.csv",
+      "size": 2286
+    },
+    {
+      "name": "reports/calibrated_scale_aligned_exact_band_k4_loop_2026-08-31.md",
+      "size": 8858
+    },
+    {
+      "name": "reports/bdgglt_calibrated_training_leaves_loop_2026-08-31.md",
+      "size": 6572
+    },
+    {
+      "name": "reports/hcbglt_h2_band_routed_k4_loop_2026-08-31.md",
+      "size": 7037
+    },
+    {
+      "name": "reports/clean_carrier_initialization_and_lineage_loop_2026-08-31.md",
+      "size": 5488
+    },
+    {
+      "name": "reports/decisive_failure_cause_and_centerpiece_audit_2026-09-04_v7.md",
+      "size": 25130
+    },
+    {
+      "name": "reports/neighborhood_owned_four_phase_loop_2026-08-30.md",
+      "size": 2490
+    },
+    {
+      "name": "reports/full_state_exact_band_lifting_loop_2026-08-30.md",
+      "size": 5315
+    },
+    {
+      "name": "reports/view_invariant_boagl_loop_2026-08-30.md",
+      "size": 4267
+    },
+    {
+      "name": "reports/pixel_integrated_render_scale_closure_2026-08-31.md",
+      "size": 4684
+    },
+    {
+      "name": "reports/saebl_matched_local_k4_loop_2026-08-30.md",
+      "size": 7390
+    },
+    {
+      "name": "reports/sc_fnglt_h8_parseval_k4_loop_2026-08-31.md",
+      "size": 5720
+    },
+    {
+      "name": "reports/decisive_experiment4_shared_sisr_2026-09-04.md",
+      "size": 1498
+    },
+    {
+      "name": "reports/exact_band_evidence_assignment_closure_2026-08-30.md",
+      "size": 3947
+    },
+    {
+      "name": "reports/splatsure_footprint_band_attribution_loop_2026-08-31.md",
+      "size": 4753
+    },
+    {
+      "name": "reports/coarse_phase_sisr_amplitude_ceiling_2026-08-30.md",
+      "size": 2704
+    },
+    {
+      "name": "reports/fp_ghlod_real_geometry_loop_2026-09-01.md",
+      "size": 4184
+    },
+    {
+      "name": "reports/moment_projected_wavelet_loop_2026-08-30.md",
+      "size": 5626
+    },
+    {
+      "name": "reports/clean_root_band_orthogonal_reset_loop_2026-08-31.md",
+      "size": 6689
+    },
+    {
+      "name": "reports/selective_boagl_1000_closure_loop_2026-08-31.md",
+      "size": 4516
+    },
+    {
+      "name": "reports/clean_foundation_scnd_plsnd_execution_2026-09-03.md",
+      "size": 13658
+    },
+    {
+      "name": "reports/boagl_4000_closure_and_sh_attribution_loop_2026-08-30.md",
+      "size": 4522
+    },
+    {
+      "name": "reports/hcbglt_h3_synthesis_consistent_k4_loop_2026-08-31.md",
+      "size": 3747
+    },
+    {
+      "name": "reports/bdgglt_grouped_batch_ceiling_loop_2026-08-31.md",
+      "size": 6611
+    },
+    {
+      "name": "reports/saebl_biorthogonal_basis_loop_2026-08-30.md",
+      "size": 3013
+    },
+    {
+      "name": "reports/bcmrt_m0_m1_loop_2026-08-31.md",
+      "size": 6229
+    },
+    {
+      "name": "reports/neighborhood_shared_hr_diagnosis_loop_2026-08-30.md",
+      "size": 3698
+    },
+    {
+      "name": "reports/three_direction_settling_r2_comparison_2026-09-01.json",
+      "size": 3802
+    },
+    {
+      "name": "reports/clean_foundation_jnda_gate_2026-09-03.md",
+      "size": 4541
+    },
+    {
+      "name": "reports/scgrt_current_state_parent_closure_2026-08-31.md",
+      "size": 5642
+    },
+    {
+      "name": "reports/clean_orthogonal_haar_supervision_loop_2026-08-30.md",
+      "size": 6192
+    },
+    {
+      "name": "reports/fp_ghlod_observable_basis_loop_2026-09-01.md",
+      "size": 3496
+    },
+    {
+      "name": "reports/three_direction_settling_comparison_2026-09-01.json",
+      "size": 4999
+    },
+    {
+      "name": "reports/decisive_experiment3_observable_only_2026-09-04.md",
+      "size": 3314
+    },
+    {
+      "name": "reports/hcbglt_output_pareto_ceiling_loop_2026-08-31.md",
+      "size": 2099
+    },
+    {
+      "name": "reports/systematic_historical_failure_diagnosis_2026-09-03.md",
+      "size": 25619
+    },
+    {
+      "name": "reports/bcrsgt_same_state_render_scale_loop_2026-08-31.md",
+      "size": 4867
+    },
+    {
+      "name": "reports/scale_aligned_k4_k16_4000_confirmation_2026-08-30.md",
+      "size": 4533
+    },
+    {
+      "name": "reports/sbgl_first_octave_1000_loop_2026-08-31.md",
+      "size": 4956
+    },
+    {
+      "name": "reports/eb_ogst_k4_screen_2026-09-01.md",
+      "size": 7257
+    },
+    {
+      "name": "reports/hcbglt_h6_band_preserving_structural_loop_2026-08-31.md",
+      "size": 4232
+    },
+    {
+      "name": "reports/saebl_structure_sensitivity_loop_2026-08-30.md",
+      "size": 3087
+    },
+    {
+      "name": "reports/eb_rpp_open_gate_k2_1000_loop_2026-08-30.md",
+      "size": 5514
+    },
+    {
+      "name": "reports/mrnglt_k4_loop_2026-09-01.md",
+      "size": 7764
+    },
+    {
+      "name": "reports/matched_splatsure_exact_band_attribution_loop_2026-08-31.md",
+      "size": 7615
+    },
+    {
+      "name": "reports/saebl_sampling_and_executor_loop_2026-08-30.md",
+      "size": 4244
+    },
+    {
+      "name": "reports/sbgl_4000_signed_phase_closure_loop_2026-08-31.md",
+      "size": 3568
+    },
+    {
+      "name": "reports/sc_fnglt_h13_frequency_factorized_loop_2026-09-01.md",
+      "size": 5138
+    },
+    {
+      "name": "reports/abglt_fixed_count_carrier_loop_2026-08-31.md",
+      "size": 6303
+    },
+    {
+      "name": "reports/saebl_compact_executor_loop_2026-08-29.md",
+      "size": 3354
+    },
+    {
+      "name": "reports/blglt_native_child_closure_2026-08-29.md",
+      "size": 22187
+    },
+    {
+      "name": "reports/saebl_scale_aligned_hierarchy_loop_2026-08-30.md",
+      "size": 5195
+    },
+    {
+      "name": "reports/positive_optical_free_ownership_closure_loop_2026-08-31.md",
+      "size": 5553
+    },
+    {
+      "name": "reports/saebl_orthogonal_and_single_pass_loop_2026-08-30.md",
+      "size": 3922
+    },
+    {
+      "name": "reports/finite_common_step_packet_closure_2026-08-31.md",
+      "size": 3909
+    },
+    {
+      "name": "reports/hcbglt_h7_exact_reconstruction_loop_2026-08-31.md",
+      "size": 3464
+    },
+    {
+      "name": "jnda",
+      "size": 0
+    },
+    {
+      "name": "jnda/provenance.py",
+      "size": 6912
+    },
+    {
+      "name": "jnda/contracts.py",
+      "size": 4236
+    },
+    {
+      "name": "jnda/runtime.py",
+      "size": 2521
+    },
+    {
+      "name": "jnda/inventory.py",
+      "size": 4965
+    },
+    {
+      "name": "jnda/__init__.py",
+      "size": 297
+    },
+    {
+      "name": "jnda/objective.py",
+      "size": 682
+    },
+    {
+      "name": "jnda/rendering.py",
+      "size": 3043
+    },
+    {
+      "name": "jnda/operators.py",
+      "size": 3212
+    },
+    {
+      "name": "jnda/data.py",
+      "size": 9879
+    },
+    {
+      "name": "failure_audit",
+      "size": 0
+    },
+    {
+      "name": "failure_audit/statistics.py",
+      "size": 5109
+    },
+    {
+      "name": "failure_audit/evaluation_contracts.py",
+      "size": 3279
+    },
+    {
+      "name": "failure_audit/provenance.py",
+      "size": 18306
+    },
+    {
+      "name": "failure_audit/contracts.py",
+      "size": 11027
+    },
+    {
+      "name": "failure_audit/reduced.py",
+      "size": 64535
+    },
+    {
+      "name": "failure_audit/geometry.py",
+      "size": 6187
+    },
+    {
+      "name": "failure_audit/__init__.py",
+      "size": 427
+    },
+    {
+      "name": "failure_audit/observations.py",
+      "size": 21259
+    },
+    {
+      "name": "failure_audit/optimization.py",
+      "size": 12399
+    },
+    {
+      "name": "failure_audit/objective.py",
+      "size": 1402
+    },
+    {
+      "name": "failure_audit/rendering.py",
+      "size": 4202
+    },
+    {
+      "name": "failure_audit/operators.py",
+      "size": 6522
+    },
+    {
+      "name": "failure_audit/adjudication.py",
+      "size": 10328
+    },
+    {
+      "name": "failure_audit/data.py",
+      "size": 12025
+    },
+    {
+      "name": "failure_audit/_verify_worker.py",
+      "size": 8042
+    },
+    {
+      "name": "failure_audit/training.py",
+      "size": 35392
+    },
+    {
+      "name": "failure_audit/reporting.py",
+      "size": 62161
+    },
+    {
+      "name": "failure_audit/synthetic.py",
+      "size": 21315
+    },
+    {
+      "name": "failure_audit/evidence.py",
+      "size": 27264
+    },
+    {
+      "name": "failure_audit/resources.py",
+      "size": 7895
+    },
+    {
+      "name": "failure_audit/__main__.py",
+      "size": 5347
+    },
+    {
+      "name": "failure_audit/interventions.py",
+      "size": 12129
+    },
+    {
+      "name": "failure_audit/verify.py",
+      "size": 12032
+    },
+    {
+      "name": "failure_audit/evaluation.py",
+      "size": 36077
+    },
+    {
+      "name": "failure_audit/reduced_reporting.py",
+      "size": 39774
+    },
+    {
+      "name": "failure_audit/anchors.py",
+      "size": 18319
+    },
+    {
+      "name": "decisive_audit",
+      "size": 0
+    },
+    {
+      "name": "decisive_audit/adaptive_coverage.py",
+      "size": 8682
+    },
+    {
+      "name": "decisive_audit/observable_evaluation.py",
+      "size": 36660
+    },
+    {
+      "name": "decisive_audit/statistics.py",
+      "size": 1371
+    },
+    {
+      "name": "decisive_audit/final_reporting.py",
+      "size": 14426
+    },
+    {
+      "name": "decisive_audit/_observable_worker.py",
+      "size": 674
+    },
+    {
+      "name": "decisive_audit/carrier_reachability.py",
+      "size": 18962
+    },
+    {
+      "name": "decisive_audit/shared_control.py",
+      "size": 7933
+    },
+    {
+      "name": "decisive_audit/provenance.py",
+      "size": 9197
+    },
+    {
+      "name": "decisive_audit/contracts.py",
+      "size": 17276
+    },
+    {
+      "name": "decisive_audit/shared_control_audits.py",
+      "size": 12227
+    },
+    {
+      "name": "decisive_audit/_shared_final_worker.py",
+      "size": 669
+    },
+    {
+      "name": "decisive_audit/_shared_control_worker.py",
+      "size": 690
+    },
+    {
+      "name": "decisive_audit/shared_final.py",
+      "size": 14306
+    },
+    {
+      "name": "decisive_audit/geometry.py",
+      "size": 4653
+    },
+    {
+      "name": "decisive_audit/_shared_sisr_worker.py",
+      "size": 647
+    },
+    {
+      "name": "decisive_audit/__init__.py",
+      "size": 397
+    },
+    {
+      "name": "decisive_audit/_observable_eval_worker.py",
+      "size": 807
+    },
+    {
+      "name": "decisive_audit/_coverage_worker.py",
+      "size": 657
+    },
+    {
+      "name": "decisive_audit/coverage_reporting.py",
+      "size": 11971
+    },
+    {
+      "name": "decisive_audit/objective.py",
+      "size": 1049
+    },
+    {
+      "name": "decisive_audit/shared_sisr_audits.py",
+      "size": 18868
+    },
+    {
+      "name": "decisive_audit/adaptive_audits.py",
+      "size": 16216
+    },
+    {
+      "name": "decisive_audit/coverage_audits.py",
+      "size": 22562
+    },
+    {
+      "name": "decisive_audit/rendering.py",
+      "size": 3295
+    },
+    {
+      "name": "decisive_audit/operators.py",
+      "size": 10636
+    },
+    {
+      "name": "decisive_audit/shared_final_audits.py",
+      "size": 16579
+    },
+    {
+      "name": "decisive_audit/execution.py",
+      "size": 9203
+    },
+    {
+      "name": "decisive_audit/observable_audits.py",
+      "size": 12977
+    },
+    {
+      "name": "decisive_audit/native_optimization.py",
+      "size": 9513
+    },
+    {
+      "name": "decisive_audit/data.py",
+      "size": 11052
+    },
+    {
+      "name": "decisive_audit/_reachability_worker.py",
+      "size": 693
+    },
+    {
+      "name": "decisive_audit/shared_sisr_reporting.py",
+      "size": 6155
+    },
+    {
+      "name": "decisive_audit/_adaptive_coverage_worker.py",
+      "size": 666
+    },
+    {
+      "name": "decisive_audit/_alignment_worker.py",
+      "size": 513
+    },
+    {
+      "name": "decisive_audit/reporting.py",
+      "size": 36302
+    },
+    {
+      "name": "decisive_audit/shared_final_execution.py",
+      "size": 7492
+    },
+    {
+      "name": "decisive_audit/shared_control_execution.py",
+      "size": 7774
+    },
+    {
+      "name": "decisive_audit/_carrier_worker.py",
+      "size": 674
+    },
+    {
+      "name": "decisive_audit/reachability_decomposition.py",
+      "size": 23810
+    },
+    {
+      "name": "decisive_audit/resources.py",
+      "size": 4942
+    },
+    {
+      "name": "decisive_audit/alignment.py",
+      "size": 18150
+    },
+    {
+      "name": "decisive_audit/__main__.py",
+      "size": 2977
+    },
+    {
+      "name": "decisive_audit/reachability_audits.py",
+      "size": 15292
+    },
+    {
+      "name": "decisive_audit/shared_sisr.py",
+      "size": 33829
+    },
+    {
+      "name": "decisive_audit/observable_reporting.py",
+      "size": 7510
+    },
+    {
+      "name": "decisive_audit/reachability_reporting.py",
+      "size": 31165
+    },
+    {
+      "name": "decisive_audit/operator_relevance.py",
+      "size": 25562
+    },
+    {
+      "name": "decisive_audit/adaptive_reporting.py",
+      "size": 24947
+    },
+    {
+      "name": "decisive_audit/_operator_worker.py",
+      "size": 561
+    },
+    {
+      "name": "decisive_audit/audits.py",
+      "size": 17517
+    },
+    {
+      "name": "decisive_audit/coverage_gauge.py",
+      "size": 22822
+    },
+    {
+      "name": "decisive_audit/observable_acquisition.py",
+      "size": 11215
+    },
+    {
+      "name": "tests",
+      "size": 0
+    },
+    {
+      "name": "tests/test_jnda_core.py",
+      "size": 1746
+    },
+    {
+      "name": "tests/renderer_backward_parity.py",
+      "size": 7145
+    },
+    {
+      "name": "tests/test_failure_audit_core.py",
+      "size": 6132
+    },
+    {
+      "name": "tests/test_decisive_audit.py",
+      "size": 9515
+    },
+    {
+      "name": "tests/test_failure_audit_reduced.py",
+      "size": 2109
+    },
+    {
+      "name": "tests/test_clean_foundation.py",
+      "size": 5938
+    },
+    {
+      "name": "writings",
+      "size": 0
+    },
+    {
+      "name": "writings/SIGGRAPH_ASIA_reviews",
+      "size": 0
+    },
+    {
+      "name": "writings/.gitignore",
+      "size": 79
+    },
+    {
+      "name": "writings/2025-sample-code.out",
+      "size": 2546
+    },
+    {
+      "name": "writings/.git",
+      "size": 0
+    },
+    {
+      "name": "writings/.git/info",
+      "size": 0
+    },
+    {
+      "name": "writings/.git/info/exclude",
+      "size": 240
+    },
+    {
+      "name": "writings/.git/COMMIT_EDITMSG",
+      "size": 10
+    },
+    {
+      "name": "writings/.git/description",
+      "size": 73
+    },
+    {
+      "name": "writings/.git/HEAD",
+      "size": 23
+    },
+    {
+      "name": "writings/.git/FETCH_HEAD",
+      "size": 110
+    },
+    {
+      "name": "writings/.git/index",
+      "size": 2035
+    },
+    {
+      "name": "writings/.git/hooks",
+      "size": 0
+    },
+    {
+      "name": "writings/.git/hooks/pre-rebase.sample",
+      "size": 4898
+    },
+    {
+      "name": "writings/.git/hooks/pre-applypatch.sample",
+      "size": 424
+    },
+    {
+      "name": "writings/.git/hooks/pre-receive.sample",
+      "size": 544
+    },
+    {
+      "name": "writings/.git/hooks/applypatch-msg.sample",
+      "size": 478
+    },
+    {
+      "name": "writings/.git/hooks/post-update.sample",
+      "size": 189
+    },
+    {
+      "name": "writings/.git/hooks/pre-merge-commit.sample",
+      "size": 416
+    },
+    {
+      "name": "writings/.git/hooks/fsmonitor-watchman.sample",
+      "size": 4726
+    },
+    {
+      "name": "writings/.git/hooks/prepare-commit-msg.sample",
+      "size": 1492
+    },
+    {
+      "name": "writings/.git/hooks/push-to-checkout.sample",
+      "size": 2783
+    },
+    {
+      "name": "writings/.git/hooks/pre-commit.sample",
+      "size": 1649
+    },
+    {
+      "name": "writings/.git/hooks/update.sample",
+      "size": 3650
+    },
+    {
+      "name": "writings/.git/hooks/pre-push.sample",
+      "size": 1374
+    },
+    {
+      "name": "writings/.git/hooks/sendemail-validate.sample",
+      "size": 2308
+    },
+    {
+      "name": "writings/.git/hooks/commit-msg.sample",
+      "size": 896
+    },
+    {
+      "name": "writings/.git/config",
+      "size": 389
+    },
+    {
+      "name": "writings/.git/logs",
+      "size": 0
+    },
+    {
+      "name": "writings/.git/logs/HEAD",
+      "size": 0
+    },
+    {
+      "name": "writings/comment.cut",
+      "size": 181
+    },
+    {
+      "name": "writings/sample-base.bib",
+      "size": 21859
+    },
+    {
+      "name": "writings/images",
+      "size": 0
+    },
+    {
+      "name": "writings/images/images_visualcomparison.vsdx",
+      "size": 1155415510
+    }
+  ],
+  "error": "unexpected end of data"
+}

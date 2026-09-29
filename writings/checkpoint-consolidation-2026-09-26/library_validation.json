@@ -1,0 +1,116 @@
+{
+  "status": "passed; no GPU execution",
+  "cleanup_files": 219,
+  "cleanup_allocated_bytes": 305394876416,
+  "precleanup_file_allocation_bytes": 1546054455296,
+  "protected_local_paths": 485,
+  "protected_local_output_files_unchanged_by_stat": 455,
+  "protected_paths_not_in_output_snapshot": [
+    "/data1/zhangao/outputs/t7_bonsai/ours_root/mipnerf360/bonsai_angle_60.0_i30000_aa/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/outputs/t7_bonsai/ours_root/mipnerf360/bonsai_angle_60.0_i30000_aa/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/t7_bonsai/scaffold/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/tables567/tandt/train_resize_discontinuous_T5_eps1.0_train_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/tables567/tandt/truck_resize_discontinuous_T5_mlp_truck_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/tables567/tandt/truck_resize_discontinuous_T6_trial07_truck_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/tables567/tandt/truck_resize_discontinuous_T6_trial08_truck_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/tables567/tandt/truck_resize_discontinuous_T6_trial09_truck_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/bonsai_MH_noAA_reverify_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/bonsai_MH_noAA_verify_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/bonsai_angle80_i20000_images4_aa_fix/point_cloud/iteration_20000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/bonsai_angle80_i30000_images4_aa_fix/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/counter_MH_noAA_reverify_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/counter_angle80_i30000_images4_aa_fix/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/kitchen_MH_noAA_reverify_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/mh_3dgs/kitchen_angle80_i30000_images_4_aa_fix/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_100.0_W_ct100_dssim_s123_i15000/point_cloud/iteration_11000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_20.0_F_counter_20.0_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_40.0_A_counter_40.0_i15000/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_60.0_F_counter_60.0_i30000/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_100.0_W1_K100_MHaggr_s42_i15000/point_cloud/iteration_12000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_40.0_0_kitchen40_fast_nv3_s7_i18000/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_80.0_0_kitchen80_fast_nv1_s7_i15000/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_80.0_P15_S4_ki80_slow_woAA_earlyck_i30000/point_cloud/iteration_9000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/room_angle_40.0_0_room40_slow_oracle_i30000/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/room_angle_40.0_0_room40_slow_oracle_i30000/point_cloud/iteration_25000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/stump_angle_20.0_A_stump_20.0_i15000/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/stump_angle_60.0_A_stump_60.0_i15000/point_cloud/iteration_15000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/treehill_angle_100.0_F_treehill_100.0_i30000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/treehill_angle_40.0_F_treehill_40.0_i30000/point_cloud/iteration_15000/point_cloud.ply"
+  ],
+  "valid_library_symlinks": 2813,
+  "ours_tables_I_II_models": 131,
+  "scaffold_main_models_with_four_network_files": 64,
+  "main_scene_metric_rows": 1584,
+  "main_rows_with_local_model": 1383,
+  "unique_saved_split_files": 77,
+  "split_status_counts": {
+    "no explicit split file recorded": 28,
+    "copied exact source": 490,
+    "config unavailable; split unknown": 7,
+    "configured WSL split recovered from its owning host": 13,
+    "relocated split membership verified against saved test-camera prefix and independent view count": 147,
+    "local original-host split membership verified against imported saved cameras and independent view count": 4,
+    "reconstructed held-out membership from saved test-camera prefix and independent view count": 21
+  },
+  "helper_checks": [
+    {
+      "arguments": [
+        "--table",
+        "I",
+        "--method",
+        "GS-LSS",
+        "--scene",
+        "bonsai",
+        "--angle",
+        "60"
+      ],
+      "expected_status": "linked",
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "--table",
+        "I",
+        "--method",
+        "3DGS",
+        "--scene",
+        "bicycle",
+        "--angle",
+        "20"
+      ],
+      "expected_status": "unresolved",
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "--table",
+        "III",
+        "--method",
+        "GS-LSS",
+        "--scene",
+        "Zeche1"
+      ],
+      "expected_status": "candidate",
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "--table",
+        "V"
+      ],
+      "expected_status": "no source",
+      "exit_code": 2
+    },
+    {
+      "arguments": [
+        "--table",
+        "VIII",
+        "--method",
+        "3DGS"
+      ],
+      "expected_status": "timing",
+      "exit_code": 0
+    }
+  ],
+  "staged_cpu_only_example": "/data1/zhangao/outputs/GS-LSS-reproduction-readiness-20260927/bonsai_gap60_PSNR"
+}

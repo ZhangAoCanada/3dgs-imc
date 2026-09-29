@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000,test,ours_30000,0.7474417090415955,19.822355270385742,0.2370890974998474,33.139156341552734,3.1167065508532508,57.19378662109375

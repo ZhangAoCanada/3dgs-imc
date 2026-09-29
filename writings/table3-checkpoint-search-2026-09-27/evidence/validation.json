@@ -1,0 +1,14 @@
+{
+  "coverage_groups": 16,
+  "paper_linked": 6,
+  "candidates": 2,
+  "unlocated": 8,
+  "all_48_submitted_values_checked": true,
+  "local_checkpoint_paths_exist": true,
+  "report_links_resolve": true,
+  "library_index_copies_match": true,
+  "lookup_followup_checks": "passed",
+  "source_import_sha256_files": 11,
+  "library_README_and_REPRODUCE_links": "passed",
+  "local_execution_preference_documented": true
+}

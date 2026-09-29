@@ -1,0 +1,101 @@
+[
+  {
+    "root": "/data1/ZHANGAo_2024/3dgs-original/outputs",
+    "dirs": 1,
+    "files": 7,
+    "extensions": {
+      "": 7
+    },
+    "links": [
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs-original/outputs/3dgs",
+        "target": "/data/zhangao/Momentum-GS/3dgs",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs-original/outputs/pretrianed",
+        "target": "/data/zhangao/Momentum-GS/pretrianed",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs-original/outputs/mcmc",
+        "target": "/data/zhangao/Momentum-GS/mcmc",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs-original/outputs/partition",
+        "target": "/data/zhangao/Momentum-GS/partition",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs-original/outputs/data",
+        "target": "/data/zhangao/Momentum-GS/data",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs-original/outputs/bdaibdai___MatrixCity",
+        "target": "/data/zhangao/Momentum-GS/bdaibdai___MatrixCity",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs-original/outputs/tmp",
+        "target": "/data/zhangao/Momentum-GS/tmp",
+        "exists": false
+      }
+    ],
+    "point_cloud_dirs": [],
+    "related": []
+  },
+  {
+    "root": "/data1/ZHANGAo_2024/3dgs/outputs",
+    "dirs": 1,
+    "files": 8,
+    "extensions": {
+      "": 8
+    },
+    "links": [
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/3dgs",
+        "target": "/data/zhangao/Momentum-GS/3dgs",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/pretrianed",
+        "target": "/data/zhangao/Momentum-GS/pretrianed",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/mcmc",
+        "target": "/data/zhangao/Momentum-GS/mcmc",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/partition",
+        "target": "/data/zhangao/Momentum-GS/partition",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/data",
+        "target": "/data/zhangao/Momentum-GS/data",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/bdaibdai___MatrixCity",
+        "target": "/data/zhangao/Momentum-GS/bdaibdai___MatrixCity",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/tmp",
+        "target": "/data/zhangao/Momentum-GS/tmp",
+        "exists": false
+      },
+      {
+        "path": "/data1/ZHANGAo_2024/3dgs/outputs/debug",
+        "target": "/data/zhangao/Momentum-GS/debug",
+        "exists": false
+      }
+    ],
+    "point_cloud_dirs": [],
+    "related": []
+  }
+]

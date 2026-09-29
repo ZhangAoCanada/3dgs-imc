@@ -1,0 +1,33 @@
+{
+  "time": 1790609700.529388,
+  "reviewer_comments_covered": [
+    "R1.1",
+    "R1.2",
+    "R1.3",
+    "R1.4",
+    "R1.5",
+    "R1.6",
+    "R2.1",
+    "R2.2",
+    "R2.3",
+    "R2.4",
+    "R2.5",
+    "R3.1",
+    "R3.2",
+    "R3.3",
+    "R3.4"
+  ],
+  "editor_response_covered": true,
+  "all_local_links_resolve": true,
+  "manuscript_and_implementation_unchanged": {
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/TVCG_reviewers/TVCG_reviewers.txt": true,
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex": true,
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-editing/bare_jrnl_new_sample4_revision_revised.tex": true,
+    "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/gaussian_model.py": true,
+    "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/cpf_targets.py": true,
+    "/data1/zhangao/repos/3dgs-imc-codex/experiments/r12_compare.py": true
+  },
+  "scope": "Planning-document consolidation and navigation link only; no revision jobs, evaluations, code changes or manuscript edits performed.",
+  "plan_sha256": "5e671823a6ae1ad01b2dd735b922f8d4f435a6adc0f147926df45515dc19c4f0",
+  "plan_words": 3764
+}

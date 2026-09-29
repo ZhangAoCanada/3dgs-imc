@@ -1,0 +1,110 @@
+[
+  {
+    "line": 136,
+    "text": "cd outputs"
+  },
+  {
+    "line": 137,
+    "text": "ls"
+  },
+  {
+    "line": 138,
+    "text": "cd baselines_t7_clean/"
+  },
+  {
+    "line": 139,
+    "text": "ls"
+  },
+  {
+    "line": 140,
+    "text": "cd .."
+  },
+  {
+    "line": 141,
+    "text": "ls"
+  },
+  {
+    "line": 143,
+    "text": "cd sweep_"
+  },
+  {
+    "line": 144,
+    "text": "ls"
+  },
+  {
+    "line": 145,
+    "text": "cd sweep_models/"
+  },
+  {
+    "line": 146,
+    "text": "ls"
+  },
+  {
+    "line": 148,
+    "text": "cd mipnerf360/"
+  },
+  {
+    "line": 149,
+    "text": "ls"
+  },
+  {
+    "line": 150,
+    "text": "cd .."
+  },
+  {
+    "line": 151,
+    "text": "ls"
+  },
+  {
+    "line": 152,
+    "text": "cd .."
+  },
+  {
+    "line": 153,
+    "text": "ls"
+  },
+  {
+    "line": 154,
+    "text": "rm -rf sweep_"
+  },
+  {
+    "line": 155,
+    "text": "rm -rf sweep_models/"
+  },
+  {
+    "line": 159,
+    "text": "cd .."
+  },
+  {
+    "line": 161,
+    "text": "cd outputs_surface/"
+  },
+  {
+    "line": 162,
+    "text": "ls"
+  },
+  {
+    "line": 164,
+    "text": "ls"
+  },
+  {
+    "line": 165,
+    "text": "cd .."
+  },
+  {
+    "line": 167,
+    "text": "cd outputs"
+  },
+  {
+    "line": 168,
+    "text": "ls"
+  },
+  {
+    "line": 169,
+    "text": "cd .."
+  },
+  {
+    "line": 170,
+    "text": "cd outputs_surface/"
+  }
+]

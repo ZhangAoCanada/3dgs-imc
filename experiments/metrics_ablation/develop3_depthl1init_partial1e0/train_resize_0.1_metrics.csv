@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop2_depth_init/train_resize/develop3_allviews_local_eps0.25_minsamples500_depth0.1_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_test_selection_angle_60.0_0.01_viewnum3,test,ours_30000,0.7119666337966919,19.159324645996094,0.2490980327129364,33.27983093261719,3.2402775252845895,55.83726119995117

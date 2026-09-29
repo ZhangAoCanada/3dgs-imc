@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/develop3_multi_angle2/treehill/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1.0_partial1e0_sigma1e-6_sigma-detach_nview3_3300000_test_selection_angle_40.0_0.001,test,ours_30000,0.5408912897109985,17.278146743774414,0.38043487071990967,22.388694763183594,2.6289264666726213,34.15795135498047

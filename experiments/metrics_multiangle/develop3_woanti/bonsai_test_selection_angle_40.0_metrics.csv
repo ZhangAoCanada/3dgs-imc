@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi/bonsai/develop3_allviews_local_eps0.5_minsamples500_depth0.1_wholeonly_rangescale1_partial1e0_sigma1e-10_sigma-detach_nview3_1000000_test_selection_angle_40.0_0.001_raw,test,ours_30000,0.9052866101264954,25.162212371826172,0.17077460885047913,35.45426940917969,3.972805042821349,50.80948257446289

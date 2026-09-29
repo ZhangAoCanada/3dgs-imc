@@ -1,0 +1,7 @@
+              0   0%    0.00kB/s    0:00:00           77,427   0%   18.46MB/s    0:00:00 (xfr#1, to-chk=4192/4200)         77,843   0%   18.56MB/s    0:00:00 (xfr#2, to-chk=4191/4200)     17,805,331   0%   16.98MB/s    1:50:35       35,270,675   0%   16.82MB/s    1:51:38  Timeout, server 222.20.99.102 not responding.
+
+rsync: connection unexpectedly closed (42562440 bytes received so far) [receiver]
+rsync error: error in rsync protocol data stream (code 12) at io.c(232) [receiver=3.2.7]
+rsync: connection unexpectedly closed (127827 bytes received so far) [generator]
+rsync error: unexplained error (code 255) at io.c(232) [generator=3.2.7]
+rsync: [generator] write error: Broken pipe (32)

@@ -1,0 +1,13 @@
+{
+  "paper": "writings/GS-LSS/bare_jrnl_new_sample4_revision_pro.tex",
+  "scope": "paper-only; no repo/code/result provenance linking",
+  "target_score_strictly_greater_than": 8.0,
+  "max_rounds": 4,
+  "round": 1,
+  "status": "round1_attempt_a_failed_restarting_inline",
+  "timestamp": "2026-07-07T08:28:58.715520",
+  "agent_id": "019f39f7-8f78-7df2-a10c-51f868f6a1e2",
+  "page_count_current": 12,
+  "last_score": null,
+  "last_verdict": "tool_failure_not_counted"
+}

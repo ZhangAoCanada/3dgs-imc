@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/residence-small/scaffoldgs-original,test,ours_30000,0.7871295213699341,20.08119773864746,0.1977570503950119,14.624902725219727,2.5027841507660034,44.90568161010742

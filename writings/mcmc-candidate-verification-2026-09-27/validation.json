@@ -1,0 +1,177 @@
+{
+  "original_checkpoints_and_provenance": [
+    "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/cfg_args",
+    "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/results.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/per_view.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/cameras.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/cfg_args",
+    "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/results.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/per_view.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/cameras.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/cfg_args",
+    "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/results.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/per_view.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/cameras.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/cfg_args",
+    "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/results.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/per_view.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/cameras.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/cfg_args",
+    "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/results.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/per_view.json",
+    "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/cameras.json"
+  ],
+  "render_and_metric_counts": [
+    {
+      "scene": "bicycle",
+      "directory": "cases",
+      "count": 20
+    },
+    {
+      "scene": "bicycle",
+      "directory": "renderer_hust10",
+      "count": 20
+    },
+    {
+      "scene": "bicycle",
+      "directory": "evaluations_saved_gt_attempt2",
+      "count": 20
+    },
+    {
+      "scene": "bicycle",
+      "directory": "renderer_hust10_saved_gt",
+      "count": 20
+    },
+    {
+      "scene": "bicycle",
+      "directory": "metric_control",
+      "count": 20
+    },
+    {
+      "scene": "stump",
+      "directory": "cases",
+      "count": 20
+    },
+    {
+      "scene": "stump",
+      "directory": "renderer_hust10",
+      "count": 20
+    },
+    {
+      "scene": "stump",
+      "directory": "evaluations_saved_gt_attempt2",
+      "count": 20
+    },
+    {
+      "scene": "stump",
+      "directory": "renderer_hust10_saved_gt",
+      "count": 20
+    },
+    {
+      "scene": "stump",
+      "directory": "metric_control",
+      "count": 20
+    },
+    {
+      "scene": "treehill",
+      "directory": "cases",
+      "count": 20
+    },
+    {
+      "scene": "treehill",
+      "directory": "renderer_hust10",
+      "count": 20
+    },
+    {
+      "scene": "treehill",
+      "directory": "evaluations_saved_gt_attempt2",
+      "count": 20
+    },
+    {
+      "scene": "treehill",
+      "directory": "renderer_hust10_saved_gt",
+      "count": 20
+    },
+    {
+      "scene": "treehill",
+      "directory": "metric_control",
+      "count": 20
+    },
+    {
+      "scene": "truck_resize",
+      "directory": "cases",
+      "count": 22
+    },
+    {
+      "scene": "truck_resize",
+      "directory": "renderer_hust10",
+      "count": 22
+    },
+    {
+      "scene": "truck_resize",
+      "directory": "evaluations_saved_gt_attempt2",
+      "count": 22
+    },
+    {
+      "scene": "truck_resize",
+      "directory": "renderer_hust10_saved_gt",
+      "count": 22
+    },
+    {
+      "scene": "truck_resize",
+      "directory": "metric_control",
+      "count": 22
+    },
+    {
+      "scene": "train_resize",
+      "directory": "cases",
+      "count": 34
+    },
+    {
+      "scene": "train_resize",
+      "directory": "renderer_hust10",
+      "count": 34
+    },
+    {
+      "scene": "train_resize",
+      "directory": "evaluations_saved_gt_attempt2",
+      "count": 34
+    },
+    {
+      "scene": "train_resize",
+      "directory": "renderer_hust10_saved_gt",
+      "count": 34
+    },
+    {
+      "scene": "train_resize",
+      "directory": "metric_control",
+      "count": 34
+    }
+  ],
+  "remote_execution_states": {
+    "status.json": "complete",
+    "saved_gt_attempt2_status.json": "complete",
+    "metric_control_status.json": "complete",
+    "main_rasterizer_status.json": "complete"
+  },
+  "local_model_links": [
+    "/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/renderer_hust10/bicycle/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/renderer_hust10/stump/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/renderer_hust10/treehill/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/renderer_hust10/truck_resize/point_cloud/iteration_30000/point_cloud.ply",
+    "/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/renderer_hust10/train_resize/point_cloud/iteration_30000/point_cloud.ply"
+  ],
+  "original_dataset_input_hashes": 131,
+  "imported_output_files_sha256_verified": 699,
+  "original_environment_binaries_unchanged": {
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/diff_gaussian_rasterization/__init__.py": "f16b0d4ee29bccab0ac8b2c904de7c0e73338166f17496f1efa1f45dddd6f707",
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/diff_gaussian_rasterization/_C.cpython-310-x86_64-linux-gnu.so": "47170109d68381c9538fb3cb3a2c06dc2366dabd2d9184691f4398d4e73ad387",
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/simple_knn/_C.cpython-310-x86_64-linux-gnu.so": "12b3468ce8732a2e864e9aa06a15a97e5d479f293383e3ad258735dba2544ca7"
+  },
+  "result": "PASS"
+}

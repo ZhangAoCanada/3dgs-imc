@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/counter/scaffoldgs-original-test_selection_angle_80.0,test,ours_30000,0.6725454330444336,20.717164993286133,0.2957865297794342,16.957494735717773,3.0279644223035143,45.128604888916016

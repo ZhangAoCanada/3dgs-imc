@@ -1,0 +1,50 @@
+{
+  "checked_at": "2026-09-28T02:33:47.231296+00:00",
+  "r1_comments_planned": 6,
+  "all_r1_comments_covered": true,
+  "all_r16_requested_topics_covered": true,
+  "local_links_checked": 17,
+  "source_hash_checks": [
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/TVCG_reviewers/TVCG_reviewers.txt",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.pdf",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/run.sh",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/gaussian_model.py",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/imc_experimental.py",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/train_experimental_branch3_mc.py",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/indexes/reusable_experiments.csv",
+      "unchanged": true
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/table3-checkpoint-search-2026-09-27/MATRIXCITY_PROTOCOL.md",
+      "unchanged": true
+    }
+  ],
+  "submitted_artifacts_unchanged_from_initial_analysis": true,
+  "candidate_checkpoint_paths_present": 73,
+  "candidate_records": 73,
+  "scope": "Documentation and read-only evidence checks; no new GPU experiment or fresh depth/render validation.",
+  "failures": []
+}

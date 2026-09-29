@@ -1,0 +1,95 @@
+{
+  "paths": [
+    {
+      "path": "/data2/zhangao/outputs",
+      "exists": false,
+      "symlink": false,
+      "children": []
+    },
+    {
+      "path": "/data1/ZHANGAo_2024/3dgs-original/outputs",
+      "exists": true,
+      "symlink": false,
+      "children": [
+        "3dgs",
+        "pretrianed",
+        "mcmc",
+        "partition",
+        "data",
+        "bdaibdai___MatrixCity",
+        "tmp"
+      ]
+    },
+    {
+      "path": "/data1/ZHANGAo_2024/3dgs/outputs",
+      "exists": true,
+      "symlink": false,
+      "children": [
+        "3dgs",
+        "pretrianed",
+        "mcmc",
+        "partition",
+        "data",
+        "bdaibdai___MatrixCity",
+        "tmp",
+        "debug"
+      ]
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/outputs",
+      "exists": false,
+      "symlink": false,
+      "children": []
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs/outputs",
+      "exists": true,
+      "symlink": false,
+      "children": []
+    },
+    {
+      "path": "/data1/ZHANGAo_2024/Scaffold-GS/output",
+      "exists": false,
+      "symlink": false,
+      "children": []
+    },
+    {
+      "path": "/data1/ZHANGAo_2024/PGSR/output",
+      "exists": false,
+      "symlink": false,
+      "children": []
+    }
+  ],
+  "git_model_history": [
+    {
+      "repo": "/data1/zhangao/repos/3dgs-imc-codex",
+      "status": 128,
+      "output": "",
+      "stderr": "fatal: not a git repository (or any parent up to mount point /)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).\n"
+    },
+    {
+      "repo": "/data1/zhangao/repos/3dgs",
+      "status": 0,
+      "output": "",
+      "stderr": ""
+    },
+    {
+      "repo": "/data1/ZHANGAo_2024/3dgs-original",
+      "status": 0,
+      "output": "",
+      "stderr": ""
+    },
+    {
+      "repo": "/data1/ZHANGAo_2024/Scaffold-GS",
+      "status": 0,
+      "output": "",
+      "stderr": ""
+    },
+    {
+      "repo": "/data1/ZHANGAo_2024/PGSR",
+      "status": 0,
+      "output": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-depth-test_selection_angle_20.0,test,ours_30000,0.9327249526977539,30.113502502441406,0.08341692388057709,54.872314453125,3.2632461061519753,34.221893310546875

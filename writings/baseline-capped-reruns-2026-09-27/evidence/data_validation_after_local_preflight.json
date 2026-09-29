@@ -1,0 +1,404 @@
+[
+  {
+    "id": "baseline_01",
+    "train_count": 183,
+    "test_count": 11,
+    "validated": true
+  },
+  {
+    "id": "baseline_02",
+    "train_count": 272,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_03",
+    "train_count": 225,
+    "test_count": 15,
+    "validated": true
+  },
+  {
+    "id": "baseline_04",
+    "train_count": 173,
+    "test_count": 12,
+    "validated": true
+  },
+  {
+    "id": "baseline_05",
+    "train_count": 263,
+    "test_count": 16,
+    "validated": true
+  },
+  {
+    "id": "baseline_06",
+    "train_count": 255,
+    "test_count": 56,
+    "validated": true
+  },
+  {
+    "id": "baseline_07",
+    "train_count": 115,
+    "test_count": 10,
+    "validated": true
+  },
+  {
+    "id": "baseline_08",
+    "train_count": 130,
+    "test_count": 11,
+    "validated": true
+  },
+  {
+    "id": "baseline_09",
+    "train_count": 170,
+    "test_count": 24,
+    "validated": true
+  },
+  {
+    "id": "baseline_10",
+    "train_count": 255,
+    "test_count": 37,
+    "validated": true
+  },
+  {
+    "id": "baseline_11",
+    "train_count": 207,
+    "test_count": 33,
+    "validated": true
+  },
+  {
+    "id": "baseline_12",
+    "train_count": 161,
+    "test_count": 24,
+    "validated": true
+  },
+  {
+    "id": "baseline_13",
+    "train_count": 241,
+    "test_count": 38,
+    "validated": true
+  },
+  {
+    "id": "baseline_14",
+    "train_count": 194,
+    "test_count": 117,
+    "validated": true
+  },
+  {
+    "id": "baseline_15",
+    "train_count": 111,
+    "test_count": 14,
+    "validated": true
+  },
+  {
+    "id": "baseline_16",
+    "train_count": 128,
+    "test_count": 13,
+    "validated": true
+  },
+  {
+    "id": "baseline_17",
+    "train_count": 164,
+    "test_count": 30,
+    "validated": true
+  },
+  {
+    "id": "baseline_18",
+    "train_count": 235,
+    "test_count": 57,
+    "validated": true
+  },
+  {
+    "id": "baseline_19",
+    "train_count": 199,
+    "test_count": 41,
+    "validated": true
+  },
+  {
+    "id": "baseline_20",
+    "train_count": 153,
+    "test_count": 32,
+    "validated": true
+  },
+  {
+    "id": "baseline_21",
+    "train_count": 217,
+    "test_count": 62,
+    "validated": true
+  },
+  {
+    "id": "baseline_22",
+    "train_count": 176,
+    "test_count": 135,
+    "validated": true
+  },
+  {
+    "id": "baseline_23",
+    "train_count": 106,
+    "test_count": 19,
+    "validated": true
+  },
+  {
+    "id": "baseline_24",
+    "train_count": 119,
+    "test_count": 22,
+    "validated": true
+  },
+  {
+    "id": "baseline_25",
+    "train_count": 146,
+    "test_count": 48,
+    "validated": true
+  },
+  {
+    "id": "baseline_26",
+    "train_count": 216,
+    "test_count": 76,
+    "validated": true
+  },
+  {
+    "id": "baseline_27",
+    "train_count": 184,
+    "test_count": 56,
+    "validated": true
+  },
+  {
+    "id": "baseline_28",
+    "train_count": 144,
+    "test_count": 41,
+    "validated": true
+  },
+  {
+    "id": "baseline_29",
+    "train_count": 207,
+    "test_count": 72,
+    "validated": true
+  },
+  {
+    "id": "baseline_30",
+    "train_count": 171,
+    "test_count": 140,
+    "validated": true
+  },
+  {
+    "id": "baseline_31",
+    "train_count": 99,
+    "test_count": 26,
+    "validated": true
+  },
+  {
+    "id": "baseline_32",
+    "train_count": 107,
+    "test_count": 34,
+    "validated": true
+  },
+  {
+    "id": "baseline_33",
+    "train_count": 136,
+    "test_count": 58,
+    "validated": true
+  },
+  {
+    "id": "baseline_34",
+    "train_count": 202,
+    "test_count": 90,
+    "validated": true
+  },
+  {
+    "id": "baseline_35",
+    "train_count": 174,
+    "test_count": 66,
+    "validated": true
+  },
+  {
+    "id": "baseline_36",
+    "train_count": 135,
+    "test_count": 50,
+    "validated": true
+  },
+  {
+    "id": "baseline_37",
+    "train_count": 188,
+    "test_count": 91,
+    "validated": true
+  },
+  {
+    "id": "baseline_38",
+    "train_count": 158,
+    "test_count": 153,
+    "validated": true
+  },
+  {
+    "id": "baseline_39",
+    "train_count": 91,
+    "test_count": 34,
+    "validated": true
+  },
+  {
+    "id": "baseline_40",
+    "train_count": 106,
+    "test_count": 35,
+    "validated": true
+  },
+  {
+    "id": "baseline_41",
+    "train_count": 174,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_42",
+    "train_count": 272,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_43",
+    "train_count": 220,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_44",
+    "train_count": 165,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_45",
+    "train_count": 259,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_46",
+    "train_count": 291,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_47",
+    "train_count": 105,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_48",
+    "train_count": 121,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_49",
+    "train_count": 229,
+    "test_count": 22,
+    "validated": true
+  },
+  {
+    "id": "baseline_50",
+    "train_count": 267,
+    "test_count": 34,
+    "validated": true
+  },
+  {
+    "id": "baseline_51",
+    "train_count": 179,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_52",
+    "train_count": 178,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_53",
+    "train_count": 179,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_54",
+    "train_count": 181,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_55",
+    "train_count": 174,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_56",
+    "train_count": 105,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_57",
+    "train_count": 121,
+    "test_count": 20,
+    "validated": true
+  },
+  {
+    "id": "baseline_58",
+    "train_count": 229,
+    "test_count": 22,
+    "validated": true
+  },
+  {
+    "id": "baseline_59",
+    "train_count": 267,
+    "test_count": 34,
+    "validated": true
+  },
+  {
+    "id": "baseline_60",
+    "train_count": 216,
+    "test_count": 154,
+    "validated": true
+  },
+  {
+    "id": "baseline_61",
+    "train_count": 147,
+    "test_count": 172,
+    "validated": true
+  },
+  {
+    "id": "baseline_62",
+    "train_count": 216,
+    "test_count": 154,
+    "validated": true
+  },
+  {
+    "id": "baseline_63",
+    "train_count": 147,
+    "test_count": 172,
+    "validated": true
+  },
+  {
+    "id": "baseline_64",
+    "train_count": 216,
+    "test_count": 154,
+    "validated": true
+  },
+  {
+    "id": "baseline_65",
+    "train_count": 147,
+    "test_count": 172,
+    "validated": true
+  },
+  {
+    "id": "baseline_66",
+    "train_count": 216,
+    "test_count": 154,
+    "validated": true
+  },
+  {
+    "id": "baseline_67",
+    "train_count": 147,
+    "test_count": 172,
+    "validated": true
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "groups": 67,
+  "located_models_with_unresolved_paper_identity": 5,
+  "recorded_paths_absent": 54,
+  "aerial_original_sources_unlocated": 8,
+  "newly_recovered_exact_paper_checkpoints": 0,
+  "status_counts": {
+    "recorded run path absent; no matching model located in accessible search": 54,
+    "model exists locally; original paper-metric identity unresolved": 5,
+    "original checkpoint and metric source unlocated": 8
+  },
+  "original_data2_path_references": 57,
+  "later_3dgs_split_center_model_records": 9,
+  "inaccessible_storage": "hust10 /data2 is locked per user; not searched further or unlocked",
+  "fresh_gpu_evaluation": false
+}

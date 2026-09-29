@@ -1,0 +1,57 @@
+[
+  {
+    "path": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial",
+    "exists": true,
+    "realpath": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial",
+    "children": [
+      {
+        "name": "test_aerial",
+        "dir": true,
+        "link": null
+      },
+      {
+        "name": "pose",
+        "dir": true,
+        "link": null
+      },
+      {
+        "name": "train",
+        "dir": true,
+        "link": null
+      },
+      {
+        "name": "test",
+        "dir": true,
+        "link": null
+      }
+    ],
+    "bytes": 10594857941,
+    "files": 2406,
+    "links": []
+  },
+  {
+    "path": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet",
+    "exists": true,
+    "realpath": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet",
+    "children": [
+      {
+        "name": "pose",
+        "dir": true,
+        "link": null
+      },
+      {
+        "name": "train",
+        "dir": true,
+        "link": null
+      },
+      {
+        "name": "test",
+        "dir": true,
+        "link": null
+      }
+    ],
+    "bytes": 10443648927,
+    "files": 2448,
+    "links": []
+  }
+]

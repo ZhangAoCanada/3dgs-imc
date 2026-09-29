@@ -1,0 +1,28 @@
+{
+  "status": "running_local_two_GPUs",
+  "coordinator_pid": 4053508,
+  "updated": 1790606561.2198677,
+  "current": {
+    "0": {
+      "id": "baseline_59",
+      "method": "3DGS-MCMC",
+      "scene": "train_resize",
+      "seed": 1,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_59/seed_000001",
+      "runner_pid": 1256612
+    }
+  },
+  "attempts": 111,
+  "execution_host": "local",
+  "allowed_physical_gpus": [
+    0,
+    1
+  ],
+  "observed_at": "2026-09-28T22:42:46.358866+08:00",
+  "selected": 27,
+  "blocked_ids": [
+    "baseline_60"
+  ],
+  "free_bytes": 375026102272
+}

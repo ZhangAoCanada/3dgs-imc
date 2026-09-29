@@ -1,0 +1,17 @@
+{
+  "started_utc": "2026-09-26T15:41:44.091651+00:00",
+  "request": "Deep clean local outputs; consolidate related paper/baseline/best checkpoints from hust2 and wsl; expose reproduction provenance for every paper result.",
+  "library": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints",
+  "source_policy": "Remote sources are read-only. Preserve all selected and unresolved-candidate checkpoint evidence. Log exact cleanup actions.",
+  "status": "available-source consolidation and cleanup complete; full submitted-table reproducibility unresolved",
+  "completed_utc": "2026-09-26T16:30:30.196655+00:00",
+  "cleanup_status": "completed; 219 obsolete MVGS warmup optimizer snapshots removed",
+  "transfer_status": "completed; all 3401 imported files match full source SHA-256",
+  "universal_table_checkpoint_coverage": false,
+  "unresolved_main_scene_method_protocol_groups": 67,
+  "unmatched_main_scene_metric_positions_with_local_candidates": 160,
+  "extra_experiments_run": false,
+  "report": "/data1/zhangao/repos/3dgs-imc-codex/writings/checkpoint-consolidation-2026-09-26/REPORT.md",
+  "library_readme": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/README.md",
+  "storage_summary": "/data1/zhangao/repos/3dgs-imc-codex/writings/checkpoint-consolidation-2026-09-26/storage_summary.json"
+}

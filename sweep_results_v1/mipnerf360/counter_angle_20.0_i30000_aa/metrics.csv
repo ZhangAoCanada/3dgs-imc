@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/sweep_models/mipnerf360/counter_angle_20.0_i30000_aa,test,ours_30000,0.8240941762924194,23.84929656982422,0.1652592271566391,11.954520225524902,2.9711566852620215,43.52755355834961

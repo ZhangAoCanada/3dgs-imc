@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/develop3_trials/train_resize/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e-2_sigma1e-6_sigma-detach_nview3_1000000_test_selection_angle_60.0_0.01_trial3,test,ours_30000,0.698478102684021,18.425994873046875,0.2540677785873413,32.85927200317383,3.2611666973843407,55.022274017333984

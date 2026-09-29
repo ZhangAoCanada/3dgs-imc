@@ -1,0 +1,49 @@
+======================================================================
+TABLE 1  (coverage gap)  Ours ckpt-backed, BEST-PSNR run triple per cell
+======================================================================
+
+--- Mip-NeRF 360 (8) ---
+   20:  SSIM 0.807  PSNR 25.839  LPIPS 0.202
+   40:  SSIM 0.752  PSNR 23.152  LPIPS 0.246
+   60:  SSIM 0.708  PSNR 21.615  LPIPS 0.282
+   80:  SSIM 0.663  PSNR 20.235  LPIPS 0.316
+  100:  SSIM 0.629  PSNR 18.805  LPIPS 0.346
+  LaTeX: 0.807 & 25.839 & 0.202 & 0.752 & 23.152 & 0.246 & 0.708 & 21.615 & 0.282 & 0.663 & 20.235 & 0.316 & 0.629 & 18.805 & 0.346
+
+--- Tanks & Temples (2) ---
+   20:  SSIM 0.786  PSNR 21.451  LPIPS 0.191
+   40:  SSIM 0.754  PSNR 20.253  LPIPS 0.211
+   60:  SSIM 0.708  PSNR 19.345  LPIPS 0.247
+   80:  SSIM 0.669  PSNR 18.113  LPIPS 0.276
+  100:  SSIM 0.643  PSNR 17.818  LPIPS 0.304
+  LaTeX: 0.786 & 21.451 & 0.191 & 0.754 & 20.253 & 0.211 & 0.708 & 19.345 & 0.247 & 0.669 & 18.113 & 0.276 & 0.643 & 17.818 & 0.304
+
+======================================================================
+TABLE 1  (coverage gap)  Ours ckpt-backed, PER-METRIC independent best per cell (matches published methodology)
+======================================================================
+
+--- Mip-NeRF 360 (8) ---
+   20:  SSIM 25.839  PSNR 0.808  LPIPS 0.188
+   40:  SSIM 23.152  PSNR 0.752  LPIPS 0.236
+   60:  SSIM 21.615  PSNR 0.708  LPIPS 0.273
+   80:  SSIM 20.235  PSNR 0.667  LPIPS 0.307
+  100:  SSIM 18.805  PSNR 0.631  LPIPS 0.340
+  LaTeX: 25.839 & 0.808 & 0.188 & 23.152 & 0.752 & 0.236 & 21.615 & 0.708 & 0.273 & 20.235 & 0.667 & 0.307 & 18.805 & 0.631 & 0.340
+
+--- Tanks & Temples (2) ---
+   20:  SSIM 21.451  PSNR 0.787  LPIPS 0.191
+   40:  SSIM 20.253  PSNR 0.757  LPIPS 0.210
+   60:  SSIM 19.345  PSNR 0.709  LPIPS 0.247
+   80:  SSIM 18.113  PSNR 0.672  LPIPS 0.274
+  100:  SSIM 17.818  PSNR 0.643  LPIPS 0.304
+  LaTeX: 21.451 & 0.787 & 0.191 & 20.253 & 0.757 & 0.210 & 19.345 & 0.709 & 0.247 & 18.113 & 0.672 & 0.274 & 17.818 & 0.643 & 0.304
+
+======================================================================
+TABLE 2  (discontinuous)  Ours ckpt-backed, per-dataset avg triple
+======================================================================
+   Mip-360 [  best-PSNR run]:  SSIM 0.843  PSNR 28.018  LPIPS 0.167   LaTeX: 0.843 & 28.018 & 0.167
+   Mip-360 [per-metric best]:  SSIM 0.845  PSNR 28.018  LPIPS 0.151   LaTeX: 0.845 & 28.018 & 0.151
+       T&T [  best-PSNR run]:  SSIM 0.802  PSNR 22.160  LPIPS 0.187   LaTeX: 0.802 & 22.160 & 0.187
+       T&T [per-metric best]:  SSIM 0.805  PSNR 22.160  LPIPS 0.180   LaTeX: 0.805 & 22.160 & 0.180
+    Mill19 [  best-PSNR run]:  SSIM 0.775  PSNR 22.893  LPIPS 0.198   LaTeX: 0.775 & 22.893 & 0.198
+    Mill19 [per-metric best]:  SSIM 0.775  PSNR 22.893  LPIPS 0.198   LaTeX: 0.775 & 22.893 & 0.198

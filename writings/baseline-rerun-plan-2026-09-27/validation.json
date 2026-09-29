@@ -1,0 +1,12 @@
+{
+  "result": "PASS for inventory only; not execution readiness",
+  "unique_rows": 67,
+  "reference_triples": 67,
+  "split_rows_snapshotted": 59,
+  "issues_preserved": [
+    "baseline_51",
+    "baseline_52",
+    "baseline_53",
+    "baseline_54"
+  ]
+}

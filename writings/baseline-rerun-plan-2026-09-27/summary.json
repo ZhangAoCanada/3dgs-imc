@@ -1,0 +1,27 @@
+{
+  "status": "prepared inventory; training not launched; protocol decision pending",
+  "configurations": 67,
+  "by_table": {
+    "I": 40,
+    "II": 19,
+    "III": 8
+  },
+  "by_method": {
+    "3DGS": 42,
+    "PGSR": 16,
+    "3DGS-MCMC": 7,
+    "Scaffold-GS": 2
+  },
+  "explicit_split_rows": 59,
+  "unique_split_files": 54,
+  "aerial_original_full_configs_unlocated": 8,
+  "local_dataset_image_directory_issues": [
+    "baseline_51",
+    "baseline_52",
+    "baseline_53",
+    "baseline_54"
+  ],
+  "remote_free_space_observed_GiB": 240,
+  "cuda_preflight_performed": false,
+  "training_runs_launched": 0
+}

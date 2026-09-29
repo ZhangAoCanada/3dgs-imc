@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/train_resize/mh-3dgs-original,test,ours_30000,0.7152407765388489,18.948246002197266,0.2541635036468506,33.41865158081055,3.272534990917376,56.88880157470703

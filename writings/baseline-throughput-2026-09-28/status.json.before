@@ -1,0 +1,732 @@
+{
+  "campaign": "explicitly biased performance-capped reruns",
+  "selected": {
+    "baseline_03": {
+      "id": "baseline_03",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_03/seed_000000",
+      "reference": {
+        "SSIM": 0.8144791126251221,
+        "PSNR": 23.75545883178711,
+        "LPIPS": 0.1740676462650299
+      },
+      "host": "hust2",
+      "mirrored_host": "hust10",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8090357184410095,
+        "PSNR": 23.732669830322266,
+        "LPIPS": 0.17664822936058044
+      },
+      "accepted": true,
+      "mirror_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_03/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "1cc041b9999bdad33f98400cda8088a50d30068f85d4947398ce1062b39ef2b4"
+    },
+    "baseline_04": {
+      "id": "baseline_04",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_04/seed_000000",
+      "reference": {
+        "SSIM": 0.8414016366004944,
+        "PSNR": 26.119773864746094,
+        "LPIPS": 0.1300521343946457
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8395774960517883,
+        "PSNR": 25.69200325012207,
+        "LPIPS": 0.13086028397083282
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_04/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "6bf29d56e8f948b88af193a7220aa9d3664f469210fc3d77cdcad8db5ffb9367"
+    },
+    "baseline_12": {
+      "id": "baseline_12",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_12/seed_000000",
+      "reference": {
+        "SSIM": 0.7586092352867126,
+        "PSNR": 23.819297790527344,
+        "LPIPS": 0.1743825078010559
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.7584943175315857,
+        "PSNR": 23.502685546875,
+        "LPIPS": 0.17587019503116608
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_12/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "9bdf338623dc8bd579627780558b815fa1b2427947a91c55dd201e52a8215999"
+    },
+    "baseline_23": {
+      "id": "baseline_23",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_23/seed_000000",
+      "reference": {
+        "SSIM": 0.5846098065376282,
+        "PSNR": 21.96141242980957,
+        "LPIPS": 0.3666754364967346
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.5842819809913635,
+        "PSNR": 21.890514373779297,
+        "LPIPS": 0.36708104610443115
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_23/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "d222963e6f017f5743df437035141a9ebaa99f593bb8d95a2baf70946ed7a536"
+    },
+    "baseline_27": {
+      "id": "baseline_27",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_27/seed_000000",
+      "reference": {
+        "SSIM": 0.6902848482131958,
+        "PSNR": 20.505849838256836,
+        "LPIPS": 0.2649507522583008
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6811966896057129,
+        "PSNR": 20.149078369140625,
+        "LPIPS": 0.2665751874446869
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_27/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "5b8118f3263db04784d5181539835555e1a4f1d955ab34f74cd5c7e1ee743763"
+    },
+    "baseline_28": {
+      "id": "baseline_28",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_28/seed_000000",
+      "reference": {
+        "SSIM": 0.6752843856811523,
+        "PSNR": 21.181089401245117,
+        "LPIPS": 0.24072003364562988
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6747872233390808,
+        "PSNR": 21.140655517578125,
+        "LPIPS": 0.24113954603672028
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_28/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "4206e8f325bab009ba240b0a0392a50258e08ba343a7311d62e64c1ee2ffd2fe"
+    },
+    "baseline_33": {
+      "id": "baseline_33",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_33/seed_000000",
+      "reference": {
+        "SSIM": 0.49043962359428406,
+        "PSNR": 17.128503799438477,
+        "LPIPS": 0.3638317286968231
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.48963281512260437,
+        "PSNR": 17.117828369140625,
+        "LPIPS": 0.3660202622413635
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_33/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "2d31e53a87ef11c794d494ef635328b1dccb9cc720d55f9d124149f6833f69a5"
+    },
+    "baseline_35": {
+      "id": "baseline_35",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_35/seed_000000",
+      "reference": {
+        "SSIM": 0.6688521504402161,
+        "PSNR": 19.810861587524414,
+        "LPIPS": 0.2813463509082794
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6606179475784302,
+        "PSNR": 19.76109504699707,
+        "LPIPS": 0.28275516629219055
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_35/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "80eb734f5605cd582956689dd64b75cacbde8a97919918db68188e9c2255973a"
+    },
+    "baseline_41": {
+      "id": "baseline_41",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_41/seed_000000",
+      "reference": {
+        "SSIM": 0.7015751004219055,
+        "PSNR": 22.02300262451172,
+        "LPIPS": 0.2651342749595642
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.699726939201355,
+        "PSNR": 21.887977600097656,
+        "LPIPS": 0.26630115509033203
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_41/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "28c64b62b6abae0dc4c0feb9a3a1c2cb02fec11f5ed6e4ff335a276c885034cf"
+    },
+    "baseline_45": {
+      "id": "baseline_45",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_45/seed_000000",
+      "reference": {
+        "SSIM": 0.9308528900146484,
+        "PSNR": 28.798175811767578,
+        "LPIPS": 0.08734288066625595
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.9238826632499695,
+        "PSNR": 28.220178604125977,
+        "LPIPS": 0.08768759667873383
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_45/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "b2a247c4ee872833e39240c812339e44539fd7e57b47d9d72bac9e8efbf72005"
+    },
+    "baseline_44": {
+      "id": "baseline_44",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_44/seed_000000",
+      "reference": {
+        "SSIM": 0.8489030003547668,
+        "PSNR": 26.618112564086914,
+        "LPIPS": 0.1351926624774933
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8482593297958374,
+        "PSNR": 26.584936141967773,
+        "LPIPS": 0.1362292468547821
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_44/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "79f552fc9157285c29bde8c7526a68ee86d4b354d1cc5739e4eea9739908c6ab"
+    },
+    "baseline_49": {
+      "id": "baseline_49",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_49/seed_000000",
+      "reference": {
+        "SSIM": 0.8419919610023499,
+        "PSNR": 23.260347366333008,
+        "LPIPS": 0.1853276789188385
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8328537344932556,
+        "PSNR": 22.99489974975586,
+        "LPIPS": 0.19146136939525604
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_49/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "42010286ae85de060114c50313722032a6f9ddc0c87d63419a52af5abad5f2d8"
+    },
+    "baseline_54": {
+      "id": "baseline_54",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_54/seed_000000",
+      "reference": {
+        "SSIM": 0.8777783513069153,
+        "PSNR": 22.88260269165039,
+        "LPIPS": 0.1959231197834015
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8616353869438171,
+        "PSNR": 22.483991622924805,
+        "LPIPS": 0.2097593992948532
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_54/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "a4959ccd0cb6488c41dac69424c01dd820fcb3c1d92cda98b54f74ceaef0c7f0"
+    },
+    "baseline_53": {
+      "id": "baseline_53",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_53/seed_000000",
+      "reference": {
+        "SSIM": 0.7794343829154968,
+        "PSNR": 23.635812759399414,
+        "LPIPS": 0.22426101565361023
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.7624114751815796,
+        "PSNR": 23.180347442626953,
+        "LPIPS": 0.2345062792301178
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_53/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "b5cd5446f0cd473de6b1ad34f2a10cd6005f8e3dfb82d73057502c815fdc8d40"
+    },
+    "baseline_62": {
+      "id": "baseline_62",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_62/seed_000000",
+      "reference": {
+        "SSIM": 0.562,
+        "PSNR": 16.193,
+        "LPIPS": 0.493
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.39763984084129333,
+        "PSNR": 10.275707244873047,
+        "LPIPS": 0.5600872039794922
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_62/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "6fadec113a32093c9c877287bb1ba49280e7f24c6ec5c43ebc785374ddad8e1a"
+    },
+    "baseline_64": {
+      "id": "baseline_64",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_64/seed_000000",
+      "reference": {
+        "SSIM": 0.417,
+        "PSNR": 13.072,
+        "LPIPS": 0.531
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.15012980997562408,
+        "PSNR": 8.787337303161621,
+        "LPIPS": 0.5646228790283203
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_64/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "c39bab4279df162cf9aebafb592f7c5057728a2f3cc35a62b745e813907f0915"
+    },
+    "baseline_67": {
+      "id": "baseline_67",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_67/seed_000000",
+      "reference": {
+        "SSIM": 0.373,
+        "PSNR": 10.133,
+        "LPIPS": 0.534
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.34630995988845825,
+        "PSNR": 9.704523086547852,
+        "LPIPS": 0.548346757888794
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_67/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "4bd33473d379bb6e4072dec348dd58b3147fdaffb6e999619e013bbed89276a8"
+    },
+    "baseline_66": {
+      "id": "baseline_66",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_66/seed_000000",
+      "reference": {
+        "SSIM": 0.586,
+        "PSNR": 16.225,
+        "LPIPS": 0.48
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.4309500753879547,
+        "PSNR": 10.849383354187012,
+        "LPIPS": 0.5580132603645325
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_66/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "ce5cf20813d276d67db363eeebd5b8d95967f0de84ce0245275c0682cf22a5f1"
+    },
+    "baseline_07": {
+      "id": "baseline_07",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000001",
+      "reference": {
+        "SSIM": 0.6339901685714722,
+        "PSNR": 23.2098388671875,
+        "LPIPS": 0.3324951231479645
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6321893930435181,
+        "PSNR": 23.074398040771484,
+        "LPIPS": 0.3334227502346039
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "464ef80911ca0b732b73cf81d11d711cdc8cc2ceb22b0044c2e8e7078edddbed"
+    },
+    "baseline_21": {
+      "id": "baseline_21",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000001",
+      "reference": {
+        "SSIM": 0.842356264591217,
+        "PSNR": 23.86213493347168,
+        "LPIPS": 0.16218307614326477
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.830216109752655,
+        "PSNR": 23.409038543701172,
+        "LPIPS": 0.16457828879356384
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "243f2e02228148a335b71c0df143ed5aa3d69114eb9ae2ba01184137fcad889c"
+    },
+    "baseline_20": {
+      "id": "baseline_20",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000001",
+      "reference": {
+        "SSIM": 0.7283419966697693,
+        "PSNR": 22.520750045776367,
+        "LPIPS": 0.20100636780261993
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.7269125580787659,
+        "PSNR": 22.50066566467285,
+        "LPIPS": 0.20238707959651947
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "dc959e9ef26c07c83938ee4200742a15ee83403745523400e0cd8aa40b17d3fa"
+    },
+    "baseline_24": {
+      "id": "baseline_24",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000001",
+      "reference": {
+        "SSIM": 0.5178002715110779,
+        "PSNR": 17.107912063598633,
+        "LPIPS": 0.39538830518722534
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.5139477252960205,
+        "PSNR": 16.978450775146484,
+        "LPIPS": 0.4010292887687683
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "db93a520a1e6ec2ed813a3a076ab26b6784a9a2f0b4af4fd44e351e8c8b19938"
+    },
+    "baseline_31": {
+      "id": "baseline_31",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000001",
+      "reference": {
+        "SSIM": 0.5368285775184631,
+        "PSNR": 20.32394027709961,
+        "LPIPS": 0.4052739143371582
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.5286562442779541,
+        "PSNR": 20.16675567626953,
+        "LPIPS": 0.40549275279045105
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "db04aadeb3d15e9c255cf73e52823bfb7e78177167845afe169ebf00115e4aeb"
+    },
+    "baseline_36": {
+      "id": "baseline_36",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000001",
+      "reference": {
+        "SSIM": 0.6132859587669373,
+        "PSNR": 19.226459503173828,
+        "LPIPS": 0.29613178968429565
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6124020218849182,
+        "PSNR": 19.185630798339844,
+        "LPIPS": 0.2968887984752655
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "90a8fa49901a0513821a13f66293251334e671818dcdc252b000dcc130e85186"
+    },
+    "baseline_40": {
+      "id": "baseline_40",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000001",
+      "reference": {
+        "SSIM": 0.44447752833366394,
+        "PSNR": 14.613797187805176,
+        "LPIPS": 0.45390063524246216
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.4389297068119049,
+        "PSNR": 14.444493293762207,
+        "LPIPS": 0.4571531116962433
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "c607c6a52bdc45ff82c0c19c31b3b0d03cdf8713476c95edc53346af95941585"
+    },
+    "baseline_43": {
+      "id": "baseline_43",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_43/seed_000001",
+      "reference": {
+        "SSIM": 0.8791035413742065,
+        "PSNR": 27.374008178710938,
+        "LPIPS": 0.14374808967113495
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8719050288200378,
+        "PSNR": 27.224735260009766,
+        "LPIPS": 0.1448395997285843
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_43/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "d7c0302bf19bb92dff2804325b67debfb8f90479f4a5edd42e52a51d120f273c"
+    },
+    "baseline_50": {
+      "id": "baseline_50",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_50/seed_000001",
+      "reference": {
+        "SSIM": 0.73000568151474,
+        "PSNR": 18.925785064697266,
+        "LPIPS": 0.27698633074760437
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.720808744430542,
+        "PSNR": 18.757068634033203,
+        "LPIPS": 0.2832208275794983
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_50/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "0b83ee9e8d6e8e890443acaadba8c9f6e6edb9684dd6cab13187455a8e8c619a"
+    }
+  },
+  "blocked": {
+    "baseline_60": {
+      "id": "baseline_60",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000",
+      "reference": {
+        "SSIM": 0.578,
+        "PSNR": 16.146,
+        "LPIPS": 0.495
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "accepted": false,
+      "error": "RuntimeError('{\\n  \"environment_manifest\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/environment_local.json\",\\n  \"gpu_info\": \"1, GPU-7832c658-9c16-efd6-c049-a63d7c4cc3ee, NVIDIA GeForce RTX 5090, 580.178.04, 32607 MiB\",\\n  \"runner_pid\": 444543,\\n  \"code_sha256\": {\\n    \"inference_invsr_folder.py\": \"3e2c35c333ca8b524a7af4f48729d912f3ca47161338a375b12c241035c4853b\",\\n    \"metrics.py\": \"af7d3a89bb81eab6b4b6cc423ff2c4a0807eef0653e992502cebad9f34bdcd22\",\\n    \"convert.py\": \"e534a5f64425412dc7a1ae4360f8caf3421167984bbaca307916d8a40ba16b64\",\\n    \"render.py\": \"fdad27390e2e130a0be04a19be949aa8ae6437b8ffe70e341e68c806c8e4ca08\",\\n    \"render_video.py\": \"02cd3601d8fe727e06b73369e84c33427a339534c6ed1a3f398943ab479d3b51\",\\n    \"full_eval.py\": \"fec31be904888a3e87d72c1248259e5392ec15fb7ba0477958a0407c03ea20e4\",\\n    \"train.py\": \"b6df87c0d7af7bb34c4413c9752bd125f7afbe0099ccef97c2e9964f1cfd5c5d\",\\n    \"metrics_all.py\": \"8c71355fcf79f1872e41a922300dad252c2b9550d619bbad9b3c8815523ff2ca\",\\n    \"gaussian_renderer/network_gui.py\": \"7e392b8122a8e1359b4550769eac06190806a8c2eeb7f5aa7cbd025738dedf89\",\\n    \"gaussian_renderer/__init__.py\": \"be3266d8f76d22cc36e482992626e37e11165043f95f6a5abcdbe4a082e2a8ef\",\\n    \"arguments/__init__.py\": \"760ab64838fe8d41181ca3bda9a5a8b11738543df44f8083b030accd01c722e1\",\\n    \"scene/dataset_readers.py\": \"b06f01648fee893c4785ed38eeb934f91b79817b9dcbb694291c9162b0b6ba94\",\\n    \"scene/gaussian_model.py\": \"546ba41528a879af4d83bd280a3ef3cbcca9a5e9132204185aaa8f8ee9ffa310\",\\n    \"scene/cameras.py\": \"7344b9a4c95e3649becab1b9e30eb0b351a15a61370f64352dcb231aed916128\",\\n    \"scene/__init__.py\": \"aca50c75115f3670ec228814e6eccaf24e743dd8f450472f0dde95fd8fd3f1e6\",\\n    \"scene/colmap_loader.py\": \"6948ce06366e1f727ddffc39a445bf4b6873824f02abc39df63eb0c8f0fb3f36\",\\n    \"lpipsPyTorch/__init__.py\": \"a657ce7355782eb970f95fd0d2e26eec5b9023212d2b655814da6e15b70510b4\",\\n    \"utils/camera_utils.py\": \"7644d89893f2481a7a9be592227bf11f3e6e5c469c9ce92c3cb25f9ff920c458\",\\n    \"utils/make_depth_scale.py\": \"7634e328667f3c9a4cfc789874bc25b0bda22be1b6e9f23e8bedcc7ec170941e\",\\n    \"utils/graphics_utils.py\": \"d6e75de8161e98b72c2691e8a944a842e1b6625d2306035d079c868ac632edfc\",\\n    \"utils/general_utils.py\": \"1ea25c50b82a1791e7a539228251069ca205a0bf87c752c3a29af57fef7d63c0\",\\n    \"utils/sh_utils.py\": \"7d1ff267546390635e6d1f68c4f88c4a8b052482d5c9be1d32f06bc69e9a96e7\",\\n    \"utils/image_utils.py\": \"872a4507773b9378db9e0fefc90104dc474b27551af18ada73f000a7a00a4ba0\",\\n    \"utils/loss_utils.py\": \"4c977fbf0a5cf446b6f2b54232335584ab9f183a820dad050128c751011fc012\",\\n    \"utils/read_write_model.py\": \"04a1f01f98bef7065e4b66baa6bef4840d42333614191fb535ce11fbfa3b0ba3\",\\n    \"utils/system_utils.py\": \"be01c02d3118c5d53808bc04efccd00c35a705a43a87c3583ea2f4752bc48553\",\\n    \"lpipsPyTorch/modules/networks.py\": \"dfa6f152b0e3fbc23ac3bfaea52b46e9473e64ad539ea22ab030c57af51c7f14\",\\n    \"lpipsPyTorch/modules/utils.py\": \"1bd4a7d4e7b43215497675ed852936fe4f27e7ea3068afe0b0e1f7cfb6c48570\",\\n    \"lpipsPyTorch/modules/lpips.py\": \"3bece0b9cf9943af5b043026458819d259df9bfe7c2a1d3ffc6c905e7e5aa2b4\"\\n  },\\n  \"scripts_sha256\": {\\n    \"coordinator.py\": \"562fd4861da8d9e370c7b987b2ec1e175385b878a3d6c1d977817e1149aae7e0\",\\n    \"setup.py\": \"8ee060539c3d3924860f4c731be0e4c761172770f295afd3228f227724e660d5\",\\n    \"run_one.py\": \"7d683f5529b11bce14cbb70ba4a2bacffb58421f177489845e29094681a833b0\",\\n    \"metrics_reference.py\": \"64a67cbbc00c91f3a3c2e969b994459adb5dddba9b02c1b4e1b397971c083c42\",\\n    \"secondary_evaluation.py\": \"cdc1f87e0d201395995ef50e856f2e0306ffc42893b3d87dc16047bc9206228e\",\\n    \"isolate_pgsr_geometry.py\": \"8de21d978eba4b1630f24eb68ee8035dae86bb00bcd961f776fc0e4406fa7c1e\",\\n    \"common.py\": \"990d4436beace94f14eabccfc0c037e67baed7861666237305627157102e3c69\",\\n    \"promote_preflight.py\": \"a4923a4f283e74ad11722a2c591cd0d201d9462618ca3830d056c65a93f170e3\",\\n    \"record_environment.py\": \"6787c02c681b941b0a097d124c4c43b434a21f79acdae7c2336fe9591d2a4dfe\",\\n    \"validate_data.py\": \"82a77ee1b1c2db9717d673ecaeba32de2ba2e822410ab8394f4259b0685f5a27\",\\n    \"freeze_data.py\": \"8eb57b9c7e34b6d9c50108678a3cac613ac90aa383299657f5fc72f03e342e3d\",\\n    \"coordinator_local.py\": \"dc6418918e7c1d1f36acedb1f528168d04b8fa9d05ea1b63ea02ffdb9c902405\",\\n    \"render_test.py\": \"18abd7c3acc89fb332a14acc6754e273a928c5d38f6af801b84a98950eeb4aa2\",\\n    \"freeze_code.py\": \"b35502994b272337c8fe84437d23c55a06902b5e503b727598eff666a5c82779\",\\n    \"selection.py\": \"90fdc9f379e69656a49290d453f98c648c9959f833294d75c14584d050e48ff8\"\\n  },\\n  \"configuration\": {\\n    \"id\": \"baseline_60\",\\n    \"table\": \"III\",\\n    \"method\": \"3DGS\",\\n    \"dataset\": \"MatrixCity\",\\n    \"scene\": \"blockA_fusion_small_aerial+somestreet\",\\n    \"protocol\": \"aerial_only_train_street_only_test\",\\n    \"angle\": \"\",\\n    \"execution_host\": \"local (hust10 audit alias)\",\\n    \"allowed_physical_gpu\": \"0 and 1, concurrent independent runs, one GPU per run\",\\n    \"proposed_repo\": \"/data1/zhangao/repos/gaussian_splatting\",\\n    \"proposed_python\": \"/data1/ZHANGAo_2024/.conda/envs/gaussian_splatting/bin/python\",\\n    \"proposed_iterations\": \"30000\",\\n    \"iteration_evidence\": \"Proposed; original unknown\",\\n    \"proposed_images_from_launcher\": \"input_cached\",\\n    \"proposed_resolution\": \"1\",\\n    \"capacity_from_recorded_run\": \"not specified in recovered launcher\",\\n    \"dataset_candidate_host\": \"hust10\",\\n    \"source_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/train\",\\n    \"test_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/test\",\\n    \"source_images_present\": \"True\",\\n    \"test_images_present\": \"True\",\\n    \"split_source\": \"\",\\n    \"split_snapshot\": \"\",\\n    \"split_sha256\": \"\",\\n    \"test_split_count\": 130,\\n    \"split_images_missing_from_proposed_directory\": \"0\",\\n    \"data_issue\": \"\",\\n    \"configuration_evidence\": \"User chose pure-aerial 189 train / 130 street test; original missing model configuration remains unknown. Also evaluate identical model on historical 154 test views.\",\\n    \"original_seed\": \"unknown\",\\n    \"proposed_first_seed\": \"0\",\\n    \"seed_budget\": \"unbounded, user explicitly requested performance-capped selection\",\\n    \"selection_rule\": \"first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts\",\\n    \"status\": \"queued\",\\n    \"checkpoint_requirements\": \"final PLY; full args; iteration; optimizer state; logs; split/camera map; fresh per-view metrics; source/environment hashes\",\\n    \"original_run_path\": \"\",\\n    \"existing_candidate_checkpoint\": \"\",\\n    \"reference_kind\": \"Submitted Table III triple retained as biased acceptance target across a changed protocol; not evidence of same-protocol reproduction.\",\\n    \"reference_source\": \"/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex\",\\n    \"reference_SSIM\": \"0.578\",\\n    \"reference_PSNR\": \"16.146\",\\n    \"reference_LPIPS\": \"0.495\",\\n    \"paper_dataset_aggregate_SSIM\": \"0.578\",\\n    \"paper_dataset_aggregate_PSNR\": \"16.146\",\\n    \"paper_dataset_aggregate_LPIPS\": \"0.495\",\\n    \"method_key\": \"3dgs\",\\n    \"iterations\": 30000,\\n    \"test_path_original\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/dataset_sources_table3_strict_20260927/blockA_fusion_small_aerial/test\",\\n    \"source_path_original\": \"/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial/train\",\\n    \"extra_args\": [\\n      \"--disable_viewer\"\\n    ],\\n    \"reference\": {\\n      \"SSIM\": 0.578,\\n      \"PSNR\": 16.146,\\n      \"LPIPS\": 0.495\\n    },\\n    \"local_python\": \"/home/zhangao/.conda/envs/gaussian_splatting/bin/python\",\\n    \"test_path_unfiltered\": \"/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial/test\",\\n    \"dataset_variant\": \"blockA_fusion_small_aerial\",\\n    \"scene_field_role\": \"Historical table-group key; active data is specified by source_path and test_path.\",\\n    \"train_split_count\": 189,\\n    \"diagnostic_test_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test\",\\n    \"diagnostic_test_count\": 154,\\n    \"diagnostic_selection_role\": \"Comparison only; acceptance uses primary street-only metrics.\",\\n    \"protocol_change_record\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/protocol_changes/20260927_matrixcity_pure_first/queue_change.json\",\\n    \"mixed_training_fallback\": \"No automatic fallback. Review pure-aerial results before a separately recorded mixed-training comparison.\"\\n  },\\n  \"seed\": 0,\\n  \"gpu\": \"1\",\\n  \"hostname\": \"user\",\\n  \"iteration\": 30000,\\n  \"smoke\": false,\\n  \"command\": [\\n    \"/home/zhangao/.conda/envs/gaussian_splatting/bin/python\",\\n    \"train.py\",\\n    \"--source_path\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/train\",\\n    \"--model_path\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000\",\\n    \"--images\",\\n    \"input_cached\",\\n    \"--resolution\",\\n    \"1\",\\n    \"--data_device\",\\n    \"cpu\",\\n    \"--iterations\",\\n    \"30000\",\\n    \"--save_iterations\",\\n    \"30000\",\\n    \"--test_iterations\",\\n    \"30001\",\\n    \"--checkpoint_iterations\",\\n    \"30000\",\\n    \"--disable_viewer\",\\n    \"--test_path\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/test\"\\n  ],\\n  \"environment\": {\\n    \"CUDA_VISIBLE_DEVICES\": \"1\",\\n    \"GS_LSS_RUN_SEED\": \"0\",\\n    \"PYTHONPATH\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/code/3dgs\",\\n    \"GS_LSS_GEOMETRY_CACHE\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000/geometry_cache\"\\n  },\\n  \"started\": 1790542553.821511,\\n  \"train_command\": [\\n    \"/home/zhangao/.conda/envs/gaussian_splatting/bin/python\",\\n    \"train.py\",\\n    \"--source_path\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/train\",\\n    \"--model_path\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000\",\\n    \"--images\",\\n    \"input_cached\",\\n    \"--resolution\",\\n    \"1\",\\n    \"--data_device\",\\n    \"cpu\",\\n    \"--iterations\",\\n    \"30000\",\\n    \"--save_iterations\",\\n    \"30000\",\\n    \"--test_iterations\",\\n    \"30001\",\\n    \"--checkpoint_iterations\",\\n    \"30000\",\\n    \"--disable_viewer\",\\n    \"--test_path\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/test\"\\n  ],\\n  \"active_stage\": \"metrics_historical_154\",\\n  \"active_pid\": 489299,\\n  \"render_command\": [\\n    \"/home/zhangao/.conda/envs/gaussian_splatting/bin/python\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/scripts_local/render_test.py\",\\n    \"--repo\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/code/3dgs\",\\n    \"--method\",\\n    \"3dgs\",\\n    \"--model\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000\",\\n    \"--iteration\",\\n    \"30000\"\\n  ],\\n  \"metrics_command\": [\\n    \"/home/zhangao/.conda/envs/3dgs-mcmc/bin/python\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/scripts_local/metrics_reference.py\",\\n    \"--repo\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/code/mcmc\",\\n    \"--model\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000\",\\n    \"--iteration\",\\n    \"30000\"\\n  ],\\n  \"render_historical_154_command\": [\\n    \"/home/zhangao/.conda/envs/gaussian_splatting/bin/python\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/scripts_local/render_test.py\",\\n    \"--repo\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/code/3dgs\",\\n    \"--method\",\\n    \"3dgs\",\\n    \"--model\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000/diagnostics/historical_154\",\\n    \"--iteration\",\\n    \"30000\"\\n  ],\\n  \"metrics_historical_154_command\": [\\n    \"/home/zhangao/.conda/envs/3dgs-mcmc/bin/python\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/scripts_local/metrics_reference.py\",\\n    \"--repo\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/code/mcmc\",\\n    \"--model\",\\n    \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000/diagnostics/historical_154\",\\n    \"--iteration\",\\n    \"30000\"\\n  ],\\n  \"finished\": 1790546073.5783417,\\n  \"status\": \"technical_failure\",\\n  \"error\": \"AssertionError()\"\\n}')"
+    }
+  },
+  "next_seed": {
+    "baseline_01": 2,
+    "baseline_02": 2,
+    "baseline_03": 1,
+    "baseline_05": 2,
+    "baseline_04": 1,
+    "baseline_06": 2,
+    "baseline_07": 2,
+    "baseline_08": 2,
+    "baseline_10": 2,
+    "baseline_09": 2,
+    "baseline_11": 2,
+    "baseline_13": 2,
+    "baseline_12": 1,
+    "baseline_14": 2,
+    "baseline_15": 2,
+    "baseline_16": 2,
+    "baseline_18": 2,
+    "baseline_19": 2,
+    "baseline_17": 2,
+    "baseline_21": 2,
+    "baseline_20": 2,
+    "baseline_22": 2,
+    "baseline_23": 1,
+    "baseline_24": 2,
+    "baseline_26": 2,
+    "baseline_25": 2,
+    "baseline_27": 1,
+    "baseline_29": 2,
+    "baseline_28": 1,
+    "baseline_30": 2,
+    "baseline_31": 2,
+    "baseline_32": 2,
+    "baseline_34": 2,
+    "baseline_33": 1,
+    "baseline_35": 1,
+    "baseline_37": 2,
+    "baseline_36": 2,
+    "baseline_38": 2,
+    "baseline_39": 2,
+    "baseline_40": 2,
+    "baseline_42": 2,
+    "baseline_41": 1,
+    "baseline_43": 2,
+    "baseline_45": 1,
+    "baseline_46": 2,
+    "baseline_44": 1,
+    "baseline_47": 2,
+    "baseline_48": 2,
+    "baseline_49": 1,
+    "baseline_50": 2,
+    "baseline_51": 2,
+    "baseline_52": 2,
+    "baseline_54": 1,
+    "baseline_53": 1,
+    "baseline_55": 2,
+    "baseline_56": 2,
+    "baseline_58": 2,
+    "baseline_57": 2,
+    "baseline_59": 2,
+    "baseline_61": 1,
+    "baseline_62": 1,
+    "baseline_63": 1,
+    "baseline_65": 1,
+    "baseline_64": 1,
+    "baseline_67": 1,
+    "baseline_66": 1
+  },
+  "attempts": 112,
+  "status": "running_local_two_GPUs",
+  "coordinator_pid": 4053508,
+  "updated": 1790607398.8789434,
+  "current": {
+    "0": {
+      "id": "baseline_61",
+      "method": "3DGS",
+      "scene": "Zeche1",
+      "seed": 1,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_61/seed_000001",
+      "runner_pid": 1265330
+    }
+  },
+  "remote_execution_disabled": true,
+  "execution_host": "local",
+  "allowed_physical_gpus": [
+    0,
+    1
+  ]
+}

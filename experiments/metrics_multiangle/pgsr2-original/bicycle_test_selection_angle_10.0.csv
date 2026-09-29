@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_10.0,test,ours_30000,0.6934622526168823,20.946697235107422,0.266078382730484,20.23406982421875,2.4681327935807245,39.34391403198242

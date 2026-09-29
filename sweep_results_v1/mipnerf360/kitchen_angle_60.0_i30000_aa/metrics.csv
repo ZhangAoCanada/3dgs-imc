@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/sweep_models/mipnerf360/kitchen_angle_60.0_i30000_aa,test,ours_30000,0.8655973672866821,24.747957229614258,0.1458793729543686,45.99446487426758,3.109545506538909,32.82742691040039

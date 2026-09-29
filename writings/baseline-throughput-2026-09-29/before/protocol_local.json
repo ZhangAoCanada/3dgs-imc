@@ -1,0 +1,29 @@
+{
+  "user_authorized_bias": true,
+  "description": "New selectively chosen reruns, not recovered original models or unbiased baseline estimates",
+  "acceptance": "SSIM <= original source; PSNR <= original source; LPIPS >= original source; all three from same final 30000 iteration checkpoint",
+  "selection": "First passing attempt per configuration; round-robin unresolved configurations; seeds 0,1,...; all attempts retained",
+  "completion": "67 valid selected checkpoints; locally executed models verified in place, remote phase models already mirrored and verified",
+  "failure": "Failed/incomplete/nonfinite runs never qualify; deterministic technical errors block configuration for repair; disk guard pauses before exhaustion",
+  "gpu": "Local GPUs 0 and 1; up to two independent campaign pipelines per GPU when peak budgets and live free memory fit; wait for unrelated compute processes.",
+  "reconstruction": "Historical launcher settings where recovered; current frozen native defaults otherwise; original full configs unknown. MCMC aerial caps 7M/2M recovered from commented run.sh, not original checkpoint proof",
+  "data": "Frozen RGB PNG content, original filenames, main-host sources except original remote Mill19 images_4; COLMAP geometry copied",
+  "scaffold_test_appearance": "Mean of learned training-camera embeddings for all novel test views, because separate test camera IDs do not index the training embeddings; explicit reconstruction choice",
+  "metrics": "Native common SSIM, PSNR, LPIPS VGG 0.1; RGB PNG, float32 arithmetic mean over full prescribed test split",
+  "execution_update": "User explicitly requires local machine, both physical GPUs 0 and 1; remote CUDA execution disabled",
+  "previous_phase": "Remote attempts retained with original host identities; one selected result preserved",
+  "scheduler": "scripts_local/coordinator_multi.py",
+  "local_configurations": "configurations_local.json",
+  "watchdog": "scripts_local/watchdog_local.py",
+  "throughput_update": {
+    "date": "2026-09-28",
+    "max_pipelines_per_gpu": 2,
+    "additional_memory_headroom_mib": 4096,
+    "gpu_poll_seconds": 5,
+    "watchdog_poll_seconds": 10,
+    "memory_profiles": "gpu_memory_profiles.json",
+    "policy": "Preserve every attempt; on CUDA OOM retry same seed and configuration exclusively in a fresh directory.",
+    "training_recipe_and_acceptance_unchanged": true,
+    "isolated_timing": false
+  }
+}

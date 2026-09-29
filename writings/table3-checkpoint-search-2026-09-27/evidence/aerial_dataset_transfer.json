@@ -1,0 +1,26 @@
+{
+  "source_host": "hust2",
+  "source": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial",
+  "destination_host": "local",
+  "destination": "/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial",
+  "staging": "/data1/zhangao/DATA/large_angle/.blockA_fusion_small_aerial.transfer-20260927",
+  "started": "2026-09-27T23:12:21.390327+08:00",
+  "status": "complete",
+  "contents": "entire directory, including train, test, test_aerial, pose and all auxiliary files",
+  "files": 2406,
+  "bytes": 10594857941,
+  "command": [
+    "rsync",
+    "-a",
+    "--partial",
+    "--protect-args",
+    "--stats",
+    "-e",
+    "ssh -o BatchMode=yes -o ClearAllForwardings=yes -o HostName=192.168.1.129 -o Port=22 -o 'HostKeyAlias=[222.20.99.102]:2088' -o StrictHostKeyChecking=yes",
+    "hust2:/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/",
+    "/data1/zhangao/DATA/large_angle/.blockA_fusion_small_aerial.transfer-20260927/"
+  ],
+  "verified_files": 2406,
+  "all_sha256_match": true,
+  "finished": "2026-09-27T23:14:58.136512+08:00"
+}

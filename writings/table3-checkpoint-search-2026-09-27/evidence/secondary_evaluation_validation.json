@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "time": 1790523121.74461,
+  "checks": [
+    "3dgs: isolated args and all checkpoint sidecars preserved",
+    "scaffold: isolated args and all checkpoint sidecars preserved",
+    "pgsr: isolated args and all checkpoint sidecars preserved",
+    "mcmc: isolated args and all checkpoint sidecars preserved",
+    "complete archived 154-view metrics accepted",
+    "missing view rejected",
+    "nonfinite score rejected"
+  ],
+  "limitation": "CPU preparation and archived-output validation only; fresh diagnostic GPU rendering awaits queued runs."
+}

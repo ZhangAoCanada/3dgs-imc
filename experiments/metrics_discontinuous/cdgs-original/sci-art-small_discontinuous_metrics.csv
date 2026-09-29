@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_discontinuous/sci-art-small/cdgs-original,test,ours_30000,0.7874974012374878,16.502708435058594,0.2615620493888855,40.4168586730957,4.598358537661128,71.66981506347656

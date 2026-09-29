@@ -1,0 +1,93 @@
+{
+  "time": 1790642973.729935,
+  "coordinator_pid": 1283349,
+  "coordinator_start_ticks": 719731221,
+  "active_jobs": {
+    "baseline_52": {
+      "id": "baseline_52",
+      "seed": 2,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_52/seed_000002",
+      "runner_pid": 1696095,
+      "runner_start_ticks": 722820479,
+      "method": "PGSR",
+      "scene": "residence-small",
+      "budget_mib": 17131,
+      "exclusive": false,
+      "peak_mib": 10954,
+      "current_mib": 10264,
+      "phase": "running",
+      "started": 1790639685.4236045,
+      "adopted": false
+    },
+    "baseline_10": {
+      "id": "baseline_10",
+      "seed": 3,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_10/seed_000003",
+      "runner_pid": 1740989,
+      "runner_start_ticks": 723105507,
+      "method": "3DGS",
+      "scene": "bonsai",
+      "budget_mib": 10240,
+      "exclusive": false,
+      "peak_mib": 2944,
+      "current_mib": 2418,
+      "phase": "running",
+      "started": 1790642535.7031868,
+      "adopted": false
+    }
+  },
+  "gpu_before": {
+    "0": {
+      "index": "0",
+      "uuid": "GPU-e87ecfca-3e1c-98b0-6a9e-7e21d5460bf3",
+      "total_mib": 32607,
+      "used_mib": 12712,
+      "free_mib": 19398,
+      "utilization": 96,
+      "foreign_pids": [],
+      "apps": [
+        {
+          "pid": 1696103,
+          "memory_mib": 10264,
+          "campaign_id": "baseline_52",
+          "uid": 1004,
+          "start_ticks": 722820495
+        },
+        {
+          "pid": 1740992,
+          "memory_mib": 2418,
+          "campaign_id": "baseline_10",
+          "uid": 1004,
+          "start_ticks": 723105520
+        }
+      ]
+    },
+    "1": {
+      "index": "1",
+      "uuid": "GPU-7832c658-9c16-efd6-c049-a63d7c4cc3ee",
+      "total_mib": 32607,
+      "used_mib": 11062,
+      "free_mib": 21048,
+      "utilization": 43,
+      "foreign_pids": [
+        1348094
+      ],
+      "apps": [
+        {
+          "pid": 1348094,
+          "memory_mib": 11038,
+          "campaign_id": null,
+          "uid": 1003,
+          "start_ticks": 720380476
+        }
+      ]
+    }
+  },
+  "authorized_process": {
+    "pid": 1348094,
+    "uid": 1003,
+    "start_ticks": 720380476
+  }
+}

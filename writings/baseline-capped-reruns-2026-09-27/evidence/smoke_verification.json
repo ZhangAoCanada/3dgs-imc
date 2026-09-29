@@ -1,0 +1,50 @@
+[
+  {
+    "id": "baseline_06",
+    "iteration": 20,
+    "files_verified": 128,
+    "results": {
+      "ours_20": {
+        "SSIM": 0.46112650632858276,
+        "PSNR": 13.67113208770752,
+        "LPIPS": 0.6068643927574158
+      }
+    }
+  },
+  {
+    "id": "baseline_42",
+    "iteration": 7002,
+    "files_verified": 97,
+    "results": {
+      "ours_7002": {
+        "SSIM": 0.9180585741996765,
+        "PSNR": 28.441558837890625,
+        "LPIPS": 0.140342116355896
+      }
+    }
+  },
+  {
+    "id": "baseline_59",
+    "iteration": 602,
+    "files_verified": 83,
+    "results": {
+      "ours_602": {
+        "SSIM": 0.41971006989479065,
+        "PSNR": 13.056943893432617,
+        "LPIPS": 0.6226158142089844
+      }
+    }
+  },
+  {
+    "id": "baseline_62",
+    "iteration": 1602,
+    "files_verified": 328,
+    "results": {
+      "ours_1602": {
+        "SSIM": 0.528647243976593,
+        "PSNR": 14.394857406616211,
+        "LPIPS": 0.5492938160896301
+      }
+    }
+  }
+]

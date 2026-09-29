@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/room/mvgs-original-mv3_test_selection_angle_5.0,test,ours_30000,0.9415590763092041,31.657649993896484,0.11063385754823685,15.054764747619629,2.72310303038477,42.91530990600586

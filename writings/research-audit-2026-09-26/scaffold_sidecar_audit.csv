@@ -1,0 +1,65 @@
+table,dataset,scene,angle,host,checkpoint,required_networks_present,missing_networks,appearance_embedding_present
+I,Mip-NeRF 360,bicycle,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bicycle/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bonsai,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bonsai/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,counter,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/counter/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,garden,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/garden/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,kitchen,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/kitchen/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,room,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/room/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,stump,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/stump/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,treehill,20.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/treehill/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bicycle,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bicycle/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bonsai,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bonsai/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,counter,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/counter/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,garden,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/garden/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,kitchen,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/kitchen/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,room,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/room/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,stump,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/stump/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,treehill,40.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/treehill/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bicycle,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bicycle/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bonsai,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bonsai/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,counter,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/counter/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,garden,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/garden/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,kitchen,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/kitchen/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,room,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/room/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,stump,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/stump/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,treehill,60.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/treehill/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bicycle,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bicycle/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bonsai,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bonsai/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,counter,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/counter/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,garden,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/garden/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,kitchen,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/kitchen/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,room,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/room/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,stump,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/stump/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,treehill,80.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/treehill/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bicycle,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bicycle/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,bonsai,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/bonsai/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,counter,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/counter/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,garden,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/garden/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,kitchen,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/kitchen/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,room,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/room/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,stump,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/stump/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Mip-NeRF 360,treehill,100.0,hust10,/data1/zhangao/outputs/baselines_multi_angle/treehill/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,truck_resize,20.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,train_resize,20.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_20.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,truck_resize,40.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,train_resize,40.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_40.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,truck_resize,60.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,train_resize,60.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_60.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,truck_resize,80.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,train_resize,80.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_80.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,truck_resize,100.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+I,Tanks & Temples,train_resize,100.0,hust2,/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_100.0/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,bicycle,,hust10,/data1/zhangao/outputs/baselines_discontinuous/bicycle/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,bonsai,,hust10,/data1/zhangao/outputs/baselines_discontinuous/bonsai/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,counter,,hust10,/data1/zhangao/outputs/baselines_discontinuous/counter/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,garden,,hust10,/data1/zhangao/outputs/baselines_discontinuous/garden/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,kitchen,,hust10,/data1/zhangao/outputs/baselines_discontinuous/kitchen/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,room,,hust10,/data1/zhangao/outputs/baselines_discontinuous/room/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,stump,,hust10,/data1/zhangao/outputs/baselines_discontinuous/stump/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mip-NeRF 360,treehill,,hust10,/data1/zhangao/outputs/baselines_discontinuous/treehill/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Tanks & Temples,truck_resize,,hust10,/data1/zhangao/outputs/baselines_discontinuous/truck_resize/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Tanks & Temples,train_resize,,hust10,/data1/zhangao/outputs/baselines_discontinuous/train_resize/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mill 19,building-small,,hust10,/data1/zhangao/outputs/baselines_discontinuous/building-small/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mill 19,residence-small,,hust10,/data1/zhangao/outputs/baselines_discontinuous/residence-small/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mill 19,rubble-small,,hust10,/data1/zhangao/outputs/baselines_discontinuous/rubble-small/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True
+II,Mill 19,sci-art-small,,hust10,/data1/zhangao/outputs/baselines_discontinuous/sci-art-small/scaffoldgs-original/point_cloud/iteration_30000/point_cloud.ply,True,,True

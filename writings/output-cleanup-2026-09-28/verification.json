@@ -1,0 +1,36 @@
+{
+  "finished": "2026-09-28T22:41:32.595301+08:00",
+  "entries_checked": 839467,
+  "all_original_paths_preserved": true,
+  "checkpoint_paths_retained": 4125,
+  "deduplicated_paths_verified": 409951,
+  "unique_canonical_hashes_verified": 24295,
+  "coverage": {
+    "ours_tables_I_II_preserve.csv": {
+      "paths": 131,
+      "present": 131
+    },
+    "all_selected_models.csv": {
+      "paths": 747,
+      "present": 739
+    },
+    "baseline_selected": {
+      "paths": 27,
+      "present": 27
+    },
+    "library_links": {
+      "paths": 2813,
+      "resolving": 2813
+    }
+  },
+  "expected_live_coordinator_changes": [
+    "GS-LSS-baseline-capped-reruns-20260927/status.json"
+  ],
+  "errors": [],
+  "disk_after_verification": {
+    "total": 7937303740416,
+    "used": 7162917457920,
+    "free": 374291349504
+  },
+  "elapsed_s": 227.49074685573578
+}

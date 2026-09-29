@@ -1,0 +1,468 @@
+{
+  "checked_date": "2026-09-28",
+  "scope": "Paper-version provenance for R3.2; no checkpoint or training verification",
+  "local_host": "user",
+  "nested_repository": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-editing",
+  "commit_count": 5,
+  "unique_tex_blob_count": 11,
+  "git_versions": [
+    {
+      "git_blob": "a3b24d2202b5fd22e02dc7969b2aeaaa848cebc5",
+      "occurrences": [
+        {
+          "commit": "e5e12582e4fb0a2b91ee9a712aac6279d3e1f293",
+          "commit_author_date": "2026-07-02T10:43:03+08:00",
+          "path": "bare_jrnl_new_sample4.tex"
+        }
+      ],
+      "sha256": "0dee1daef073a8c3ca66124f0f544a5916bec23dcd5898c0c2a2cf29a0ca3886",
+      "active_batch_rows": [
+        {
+          "line": 865,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 \\\\"
+        },
+        {
+          "line": 866,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 \\\\"
+        },
+        {
+          "line": 867,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 562,
+          "text": "The photometric gradient of GS-LSS at each iteration is averaged over a random batch of three weakly correlated views, selected to minimize spatial correlation."
+        },
+        {
+          "line": 564,
+          "text": "Other hyperparameters are set as followed: CPF net $f_{\\theta}$ is a 3-layer MLP, $g_{\\theta}$ and $h_{\\theta}$ are 2-layer MLPs; DBSCAN $\\epsilon$ is set to 0.25; scene-level matching weight $\\lambda_s$ is set to 0.1; sampling weight $\\lambda_{\\epsilon}$ is set to 1; random batch size is set to 3."
+        }
+      ]
+    },
+    {
+      "git_blob": "e952e1225cb1365ca3c5b65ba8e72142402eec52",
+      "occurrences": [
+        {
+          "commit": "e5e12582e4fb0a2b91ee9a712aac6279d3e1f293",
+          "commit_author_date": "2026-07-02T10:43:03+08:00",
+          "path": "bare_jrnl_new_sample4_revision.tex"
+        }
+      ],
+      "sha256": "358ab38f224c28ef9d034cad56513ab34b3ddef2733b03b14f153814c8112967",
+      "active_batch_rows": [
+        {
+          "line": 881,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 \\\\"
+        },
+        {
+          "line": 882,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 \\\\"
+        },
+        {
+          "line": 883,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 580,
+          "text": "The photometric gradient of GS-LSS at each iteration is averaged over a random batch of three weakly correlated views, sampled from separated positions in the camera trajectory to reduce spatial correlation."
+        },
+        {
+          "line": 581,
+          "text": "Other hyperparameters are set as follows: CPF net $f_{\\theta}$ is a 3-layer MLP, $g_{\\theta}$ and $h_{\\theta}$ are 2-layer MLPs; DBSCAN $\\epsilon$ is set to 0.25; scene-level matching weight $\\lambda_s$ is set to 0.1; sampling weight $\\lambda_{\\epsilon}$ is set to 1; random batch size is set to 3."
+        },
+        {
+          "line": 893,
+          "text": "The first block of LSS ablations is performed on the MatrixCity dataset~\\cite{matrixcity} under one-view training batch, while the second block ablates the random batch size. Results are presented in Tab.~\\ref{tab:ablation_LSS}."
+        }
+      ]
+    },
+    {
+      "git_blob": "d536b9e703869e17a04638b6b17bbc2d77ebd2be",
+      "occurrences": [
+        {
+          "commit": "e5e12582e4fb0a2b91ee9a712aac6279d3e1f293",
+          "commit_author_date": "2026-07-02T10:43:03+08:00",
+          "path": "bare_jrnl_new_sample4_revision_raw.tex"
+        }
+      ],
+      "sha256": "6fe07d20874303e554e5de5691ad3dbee808e02c8dd71d8d3f214e275d949aac",
+      "active_batch_rows": [
+        {
+          "line": 869,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 \\\\"
+        },
+        {
+          "line": 870,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 \\\\"
+        },
+        {
+          "line": 871,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 566,
+          "text": "The photometric gradient of GS-LSS at each iteration is averaged over a random batch of three weakly correlated views, selected to reduce spatial correlation."
+        },
+        {
+          "line": 568,
+          "text": "Other hyperparameters are set as follows: CPF net $f_{\\theta}$ is a 3-layer MLP, $g_{\\theta}$ and $h_{\\theta}$ are 2-layer MLPs; DBSCAN $\\epsilon$ is set to 0.25; scene-level matching weight $\\lambda_s$ is set to 0.1; sampling weight $\\lambda_{\\epsilon}$ is set to 1; random batch size is set to 3."
+        }
+      ]
+    },
+    {
+      "git_blob": "ea64c7d706bf532cff1058d52294bafb1a6c96bc",
+      "occurrences": [
+        {
+          "commit": "e5e12582e4fb0a2b91ee9a712aac6279d3e1f293",
+          "commit_author_date": "2026-07-02T10:43:03+08:00",
+          "path": "bare_jrnl_new_sample4_withbatchtraining.tex"
+        },
+        {
+          "commit": "4fff5f9da5db43669be6f3ef9ff9b8adb08720ba",
+          "commit_author_date": "2026-06-26T11:25:24+08:00",
+          "path": "bare_jrnl_new_sample4_withbatchtraining.tex"
+        }
+      ],
+      "sha256": "64b22cd9c96855b5036dfd1581443191344813f181a1b5fcf8ff301aaebdfdfa",
+      "active_batch_rows": [
+        {
+          "line": 858,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 \\\\"
+        },
+        {
+          "line": 859,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 \\\\"
+        },
+        {
+          "line": 860,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": []
+    },
+    {
+      "git_blob": "edc081b39b370f95c41bd2d2318e302a79bf72db",
+      "occurrences": [
+        {
+          "commit": "4fff5f9da5db43669be6f3ef9ff9b8adb08720ba",
+          "commit_author_date": "2026-06-26T11:25:24+08:00",
+          "path": "bare_jrnl_new_sample4.tex"
+        }
+      ],
+      "sha256": "e7061315d1e1dc7fb325d231d7289d33707cc0b781211a1b7917fc8f9568bad0",
+      "active_batch_rows": [
+        {
+          "line": 850,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 \\\\"
+        },
+        {
+          "line": 851,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 \\\\"
+        },
+        {
+          "line": 852,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 547,
+          "text": "The photometric gradient of GS-LSS at each iteration is averaged over a random batch of three weakly correlated views, selected to minimize spatial correlation."
+        },
+        {
+          "line": 549,
+          "text": "{\\color{blue}Other hyperparameters are set as followed: CPF net $f_{\\theta}$ is a 3-layer MLP, $g_{\\theta}$ and $h_{\\theta}$ are 2-layer MLPs; DBSCAN $\\epsilon$ is set to 0.25; scene-level matching weight $\\lambda_s$ is set to 0.1; sampling weight $\\lambda_{\\epsilon}$ is set to 1; random batch size is set to 3.}"
+        }
+      ]
+    },
+    {
+      "git_blob": "18becd3eac9b5eb6914824f892691c52c7664af5",
+      "occurrences": [
+        {
+          "commit": "4fff5f9da5db43669be6f3ef9ff9b8adb08720ba",
+          "commit_author_date": "2026-06-26T11:25:24+08:00",
+          "path": "bare_jrnl_new_sample4_v3.tex"
+        }
+      ],
+      "sha256": "789565c14f3350e1969639f30e4fe1eaf0cfff04ce769eb563f7546feaa748a0",
+      "active_batch_rows": [
+        {
+          "line": 758,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 & 44.038 & 4.723 & 66.370 \\\\"
+        },
+        {
+          "line": 759,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 & 43.365 & 4.575 & 64.704 \\\\"
+        },
+        {
+          "line": 760,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} & \\textbf{42.185} & \\textbf{4.476} & \\textbf{63.111} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 559,
+          "text": "The random batch size is set to 3. "
+        }
+      ]
+    },
+    {
+      "git_blob": "bbffdce77dd44efaf1c1bf9f825586a7eb5399a9",
+      "occurrences": [
+        {
+          "commit": "0ddfefa165276f2aea9fafb62f0d19809a8afc6e",
+          "commit_author_date": "2026-06-16T11:11:33+08:00",
+          "path": "bare_jrnl_new_sample4.tex"
+        }
+      ],
+      "sha256": "b28d010805e85ea0176a6fab6556aff35b80076b3e0531a7d1a2dffd6f5334b5",
+      "active_batch_rows": [
+        {
+          "line": 748,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 & 44.038 & 4.723 & 66.370 \\\\"
+        },
+        {
+          "line": 749,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 & 43.365 & 4.575 & 64.704 \\\\"
+        },
+        {
+          "line": 750,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} & \\textbf{42.185} & \\textbf{4.476} & \\textbf{63.111} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 552,
+          "text": "The random batch size is set to 3. "
+        }
+      ]
+    },
+    {
+      "git_blob": "c36e571278f20d53134a1bc5ce6d15a4096d92d2",
+      "occurrences": [
+        {
+          "commit": "0ddfefa165276f2aea9fafb62f0d19809a8afc6e",
+          "commit_author_date": "2026-06-16T11:11:33+08:00",
+          "path": "revised/bare_jrnl_revised.tex"
+        },
+        {
+          "commit": "8bd46afb7a2f520d586c42d0d53f7944e06244ec",
+          "commit_author_date": "2026-06-15T13:25:18+08:00",
+          "path": "revised/bare_jrnl_revised.tex"
+        },
+        {
+          "commit": "5e4997c099156334990c3f383d1658644c2189a4",
+          "commit_author_date": "2026-06-15T11:58:47+08:00",
+          "path": "revised/bare_jrnl_revised.tex"
+        }
+      ],
+      "sha256": "a27b0f4ef4278083fbe80e30c27b51e3a0f6e2f931704f38040a6a7bd4e00f0a",
+      "active_batch_rows": [
+        {
+          "line": 711,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 & 44.038 & 4.723 & 66.370 \\\\"
+        },
+        {
+          "line": 712,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 & 43.365 & 4.575 & 64.704 \\\\"
+        },
+        {
+          "line": 713,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} & \\textbf{42.185} & \\textbf{4.476} & \\textbf{63.111} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 514,
+          "text": "The random batch size is set to 3 in the full-accuracy setting."
+        }
+      ]
+    },
+    {
+      "git_blob": "b03eb58e2541861009eda7cf80adca2841a81e43",
+      "occurrences": [
+        {
+          "commit": "0ddfefa165276f2aea9fafb62f0d19809a8afc6e",
+          "commit_author_date": "2026-06-16T11:11:33+08:00",
+          "path": "revised/bare_jrnl_revised_v2.tex"
+        },
+        {
+          "commit": "8bd46afb7a2f520d586c42d0d53f7944e06244ec",
+          "commit_author_date": "2026-06-15T13:25:18+08:00",
+          "path": "revised/bare_jrnl_revised_v2.tex"
+        },
+        {
+          "commit": "5e4997c099156334990c3f383d1658644c2189a4",
+          "commit_author_date": "2026-06-15T11:58:47+08:00",
+          "path": "revised/bare_jrnl_revised_v2.tex"
+        }
+      ],
+      "sha256": "adc895c7dc276028991d48f8e8724e9011915c09d80934b35569a461aa273956",
+      "active_batch_rows": [
+        {
+          "line": 721,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 & 44.038 & 4.723 & 66.370 \\\\"
+        },
+        {
+          "line": 722,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 & 43.365 & 4.575 & 64.704 \\\\"
+        },
+        {
+          "line": 723,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} & \\textbf{42.185} & \\textbf{4.476} & \\textbf{63.111} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": []
+    },
+    {
+      "git_blob": "ac7fd621fbe7b1ab671828c9e3b3471f225d3cb1",
+      "occurrences": [
+        {
+          "commit": "8bd46afb7a2f520d586c42d0d53f7944e06244ec",
+          "commit_author_date": "2026-06-15T13:25:18+08:00",
+          "path": "bare_jrnl_new_sample4.tex"
+        }
+      ],
+      "sha256": "934f584f7a484de575ea8861fe9f81e1b09230134c809224dc98a1976d790466",
+      "active_batch_rows": [
+        {
+          "line": 729,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 & 44.038 & 4.723 & 66.370 \\\\"
+        },
+        {
+          "line": 730,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 & 43.365 & 4.575 & 64.704 \\\\"
+        },
+        {
+          "line": 731,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} & \\textbf{42.185} & \\textbf{4.476} & \\textbf{63.111} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 533,
+          "text": "The random batch size is set to 3. "
+        }
+      ]
+    },
+    {
+      "git_blob": "a86ef54fad72c38d216524576fe4f055cc720fad",
+      "occurrences": [
+        {
+          "commit": "5e4997c099156334990c3f383d1658644c2189a4",
+          "commit_author_date": "2026-06-15T11:58:47+08:00",
+          "path": "bare_jrnl_new_sample4.tex"
+        }
+      ],
+      "sha256": "899bb9a583ecf23a24ea8944f8ebdcb649a009d95dd8dfc16386b3c0d4eb4e16",
+      "active_batch_rows": [
+        {
+          "line": 722,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 1 view  & 0.592 & 16.693 & 0.470 & 44.038 & 4.723 & 66.370 \\\\"
+        },
+        {
+          "line": 723,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 2 views & 0.592 & 16.799 & 0.466 & 43.365 & 4.575 & 64.704 \\\\"
+        },
+        {
+          "line": 724,
+          "text": "        $\\mathcal{N}(\\mu_{\\theta}, \\sigma_{\\theta})$ & 3 views & \\textbf{0.594} & \\textbf{16.951} & \\textbf{0.462} & \\textbf{42.185} & \\textbf{4.476} & \\textbf{63.111} \\\\"
+        }
+      ],
+      "explicit_protocol_statements": [
+        {
+          "line": 526,
+          "text": "The random batch size is set to 3. "
+        }
+      ]
+    }
+  ],
+  "archive_sources": [
+    {
+      "host": "hust2",
+      "archive": "/data1/zhangao/outputs/hust10_revision_backup_20260703/hust10_3dgs_imc_codex_revision_workspace_20260703.tar.gz",
+      "member": "writings/GS-LSS/revision_sample/bare_jrnl_new_sample4_revision_text_revised.tex",
+      "sha256": "600485dfe3702f143b88e7b6ed4453e9404bd06685ff9846d273c429984fcbc8",
+      "recovered_text_sha256": "600485dfe3702f143b88e7b6ed4453e9404bd06685ff9846d273c429984fcbc8",
+      "recovered_text_matches_archive_sha256": true,
+      "protocol_statements": [
+        {
+          "line": 590,
+          "text": "Unless otherwise stated, the photometric loss of GS-LSS is computed from one randomly sampled training view per iteration, following the standard 3DGS training protocol."
+        },
+        {
+          "line": 592,
+          "text": "% TODO[author]: If the previous main-table GS-LSS values were produced with a multi-view mini-batch, replace all GS-LSS rows in Tables~\\ref{tab:coverage_gap}--\\ref{tab:angle_disparity}, Fig.~\\ref{coverage_gap_trend}, Fig.~\\ref{visual_comparison}, and Table~\\ref{tab:training-time} with the final single-view results before submission."
+        }
+      ]
+    },
+    {
+      "host": "hust2",
+      "archive": "/data1/zhangao/outputs/hust10_revision_backup_20260703/hust10_3dgs_imc_codex_revision_workspace_20260703.tar.gz",
+      "member": "writings/GS-LSS/bare_jrnl_new_sample4_revision.tex",
+      "sha256": "847a42639143fd12bb4b64cfb7ec1838fb65b359d11d98ffa0dd7fd4afc9a969",
+      "recovered_text_sha256": "847a42639143fd12bb4b64cfb7ec1838fb65b359d11d98ffa0dd7fd4afc9a969",
+      "recovered_text_matches_archive_sha256": true,
+      "protocol_statements": [
+        {
+          "line": 541,
+          "text": "Unless otherwise stated, the photometric loss of GS-LSS is computed from one randomly sampled training view per iteration, following the standard 3DGS training protocol."
+        }
+      ],
+      "export": "writings/tvcg-major-revision-2026-09-28/evidence/r3_2_paper_history/archive-2026-07-03-bare_jrnl_new_sample4_revision.tex"
+    }
+  ],
+  "exports": [
+    {
+      "source_type": "git blob",
+      "host": "user",
+      "repository": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-editing",
+      "commit": "5e4997c099156334990c3f383d1658644c2189a4",
+      "git_blob": "a86ef54fad72c38d216524576fe4f055cc720fad",
+      "original_path": "bare_jrnl_new_sample4.tex",
+      "sha256": "899bb9a583ecf23a24ea8944f8ebdcb649a009d95dd8dfc16386b3c0d4eb4e16",
+      "export": "writings/tvcg-major-revision-2026-09-28/evidence/r3_2_paper_history/2026-06-15-5e4997c-bare_jrnl_new_sample4.tex"
+    },
+    {
+      "source_type": "git blob",
+      "host": "user",
+      "repository": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-editing",
+      "commit": "4fff5f9da5db43669be6f3ef9ff9b8adb08720ba",
+      "git_blob": "edc081b39b370f95c41bd2d2318e302a79bf72db",
+      "original_path": "bare_jrnl_new_sample4.tex",
+      "sha256": "e7061315d1e1dc7fb325d231d7289d33707cc0b781211a1b7917fc8f9568bad0",
+      "export": "writings/tvcg-major-revision-2026-09-28/evidence/r3_2_paper_history/2026-06-26-4fff5f9-bare_jrnl_new_sample4.tex"
+    },
+    {
+      "source_type": "git blob",
+      "host": "user",
+      "repository": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-editing",
+      "commit": "e5e12582e4fb0a2b91ee9a712aac6279d3e1f293",
+      "git_blob": "e952e1225cb1365ca3c5b65ba8e72142402eec52",
+      "original_path": "bare_jrnl_new_sample4_revision.tex",
+      "sha256": "358ab38f224c28ef9d034cad56513ab34b3ddef2733b03b14f153814c8112967",
+      "export": "writings/tvcg-major-revision-2026-09-28/evidence/r3_2_paper_history/2026-07-02-e5e1258-bare_jrnl_new_sample4_revision.tex"
+    },
+    {
+      "host": "hust2",
+      "archive": "/data1/zhangao/outputs/hust10_revision_backup_20260703/hust10_3dgs_imc_codex_revision_workspace_20260703.tar.gz",
+      "member": "writings/GS-LSS/bare_jrnl_new_sample4_revision.tex",
+      "sha256": "847a42639143fd12bb4b64cfb7ec1838fb65b359d11d98ffa0dd7fd4afc9a969",
+      "recovered_text_sha256": "847a42639143fd12bb4b64cfb7ec1838fb65b359d11d98ffa0dd7fd4afc9a969",
+      "recovered_text_matches_archive_sha256": true,
+      "protocol_statements": [
+        {
+          "line": 541,
+          "text": "Unless otherwise stated, the photometric loss of GS-LSS is computed from one randomly sampled training view per iteration, following the standard 3DGS training protocol."
+        }
+      ],
+      "export": "writings/tvcg-major-revision-2026-09-28/evidence/r3_2_paper_history/archive-2026-07-03-bare_jrnl_new_sample4_revision.tex"
+    }
+  ]
+}

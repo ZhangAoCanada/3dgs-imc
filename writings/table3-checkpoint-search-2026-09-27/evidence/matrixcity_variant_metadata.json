@@ -1,0 +1,296 @@
+[
+  {
+    "scene": "blockA_fusion_small_aerial",
+    "dirs": {
+      "train": [
+        {
+          "name": "sparse",
+          "dir": true,
+          "count": 1,
+          "bytes": null
+        },
+        {
+          "name": "dav2_cached",
+          "dir": true,
+          "count": 189,
+          "bytes": null
+        },
+        {
+          "name": "normal",
+          "dir": true,
+          "count": 189,
+          "bytes": null
+        },
+        {
+          "name": "input",
+          "dir": true,
+          "count": 189,
+          "bytes": null
+        },
+        {
+          "name": "input_cached",
+          "dir": true,
+          "count": 189,
+          "bytes": null
+        },
+        {
+          "name": "depth_cached",
+          "dir": true,
+          "count": 189,
+          "bytes": null
+        },
+        {
+          "name": "depth",
+          "dir": true,
+          "count": 189,
+          "bytes": null
+        },
+        {
+          "name": "normal_cached",
+          "dir": true,
+          "count": 189,
+          "bytes": null
+        }
+      ],
+      "test": [
+        {
+          "name": "sparse",
+          "dir": true,
+          "count": 1,
+          "bytes": null
+        },
+        {
+          "name": "normal",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "input",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "input_cached",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "depth_cached",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "random.ply",
+          "dir": false,
+          "count": null,
+          "bytes": 27000235
+        },
+        {
+          "name": "depth",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "normal_cached",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        }
+      ],
+      "test_aerial": [
+        {
+          "name": "sparse",
+          "dir": true,
+          "count": 1,
+          "bytes": null
+        },
+        {
+          "name": "normal",
+          "dir": true,
+          "count": 24,
+          "bytes": null
+        },
+        {
+          "name": "input",
+          "dir": true,
+          "count": 24,
+          "bytes": null
+        },
+        {
+          "name": "input_cached",
+          "dir": true,
+          "count": 24,
+          "bytes": null
+        },
+        {
+          "name": "depth_cached",
+          "dir": true,
+          "count": 24,
+          "bytes": null
+        },
+        {
+          "name": "depth",
+          "dir": true,
+          "count": 24,
+          "bytes": null
+        },
+        {
+          "name": "normal_cached",
+          "dir": true,
+          "count": 24,
+          "bytes": null
+        }
+      ],
+      "pose": [
+        {
+          "name": "block_A",
+          "dir": true,
+          "count": 2,
+          "bytes": null
+        }
+      ]
+    },
+    "metadata": [
+      {
+        "path": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/pose/block_A/transforms_test.json",
+        "type": "dict",
+        "sample": "{'camera_model': 'SIMPLE_PINHOLE', 'frames': [{'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../test/block_1_test/0006.png', 'transform_matrix': [[0.9781476110219955, 0.1723665976896882, -0.1162626314908266, -9.5], [-0.20791164133697748, 0.810921099036932, -0.5469731986522675, -2.9], [-8.706094734023395e-08, 0.5591928958892822, 0.8290375582873821, 1.5], [0.0, 0.0, 0.0, 1.0]]}, {'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../test/block_1_test/0007.png', 'transform_matrix': [[0.9781476110219955, 0.1723665976896882, -0.1162626314908266, -9.5], [-0.20791164133697748, 0.810921099036932, -0.5469731986522675, -3.3], [-8.706094734023395e-08, 0.5591928958892822, 0.8290375582873821, 1.5], [0.0, 0.0, 0.0, 1.0]]}]}"
+      },
+      {
+        "path": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial/pose/block_A/transforms_train.json",
+        "type": "dict",
+        "sample": "{'camera_model': 'SIMPLE_PINHOLE', 'frames': [{'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../train/block_1/0001.png', 'transform_matrix': [[-4.371138728753721e-08, 0.7071068044751883, -0.7071067579090595, -10.0], [-0.9999999776482582, -5.844237316310341e-08, 3.374863583038845e-09, -0.38], [-3.89386078936127e-08, 0.7071067579090595, 0.7071068044751883, 1.5], [0.0, 0.0, 0.0, 1.0]]}, {'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../train/block_1/0002.png', 'transform_matrix': [[-4.371138728753721e-08, 0.7071068044751883, -0.7071067579090595, -10.0], [-0.9999999776482582, -5.844237316310341e-08, 3.374863583038845e-09, -0.76], [-3.89386078936127e-08, 0.7071067579090595, 0.7071068044751883, 1.5], [0.0, 0.0, 0.0, 1.0]]}]}"
+      }
+    ]
+  },
+  {
+    "scene": "blockA_fusion_small_aerial+somestreet",
+    "dirs": {
+      "train": [
+        {
+          "name": "sparse",
+          "dir": true,
+          "count": 1,
+          "bytes": null
+        },
+        {
+          "name": "dav2_cached",
+          "dir": true,
+          "count": 216,
+          "bytes": null
+        },
+        {
+          "name": "normal",
+          "dir": true,
+          "count": 216,
+          "bytes": null
+        },
+        {
+          "name": "input",
+          "dir": true,
+          "count": 216,
+          "bytes": null
+        },
+        {
+          "name": "input_cached",
+          "dir": true,
+          "count": 216,
+          "bytes": null
+        },
+        {
+          "name": "depth_cached",
+          "dir": true,
+          "count": 216,
+          "bytes": null
+        },
+        {
+          "name": "random.ply",
+          "dir": false,
+          "count": null,
+          "bytes": 27000235
+        },
+        {
+          "name": "depth",
+          "dir": true,
+          "count": 216,
+          "bytes": null
+        },
+        {
+          "name": "normal_cached",
+          "dir": true,
+          "count": 216,
+          "bytes": null
+        }
+      ],
+      "test": [
+        {
+          "name": "sparse",
+          "dir": true,
+          "count": 1,
+          "bytes": null
+        },
+        {
+          "name": "normal",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "input",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "input_cached",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "depth_cached",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "depth",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        },
+        {
+          "name": "normal_cached",
+          "dir": true,
+          "count": 154,
+          "bytes": null
+        }
+      ],
+      "pose": [
+        {
+          "name": "block_A",
+          "dir": true,
+          "count": 2,
+          "bytes": null
+        }
+      ]
+    },
+    "metadata": [
+      {
+        "path": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/pose/block_A/transforms_test.json",
+        "type": "dict",
+        "sample": "{'camera_model': 'SIMPLE_PINHOLE', 'frames': [{'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../test/block_1_test/0006.png', 'transform_matrix': [[0.9781476110219955, 0.1723665976896882, -0.1162626314908266, -9.5], [-0.20791164133697748, 0.810921099036932, -0.5469731986522675, -2.9], [-8.706094734023395e-08, 0.5591928958892822, 0.8290375582873821, 1.5], [0.0, 0.0, 0.0, 1.0]]}, {'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../test/block_1_test/0007.png', 'transform_matrix': [[0.9781476110219955, 0.1723665976896882, -0.1162626314908266, -9.5], [-0.20791164133697748, 0.810921099036932, -0.5469731986522675, -3.3], [-8.706094734023395e-08, 0.5591928958892822, 0.8290375582873821, 1.5], [0.0, 0.0, 0.0, 1.0]]}]}"
+      },
+      {
+        "path": "/data1/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/pose/block_A/transforms_train.json",
+        "type": "dict",
+        "sample": "{'camera_model': 'SIMPLE_PINHOLE', 'frames': [{'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../train/block_1/0001.png', 'transform_matrix': [[-4.371138728753721e-08, 0.7071068044751883, -0.7071067579090595, -10.0], [-0.9999999776482582, -5.844237316310341e-08, 3.374863583038845e-09, -0.38], [-3.89386078936127e-08, 0.7071067579090595, 0.7071068044751883, 1.5], [0.0, 0.0, 0.0, 1.0]]}, {'camera_angle_x': 0.7853981852531433, 'fl_x': 2317.6449482429634, 'fl_y': 2317.6449482429634, 'cx': 960.0, 'cy': 540.0, 'w': 1920.0, 'h': 1080.0, 'file_path': '/data/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/../../train/block_1/0002.png', 'transform_matrix': [[-4.371138728753721e-08, 0.7071068044751883, -0.7071067579090595, -10.0], [-0.9999999776482582, -5.844237316310341e-08, 3.374863583038845e-09, -0.76], [-3.89386078936127e-08, 0.7071067579090595, 0.7071068044751883, 1.5], [0.0, 0.0, 0.0, 1.0]]}]}"
+      }
+    ]
+  }
+]

@@ -1,0 +1,720 @@
+[
+  {
+    "root": "/data1/zhangao/server9_backup",
+    "resolved": "/data1/zhangao/server9_backup",
+    "children": [
+      {
+        "name": "3dgs-imc.zip",
+        "directory": false,
+        "bytes": 257755005
+      },
+      {
+        "name": "3dgs-mcmc-modified.zip",
+        "directory": false,
+        "bytes": 167131765
+      },
+      {
+        "name": "3dgs.zip",
+        "directory": false,
+        "bytes": 205119465
+      }
+    ]
+  },
+  {
+    "root": "/data1/ZHANGAo_2024/3dgs",
+    "resolved": "/data1/ZHANGAo_2024/3dgs",
+    "children": [
+      {
+        "name": "scene_experimental",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": ".gitignore",
+        "directory": false,
+        "bytes": 260
+      },
+      {
+        "name": "metrics.sh",
+        "directory": false,
+        "bytes": 3297
+      },
+      {
+        "name": "run_depth.sh",
+        "directory": false,
+        "bytes": 3954
+      },
+      {
+        "name": "dust3r",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "metrics.py",
+        "directory": false,
+        "bytes": 5963
+      },
+      {
+        "name": "pure_train_experimental_branch3_2.sh",
+        "directory": false,
+        "bytes": 6043
+      },
+      {
+        "name": ".git",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "pure_train_experimental_branch2.sh",
+        "directory": false,
+        "bytes": 1931
+      },
+      {
+        "name": "train_experimental_branch3.py",
+        "directory": false,
+        "bytes": 22063
+      },
+      {
+        "name": "pure_train_experimental_branch3_2.backup",
+        "directory": false,
+        "bytes": 6111
+      },
+      {
+        "name": "pure_train_experimental.sh",
+        "directory": false,
+        "bytes": 1582
+      },
+      {
+        "name": "tmp_exp",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "arguments",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "submodules",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "pure_train_experimental_branch3.sh",
+        "directory": false,
+        "bytes": 2776
+      },
+      {
+        "name": "lpipsPyTorch",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "render_camcustomized.py",
+        "directory": false,
+        "bytes": 10143
+      },
+      {
+        "name": "scene_experimental_branch3",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "render.py",
+        "directory": false,
+        "bytes": 4386
+      },
+      {
+        "name": "train_experimental_branch3_mc.py",
+        "directory": false,
+        "bytes": 21965
+      },
+      {
+        "name": "convert.py",
+        "directory": false,
+        "bytes": 5349
+      },
+      {
+        "name": ".gitmodules",
+        "directory": false,
+        "bytes": 525
+      },
+      {
+        "name": "SIBR_viewers",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "data",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "utils",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "scene",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "scene_experimental_branch2",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": ".vscode",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "run.sh",
+        "directory": false,
+        "bytes": 13519
+      },
+      {
+        "name": "train.py",
+        "directory": false,
+        "bytes": 14252
+      },
+      {
+        "name": "train_experimental_branch2.py",
+        "directory": false,
+        "bytes": 19097
+      },
+      {
+        "name": "pure_train_3dgs.sh",
+        "directory": false,
+        "bytes": 1077
+      },
+      {
+        "name": "full_eval.py",
+        "directory": false,
+        "bytes": 4526
+      },
+      {
+        "name": "pure_train_experimental_branch2_compare.sh",
+        "directory": false,
+        "bytes": 2133
+      },
+      {
+        "name": "outputs",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "backup",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "environment.yml",
+        "directory": false,
+        "bytes": 372
+      },
+      {
+        "name": "results.md",
+        "directory": false,
+        "bytes": 3451
+      },
+      {
+        "name": "README.md",
+        "directory": false,
+        "bytes": 40778
+      },
+      {
+        "name": "gaussian_renderer",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "LICENSE.md",
+        "directory": false,
+        "bytes": 4662
+      },
+      {
+        "name": "tmp",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "train_experimental2.py",
+        "directory": false,
+        "bytes": 20865
+      },
+      {
+        "name": "assets",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "render.sh",
+        "directory": false,
+        "bytes": 4351
+      },
+      {
+        "name": "pure_train_mcmc.sh",
+        "directory": false,
+        "bytes": 1523
+      }
+    ]
+  },
+  {
+    "root": "/data1/ZHANGAo_2024/3dgs-original",
+    "resolved": "/data1/ZHANGAo_2024/3dgs-original",
+    "children": [
+      {
+        "name": "metrics_backup.py",
+        "directory": false,
+        "bytes": 4143
+      },
+      {
+        "name": ".gitignore",
+        "directory": false,
+        "bytes": 115
+      },
+      {
+        "name": "metrics.py",
+        "directory": false,
+        "bytes": 5842
+      },
+      {
+        "name": ".git",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "pure_render.sh",
+        "directory": false,
+        "bytes": 548
+      },
+      {
+        "name": "arguments",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "submodules",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "lpipsPyTorch",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "render.py",
+        "directory": false,
+        "bytes": 3314
+      },
+      {
+        "name": "convert.py",
+        "directory": false,
+        "bytes": 5349
+      },
+      {
+        "name": ".gitmodules",
+        "directory": false,
+        "bytes": 525
+      },
+      {
+        "name": "SIBR_viewers",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "data",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "utils",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "scene",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "train.py",
+        "directory": false,
+        "bytes": 13512
+      },
+      {
+        "name": "full_eval.py",
+        "directory": false,
+        "bytes": 4526
+      },
+      {
+        "name": "outputs",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "environment.yml",
+        "directory": false,
+        "bytes": 372
+      },
+      {
+        "name": "pure_metrics.sh",
+        "directory": false,
+        "bytes": 192
+      },
+      {
+        "name": "results.md",
+        "directory": false,
+        "bytes": 3451
+      },
+      {
+        "name": "pure_train.sh",
+        "directory": false,
+        "bytes": 2635
+      },
+      {
+        "name": "pure_train_zeche.sh",
+        "directory": false,
+        "bytes": 1627
+      },
+      {
+        "name": "README.md",
+        "directory": false,
+        "bytes": 40778
+      },
+      {
+        "name": "gaussian_renderer",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "LICENSE.md",
+        "directory": false,
+        "bytes": 4662
+      },
+      {
+        "name": "assets",
+        "directory": true,
+        "bytes": 4096
+      }
+    ]
+  },
+  {
+    "root": "/data1/ZHANGAo_2024/PGSR",
+    "resolved": "/data1/ZHANGAo_2024/PGSR",
+    "children": [
+      {
+        "name": "scripts",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": ".gitignore",
+        "directory": false,
+        "bytes": 11
+      },
+      {
+        "name": "plot_gaussian_pts.py",
+        "directory": false,
+        "bytes": 14186
+      },
+      {
+        "name": "metrics.py",
+        "directory": false,
+        "bytes": 9184
+      },
+      {
+        "name": ".git",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "arguments",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "submodules",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "requirements.txt",
+        "directory": false,
+        "bytes": 52
+      },
+      {
+        "name": "lpipsPyTorch",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "render.py",
+        "directory": false,
+        "bytes": 9411
+      },
+      {
+        "name": "data",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "utils",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "scene",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": ".vscode",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "run.sh",
+        "directory": false,
+        "bytes": 14650
+      },
+      {
+        "name": "train.py",
+        "directory": false,
+        "bytes": 27510
+      },
+      {
+        "name": "train2.py",
+        "directory": false,
+        "bytes": 28399
+      },
+      {
+        "name": ".DS_Store",
+        "directory": false,
+        "bytes": 8196
+      },
+      {
+        "name": "full_eval.py",
+        "directory": false,
+        "bytes": 3340
+      },
+      {
+        "name": "pure_train.sh",
+        "directory": false,
+        "bytes": 12162
+      },
+      {
+        "name": "README.md",
+        "directory": false,
+        "bytes": 6562
+      },
+      {
+        "name": "gaussian_renderer",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "run2.sh",
+        "directory": false,
+        "bytes": 14837
+      },
+      {
+        "name": "LICENSE.md",
+        "directory": false,
+        "bytes": 992
+      },
+      {
+        "name": "assets",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "render.sh",
+        "directory": false,
+        "bytes": 11578
+      }
+    ]
+  },
+  {
+    "root": "/data1/ZHANGAo_2024/Scaffold-GS",
+    "resolved": "/data1/ZHANGAo_2024/Scaffold-GS",
+    "children": [
+      {
+        "name": ".gitignore",
+        "directory": false,
+        "bytes": 181
+      },
+      {
+        "name": "metrics.py",
+        "directory": false,
+        "bytes": 4203
+      },
+      {
+        "name": ".git",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "arguments",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "submodules",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "lpipsPyTorch",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "train_imw2020.sh",
+        "directory": false,
+        "bytes": 935
+      },
+      {
+        "name": "single_train.sh",
+        "directory": false,
+        "bytes": 302
+      },
+      {
+        "name": "render.py",
+        "directory": false,
+        "bytes": 4348
+      },
+      {
+        "name": "convert.py",
+        "directory": false,
+        "bytes": 5349
+      },
+      {
+        "name": "train_db.sh",
+        "directory": false,
+        "bytes": 475
+      },
+      {
+        "name": "train_tnt.sh",
+        "directory": false,
+        "bytes": 461
+      },
+      {
+        "name": "SIBR_viewers",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "data",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "train_nerfsynthetic.sh",
+        "directory": false,
+        "bytes": 1675
+      },
+      {
+        "name": "utils",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "scene",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "train_nerfsynthetic_withwarmup.sh",
+        "directory": false,
+        "bytes": 1834
+      },
+      {
+        "name": "train_mip360.sh",
+        "directory": false,
+        "bytes": 1440
+      },
+      {
+        "name": ".vscode",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "train.py",
+        "directory": false,
+        "bytes": 26134
+      },
+      {
+        "name": "train.sh",
+        "directory": false,
+        "bytes": 1293
+      },
+      {
+        "name": "outputs",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "depth_anything_v2",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "environment.yml",
+        "directory": false,
+        "bytes": 387
+      },
+      {
+        "name": "pure_train.sh",
+        "directory": false,
+        "bytes": 1859
+      },
+      {
+        "name": "README.md",
+        "directory": false,
+        "bytes": 8553
+      },
+      {
+        "name": "gaussian_renderer",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "train_bungee.sh",
+        "directory": false,
+        "bytes": 1305
+      },
+      {
+        "name": "LICENSE.md",
+        "directory": false,
+        "bytes": 4275
+      },
+      {
+        "name": "assets",
+        "directory": true,
+        "bytes": 4096
+      },
+      {
+        "name": "render.sh",
+        "directory": false,
+        "bytes": 1813
+      }
+    ]
+  },
+  {
+    "root": "/data2/zhangao/repos",
+    "resolved": "/data2/zhangao/repos",
+    "children": []
+  },
+  {
+    "root": "/data2/.Trash-1002",
+    "error": "[Errno 2] No such file or directory: '/data2/.Trash-1002'"
+  },
+  {
+    "root": "/data1/.Trash-1002",
+    "error": "[Errno 2] No such file or directory: '/data1/.Trash-1002'"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "1": {
+    "enabled": true,
+    "gpu_uuid": "GPU-7832c658-9c16-efd6-c049-a63d7c4cc3ee",
+    "allowed_foreign_processes": [
+      {
+        "pid": 1348094,
+        "uid": 1003,
+        "start_ticks": 720380476
+      }
+    ],
+    "max_pipeline_budget_mib": 10240,
+    "headroom_mib": 8192,
+    "authorization": "User requested an additional reproduction run using spare GPU 1 memory on 29 September 2026.",
+    "scope": "One profiled campaign pipeline alongside this existing process; all other unrelated processes remain excluded."
+  }
+}

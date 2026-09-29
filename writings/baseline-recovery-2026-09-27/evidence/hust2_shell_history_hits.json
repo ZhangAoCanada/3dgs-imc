@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/data1/ZHANGAo_2024/.bash_history",
+    "line": 42,
+    "text": "cd baselines_multi_angle/"
+  },
+  {
+    "path": "/data1/ZHANGAo_2024/.bash_history",
+    "line": 138,
+    "text": "cd baselines_t7_clean/"
+  },
+  {
+    "path": "/data1/ZHANGAo_2024/.bash_history",
+    "line": 145,
+    "text": "cd sweep_models/"
+  },
+  {
+    "path": "/data1/ZHANGAo_2024/.bash_history",
+    "line": 155,
+    "text": "rm -rf sweep_models/"
+  }
+]

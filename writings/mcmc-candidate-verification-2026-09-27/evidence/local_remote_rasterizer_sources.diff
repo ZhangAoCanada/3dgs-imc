@@ -1,0 +1,20 @@
+--- hust2/submodules/diff-gaussian-rasterization/cuda_rasterizer/forward.cu
++++ hust10/submodules/diff-gaussian-rasterization/cuda_rasterizer/forward.cu
+@@ -229,10 +229,7 @@
+ 	float mid = 0.5f * (cov.x + cov.z);
+ 	float lambda1 = mid + sqrt(max(0.1f, mid * mid - det));
+ 	float lambda2 = mid - sqrt(max(0.1f, mid * mid - det));
+-	float gextend = min(2 * log(opacities[idx] * 255.0f), 3.3f);
+-    if (gextend <= 0)
+-        return;
+-	float my_radius = ceil(sqrt(gextend * max(lambda1, lambda2)));
++	float my_radius = ceil(3.f * sqrt(max(lambda1, lambda2)));
+ 	float2 point_image = { ndc2Pix(p_proj.x, W), ndc2Pix(p_proj.y, H) };
+ 	uint2 rect_min, rect_max;
+ 	getRect(point_image, my_radius, rect_min, rect_max, grid);
+@@ -460,4 +457,4 @@
+ 		tiles_touched,
+ 		prefiltered
+ 		);
+-}
++}

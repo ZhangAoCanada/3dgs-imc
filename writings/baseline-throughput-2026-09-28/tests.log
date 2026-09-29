@@ -1,0 +1,18 @@
+test_budget_and_reservation (__main__.SchedulingTests.test_budget_and_reservation) ... ok
+test_busy_then_free (__main__.SchedulingTests.test_busy_then_free) ... ok
+test_exclusive_estimate_still_runs_alone (__main__.SchedulingTests.test_exclusive_estimate_still_runs_alone) ... ok
+test_foreign_process_blocks_even_when_memory_fits (__main__.SchedulingTests.test_foreign_process_blocks_even_when_memory_fits) ... ok
+test_gpu_ownership_by_session_not_username (__main__.SchedulingTests.test_gpu_ownership_by_session_not_username) ... ok
+test_no_third_pipeline (__main__.SchedulingTests.test_no_third_pipeline) ... ok
+test_oom_classification (__main__.SchedulingTests.test_oom_classification) ... ok
+test_pair_and_future_growth (__main__.SchedulingTests.test_pair_and_future_growth) ... ok
+test_process_birth_identity (__main__.SchedulingTests.test_process_birth_identity) ... ok
+test_retry_never_overwrites (__main__.SchedulingTests.test_retry_never_overwrites) ... ok
+test_ambiguous_filename_rejected (__main__.SplitTests.test_ambiguous_filename_rejected) ... ok
+test_extensions_and_stems_both_valid (__main__.SplitTests.test_extensions_and_stems_both_valid) ... ok
+test_wrong_image_rejected (__main__.SplitTests.test_wrong_image_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.008s
+
+OK

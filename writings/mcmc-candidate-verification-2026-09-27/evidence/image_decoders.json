@@ -1,0 +1,20 @@
+[
+  {
+    "label": "local_system",
+    "returncode": 0,
+    "stdout": "{\"python\": \"/opt/miniconda3/bin/python3\", \"PIL\": \"12.1.1\", \"jpeg\": \"6.2\", \"libjpeg_turbo\": \"3.1.3\", \"image\": \"/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/datasets/truck_resize/images/000001.jpg\", \"sha\": \"6cc197c72fbf34f9a2aaa5588bcaba7a511fe9e4a300c7522f716e7ae96b9a2e\", \"pixel_sha\": \"21704a2569ce9d154cd68a5ee52402ca7a777aeb3a0fd753f48b2d0f51717d90\"}\n",
+    "stderr": ""
+  },
+  {
+    "label": "local_mcmc",
+    "returncode": 0,
+    "stdout": "{\"python\": \"/home/zhangao/.conda/envs/3dgs-mcmc/bin/python\", \"PIL\": \"12.0.0\", \"jpeg\": \"6.2\", \"libjpeg_turbo\": \"3.1.2\", \"image\": \"/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/datasets/truck_resize/images/000001.jpg\", \"sha\": \"6cc197c72fbf34f9a2aaa5588bcaba7a511fe9e4a300c7522f716e7ae96b9a2e\", \"pixel_sha\": \"21704a2569ce9d154cd68a5ee52402ca7a777aeb3a0fd753f48b2d0f51717d90\"}\n",
+    "stderr": ""
+  },
+  {
+    "label": "hust2_mcmc",
+    "returncode": 0,
+    "stdout": "{\"python\": \"/data1/ZHANGAo_2024/.conda/envs/mcmc/bin/python\", \"PIL\": \"12.2.0\", \"jpeg\": \"9.0\", \"libjpeg_turbo\": null, \"image\": \"/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/datasets/truck_resize/images/000001.jpg\", \"sha\": \"6cc197c72fbf34f9a2aaa5588bcaba7a511fe9e4a300c7522f716e7ae96b9a2e\", \"pixel_sha\": \"2ef68fb68828587bfddee6dec05f5347cc5d7609df86baa9cc55c93ef2f82104\"}\n",
+    "stderr": ""
+  }
+]

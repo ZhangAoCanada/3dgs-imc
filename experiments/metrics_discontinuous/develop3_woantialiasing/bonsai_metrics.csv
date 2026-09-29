@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/develop3_discontinuous_woantialiasing/bonsai/develop3_allviews_local_eps0.5_minsamples500_depth0.1_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_discontinuous_0.001,test,ours_30000,0.9608127474784851,32.51456832885742,0.08359145373106003,30.0722599029541,3.736152909253184,49.96022415161133

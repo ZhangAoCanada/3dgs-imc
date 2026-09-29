@@ -1,0 +1,102 @@
+[
+  {
+    "host": "wsl",
+    "run": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1",
+    "artifacts": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780482471.4108627,
+        "path_keyword": false
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/point_cloud/iteration_12000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780482683.6500187,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/cfg_args",
+        "size": 383,
+        "mtime": 1780481888.4500742,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/20934fd3-1', images='images', depths='dav2', resolution=2, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=846663, init_type='sfm', test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "wsl",
+    "run": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7",
+    "artifacts": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780484555.9795504,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/cfg_args",
+        "size": 383,
+        "mtime": 1780483858.5664775,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/ae3beb67-7', images='images', depths='dav2', resolution=2, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=846663, init_type='sfm', test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "wsl",
+    "run": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a",
+    "artifacts": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/point_cloud/iteration_100/point_cloud.ply",
+        "size": 58842011,
+        "mtime": 1780480333.4757614,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/cfg_args",
+        "size": 346,
+        "mtime": 1780480312.7199917,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/214337d7-a', images='images', depths='', resolution=2, white_background=False, test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "wsl",
+    "run": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7",
+    "artifacts": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780480973.0050135,
+        "path_keyword": false
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 159830091,
+        "mtime": 1780480513.3296685,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/cfg_args",
+        "size": 346,
+        "mtime": 1780480351.1477952,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/9bdfdbd0-7', images='images', depths='', resolution=2, white_background=False, test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  }
+]

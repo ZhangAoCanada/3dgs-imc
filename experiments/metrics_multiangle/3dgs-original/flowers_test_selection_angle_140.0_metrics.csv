@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/flowers/3dgs-original-test_selection_angle_140.0,test,ours_30000,0.2941991984844208,13.725968360900879,0.5382443070411682,19.88271141052246,2.592770221538651,40.927825927734375

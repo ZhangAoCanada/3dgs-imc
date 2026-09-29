@@ -1,0 +1,773 @@
+{
+  "/data": {
+    "error": "FileNotFoundError"
+  },
+  "/data/zhangao": {
+    "error": "FileNotFoundError"
+  },
+  "/data1": {
+    "realpath": "/data1",
+    "children": [
+      {
+        "name": "xuminzhe",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "luoyuqing",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "ZHANGAo_2024",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "mvsgs.yml",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "xuwenhao",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "zhANGAo",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DAIRuiming_2025",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "qiuzian",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "lost+found",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "XINGYujie_2024",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "zhangao",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "lixinke",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "dairuiming",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "TianYinchen",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "pip-cache",
+        "symlink": null,
+        "dir": true
+      }
+    ]
+  },
+  "/data2": {
+    "realpath": "/data2",
+    "children": [
+      {
+        "name": "LIANGYudong_2023",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "xyj",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "xingyujie",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "jiangjunchao",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "TIANYinchen_2026",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "qiuzian",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "QIUZian_2025",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "liangyudong",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "PENGMuyao_2024",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "pengmuyao",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "LIXinke_2024",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "xuminzhe",
+        "symlink": "/data1/xuminzhe/",
+        "dir": true
+      },
+      {
+        "name": "user",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "zhangao",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "lost+found",
+        "symlink": null,
+        "dir": true
+      }
+    ]
+  },
+  "/home": {
+    "realpath": "/home",
+    "children": [
+      {
+        "name": "LITao_2026",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "QIUZian_2025",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "LIXinke_2024",
+        "symlink": "/data2/LIXinke_2024",
+        "dir": true
+      },
+      {
+        "name": "TIANYinchen_2026",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "XINGYujie_2024",
+        "symlink": "/data1/XINGYujie_2024/",
+        "dir": true
+      },
+      {
+        "name": "WUYuxin_2026",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "LIANGYudong_2023",
+        "symlink": "/data2/LIANGYudong_2023",
+        "dir": true
+      },
+      {
+        "name": "user",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "ZHANGAo_2024",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "XUMinzhe_2024",
+        "symlink": "/data1/xuminzhe/XUMinzhe_2024/",
+        "dir": true
+      },
+      {
+        "name": "DAIRuiming_2025",
+        "symlink": "/data1/DAIRuiming_2025",
+        "dir": true
+      },
+      {
+        "name": "PENGMuyao_2024",
+        "symlink": "/data2/PENGMuyao_2024",
+        "dir": true
+      },
+      {
+        "name": "JIANGJunchao_2025",
+        "symlink": "/data2/jiangjunchao/",
+        "dir": true
+      },
+      {
+        "name": "TIANYongcan_2025",
+        "symlink": "/data2/TIANYongcan_2025",
+        "dir": false
+      }
+    ]
+  },
+  "/data1/ZHANGAo_2024": {
+    "realpath": "/data1/ZHANGAo_2024",
+    "children": [
+      {
+        "name": "pgsr_setup.log",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "colmap_modified",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "=45",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "=80",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "3dgs",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "3dgs-original",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "PGSR",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "3dgs-imc-codex",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "hust2_baseline_envs.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "stable-diffusion",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "Implicit",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "4511544|verified",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "MatrixCity",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "fix_cuml_sm89.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "Documents",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "hust2_baseline_run.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "siren",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": " ",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "xformers",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "snap",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "VGGT4D",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "t7_baselines_run.log",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "dwconv",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "SplatFormer",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "baseline_envs.log",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "rebuild_sm89_v2.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "hust2_baseline_retime_clean.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "%ln",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "colmap",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "fourier-feature-networks",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "sam2",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "Scaffold-GS",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "ip_basic",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "stablediffusion",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "CityGaussian",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "rebuild_dgr_sm89.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "hust2_pgsr_setup.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "Momentum-GS",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DeepSeek_API_",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "ceres-solver",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "detr",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "Octree-GS",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "3dgs-submodules",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "tmp",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "visualize_datasets",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "change_property.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "cpolar",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "hust2_table7_bonsai.sh",
+        "symlink": null,
+        "dir": false
+      }
+    ]
+  },
+  "/data1/zhANGAo": {
+    "realpath": "/data1/zhANGAo",
+    "children": [
+      {
+        "name": "repos",
+        "symlink": null,
+        "dir": true
+      }
+    ]
+  },
+  "/data1/zhangao": {
+    "realpath": "/data1/zhangao",
+    "children": [
+      {
+        "name": "design22_build",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "mipnerf360",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "repos",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DATA-small",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "server9_backup",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "design22_deployments",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DATA",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "TNT_GOF",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "HorizonGS",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DTU_eval",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "TnT_dl",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "TnT",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "colmap",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "worktrees",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "bdaibdai___MatrixCity",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "MipNerf360",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "data_test",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DTU",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "d2512.CUBSBC",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DroneSplat",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "DTU_dl",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "TnT_official",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "video_data",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "design21_inputs",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "outputs",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "TNT_GOF_dl",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "outputs_surface",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "design22_deps",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "outputs_sr",
+        "symlink": null,
+        "dir": true
+      }
+    ]
+  },
+  "/data2/zhangao": {
+    "realpath": "/data2/zhangao",
+    "children": [
+      {
+        "name": "SplatFormer",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "outputs_sr",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "summarize_tesa_r023_replay.py",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "r024_scripts",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "r027_scripts",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "VastGaussian",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "r028_scripts",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "outputs_surface",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "r025_scripts",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "r300_fullresults_20260721",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "run_tesa_r023_eval_bd31182_20260711T171723_r1.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "r300_proposals_fullresults_20260721",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "WHU_OMVS",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "tandt_db",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "SAM2",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "r026_scripts",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "run_tesa_r023_replay_bd31182_20260711T171723.sh",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "__pycache__",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "summarize_tesa_r023_replay_v2.py",
+        "symlink": null,
+        "dir": false
+      },
+      {
+        "name": "r029_scripts",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "bdaibdai___MatrixCity",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "repos",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "CityGaussian",
+        "symlink": null,
+        "dir": true
+      },
+      {
+        "name": "run_tesa_r023_replay_bd31182_20260711T171723_r1.sh",
+        "symlink": null,
+        "dir": false
+      }
+    ]
+  }
+}

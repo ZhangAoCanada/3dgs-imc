@@ -1,0 +1,106 @@
+table,row,setting,metric,paper_value,stored_value,rounds_to_paper,evidence,source
+IV,3DGS,20,FFR_percent,3.914,3.9140962064266205,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__3DGS.frac.json
+IV,3DGS,40,FFR_percent,3.918,3.9177726954221725,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__3DGS.frac.json
+IV,3DGS,60,FFR_percent,3.932,3.9317525923252106,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__3DGS.frac.json
+IV,3DGS,80,FFR_percent,3.866,3.8657233119010925,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__3DGS.frac.json
+IV,3DGS,100,FFR_percent,3.792,3.791988641023636,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__3DGS.frac.json
+IV,3DGS,mean,FFR_percent,3.884,3.8842666894197464,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__3DGS.frac.json
+IV,Scaffold-GS,20,FFR_percent,11.852,11.852317840346913,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__ScaffoldGS.frac.json
+IV,Scaffold-GS,40,FFR_percent,11.818,11.817862462073728,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__ScaffoldGS.frac.json
+IV,Scaffold-GS,60,FFR_percent,12.287,12.286964717206253,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__ScaffoldGS.frac.json
+IV,Scaffold-GS,80,FFR_percent,12.098,12.097655481027306,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__ScaffoldGS.frac.json
+IV,Scaffold-GS,100,FFR_percent,12.469,12.468505794373314,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__ScaffoldGS.frac.json
+IV,Scaffold-GS,mean,FFR_percent,12.105,12.104661259005503,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__ScaffoldGS.frac.json
+IV,Hierarchical-GS,20,FFR_percent,12.129,12.129095196723938,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Hier.frac.json
+IV,Hierarchical-GS,40,FFR_percent,12.165,12.165336310863495,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Hier.frac.json
+IV,Hierarchical-GS,60,FFR_percent,18.589,18.58864575624466,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Hier.frac.json
+IV,Hierarchical-GS,80,FFR_percent,12.357,12.356850504875183,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Hier.frac.json
+IV,Hierarchical-GS,100,FFR_percent,11.725,11.724835634231567,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Hier.frac.json
+IV,Hierarchical-GS,mean,FFR_percent,13.393,13.392952680587769,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Hier.frac.json
+IV,MVGS,20,FFR_percent,13.967,13.96685540676117,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MVGS.frac.json
+IV,MVGS,40,FFR_percent,13.568,13.56772631406784,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MVGS.frac.json
+IV,MVGS,60,FFR_percent,13.024,13.02424967288971,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MVGS.frac.json
+IV,MVGS,80,FFR_percent,13.091,13.090622425079346,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MVGS.frac.json
+IV,MVGS,100,FFR_percent,12.692,12.691938877105713,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MVGS.frac.json
+IV,MVGS,mean,FFR_percent,13.268,13.268278539180756,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MVGS.frac.json
+IV,PGSR,20,FFR_percent,14.638,14.638008177280426,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__PGSR.frac.json
+IV,PGSR,40,FFR_percent,14.732,14.732210338115692,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__PGSR.frac.json
+IV,PGSR,60,FFR_percent,15.381,15.380765497684479,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__PGSR.frac.json
+IV,PGSR,80,FFR_percent,14.618,14.618068933486938,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__PGSR.frac.json
+IV,PGSR,100,FFR_percent,15.985,15.985041856765747,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__PGSR.frac.json
+IV,PGSR,mean,FFR_percent,15.071,15.070818960666656,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__PGSR.frac.json
+IV,3DGS-MCMC,20,FFR_percent,7.596,7.595659047365189,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MCMC.frac.json
+IV,3DGS-MCMC,40,FFR_percent,7.263,7.263033837080002,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MCMC.frac.json
+IV,3DGS-MCMC,60,FFR_percent,7.557,7.557030767202377,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MCMC.frac.json
+IV,3DGS-MCMC,80,FFR_percent,7.142,7.14203268289566,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MCMC.frac.json
+IV,3DGS-MCMC,100,FFR_percent,7.091,7.091259956359863,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MCMC.frac.json
+IV,3DGS-MCMC,mean,FFR_percent,7.33,7.329803258180618,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MCMC.frac.json
+IV,MH-3DGS,20,FFR_percent,3.842,3.8420915603637695,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MH-3DGS.frac.json
+IV,MH-3DGS,40,FFR_percent,4.104,4.104446619749069,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MH-3DGS.frac.json
+IV,MH-3DGS,60,FFR_percent,3.715,3.715120255947113,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MH-3DGS.frac.json
+IV,MH-3DGS,80,FFR_percent,3.753,3.753460571169853,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MH-3DGS.frac.json
+IV,MH-3DGS,100,FFR_percent,3.741,3.7406075745821,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MH-3DGS.frac.json
+IV,MH-3DGS,mean,FFR_percent,3.831,3.831145316362381,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__MH-3DGS.frac.json
+IV,GS-LSS,20,FFR_percent,1.867,1.8670205026865005,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Ours.frac.json
+IV,GS-LSS,40,FFR_percent,2.223,7.222610712051392,False,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Ours.frac.json
+IV,GS-LSS,60,FFR_percent,2.723,2.7230368927121162,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Ours.frac.json
+IV,GS-LSS,80,FFR_percent,2.382,2.3816756904125214,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Ours.frac.json
+IV,GS-LSS,100,FFR_percent,3.028,3.027651458978653,True,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Ours.frac.json
+IV,GS-LSS,mean,FFR_percent,2.445,3.4443990513682365,False,stored Bonsai fraction JSON; not freshly recomputed,/data1/zhangao/outputs/viz_multiangle/global_all/bonsai__Ours.frac.json
+VI,$\epsilon = 0.1$,,SSIM,0.7058,0.7057737112045288,True,paired scene mean matched,develop3_eps/SCENE_0.1_metrics.csv
+VI,$\epsilon = 0.1$,,PSNR,19.169,19.169013023376465,True,paired scene mean matched,develop3_eps/SCENE_0.1_metrics.csv
+VI,$\epsilon = 0.1$,,LPIPS,0.2458,0.2457730695605278,True,paired scene mean matched,develop3_eps/SCENE_0.1_metrics.csv
+VI,$\epsilon = 0.25$,,SSIM,0.7112,0.7112230360507965,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_eps0.25_sine_aa1_i30000
+VI,$\epsilon = 0.25$,,PSNR,19.4428,19.442831993103027,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_eps0.25_sine_aa1_i30000
+VI,$\epsilon = 0.25$,,LPIPS,0.2461,0.24607809633016586,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_eps0.25_sine_aa1_i30000
+VI,$\epsilon = 0.5$,,SSIM,0.7058,0.7058227062225342,True,paired scene mean matched,develop3_eps_partial1e0/SCENE_0.25_metrics.csv
+VI,$\epsilon = 0.5$,,PSNR,19.1871,19.18710994720459,True,paired scene mean matched,develop3_eps_partial1e0/SCENE_0.25_metrics.csv
+VI,$\epsilon = 0.5$,,LPIPS,0.2485,0.24850302189588547,True,paired scene mean matched,develop3_eps_partial1e0/SCENE_0.25_metrics.csv
+VI,$\epsilon = 0.75$,,SSIM,0.7048,0.7047838270664215,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_eps1.0_sine_aa1_i30000
+VI,$\epsilon = 0.75$,,PSNR,18.9888,18.988762855529785,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_eps1.0_sine_aa1_i30000
+VI,$\epsilon = 0.75$,,LPIPS,0.2527,0.252730168402195,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_eps1.0_sine_aa1_i30000
+VI,$\epsilon = 1.0$,,SSIM,0.7004,0.7004099190235138,True,paired scene mean matched,develop3_eps/SCENE_1.0_metrics.csv
+VI,$\epsilon = 1.0$,,PSNR,18.924,18.923951148986816,True,paired scene mean matched,develop3_eps/SCENE_1.0_metrics.csv
+VI,$\epsilon = 1.0$,,LPIPS,0.255,0.25500473380088806,True,paired scene mean matched,develop3_eps/SCENE_1.0_metrics.csv
+VI,MLP,,SSIM,0.707,0.7069904208183289,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_mlp_eps0.25_aa1_i30000
+VI,MLP,,PSNR,19.2183,19.21827793121338,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_mlp_eps0.25_aa1_i30000
+VI,MLP,,LPIPS,0.2463,0.2462654411792755,True,paired scene mean matched,checkpoint_tnt60_table5/SCENE_mlp_eps0.25_aa1_i30000
+VI,SIREN-style,,SSIM,0.7112,,False,no exact paired-scene triple located,
+VI,SIREN-style,,PSNR,19.4228,,False,no exact paired-scene triple located,
+VI,SIREN-style,,LPIPS,0.2461,,False,no exact paired-scene triple located,
+VII,Trial 1,,SSIM,0.7052,0.7052393555641174,True,paired scene mean matched,trials2/develop3_1/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 1,,PSNR,19.3795,19.379480361938477,True,paired scene mean matched,trials2/develop3_1/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 1,,LPIPS,0.2476,0.2475859820842743,True,paired scene mean matched,trials2/develop3_1/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 2,,SSIM,0.703,0.7029626667499542,True,paired scene mean matched,trials2/develop3_2/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 2,,PSNR,19.1766,19.17662525177002,True,paired scene mean matched,trials2/develop3_2/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 2,,LPIPS,0.2514,0.25141798704862595,True,paired scene mean matched,trials2/develop3_2/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 3,,SSIM,0.707,0.7069514989852905,True,paired scene mean matched,trials2/develop3_3/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 3,,PSNR,19.3917,19.391690254211426,True,paired scene mean matched,trials2/develop3_3/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 3,,LPIPS,0.2486,0.24855875968933105,True,paired scene mean matched,trials2/develop3_3/SCENE_test_selection_angle_60.0_metrics.csv
+VII,Trial 4,,SSIM,0.704,,False,no exact paired-scene triple located,
+VII,Trial 4,,PSNR,19.3068,,False,no exact paired-scene triple located,
+VII,Trial 4,,LPIPS,0.2461,,False,no exact paired-scene triple located,
+VII,Trial 5,,SSIM,0.7075,,False,no exact paired-scene triple located,
+VII,Trial 5,,PSNR,19.3454,,False,no exact paired-scene triple located,
+VII,Trial 5,,LPIPS,0.2474,,False,no exact paired-scene triple located,
+VII,mean_of_printed_rows,,SSIM,,0.70534,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,sample_variance_of_printed_rows,,SSIM,,3.6780000000000603e-06,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,population_variance_of_printed_rows,,SSIM,,2.9424000000000483e-06,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,mean_of_printed_rows,,PSNR,,19.32,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,sample_variance_of_printed_rows,,PSNR,,0.007516024999999997,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,population_variance_of_printed_rows,,PSNR,,0.006012819999999998,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,mean_of_printed_rows,,LPIPS,,0.24822,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,sample_variance_of_printed_rows,,LPIPS,,3.952000000000004e-06,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+VII,population_variance_of_printed_rows,,LPIPS,,3.161600000000003e-06,,arithmetic on rounded paper text only; not checkpoint-backed,/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex
+V,fixed_noise_no_CPF,,SSIM,0.586,,,paper-only; no matching stored-result triple located,
+V,fixed_noise_no_CPF,,PSNR,16.225,,,paper-only; no matching stored-result triple located,
+V,fixed_noise_no_CPF,,LPIPS,0.48,,,paper-only; no matching stored-result triple located,
+V,learned_noise_only,,SSIM,0.609,,,paper-only; no matching stored-result triple located,
+V,learned_noise_only,,PSNR,16.544,,,paper-only; no matching stored-result triple located,
+V,learned_noise_only,,LPIPS,0.474,,,paper-only; no matching stored-result triple located,
+V,CPF_drift_fixed_noise,,SSIM,0.594,,,paper-only; no matching stored-result triple located,
+V,CPF_drift_fixed_noise,,PSNR,16.599,,,paper-only; no matching stored-result triple located,
+V,CPF_drift_fixed_noise,,LPIPS,0.478,,,paper-only; no matching stored-result triple located,
+V,full_LSS,,SSIM,0.592,,,paper-only; no matching stored-result triple located,
+V,full_LSS,,PSNR,16.693,,,paper-only; no matching stored-result triple located,
+V,full_LSS,,LPIPS,0.47,,,paper-only; no matching stored-result triple located,

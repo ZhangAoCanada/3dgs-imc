@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop2_depth_init/truck_resize/develop3_allviews_local_eps0.25_minsamples500_depth1.0_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_2000000_test_selection_angle_60.0_0.01_viewnum3,test,ours_30000,0.6958258748054504,18.827030181884766,0.24749767780303955,23.687259674072266,2.469706038746651,48.02056884765625

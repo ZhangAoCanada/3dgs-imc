@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "strict_training": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/train",
+  "strict_test": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/test",
+  "historical_diagnostic_test": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test",
+  "validation": [
+    {
+      "split": "train",
+      "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/train",
+      "count": 189,
+      "image_and_geometry_hashes": "passed",
+      "exact_camera_record_preservation": "passed",
+      "source": "/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial/train",
+      "all_views": "aerial"
+    },
+    {
+      "split": "test",
+      "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets_table3_strict_20260927/blockA_fusion_small_aerial/test",
+      "count": 130,
+      "image_and_geometry_hashes": "passed",
+      "exact_camera_record_preservation": "passed",
+      "source": "/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial/test",
+      "all_views": "street"
+    }
+  ],
+  "training_point_cloud": "Copied unchanged from pure-aerial source; original reconstruction provenance remains unknown.",
+  "test_point_cloud": "Preserved for reader compatibility; used only by test dataset loader, not training initialization.",
+  "queue_changed": false
+}

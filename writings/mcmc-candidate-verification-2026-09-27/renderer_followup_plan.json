@@ -1,0 +1,10 @@
+{
+  "reason": "The two existing MCMC rasterizer sources differ in Gaussian screen-space radius; native hust2 fresh renders do not match historical saved renders, although metric control reproduces saved candidate scores.",
+  "comparison": "Existing hust2 implementation versus existing main-host implementation; same five frozen checkpoints, cameras and all preserved GT PNGs.",
+  "execution_host": "hust2",
+  "physical_gpu": 1,
+  "code_change": "Build a copied main-host rasterizer source into an output-local target; no installed environment or original source modification.",
+  "new_source": "/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/rasterizer_source_hust10",
+  "rule": "Do not tune radius or select a best score; test the actual second implementation once on all five candidates.",
+  "completion": "Fresh renders plus SSIM/PSNR/LPIPS and comparison with original source exports and stored candidate metrics."
+}

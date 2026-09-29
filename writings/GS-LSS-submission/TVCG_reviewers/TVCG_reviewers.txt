@@ -1,0 +1,238 @@
+RE: TVCG-2026-07-0789, "GS-LSS: Learned Stochastic Sampling for 3D Gaussian Splatting under Biased Viewpoints"
+Manuscript Type: Regular
+
+Dear Prof. Liu,
+
+We have completed the review process of the above referenced paper for the IEEE Transactions on Visualization and Computer Graphics and recommend that your paper undergo a Major Revision.  
+
+Enclosed are your reviews. If you should choose to revise your paper, please prepare a separate document describing how each of the reviewers' and the associate editor’s comments are responded to in your revision and submit through ScholarOne Manuscripts by  
+
+                         24-Dec-2026.
+
+Please note, some reviewers may have recommended that you discuss additional literature when revising your manuscript. If you feel that the recommended literature does not contribute to the scholarly content of the article or is otherwise irrelevant, please note your concerns in your response to reviewer feedback.
+
+When you are ready to submit your revision, visit the following link:
+https://ieee.atyponrex.com/submission/submissionBoard/REX-PROD-2-993BD1C2-48AF-4820-9F65-5F4137264972-A0A260DE-1AA3-475E-B6E4-179E0E13775C-95931/current?idtype=external
+
+When submitting your revised manuscript, you will be able to respond to the comments made by the reviewer(s) in the space provided. You can use this space to document any changes you make to the original manuscript. In order to expedite the processing of the revised manuscript, please be as specific as possible in your response to the reviewer(s)'questions and comments. You may also upload your responses as separate files for review along with your revision.
+
+When the submission process is complete, you will receive an automated confirmation email immediately. If you did not receive that email, your submission is not yet complete.  
+
+The Administrator will contact you should we have any concerns or questions regarding your revision. Otherwise, your revision will be forwarded to the assigned Associate Editor with a request for a final decision.
+
+Please be mindful when making your revisions that you still need to maintain the size limitations for papers submitted to TVCG.  The manuscript types and submission length guidelines are found at,
+
+https://www.computer.org/csdl/journal/tg/write-for-us/15094?title=Author%20Information&periodical=IEEE%20Transactions%20on%20Vis
+
+We encourage you to use our double column template (regular papers 12 pages, with additional pages up to 18 with fee, survey papers 20 pages max) which can be found at,
+
+https://www.computer.org/csdl/journal/tg/write-for-us/15094?title=Author%20Information&periodical=IEEE%20Transactions%20on%20Vis
+
+Text in any color other than black is not acceptable. Your revised paper must include the following:
+
+- Abstract
+- Index terms
+- Author affiliation information
+- Main text
+- References
+- Figure captions
+- Table titles
+- Brief biography of each author
+(biographies are not required for concise papers or comments papers)
+
+NOTE: All materials must fit within the paging guidelines. Papers that exceed the page limit will be returned for further editing.
+
+Please do not hesitate in contacting me should you have any questions about our process or are experiencing technical difficulties. You can reach the Administrator, Dr. Soham Basu, at soham.basu@ieee.org.
+
+Thank you for your contribution to TVCG, and we look forward to receiving your revised manuscript.
+
+Sincerely,
+
+Dr. Wenping Wang, EIC
+IEEE Transactions on Visualization and Computer Graphics
+soham.basu@ieee.org
+**************
+
+Senior Editor: 1
+Comments to the Author:
+(There are no comments. Please check to see if comments were included as a file attachment with this e-mail or as an attachment in your Author Center.)
+
+Associate Editor: 2
+Comments to the Author:
+This paper proposes GS-LSS, a stochastic optimization framework for 3D Gaussian Splatting under biased viewpoint distributions. It combines a Continuous Probability Field—built from aggregated training view geometry—with guided Gaussian updates and a learned variance module for adaptive random perturbations to address perspective overfitting.
+
+The reviewers acknowledged the following strengths of this paper:
+1) "The connection between the method design and the experiments. The evaluation covers 16 scenes from five datasets and three types of viewpoint bias." (Reviewer 3)
+2) "Aggregating geometric information across training views gives the optimization additional guidance beyond the loss from an individual image. Combining this guidance with adaptive stochastic updates is well motivated."* (Reviewer 3)
+3) "Keeping the standard 3DGS renderer at inference is also useful, although training is more expensive." (Reviewer 3)
+
+However, the reviewers raised major concerns regarding:
+1) "Supervision is obtained from RGB, depth, and normals rendered by the same Gaussian model... Eq. (21) and (22) cannot generally be satisfied simultaneously," and Langevin claims lack exact noise-drift relationships. (Reviewer 1)
+2) "PSNR, SSIM, and LPIPS on held-out images do not establish better global scene structure," and critical ablations (CPF update mode, loss components, gating) are missing. (Reviewer 1)
+3) "The dependence of CPF on the quality of the geometry produced during training. Errors in this geometry may affect the guidance provided by CPF." (Reviewer 3)
+
+The authors are therefore required to address and clarify these issues in a subsequent submission. The current recommendation is: Major Revision.
+
+********************
+
+Reviewer Comments
+
+
+Reviewer: 1
+
+Recommendation: Reject
+
+Comments:
+This paper presents GS-LSS, a stochastic optimization framework for 3D Gaussian Splatting under biased viewpoint distributions. The method constructs a Continuous Probability Field from intermediate 3DGS geometry and uses its gradients to guide Gaussian relocation and reshaping, while a learned variance module controls stochastic perturbations.
+1. Its supervision is obtained from RGB, depth, and normals rendered by the same Gaussian model trained on biased views. The paper does not isolate this effect through comparisons with fixed SfM support, external depth, or oracle geometry.
+2. Equation (21) assigns an isotropic Gaussian probability around each point, while Equation (22) forces the probability gradient to align with an oriented surface normal. Thus, the stated probability model and normal constraint cannot generally be satisfied simultaneously.
+3. Equation (17) does not correspond to Langevin sampling of Equation (28), since the learned drift and variance do not satisfy the required noise-drift relationship and no correction step is used. The claimed methodological distinction from heuristic stochastic 3DGS is therefore limited.
+4. PSNR, SSIM, and LPIPS on held-out images do not establish better global scene structure. The proposed FFR metric measures distance from sparse training-view SfM points and may classify legitimate surfaces outside the observed support as floaters. Evaluation against ground-truth depth, point clouds, meshes, or rendered depth is needed.
+5. The exact view counts, random seeds, discontinuous-region selection, per-scene results, and variance across splits are not reported. Five repeated trials on one setting do not address split sensitivity.
+6. The paper does not study fixed versus jointly updated CPF, positive-only versus free-space supervision, the individual color and normal losses, observation-aware gating, λ s ​ , λ ϵ ​ , CPF start time, sampling density, or performance under standard well-covered viewpoints. Without these results, neither the source of the improvement nor the risk of over-regularization is established.
+
+Additional Questions:
+1. Which category describes this manuscript?: Application
+
+2. How relevant is this manuscript to the readers of this periodical? Please explain your rating under Public Comments below.: Relevant
+
+1. Please explain how this manuscript advances this field of research and/or contributes something new to the literature. What do you see as the strongest and the weakest aspect of the paper? Please also comment on the paper’s novelty, its potential impact and, the replicability of the results and the method itself.: This paper presents GS-LSS, a stochastic optimization framework for 3D Gaussian Splatting under biased viewpoint distributions.
+
+2. Is the manuscript technically sound? Please explain your answer under Public Comments below.: Appears to be - but didn't check completely
+
+1. Are the title, abstract, and keywords appropriate? Please explain under Public Comments below.: Yes
+
+2. Does the manuscript contain sufficient and appropriate references? Please explain and list missing references under Public Comments below.: Important references are missing; more references are needed
+
+If you are suggesting additional references they must be entered in the text box provided.  All suggestions must include full bibliographic information plus a DOI.
+
+
+If you are not suggesting any references, please type NA.: na
+
+3. Does the introduction state the objectives of the manuscript in terms that encourage the reader to read on? Please explain your answer under Public Comments below.: Could be improved
+
+4. How would you rate the organization of the manuscript? Is it focused? Is the length appropriate for the topic? Please explain under Public Comments below.: Could be improved
+
+5. Please rate the readability of the manuscript. Explain your rating under Public Comments below.: Readable - but requires some effort to understand
+
+6. Should the supplemental material be included? (Click on the Supplementary Files icon to view files): Does not apply, no supplementary files included
+
+7. If yes to 6, should it be accepted:
+
+Please rate the manuscript. Explain your choice.: Poor
+
+
+Reviewer: 2
+
+Recommendation: Author Should Prepare A Major Revision For A Second Review
+
+Comments:
+This paper proposes an observed-support regularized learned stochastic optimization framework to address the issue of perspective overfitting in 3D Gaussian Splatting when trained with biased viewpoints. I recommend a major revision to enhance clarity and provide a more thorough discussion of its method and experiments.
+
+Here are a few points for the improvement:
+
+1. The introduction uses complex and lengthy sentences that can make it challenging for readers to quickly grasp the core issue and the paper's contribution. For example, in the problem statement, The problem of "perspective overfitting" is critical but could be introduced more accessibly.
+
+2. The Related Work section covers relevant areas. But it tends to describe existing methods rather than critically analyzing their fundamental limitations that GS-LSS aims to overcome. The comparison with MCMC-based methods, in particular, could be sharper to highlight the proposed method's novelty.
+
+3. The experimental section presents quantitative and qualitative results. However, the analysis sometimes states what the results show (e.g., "GS-LSS achieves the best performance") without explaining why the proposed method performs better at a deeper, mechanistic level. My suggestion is the authors can elaborate more on the specific architectural or algorithmic advantages of GS-LSS.
+
+4. I also suggest expanding the "Efficiency Trade-off" (Page 14, Section IV.5) to provide a more nuanced discussion of the computational overhead vs. the benefits, especially for different application contexts.
+
+5. Some recent 3D Gaussian Splatting research needs to be cited, e.g.:
+StylizedGS: Controllable Stylization for 3D Gaussian Splatting, IEEE TPAMI 2025
+Gaussians on Fire: High-Frequency Reconstruction of Flames, ECCV 2026
+SSD-GS: Scattering and Shadow Decomposition for Relightable 3D Gaussian Splatting, ICLR 2026
+
+Additional Questions:
+1. Which category describes this manuscript?: Research
+
+2. How relevant is this manuscript to the readers of this periodical? Please explain your rating under Public Comments below.: Very Relevant
+
+1. Please explain how this manuscript advances this field of research and/or contributes something new to the literature. What do you see as the strongest and the weakest aspect of the paper? Please also comment on the paper’s novelty, its potential impact and, the replicability of the results and the method itself.: This paper proposes an observed-support regularized learned stochastic optimization framework to address the issue of perspective overfitting in 3D Gaussian Splatting  when trained with biased viewpoints.
+
+2. Is the manuscript technically sound? Please explain your answer under Public Comments below.: Yes
+
+1. Are the title, abstract, and keywords appropriate? Please explain under Public Comments below.: Yes
+
+2. Does the manuscript contain sufficient and appropriate references? Please explain and list missing references under Public Comments below.: Important references are missing; more references are needed
+
+If you are suggesting additional references they must be entered in the text box provided.  All suggestions must include full bibliographic information plus a DOI.
+
+
+If you are not suggesting any references, please type NA.: StylizedGS: Controllable Stylization for 3D Gaussian Splatting, IEEE TPAMI 2025
+Gaussians on Fire: High-Frequency Reconstruction of Flames, ECCV 2026
+SSD-GS: Scattering and Shadow Decomposition for Relightable 3D Gaussian Splatting, ICLR 2026
+
+3. Does the introduction state the objectives of the manuscript in terms that encourage the reader to read on? Please explain your answer under Public Comments below.: Could be improved
+
+4. How would you rate the organization of the manuscript? Is it focused? Is the length appropriate for the topic? Please explain under Public Comments below.: Satisfactory
+
+5. Please rate the readability of the manuscript. Explain your rating under Public Comments below.: Easy to read
+
+6. Should the supplemental material be included? (Click on the Supplementary Files icon to view files): Yes, as part of the digital library for this submission if accepted
+
+7. If yes to 6, should it be accepted: As is
+
+Please rate the manuscript. Explain your choice.: Good
+
+
+Reviewer: 3
+
+Recommendation: Author Should Prepare A Minor Revision
+
+Comments:
+My overall assessment is positive. The paper studies a relevant problem and presents a reasonable solution. Aggregating geometric information across training views gives the optimization additional guidance beyond the loss from an individual image. Combining this guidance with adaptive stochastic updates is well motivated.
+
+I have the following suggestions：
+
+1. Add more implementation details. These include training iterations, network widths, and CPF update frequency. Please also specify the sampling scale, view splits, and random seeds. A configuration table and code availability statement would help replication.
+
+2. Check the reported numbers. Table III gives 16.951 dB for MatrixCity, while Table V gives 16.693 dB. Please explain any differences in settings. The stated gain of 0.468 dB also seems inconsistent with Table III, which gives 0.726 dB.
+
+3. Check the sign in Eq. (13). Based on the definition of δ(g), the right-hand side appears to need a minus sign.
+
+4. Discuss when inaccurate training geometry may weaken CPF guidance. A short example would help clarify this limitation. Also, Table VII tests stability in only one setting. Please keep the conclusion within this scope.
+
+Additional Questions:
+1. Which category describes this manuscript?: Research
+
+2. How relevant is this manuscript to the readers of this periodical? Please explain your rating under Public Comments below.: Very Relevant
+
+1. Please explain how this manuscript advances this field of research and/or contributes something new to the literature. What do you see as the strongest and the weakest aspect of the paper? Please also comment on the paper’s novelty, its potential impact and, the replicability of the results and the method itself.: This manuscript addresses a practical problem in 3D Gaussian Splatting: rendering quality often drops when the training cameras cover the scene unevenly. GS-LSS combines a Continuous Probability Field (CPF), learned from aggregated training geometry, with guided Gaussian updates and adaptive random perturbations. The main novelty is this combination of observed-support guidance and learned stochastic optimization. I consider it a useful methodological contribution to improving novel view synthesis under biased viewpoints.
+
+
+The strongest aspect:
+
+the connection between the method design and the experiments. The evaluation covers 16 scenes from five datasets and three types of viewpoint bias. The quantitative results, visual comparisons, and ablation studies provide good support for the proposed approach.
+
+
+The weakest aspect:
+
+the dependence of CPF on the quality of the geometry produced during training. Errors in this geometry may affect the guidance provided by CPF. The authors acknowledge this limitation, but a more concrete discussion would be helpful.
+
+
+The method could benefit applications such as virtual tours and scene reconstruction where complete camera coverage is difficult to obtain. Keeping the standard 3DGS renderer at inference is also useful, although training is more expensive.
+
+2. Is the manuscript technically sound? Please explain your answer under Public Comments below.: Yes
+
+1. Are the title, abstract, and keywords appropriate? Please explain under Public Comments below.: Yes
+
+2. Does the manuscript contain sufficient and appropriate references? Please explain and list missing references under Public Comments below.: References are sufficient and appropriate
+
+If you are suggesting additional references they must be entered in the text box provided.  All suggestions must include full bibliographic information plus a DOI.
+
+
+If you are not suggesting any references, please type NA.: NA
+
+3. Does the introduction state the objectives of the manuscript in terms that encourage the reader to read on? Please explain your answer under Public Comments below.: Yes
+
+4. How would you rate the organization of the manuscript? Is it focused? Is the length appropriate for the topic? Please explain under Public Comments below.: Satisfactory
+
+5. Please rate the readability of the manuscript. Explain your rating under Public Comments below.: Easy to read
+
+6. Should the supplemental material be included? (Click on the Supplementary Files icon to view files): Yes, as part of the digital library for this submission if accepted
+
+7. If yes to 6, should it be accepted: As is
+
+Please rate the manuscript. Explain your choice.: Good

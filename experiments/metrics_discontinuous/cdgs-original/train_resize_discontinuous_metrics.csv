@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_discontinuous/train_resize/cdgs-original,test,ours_30000,0.5491319298744202,12.870697975158691,0.4591119587421417,41.93191146850586,4.426016446256073,60.27796173095703

@@ -1,0 +1,74 @@
+{"stage": "sampling", "candidate_inodes": 445077, "candidate_GiB": 441.57397453766316}
+{"stage": "sampling", "done": 144384, "total": 445077, "elapsed_s": 27}
+{"stage": "sampling", "done": 260096, "total": 445077, "elapsed_s": 47}
+{"stage": "sampling", "done": 397312, "total": 445077, "elapsed_s": 67}
+{"stage": "full_sha256", "inodes": 434260, "GiB": 211.7722015986219}
+{"stage": "full_sha256", "done": 67072, "total": 434260, "read_GiB": 42.93, "elapsed_s": 87}
+{"stage": "full_sha256", "done": 86784, "total": 434260, "read_GiB": 44.47, "elapsed_s": 107}
+{"stage": "full_sha256", "done": 105472, "total": 434260, "read_GiB": 47.42, "elapsed_s": 127}
+{"stage": "full_sha256", "done": 124672, "total": 434260, "read_GiB": 50.85, "elapsed_s": 147}
+{"stage": "full_sha256", "done": 141312, "total": 434260, "read_GiB": 55.99, "elapsed_s": 167}
+{"stage": "full_sha256", "done": 158976, "total": 434260, "read_GiB": 61.25, "elapsed_s": 188}
+{"stage": "full_sha256", "done": 179712, "total": 434260, "read_GiB": 65.5, "elapsed_s": 208}
+{"stage": "full_sha256", "done": 199936, "total": 434260, "read_GiB": 70.35, "elapsed_s": 228}
+{"stage": "full_sha256", "done": 216064, "total": 434260, "read_GiB": 76.12, "elapsed_s": 248}
+{"stage": "full_sha256", "done": 226304, "total": 434260, "read_GiB": 83.1, "elapsed_s": 268}
+{"stage": "full_sha256", "done": 246528, "total": 434260, "read_GiB": 88.01, "elapsed_s": 289}
+{"stage": "full_sha256", "done": 272128, "total": 434260, "read_GiB": 91.53, "elapsed_s": 309}
+{"stage": "full_sha256", "done": 294400, "total": 434260, "read_GiB": 95.06, "elapsed_s": 329}
+{"stage": "full_sha256", "done": 313856, "total": 434260, "read_GiB": 99.19, "elapsed_s": 349}
+{"stage": "full_sha256", "done": 343040, "total": 434260, "read_GiB": 102.41, "elapsed_s": 369}
+{"stage": "full_sha256", "done": 364032, "total": 434260, "read_GiB": 106.66, "elapsed_s": 390}
+{"stage": "full_sha256", "done": 386048, "total": 434260, "read_GiB": 110.49, "elapsed_s": 410}
+{"stage": "full_sha256", "done": 403456, "total": 434260, "read_GiB": 154.91, "elapsed_s": 514}
+{"stage": "full_sha256", "done": 404224, "total": 434260, "read_GiB": 162.95, "elapsed_s": 535}
+{"stage": "full_sha256", "done": 410880, "total": 434260, "read_GiB": 170.33, "elapsed_s": 556}
+{"stage": "full_sha256", "done": 415488, "total": 434260, "read_GiB": 178.41, "elapsed_s": 578}
+{"stage": "full_sha256", "done": 417024, "total": 434260, "read_GiB": 186.93, "elapsed_s": 600}
+{"stage": "full_sha256", "done": 419584, "total": 434260, "read_GiB": 195.87, "elapsed_s": 620}
+{"stage": "full_sha256", "done": 425472, "total": 434260, "read_GiB": 202.97, "elapsed_s": 640}
+{"stage": "full_sha256", "done": 433152, "total": 434260, "read_GiB": 210.56, "elapsed_s": 662}
+{
+  "planned_duplicate_paths": 409951,
+  "reclaimable_bytes": 171082084352,
+  "by_category": {
+    "input_point_cloud": {
+      "files": 1506,
+      "bytes": 5543919616
+    },
+    "evaluation_ground_truth": {
+      "files": 67335,
+      "bytes": 80641814528
+    },
+    "metadata_logs_or_other": {
+      "files": 294645,
+      "bytes": 8470241280
+    },
+    "checkpoint_or_neural_state": {
+      "files": 205,
+      "bytes": 48821010432
+    },
+    "python_cache": {
+      "files": 488,
+      "bytes": 6569984
+    },
+    "frozen_dataset": {
+      "files": 7187,
+      "bytes": 907571200
+    },
+    "rendered_outputs": {
+      "files": 23489,
+      "bytes": 22567260160
+    },
+    "other_images": {
+      "files": 14802,
+      "bytes": 4115267584
+    },
+    "videos": {
+      "files": 294,
+      "bytes": 8429568
+    }
+  },
+  "errors": [],
+  "elapsed_s": 670.9667816311121
+}

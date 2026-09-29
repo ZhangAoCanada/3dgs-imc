@@ -1,0 +1,80 @@
+{
+  "created": "2026-09-28T08:57:15.094490+08:00",
+  "host": "user",
+  "purpose": "Initial analysis of current reviews; not completed experimental validation or rebuttal",
+  "current_submission": "TVCG-2026-07-0789",
+  "decision": "Major Revision",
+  "deadline_from_letter": "2026-12-24",
+  "earlier_submission": "TVCG-2026-04-0389",
+  "sources": [
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/TVCG_reviewers/TVCG_reviewers.txt",
+      "sha256": "a5585893a01f1394a0b41352573cc06557dd2355e7265a73e89f4a61969ab3ac",
+      "bytes": 18921
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex",
+      "sha256": "ed87eb2c5f30062e0ca1476d1835f6594617ef741fff337979db21499e67b791",
+      "bytes": 78673
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.pdf",
+      "sha256": "e0ae9a4339168924da0ac6d4973ddc96403874a1d9e5287a103983122f162a7e",
+      "bytes": 9506720
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/citations.bib",
+      "sha256": "3eea1b8323a48809446969ae5c950ed1cface1c27efe94b0dbde02b8ea29844f",
+      "bytes": 21193
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/docs/research/references/TVCG-2026-04-0389.txt",
+      "sha256": "7ad5c33ffd255b1a756e9e267856e5e4f2c682612a16bf7418b8fcccfc75668c",
+      "bytes": 20023
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/research-audit-2026-09-26/revision_issue_map.csv",
+      "sha256": "e1201de474ca9ca0c16a1a3636751fda98a84fb99674091d910a03cd049c5690",
+      "bytes": 6533
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/research-audit-2026-09-26/reusable_experiments.csv",
+      "sha256": "6e9361bfc3f216fe0ccc330a8c5c56c177276ea7a6bd7aee0ae7f2452e20692d",
+      "bytes": 165456
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/table3-checkpoint-search-2026-09-27/MATRIXCITY_PROTOCOL.md",
+      "sha256": "d8ca6e5c0de19a8b4afcf97c61f98a5f18bc82b9b05335dfa6cb911ba666b376",
+      "bytes": 9677
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/run.sh",
+      "sha256": "a84ee6cffff20889b4bd5560ad3d546a48036a91e01519eebfc321ce3506945f",
+      "bytes": 11787
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/imc_experimental.py",
+      "sha256": "4dd276d3c1609ded82b0f7627cd433ebcc9dec1e2a135969d61dcb23dcb0644d",
+      "bytes": 17926
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/gaussian_model.py",
+      "sha256": "882a5fd5faf2c8636f0f2e8ca644e33a55bcd4b509a773266ce3221bd605d2a0",
+      "bytes": 122243
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/train_experimental_branch3_mc.py",
+      "sha256": "1835896dfb2343ef47e3d7f6a6b48f4bed3665d93b87260c185b31c9697a37cb",
+      "bytes": 34749
+    }
+  ],
+  "primary_web_sources": [
+    "https://arxiv.org/abs/1506.04696",
+    "https://arxiv.org/abs/2404.05220",
+    "https://arxiv.org/abs/2511.22459",
+    "https://arxiv.org/abs/2604.13333"
+  ],
+  "submitted_pdf_pages": 12,
+  "manuscript_or_review_edits": false,
+  "new_gpu_experiments": false
+}

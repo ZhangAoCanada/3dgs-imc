@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_30.0,test,ours_30000,0.8042840957641602,24.822044372558594,0.14924360811710358,12.09961986541748,2.073375696080004,34.09115219116211

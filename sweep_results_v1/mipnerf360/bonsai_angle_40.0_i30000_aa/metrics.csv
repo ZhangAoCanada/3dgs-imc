@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/sweep_models/mipnerf360/bonsai_angle_40.0_i30000_aa,test,ours_30000,0.9074313044548035,25.864871978759766,0.1764909327030182,36.1357421875,4.021527230054129,52.44115447998047

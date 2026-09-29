@@ -1,0 +1,49 @@
+"""Remote attempt execution; never accepts a score or deletes any artifact."""
+import argparse,json,os,re,subprocess,sys,time,hashlib
+from pathlib import Path
+ROOT=Path('/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927')
+p=argparse.ArgumentParser();p.add_argument('id');p.add_argument('seed',type=int);p.add_argument('--gpu',choices=['0','1'],required=True);p.add_argument('--smoke',type=int,default=0);p.add_argument('--attempt-dir');a=p.parse_args()
+r=next(r for r in json.loads((ROOT/'configurations_local.json').read_text()) if r['id']==a.id)
+method=r['method_key'];repo=ROOT/'code'/method;iterations=a.smoke or 30000
+out=ROOT/('smokes_local' if a.smoke else 'attempts_local')/a.id/f'seed_{a.seed:06d}'
+if a.attempt_dir:
+ assert not a.smoke
+ out=Path(a.attempt_dir)
+ assert out.is_absolute() and out.parent==ROOT/'attempts_local'/a.id
+ assert re.fullmatch(f'seed_{a.seed:06d}(_retry_[0-9]{{3,}})?',out.name),str(out)
+out.mkdir(parents=True,exist_ok=False)
+env=dict(os.environ,CUDA_VISIBLE_DEVICES=a.gpu,GS_LSS_RUN_SEED=str(a.seed),MKL_THREADING_LAYER='GNU',OMP_NUM_THREADS='8',OPENBLAS_NUM_THREADS='8',PYTHONUNBUFFERED='1')
+env['GS_LSS_GEOMETRY_CACHE']=str(out/'geometry_cache')
+env['PYTHONPATH']=str(repo)
+if method=='pgsr':env['PYTHONPATH']=str(ROOT/'local_extensions/pgsr_build')+':'+str(repo)
+cmd=[r['local_python'],'train.py','--source_path',r['source_path'],'--model_path',str(out),'--images',r['proposed_images_from_launcher'],'--resolution','1','--data_device','cpu','--iterations',str(iterations),'--save_iterations',str(iterations),'--test_iterations',str(iterations+1),'--checkpoint_iterations',str(iterations)]+r['extra_args']
+if r['test_path']:cmd+=['--test_path',r['test_path']]
+else:cmd+=['--test_selection_path',r['split_snapshot']]
+record=dict(environment_manifest=str(ROOT/'environment_local.json'),gpu_info=subprocess.check_output(['nvidia-smi','-i',a.gpu,'--query-gpu=index,uuid,name,driver_version,memory.total','--format=csv,noheader'],text=True).strip(), runner_pid=os.getpid(),code_sha256={str(f.relative_to(repo)):hashlib.sha256(f.read_bytes()).hexdigest() for f in repo.rglob('*.py')}, scripts_sha256={f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in (ROOT/'scripts_local').glob('*.py')}, configuration=r,seed=a.seed,gpu=a.gpu,hostname=os.uname().nodename,iteration=iterations,smoke=bool(a.smoke),command=cmd,environment={k:env[k] for k in ['CUDA_VISIBLE_DEVICES','GS_LSS_RUN_SEED','PYTHONPATH','GS_LSS_GEOMETRY_CACHE']},started=time.time())
+(out/'run.json').write_text(json.dumps(record,indent=2))
+def run(cmd,label):
+ record[label+'_command']=cmd;(out/'run.json').write_text(json.dumps(record,indent=2))
+ with (out/(label+'.log')).open('w') as f:
+  child=subprocess.Popen(cmd,cwd=repo,env=env,stdout=f,stderr=subprocess.STDOUT)
+  record.update(active_stage=label,active_pid=child.pid);(out/'run.json').write_text(json.dumps(record,indent=2))
+  rc=child.wait()
+  if rc:raise subprocess.CalledProcessError(rc,cmd)
+try:
+ run(cmd,'train')
+ run([r['local_python'],str(ROOT/'scripts_local/render_test.py'),'--repo',str(repo),'--method',method,'--model',str(out),'--iteration',str(iterations)],'render')
+ run(['/home/zhangao/.conda/envs/3dgs-mcmc/bin/python',str(ROOT/'scripts_local/metrics_reference.py'),'--repo',str(ROOT/'code/mcmc'),'--model',str(out),'--iteration',str(iterations)],'metrics')
+ if r.get('diagnostic_test_path'):
+  from secondary_evaluation import prepare,compare
+  diagnostic=prepare(out,r['diagnostic_test_path'],iterations)
+  run([r['local_python'],str(ROOT/'scripts_local/render_test.py'),'--repo',str(repo),'--method',method,'--model',str(diagnostic),'--iteration',str(iterations)],'render_historical_154')
+  run(['/home/zhangao/.conda/envs/3dgs-mcmc/bin/python',str(ROOT/'scripts_local/metrics_reference.py'),'--repo',str(ROOT/'code/mcmc'),'--model',str(diagnostic),'--iteration',str(iterations)],'metrics_historical_154')
+  compare(out,diagnostic,r,iterations)
+ expected=[out/'point_cloud'/f'iteration_{iterations}'/'point_cloud.ply',out/f'chkpnt{iterations}.pth',out/'full_args.json',out/'resolved_split.json',out/'results.json',out/'per_view.json']
+ if method=='scaffold':expected+=list((out/'point_cloud'/f'iteration_{iterations}').glob('*.pt'));assert len(expected)>=10
+ if method=='pgsr':expected+=list((out/'app_model').rglob('*.pth'));assert len(expected)>6
+ for f in expected:assert f.is_file() and f.stat().st_size>0,str(f)
+ hashes={str(f.relative_to(out)):hashlib.sha256(f.read_bytes()).hexdigest() for f in out.rglob('*') if f.is_file() and f.name not in ['run.json','complete.json']}
+ record.update(finished=time.time(),status='complete',files=hashes)
+ (out/'complete.json').write_text(json.dumps(record,indent=2));print('COMPLETE',out,flush=True)
+except Exception as e:
+ record.update(finished=time.time(),status='technical_failure',error=repr(e));(out/'failure.json').write_text(json.dumps(record,indent=2));raise

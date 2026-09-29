@@ -1,0 +1,41 @@
+{"stage": "path_verification", "checked": 584742, "errors": 0, "elapsed_s": 44}
+{"stage": "full_sha256_after_cleanup", "unique_canonical_files": 24295, "retained_checkpoint_paths": 4125}
+{"stage": "full_sha256_after_cleanup", "hashed": 6400, "total": 24295, "read_GiB": 6.3, "errors": 0, "elapsed_s": 65}
+{"stage": "full_sha256_after_cleanup", "hashed": 14848, "total": 24295, "read_GiB": 13.46, "errors": 0, "elapsed_s": 85}
+{"stage": "full_sha256_after_cleanup", "hashed": 21248, "total": 24295, "read_GiB": 49.67, "errors": 0, "elapsed_s": 154}
+{
+  "finished": "2026-09-28T22:41:32.595301+08:00",
+  "entries_checked": 839467,
+  "all_original_paths_preserved": true,
+  "checkpoint_paths_retained": 4125,
+  "deduplicated_paths_verified": 409951,
+  "unique_canonical_hashes_verified": 24295,
+  "coverage": {
+    "ours_tables_I_II_preserve.csv": {
+      "paths": 131,
+      "present": 131
+    },
+    "all_selected_models.csv": {
+      "paths": 747,
+      "present": 739
+    },
+    "baseline_selected": {
+      "paths": 27,
+      "present": 27
+    },
+    "library_links": {
+      "paths": 2813,
+      "resolving": 2813
+    }
+  },
+  "expected_live_coordinator_changes": [
+    "GS-LSS-baseline-capped-reruns-20260927/status.json"
+  ],
+  "errors": [],
+  "disk_after_verification": {
+    "total": 7937303740416,
+    "used": 7162917457920,
+    "free": 374291349504
+  },
+  "elapsed_s": 227.49074685573578
+}

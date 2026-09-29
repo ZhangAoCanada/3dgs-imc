@@ -1,0 +1,420 @@
+[
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/home/ooooo/outputs/tables567/tandt/train_resize_discontinuous_T5_mlp_train_i30000",
+      "iterations": [],
+      "reasons": [
+        "WSL incomplete historical experiment metadata"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/home/ooooo/outputs/tables567/tandt/train_resize_discontinuous_T5_mlp_train_i30000",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/train_resize_discontinuous_T5_mlp_train_i30000/input.ply",
+        "bytes": 4359384,
+        "mtime_ns": 1781949140672700959
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/train_resize_discontinuous_T5_mlp_train_i30000/cameras.json",
+        "bytes": 120254,
+        "mtime_ns": 1781949140676701138
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/train_resize_discontinuous_T5_mlp_train_i30000/metrics.csv",
+        "bytes": 56,
+        "mtime_ns": 1781949628702893129
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/train_resize_discontinuous_T5_mlp_train_i30000/cfg_args",
+        "bytes": 555,
+        "mtime_ns": 1781949139768659729
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/train_resize_discontinuous_T5_mlp_train_i30000/events.out.tfevents.1781949139.DESKTOP-KQJ0F7G.1111066.0",
+        "bytes": 1977407,
+        "mtime_ns": 1781949615542295063
+      }
+    ],
+    "errors": []
+  },
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T5_eps0.1_truck_i30000",
+      "iterations": [],
+      "reasons": [
+        "WSL incomplete historical experiment metadata"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T5_eps0.1_truck_i30000",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T5_eps0.1_truck_i30000/input.ply",
+        "bytes": 2989620,
+        "mtime_ns": 1781949633499110692
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T5_eps0.1_truck_i30000/cameras.json",
+        "bytes": 100631,
+        "mtime_ns": 1781949633507111056
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T5_eps0.1_truck_i30000/events.out.tfevents.1781949632.DESKTOP-KQJ0F7G.1113440.0",
+        "bytes": 1431417,
+        "mtime_ns": 1781950303453572329
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T5_eps0.1_truck_i30000/cfg_args",
+        "bytes": 558,
+        "mtime_ns": 1781949632931084925
+      }
+    ],
+    "errors": []
+  },
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000",
+      "iterations": [],
+      "reasons": [
+        "WSL incomplete historical experiment metadata"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000/input.ply",
+        "bytes": 2989620,
+        "mtime_ns": 1781966965264296991
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000/cameras.json",
+        "bytes": 100631,
+        "mtime_ns": 1781966965268297173
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000/command.txt",
+        "bytes": 2637,
+        "mtime_ns": 1781966965036286582
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000/cfg_args",
+        "bytes": 519,
+        "mtime_ns": 1781966965040286763
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000/events.out.tfevents.1781965053.DESKTOP-KQJ0F7G.56312.0",
+        "bytes": 3665199,
+        "mtime_ns": 1781965367567342445
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000/events.out.tfevents.1781966965.DESKTOP-KQJ0F7G.64582.0",
+        "bytes": 2631829,
+        "mtime_ns": 1781967120839401705
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567/tandt/truck_resize_discontinuous_T7_ours_fast_i30000/full_args.json",
+        "bytes": 4236,
+        "mtime_ns": 1781966965036286582
+      }
+    ],
+    "errors": []
+  },
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000",
+      "iterations": [
+        3000
+      ],
+      "reasons": [
+        "WSL incomplete historical experiment metadata",
+        "WSL recovered legacy/diagnostic model; paper linkage unverified"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/exposure.json",
+        "bytes": 43512,
+        "mtime_ns": 1781966407674840698
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/input.ply",
+        "bytes": 2989620,
+        "mtime_ns": 1781966353800380113
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/cameras.json",
+        "bytes": 100631,
+        "mtime_ns": 1781966353804380296
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/command.txt",
+        "bytes": 2642,
+        "mtime_ns": 1781966353524367516
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/events.out.tfevents.1781966353.DESKTOP-KQJ0F7G.61985.0",
+        "bytes": 1931871,
+        "mtime_ns": 1781966407154816944
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/cfg_args",
+        "bytes": 527,
+        "mtime_ns": 1781966353532367882
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/training_time.txt",
+        "bytes": 34,
+        "mtime_ns": 1781966407154816944
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/full_args.json",
+        "bytes": 4240,
+        "mtime_ns": 1781966353524367516
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/net.pth",
+        "bytes": 1871957,
+        "mtime_ns": 1781966407682841063
+      },
+      {
+        "path": "/home/ooooo/outputs/tables567_freezetest/tandt/truck_resize_discontinuous_freezetest_i3000/point_cloud/iteration_3000/point_cloud.ply",
+        "bytes": 33376379,
+        "mtime_ns": 1781966407626838504
+      }
+    ],
+    "errors": []
+  },
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1",
+      "iterations": [
+        10000,
+        12000
+      ],
+      "reasons": [
+        "WSL recovered legacy/diagnostic model; paper linkage unverified"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/cameras.json",
+        "bytes": 131159,
+        "mtime_ns": 1780481889492631700
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/cfg_args",
+        "bytes": 383,
+        "mtime_ns": 1780481888450074100
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/events.out.tfevents.1780481889.DESKTOP-KQJ0F7G.62369.0",
+        "bytes": 7566189,
+        "mtime_ns": 1780482679016770300
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/exposure.json",
+        "bytes": 28814,
+        "mtime_ns": 1780482683669675300
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/input.ply",
+        "bytes": 6406254,
+        "mtime_ns": 1780481889480573500
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/net.pth",
+        "bytes": 1871957,
+        "mtime_ns": 1780482683695764000
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/training_time.txt",
+        "bytes": 35,
+        "mtime_ns": 1780482679005754600
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/point_cloud/iteration_10000/point_cloud.ply",
+        "bytes": 209973955,
+        "mtime_ns": 1780482471410862800
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/point_cloud/iteration_12000/point_cloud.ply",
+        "bytes": 209973955,
+        "mtime_ns": 1780482683650018600
+      }
+    ],
+    "errors": []
+  },
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7",
+      "iterations": [
+        10000
+      ],
+      "reasons": [
+        "WSL recovered legacy/diagnostic model; paper linkage unverified"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/cameras.json",
+        "bytes": 131159,
+        "mtime_ns": 1780483859572829500
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/cfg_args",
+        "bytes": 383,
+        "mtime_ns": 1780483858566477600
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/events.out.tfevents.1780483859.DESKTOP-KQJ0F7G.64169.0",
+        "bytes": 11605797,
+        "mtime_ns": 1780484826650082500
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/exposure.json",
+        "bytes": 28814,
+        "mtime_ns": 1780484555997610800
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/input.ply",
+        "bytes": 6406254,
+        "mtime_ns": 1780483859561312700
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/net.pth",
+        "bytes": 1871957,
+        "mtime_ns": 1780484556021173900
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/point_cloud/iteration_10000/point_cloud.ply",
+        "bytes": 209973955,
+        "mtime_ns": 1780484555979550400
+      }
+    ],
+    "errors": []
+  },
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a",
+      "iterations": [
+        100
+      ],
+      "reasons": [
+        "WSL recovered legacy/diagnostic model; paper linkage unverified"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/cameras.json",
+        "bytes": 131159,
+        "mtime_ns": 1780480314110717900
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/cfg_args",
+        "bytes": 346,
+        "mtime_ns": 1780480312719991800
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/events.out.tfevents.1780480313.DESKTOP-KQJ0F7G.58700.0",
+        "bytes": 9193391,
+        "mtime_ns": 1780480332474909700
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/exposure.json",
+        "bytes": 28814,
+        "mtime_ns": 1780480333488275500
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/input.ply",
+        "bytes": 6406254,
+        "mtime_ns": 1780480314099201900
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/training_time.txt",
+        "bytes": 33,
+        "mtime_ns": 1780480332440061300
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/point_cloud/iteration_100/point_cloud.ply",
+        "bytes": 58842011,
+        "mtime_ns": 1780480333475761400
+      }
+    ],
+    "errors": []
+  },
+  {
+    "run": {
+      "host": "wsl",
+      "run_dir": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7",
+      "iterations": [
+        7000,
+        30000
+      ],
+      "reasons": [
+        "WSL recovered legacy/diagnostic model; paper linkage unverified"
+      ],
+      "local_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7",
+      "action": "copy"
+    },
+    "files": [
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/cameras.json",
+        "bytes": 131159,
+        "mtime_ns": 1780480352124130500
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/cfg_args",
+        "bytes": 346,
+        "mtime_ns": 1780480351147795100
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/events.out.tfevents.1780480352.DESKTOP-KQJ0F7G.58918.0",
+        "bytes": 20875713,
+        "mtime_ns": 1780480969411448600
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/exposure.json",
+        "bytes": 28814,
+        "mtime_ns": 1780480973021519500
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/input.ply",
+        "bytes": 6406254,
+        "mtime_ns": 1780480352111127700
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/training_time.txt",
+        "bytes": 35,
+        "mtime_ns": 1780480969387631600
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/point_cloud/iteration_7000/point_cloud.ply",
+        "bytes": 159830091,
+        "mtime_ns": 1780480513329668500
+      },
+      {
+        "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/point_cloud/iteration_30000/point_cloud.ply",
+        "bytes": 209973955,
+        "mtime_ns": 1780480973005013500
+      }
+    ],
+    "errors": []
+  }
+]

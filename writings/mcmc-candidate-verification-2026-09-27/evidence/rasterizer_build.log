@@ -1,0 +1,13 @@
+Looking in indexes: https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+Processing /data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/rasterizer_source_hust10
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: diff_gaussian_rasterization
+  Building wheel for diff_gaussian_rasterization (pyproject.toml): started
+  Building wheel for diff_gaussian_rasterization (pyproject.toml): still running...
+  Building wheel for diff_gaussian_rasterization (pyproject.toml): finished with status 'done'
+  Created wheel for diff_gaussian_rasterization: filename=diff_gaussian_rasterization-0.0.0-cp310-cp310-linux_x86_64.whl size=423631 sha256=c149d8a2d75852c7603450d94c1d011f7c6cb157a7b7dbde01db3c9ea0aa7cd8
+  Stored in directory: /tmp/pip-ephem-wheel-cache-9l17bpvk/wheels/3a/68/e3/c7aa6c234b2ffd6510c0153339797c326d563b4ca6d60b5888
+Successfully built diff_gaussian_rasterization
+Installing collected packages: diff_gaussian_rasterization
+Successfully installed diff_gaussian_rasterization-0.0.0

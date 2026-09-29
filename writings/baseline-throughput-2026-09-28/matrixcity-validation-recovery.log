@@ -1,0 +1,18 @@
+Original validated and hashed 596 files
+Source bytes unchanged; creating completed manifest
+{
+  "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000_validation_recovery_20260928",
+  "scores": {
+    "primary130": {
+      "SSIM": 0.28541916608810425,
+      "PSNR": 9.485855102539062,
+      "LPIPS": 0.5691742300987244
+    },
+    "diagnostic154": {
+      "SSIM": 0.3664133846759796,
+      "PSNR": 12.079560279846191,
+      "LPIPS": 0.5139790177345276
+    }
+  },
+  "files": 597
+}

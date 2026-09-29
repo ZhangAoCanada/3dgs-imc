@@ -1,0 +1,1726 @@
+[
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_100.0_W_ct100_dssim_s123_i15000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_100.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_100.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_20.0_F_counter_20.0_i30000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_40.0_A_counter_40.0_i15000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/counter_angle_60.0_F_counter_60.0_i30000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_60.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/counter/test_selection_angle_60.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_100.0_W1_K100_MHaggr_s42_i15000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_100.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_100.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_40.0_0_kitchen40_fast_nv3_s7_i18000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_80.0_0_kitchen80_fast_nv1_s7_i15000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/kitchen_angle_80.0_P15_S4_ki80_slow_woAA_earlyck_i30000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/room_angle_40.0_0_room40_slow_oracle_i30000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/room/test_selection_angle_40.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/room/test_selection_angle_40.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/stump_angle_20.0_A_stump_20.0_i15000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/stump_angle_60.0_A_stump_60.0_i15000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/stump/test_selection_angle_60.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/stump/test_selection_angle_60.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/treehill_angle_100.0_F_treehill_100.0_i30000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/treehill/test_selection_angle_100.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/treehill/test_selection_angle_100.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust10",
+    "run_dir": "/data1/zhangao/repos/3dgs-imc-codex/outputs/wsl_results/diag/mipnerf360/treehill_angle_40.0_F_treehill_40.0_i30000",
+    "original_split": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "status": "configured WSL split recovered from its owning host",
+    "recovered_path": "/mnt/c/Users/Aooooo/Documents/DATA/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "split_source_host": "wsl"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 58,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 11,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 24,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 30,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 48,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/3dgs-mcmc-original-5000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr-original-4000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 11,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr-original-4000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr-original-4000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr-original-4000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 24,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr-original-4000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr-original-4000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 58,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 11,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 24,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 30,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/bicycle/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bicycle/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 48,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bicycle/pgsr2-original-3000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 90,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 20,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 37,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 57,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 76,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/3dgs-mcmc-original-1000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 90,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 20,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 37,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 57,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 76,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr-original-1000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 90,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 20,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 37,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 57,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/bonsai/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/bonsai/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 76,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/bonsai/pgsr2-original-1000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 66,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 15,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 33,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 41,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 56,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/3dgs-mcmc-original-1000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 15,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr-original-1000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr-original-1000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 33,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr-original-1000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr-original-1000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 66,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 15,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 33,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 41,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/counter/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/counter/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 56,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/counter/pgsr2-original-1000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 50,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 12,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 24,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 32,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 41,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/3dgs-mcmc-original-4000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr-original-4000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 12,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr-original-4000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr-original-4000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr-original-4000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 24,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr-original-4000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr-original-4000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 50,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 12,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 24,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 32,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/garden/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/garden/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 41,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/garden/pgsr2-original-4000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 91,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 16,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 38,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 62,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 72,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/3dgs-mcmc-original-1500000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr-original-1500000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 16,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr-original-1500000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr-original-1500000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr-original-1500000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 38,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr-original-1500000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr-original-1500000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 91,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 16,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 38,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 62,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/kitchen/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 72,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/kitchen/pgsr2-original-1500000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 153,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 56,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 117,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 135,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 140,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/3dgs-mcmc-original-1200000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr-original-1200000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 56,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr-original-1200000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr-original-1200000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 153,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 56,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 117,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 135,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/room/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/room/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 140,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/room/pgsr2-original-1200000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 34,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 10,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 14,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 19,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 26,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr-original-4200000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 10,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr-original-4200000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr-original-4200000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr-original-4200000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 14,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr-original-4200000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr-original-4200000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 34,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 10,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 14,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 19,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/stump/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/stump/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 26,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-depth-test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-mcmc-original-1000000_test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 58
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-mcmc-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 7
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-mcmc-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 13
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-mcmc-original-1000000_test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/DATA/tandt/train_resize/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 26,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-mcmc-original-1000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-mcmc-original-1000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-mcmc-original-1000000_test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-original-test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 58
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-original-test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 7
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-original-test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 13
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-original-test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_60.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 26
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-original-test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/pgsr-original-1000000_test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 58
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/pgsr-original-1000000_test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 7
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/pgsr-original-1000000_test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 13
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/pgsr-original-1000000_test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/DATA/tandt/train_resize/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 26,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/pgsr-original-1000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/pgsr-original-1000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/pgsr-original-1000000_test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 58
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 7
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 13
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/DATA/tandt/train_resize/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 26,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/train_resize/scaffoldgs-original-test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/train_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 35,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 11,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 13,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 22,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 34,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/3dgs-mcmc-original-3300000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr-original-3300000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 11,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr-original-3300000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr-original-3300000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr-original-3300000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 13,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr-original-3300000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr-original-3300000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_100.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_100.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_100.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 35,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_100.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_100.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_20.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_20.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_20.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 11,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_20.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_20.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_40.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_40.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 13,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_40.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_40.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_60.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 22,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_80.0",
+    "original_split": "/data2/zhangao/mipnerf360/treehill/test_selection_angle_80.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/mipnerf360/treehill/test_selection_angle_80.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 34,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_80.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/treehill/pgsr2-original-3300000_test_selection_angle_80.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 84
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 12
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 42
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/DATA/tandt/truck_resize/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 63,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 73
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-original-test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 84
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-original-test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 12
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-original-test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 42
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-original-test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_60.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 63
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-original-test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 73
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/pgsr-original-2000000_test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 84
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/pgsr-original-2000000_test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 12
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/pgsr-original-2000000_test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 42
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/pgsr-original-2000000_test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/DATA/tandt/truck_resize/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 63,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/pgsr-original-2000000_test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/pgsr-original-2000000_test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/pgsr-original-2000000_test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 73
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_100.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_100.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 84
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_20.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_20.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 12
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_40.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_40.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 42
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_60.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_60.0.txt",
+    "status": "relocated split membership verified against saved test-camera prefix and independent view count",
+    "recovered_path": "/data1/zhangao/DATA/tandt/truck_resize/test_selection_angle_60.0.txt",
+    "split_source_host": "hust2",
+    "test_views": 63,
+    "camera_evidence": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_60.0/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_60.0/per_view.json"
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/baselines_multi_angle/truck_resize/scaffoldgs-original-test_selection_angle_80.0",
+    "original_split": "/data/zhangao/tandt_db/tandt/truck_resize/test_selection_angle_80.0.txt",
+    "status": "no matching relocated split",
+    "test_views": 73
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/building-small",
+    "original_split": "/data1/zhangao/DATA/DATA-small/building-small/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/residence-small",
+    "original_split": "/data1/zhangao/DATA/DATA-small/residence-small/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/rubble-small",
+    "original_split": "/data1/zhangao/DATA/DATA-small/rubble-small/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/sci-art-small",
+    "original_split": "/data1/zhangao/DATA/DATA-small/sci-art-small/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mip-NeRF_360/GS-LSS/bicycle",
+    "original_split": "/data1/zhangao/DATA/mipnerf360/bicycle/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mip-NeRF_360/GS-LSS/counter",
+    "original_split": "/data1/zhangao/DATA/mipnerf360/counter/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mip-NeRF_360/GS-LSS/garden",
+    "original_split": "/data1/zhangao/DATA/mipnerf360/garden/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mip-NeRF_360/GS-LSS/room",
+    "original_split": "/data1/zhangao/DATA/mipnerf360/room/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mip-NeRF_360/GS-LSS/stump",
+    "original_split": "/data1/zhangao/DATA/mipnerf360/stump/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mip-NeRF_360/GS-LSS/treehill",
+    "original_split": "/data1/zhangao/DATA/mipnerf360/treehill/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 20
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Tanks___Temples/GS-LSS/train_resize",
+    "original_split": "/data1/zhangao/DATA/tandt/train_resize/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Tanks___Temples/GS-LSS/truck_resize",
+    "original_split": "/data1/zhangao/DATA/tandt/truck_resize/discontinuous.txt",
+    "status": "no matching relocated split",
+    "test_views": 22
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_bonsai_3dgs_gpu2_20260704/bonsai_gap60.0_center000/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_000.txt",
+    "status": "no matching relocated split",
+    "test_views": 51
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_bonsai_3dgs_gpu2_20260704/bonsai_gap60.0_center090/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_090.txt",
+    "status": "no matching relocated split",
+    "test_views": 40
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_bonsai_3dgs_gpu2_20260704/bonsai_gap60.0_center180/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_180.txt",
+    "status": "no matching relocated split",
+    "test_views": 53
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_bonsai_3dgs_gpu2_20260704/bonsai_gap60.0_center270/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_270.txt",
+    "status": "no matching relocated split",
+    "test_views": 49
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_garden_3dgs_gpu2_20260704/garden_gap60.0_center000/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_000.txt",
+    "status": "no matching relocated split",
+    "test_views": 29
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_garden_3dgs_gpu2_20260704/garden_gap60.0_center090/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_090.txt",
+    "status": "no matching relocated split",
+    "test_views": 28
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_garden_3dgs_gpu2_20260704/garden_gap60.0_center180/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_180.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_garden_3dgs_gpu2_20260704/garden_gap60.0_center270/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_270.txt",
+    "status": "no matching relocated split",
+    "test_views": 30
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_baselines_garden_3dgs_gpu2_20260704_retry_center270/garden_gap60.0_center270/3dgs_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_270.txt",
+    "status": "no matching relocated split",
+    "test_views": 30
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703/bonsai_gap60.0_center000/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_000.txt",
+    "status": "no matching relocated split",
+    "test_views": 51
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703/bonsai_gap60.0_center090/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_090.txt",
+    "status": "no matching relocated split",
+    "test_views": 40
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703/bonsai_gap60.0_center180/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_180.txt",
+    "status": "no matching relocated split",
+    "test_views": 53
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703/bonsai_gap60.0_center270/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/bonsai/test_selection_angle_60.0_center_270.txt",
+    "status": "no matching relocated split",
+    "test_views": 49
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703/flowers_gap60.0_center000/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/flowers/test_selection_angle_60.0_center_000.txt",
+    "status": "no matching relocated split",
+    "test_views": 31
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703/flowers_gap60.0_center090/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/flowers/test_selection_angle_60.0_center_090.txt",
+    "status": "no matching relocated split",
+    "test_views": 25
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703_gpu2/flowers_gap60.0_center180/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/flowers/test_selection_angle_60.0_center_180.txt",
+    "status": "no matching relocated split",
+    "test_views": 28
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_20260703_gpu2/flowers_gap60.0_center270/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/flowers/test_selection_angle_60.0_center_270.txt",
+    "status": "no matching relocated split",
+    "test_views": 30
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_garden_gpu2_20260704/garden_gap60.0_center000/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_000.txt",
+    "status": "no matching relocated split",
+    "test_views": 29
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_garden_gpu2_20260704/garden_gap60.0_center090/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_090.txt",
+    "status": "no matching relocated split",
+    "test_views": 28
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_garden_gpu2_20260704/garden_gap60.0_center180/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_180.txt",
+    "status": "no matching relocated split",
+    "test_views": 34
+  },
+  {
+    "host": "hust2",
+    "run_dir": "/data1/zhangao/outputs/split_center_robustness_garden_gpu2_20260704/garden_gap60.0_center270/gslss_i30000",
+    "original_split": "/data1/zhangao/repos/3dgs-imc-codex/writings/new_reviews/generated_splits/garden/test_selection_angle_60.0_center_270.txt",
+    "status": "no matching relocated split",
+    "test_views": 30
+  }
+]

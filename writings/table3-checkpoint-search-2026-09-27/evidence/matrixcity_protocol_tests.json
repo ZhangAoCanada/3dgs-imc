@@ -1,0 +1,370 @@
+{
+  "status": "passed",
+  "tests": [
+    {
+      "test_name": "pose_source_classification",
+      "status": "passed",
+      "dataset": "blockA_fusion_small_aerial",
+      "split": "train",
+      "counts": {
+        "aerial": 189
+      },
+      "max_abs_pose_error": 9.507639782135868e-07
+    },
+    {
+      "test_name": "pose_source_classification",
+      "status": "passed",
+      "dataset": "blockA_fusion_small_aerial",
+      "split": "test",
+      "counts": {
+        "aerial": 24,
+        "street": 130
+      },
+      "max_abs_pose_error": 8.9216603660347e-07
+    },
+    {
+      "test_name": "pose_source_classification",
+      "status": "passed",
+      "dataset": "blockA_fusion_small_aerial",
+      "split": "test_aerial",
+      "counts": {
+        "aerial": 24
+      },
+      "max_abs_pose_error": 8.9216603660347e-07
+    },
+    {
+      "test_name": "pose_source_classification",
+      "status": "passed",
+      "dataset": "blockA_fusion_small_aerial+somestreet",
+      "split": "train",
+      "counts": {
+        "aerial": 189,
+        "street": 27
+      },
+      "max_abs_pose_error": 9.507639782135868e-07
+    },
+    {
+      "test_name": "pose_source_classification",
+      "status": "passed",
+      "dataset": "blockA_fusion_small_aerial+somestreet",
+      "split": "test",
+      "counts": {
+        "aerial": 24,
+        "street": 130
+      },
+      "max_abs_pose_error": 8.9216603660347e-07
+    },
+    {
+      "test_name": "variant_image_identity",
+      "status": "passed",
+      "split": "train",
+      "common": 189,
+      "pure_only": 0,
+      "mixed_only": 27
+    },
+    {
+      "test_name": "current_local_and_hust2_mixed_images_identical",
+      "status": "passed",
+      "split": "train",
+      "count": 216
+    },
+    {
+      "test_name": "variant_image_identity",
+      "status": "passed",
+      "split": "test",
+      "common": 154,
+      "pure_only": 0,
+      "mixed_only": 0
+    },
+    {
+      "test_name": "current_local_and_hust2_mixed_images_identical",
+      "status": "passed",
+      "split": "test",
+      "count": 154
+    },
+    {
+      "test_name": "test_aerial_is_exact_aerial_subset_of_test",
+      "status": "passed",
+      "count": 24
+    },
+    {
+      "test_name": "archived_checkpoint_cameras_match_mixed_variant",
+      "status": "passed",
+      "method": "Hierarchical-GS",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    },
+    {
+      "test_name": "archived_GT_pixels_identify_every_test_view",
+      "status": "passed",
+      "method": "Hierarchical-GS",
+      "count": 154
+    },
+    {
+      "test_name": "archived_checkpoint_cameras_match_mixed_variant",
+      "status": "passed",
+      "method": "MVGS",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    },
+    {
+      "test_name": "archived_GT_pixels_identify_every_test_view",
+      "status": "passed",
+      "method": "MVGS",
+      "count": 154
+    },
+    {
+      "test_name": "archived_checkpoint_cameras_match_mixed_variant",
+      "status": "passed",
+      "method": "MH-3DGS",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    },
+    {
+      "test_name": "archived_GT_pixels_identify_every_test_view",
+      "status": "passed",
+      "method": "MH-3DGS",
+      "count": 154
+    },
+    {
+      "test_name": "archived_checkpoint_cameras_match_mixed_variant",
+      "status": "passed",
+      "method": "GS-LSS candidate",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    },
+    {
+      "test_name": "archived_GT_pixels_identify_every_test_view",
+      "status": "passed",
+      "method": "GS-LSS candidate",
+      "count": 154
+    }
+  ],
+  "archived_camera_matches": [
+    {
+      "method": "Hierarchical-GS",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    },
+    {
+      "method": "MVGS",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    },
+    {
+      "method": "MH-3DGS",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    },
+    {
+      "method": "GS-LSS candidate",
+      "run": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000",
+      "test": {
+        "count": 154,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      },
+      "train": {
+        "count": 216,
+        "max_abs_pose_error": 3.9968028886505635e-15
+      }
+    }
+  ],
+  "evaluations": [
+    {
+      "method": "Hierarchical-GS",
+      "iteration": 30000,
+      "view_group": "all",
+      "views": 154,
+      "SSIM": 0.45751227177195736,
+      "PSNR": 12.943454596903416,
+      "LPIPS": 0.5317511703673895,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "Hierarchical-GS",
+      "iteration": 30000,
+      "view_group": "aerial",
+      "views": 24,
+      "SSIM": 0.7120937506357828,
+      "PSNR": 21.31596867243449,
+      "LPIPS": 0.34173037484288216,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "Hierarchical-GS",
+      "iteration": 30000,
+      "view_group": "street",
+      "views": 130,
+      "SSIM": 0.4105126141355588,
+      "PSNR": 11.397759690651526,
+      "LPIPS": 0.5668319326180679,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "MVGS",
+      "iteration": 30000,
+      "view_group": "all",
+      "views": 154,
+      "SSIM": 0.5409442072177862,
+      "PSNR": 15.609873731414993,
+      "LPIPS": 0.49040278966550704,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "MVGS",
+      "iteration": 30000,
+      "view_group": "aerial",
+      "views": 24,
+      "SSIM": 0.7855600565671921,
+      "PSNR": 25.23712197939555,
+      "LPIPS": 0.23581237345933914,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "MVGS",
+      "iteration": 30000,
+      "view_group": "street",
+      "views": 130,
+      "SSIM": 0.4957843581071267,
+      "PSNR": 13.832535593326275,
+      "LPIPS": 0.5374040972727996,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "MH-3DGS",
+      "iteration": 30000,
+      "view_group": "all",
+      "views": 154,
+      "SSIM": 0.5599263935507118,
+      "PSNR": 15.29655103559618,
+      "LPIPS": 0.5016659269859265,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "MH-3DGS",
+      "iteration": 30000,
+      "view_group": "aerial",
+      "views": 24,
+      "SSIM": 0.7678355524937311,
+      "PSNR": 24.906590700149536,
+      "LPIPS": 0.32369113465150195,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "MH-3DGS",
+      "iteration": 30000,
+      "view_group": "street",
+      "views": 130,
+      "SSIM": 0.5215431642073851,
+      "PSNR": 13.522389866755558,
+      "LPIPS": 0.5345228117245894,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "GS-LSS candidate",
+      "iteration": 30000,
+      "view_group": "all",
+      "views": 154,
+      "SSIM": 0.5329292436408533,
+      "PSNR": 14.563577368661955,
+      "LPIPS": 0.49024933557231704,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "GS-LSS candidate",
+      "iteration": 30000,
+      "view_group": "aerial",
+      "views": 24,
+      "SSIM": 0.7970146685838699,
+      "PSNR": 25.63259259859721,
+      "LPIPS": 0.23256699368357658,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    },
+    {
+      "method": "GS-LSS candidate",
+      "iteration": 30000,
+      "view_group": "street",
+      "views": 130,
+      "SSIM": 0.4841750113436809,
+      "PSNR": 12.520066864673908,
+      "LPIPS": 0.5378214602286999,
+      "source_host": "local (hust10)",
+      "run": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000",
+      "procedure": "CPU arithmetic reaggregation of archived per-view metrics; GT pixel identity verified; no fresh render"
+    }
+  ],
+  "conclusion": {
+    "historical_training": "216 views: 189 aerial + 27 street",
+    "historical_evaluation": "154 views: 24 aerial + 130 street",
+    "paper_stated_training": "pure aerial train: 189 views",
+    "paper_stated_evaluation": "street-only subset of test: 130 views; full test directory is mixed"
+  },
+  "limitations": "No new training or checkpoint rendering; archived metric/model identity caveats remain."
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "path": "/data/zhangao/Momentum-GS",
+    "exists": false,
+    "children": []
+  },
+  {
+    "path": "/data1/zhangao/Momentum-GS",
+    "exists": false,
+    "children": []
+  },
+  {
+    "path": "/data2/zhangao/Momentum-GS",
+    "exists": false,
+    "children": []
+  },
+  {
+    "path": "/data1/ZHANGAo_2024/Momentum-GS",
+    "exists": true,
+    "children": []
+  },
+  {
+    "path": "/data1/zhangao/repos/Momentum-GS",
+    "exists": false,
+    "children": []
+  },
+  {
+    "path": "/data2/zhangao/repos/Momentum-GS",
+    "exists": false,
+    "children": []
+  }
+]

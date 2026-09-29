@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "document_links_checked": 62,
+  "candidate_lookup_checks": [
+    "bicycle",
+    "stump",
+    "treehill",
+    "truck_resize",
+    "train_resize"
+  ],
+  "unaffected_lookup_checks": 2,
+  "original_source_links_promoted": 0,
+  "saved_source_pngs_unchanged": 232,
+  "canonical_rule_identical_on_both_hosts": true,
+  "allowed_physical_GPUs": [
+    0,
+    1
+  ]
+}

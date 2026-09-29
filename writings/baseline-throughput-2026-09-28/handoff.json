@@ -1,0 +1,15 @@
+{
+  "time": 1790608562.735603,
+  "old_coordinator_pid": 4053508,
+  "watchdog_pid": 1280812,
+  "preserved_runner_start_ticks": {
+    "1265330": "719578987"
+  },
+  "deployed_files": {
+    "gpu_policy.py": "bbc0cbfbb59ba809ff58ad79232f58e778b8864a53e8aedaed9ce913c3d117be",
+    "coordinator_multi.py": "72bfee089e18e43882873a9b2cceff9c77b047f6b9f0e9c398ddf9611d6e62f4",
+    "watchdog_local.py": "b32b130ec8c8cbfa9f046e33d418a86ee4b8682bd81265f08774c894c1e00478",
+    "run_one.py": "0818e73d5e3cfc8c112891dbcaae401c90c1cca956a7d48847bab9e431bdf9a5",
+    "secondary_evaluation.py": "6e7e6fc1d7874eaf83eef77427fbdd4e54f2174071f1a03871202a667649b6ea"
+  }
+}

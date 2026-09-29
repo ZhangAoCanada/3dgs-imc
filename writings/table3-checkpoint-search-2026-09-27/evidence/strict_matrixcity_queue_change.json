@@ -1,0 +1,40 @@
+{
+  "status": "applied",
+  "host": "user",
+  "time": 1790523180.3242145,
+  "changed_ids": [
+    "baseline_60",
+    "baseline_62",
+    "baseline_64",
+    "baseline_66"
+  ],
+  "coordinator_pid": 4053508,
+  "active_jobs_preserved": {
+    "1": {
+      "id": "baseline_44",
+      "method": "PGSR",
+      "scene": "garden",
+      "seed": 0,
+      "gpu": "1",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_44/seed_000000",
+      "runner_pid": 148921
+    },
+    "0": {
+      "id": "baseline_45",
+      "method": "PGSR",
+      "scene": "kitchen",
+      "seed": 0,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_45/seed_000000",
+      "runner_pid": 150894
+    }
+  },
+  "unchanged_configurations": 63,
+  "total_configurations": 67,
+  "acceptance": "Primary street-only 130 metrics against unchanged biased reference thresholds.",
+  "scheduler_behavior": "Running scheduler retains IDs and reference values; each new run_one process reloads configurations_local.json. Legacy scene labels retained for scheduler compatibility.",
+  "before_sha256": "7ce658187df2d9c8a072d2fe0a1f1d764c48bed4d14af0fa8af11372bfc58bdf",
+  "validation": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/protocol_changes/20260927_matrixcity_pure_first/validation.json",
+  "after_sha256": "3ebd6664366b2254d3d8a211b4cc24e9ed43bc351f766e4aa84bcd8e80834a3d",
+  "finished": 1790523180.3474984
+}

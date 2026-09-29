@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi/bicycle/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-10_sigma-detach_nview3_5000000_test_selection_angle_20.0_0.001_raw,test,ours_30000,0.724035918712616,22.375455856323242,0.22077447175979614,18.758460998535156,2.6562656879342623,33.944801330566406

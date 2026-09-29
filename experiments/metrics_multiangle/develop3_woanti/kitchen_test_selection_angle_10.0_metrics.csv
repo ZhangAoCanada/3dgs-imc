@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi/kitchen/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e-2_sigma1e-6_sigma-detach_nview3_1500000_test_selection_angle_10.0_0.001,test,ours_30000,0.9523470997810364,30.3546199798584,0.0664488896727562,52.6133918762207,3.51865166029594,30.940261840820312

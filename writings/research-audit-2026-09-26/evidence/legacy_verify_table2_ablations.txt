@@ -1,0 +1,61 @@
+================ tab:discontinuous ================
+
+--- dataset: mip ---
+            3DGS paper=0.826/26.979/0.169 || 3dgs-original[n=9]: 0.801/26.244/0.185 XX | 3dgs-original[n=8]: 0.826/26.979/0.169 == | 
+     Scaffold-GS paper=0.783/25.356/0.205 || scaffoldgs-original[n=9]: 0.756/24.685/0.222 XX | scaffoldgs-original[n=8]: 0.783/25.356/0.205 == | 
+ Hierarchical-GS paper=0.827/27.046/0.168 || 3dgs-depth[n=9]: 0.802/26.290/0.184 XX | 3dgs-depth[n=8]: 0.827/27.046/0.168 == | cdgs-original[n=8]: 0.738/23.627/0.256 XX | cdgs-original[n=7]: 0.764/24.153/0.239 XX | 
+            MVGS paper=0.828/27.288/0.164 || mvgs-original-mv3[n=9]: 0.804/26.522/0.177 XX | mvgs-original-mv3[n=8]: 0.828/27.288/0.164 == | 
+            PGSR paper=0.821/26.269/0.188 || pgsr-original[n=9]: 0.235/11.878/0.661 XX | pgsr-original[n=8]: 0.248/12.157/0.657 XX | pgsr2-original[n=9]: 0.795/25.573/0.204 XX | pgsr2-original[n=8]: 0.821/26.269/0.188 == | 
+       3DGS-MCMC paper=0.843/27.517/0.153 || 3dgs-mcmc-original[n=9]: 0.819/26.793/0.170 XX | 3dgs-mcmc-original[n=8]: 0.843/27.517/0.153 == | 
+         MH-3DGS paper=0.817/26.895/0.191 || mh-3dgs-original[n=9]: 0.789/26.175/0.210 XX | mh-3dgs-original[n=8]: 0.817/26.895/0.191 == | 
+          GS-LSS paper=0.844/27.960/0.152 || develop3_antialiasing[n=9]: 0.817/27.110/0.174 XX | develop3_antialiasing[n=8]: 0.843/27.893/0.155 XX | develop3_woantialiasing[n=9]: 0.818/27.137/0.170 XX | develop3_woantialiasing[n=8]: 0.844/27.919/0.151 XX | develop3_best[n=9]: 0.818/27.173/0.170 XX | develop3_best[n=8]: 0.844/27.960/0.152 == | 
+
+--- dataset: tnt ---
+            3DGS paper=0.778/20.914/0.216 || 3dgs-original[n=2]: 0.778/20.914/0.216 == | 
+     Scaffold-GS paper=0.745/19.496/0.237 || scaffoldgs-original[n=2]: 0.745/19.496/0.237 == | 
+ Hierarchical-GS paper=0.787/21.521/0.210 || 3dgs-depth[n=2]: 0.787/21.521/0.210 == | cdgs-original[n=2]: 0.582/13.428/0.431 XX | 
+            MVGS paper=0.776/20.744/0.196 || mvgs-original-mv3[n=2]: 0.776/20.744/0.196 == | 
+            PGSR paper=0.786/21.093/0.231 || pgsr-original[n=2]: 0.786/21.093/0.231 == | pgsr2-original: missing | 
+       3DGS-MCMC paper=0.799/21.955/0.196 || 3dgs-mcmc-original[n=2]: 0.799/21.955/0.196 == | 
+         MH-3DGS paper=0.767/20.895/0.218 || mh-3dgs-original[n=2]: 0.767/20.895/0.218 == | 
+          GS-LSS paper=0.802/22.160/0.187 || develop3_antialiasing[n=2]: 0.803/22.090/0.187 XX | develop3_woantialiasing[n=2]: 0.801/22.017/0.188 XX | develop3_best[n=2]: 0.802/22.160/0.187 == | 
+
+--- dataset: mill ---
+            3DGS paper=0.754/21.503/0.217 || 3dgs-original[n=4]: 0.754/21.503/0.217 == | 
+     Scaffold-GS paper=0.755/21.081/0.226 || scaffoldgs-original[n=4]: 0.755/21.081/0.226 == | 
+ Hierarchical-GS paper=0.762/22.263/0.210 || 3dgs-depth[n=4]: 0.762/22.263/0.210 == | cdgs-original[n=4]: 0.689/18.601/0.304 XX | 
+            MVGS paper=0.746/21.311/0.227 || mvgs-original-mv3[n=4]: 0.746/21.311/0.227 == | 
+            PGSR paper=0.717/20.336/0.265 || pgsr-original[n=4]: 0.717/20.336/0.265 == | pgsr2-original: missing | 
+       3DGS-MCMC paper=0.766/22.532/0.207 || 3dgs-mcmc-original[n=4]: 0.766/22.532/0.207 == | 
+         MH-3DGS paper=0.747/22.394/0.249 || mh-3dgs-original[n=4]: 0.747/22.394/0.249 == | 
+          GS-LSS paper=0.775/22.893/0.198 || develop3_antialiasing[n=4]: 0.775/22.893/0.198 == | develop3_woantialiasing[n=4]: 0.770/22.628/0.201 XX | develop3_best[n=4]: 0.775/22.893/0.198 == | 
+
+================ tab:ablation_CPF eps sweep (T&T@60, 4 decimals) ================
+--- develop3_eps ---
+  eps=0.1: paper=0.7058/19.1690/0.2458  got=0.7058/19.1690/0.2458  ==
+  eps=0.25: paper=0.7070/19.3959/0.2459  got=0.7070/19.3959/0.2459  ==
+  eps=0.5: paper=0.7058/19.1871/0.2485  got=0.7049/19.0711/0.2484  XX
+  eps=0.75: paper=0.7033/19.1725/0.2488  got=0.7019/18.9250/0.2539  XX
+  eps=1.0: paper=0.7004/18.9240/0.2550  got=0.7004/18.9240/0.2550  ==
+--- develop3_eps_partial1e0 ---
+  eps=0.1: paper=0.7058/19.1690/0.2458  got=0.7064/19.1202/0.2459  XX
+  eps=0.25: paper=0.7070/19.3959/0.2459  got=0.7058/19.1871/0.2485  XX
+  eps=0.5: paper=0.7058/19.1871/0.2485  got=0.7033/19.1725/0.2488  XX
+  eps=0.75: paper=0.7033/19.1725/0.2488  got=0.7057/19.1950/0.2489  XX
+  eps=1.0: paper=0.7004/18.9240/0.2550  got=0.7011/18.8728/0.2539  XX
+--- develop3_eps_partial1e0_2 ---
+  eps=0.1: paper=0.7058/19.1690/0.2458  got=0.7066/19.2559/0.2467  XX
+  eps=0.25: paper=0.7070/19.3959/0.2459  got=0.7059/19.1881/0.2477  XX
+  eps=0.5: paper=0.7058/19.1871/0.2485  got=0.7038/18.8914/0.2504  XX
+  eps=0.75: paper=0.7033/19.1725/0.2488  got=0.7040/18.9514/0.2506  XX
+  eps=1.0: paper=0.7004/18.9240/0.2550  got=0.7022/18.9556/0.2535  XX
+
+================ tab:detailed_metrics 8 trials (T&T@60) ================
+  develop3_trials/trial1: 0.7074/19.3274/0.2483  NO MATCH
+  develop3_trials/trial2: 0.7054/19.2435/0.2474  NO MATCH
+  develop3_trials/trial3: 0.6990/18.6417/0.2501  NO MATCH
+  trials2/develop3_1: 0.7052/19.3795/0.2476  == paper Trial 1
+  trials2/develop3_2: 0.7030/19.1766/0.2514  == paper Trial 2
+  trials2/develop3_3: 0.7070/19.3917/0.2486  == paper Trial 3
+  trials2/develop3_4: 0.7040/19.1655/0.2483  NO MATCH
+  trials2/develop3_5: 0.7051/19.1237/0.2473  NO MATCH

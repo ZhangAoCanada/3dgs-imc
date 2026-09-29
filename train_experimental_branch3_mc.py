@@ -54,6 +54,18 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     if not SPARSE_ADAM_AVAILABLE and opt.optimizer_type == "sparse_adam":
         sys.exit(f"Trying to use sparse adam but it is not installed, please install the correct rasterizer using pip install [3dgs_accel].")
 
+    # SEED env: fix all RNGs so a config A and config B run share the SAME random history.
+    # This makes paired comparisons (e.g. MH-on vs MH-off) cancel nuisance variance, so one
+    # paired run replaces a multi-seed study. (CUDA atomics keep it from being bit-identical;
+    # the residual paired noise is small vs the ~0.8 dB independent-run spread.) Default off.
+    _seed = os.environ.get("SEED", "")
+    if _seed != "":
+        import random as _random
+        import numpy as _np
+        _s = int(_seed)
+        _random.seed(_s); _np.random.seed(_s); torch.manual_seed(_s); torch.cuda.manual_seed_all(_s)
+        sys.stderr.write(f"[SEED] all RNGs fixed to {_s}\n")
+
     first_iter = 0
     tb_writer = prepare_output_and_logger(dataset)
     gaussians = GaussianModel(dataset.sh_degree)
@@ -398,36 +410,54 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             ############### NOTE: Densification ###############
             if iteration < opt.densify_until_iter and iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
                 dead_mask = (gaussians.get_opacity <= 0.005).squeeze(-1)
-                cpf_densify_active = (
-                    getattr(opt, "cpf_densify", False)
-                    and iteration >= getattr(opt, "cpf_densify_start_iter", 0)
-                    and (getattr(opt, "cpf_densify_until_iter", 0) <= 0 or iteration <= getattr(opt, "cpf_densify_until_iter", 0))
-                )
-                if cpf_densify_active:
-                    use_cpf_relocate = int(getattr(opt, "cpf_densify_relocate", 1)) != 0
-                    use_cpf_birth = int(getattr(opt, "cpf_densify_birth", 1)) != 0
-                    if use_cpf_relocate:
-                        relocated = gaussians.relocate_gs_cpf(dead_mask=dead_mask)
-                        if not relocated:
-                            gaussians.relocate_gs(dead_mask=dead_mask)
-                    else:
-                        gaussians.relocate_gs(dead_mask=dead_mask)
-                    if use_cpf_birth:
-                        current_num_points = gaussians.get_xyz.shape[0]
-                        target_num = min(args.cap_max, int(1.05 * current_num_points))
-                        target_add = max(0, target_num - current_num_points)
-                        if int(getattr(opt, "cpf_densify_guided_clone", 0)) != 0:
-                            added = gaussians.add_new_gs_cpf_guided(cap_max=args.cap_max, num_gs=target_add)
-                        else:
-                            added = gaussians.add_new_gs_cpf(cap_max=args.cap_max)
-                        remaining = max(0, target_add - max(0, added))
-                        if remaining > 0:
-                            gaussians.add_new_gs(cap_max=args.cap_max, num_gs=remaining)
+                # Fix A: field-proposed, photometrically-VERIFIED relocation (MH step). Periodic
+                # (each step costs 2 extra renders). Replaces the plain relocate for dead Gaussians
+                # this step; the data vetoes harmful proposals, so explorative moves into the gap
+                # survive while bad ones revert. Gated MH_RELOC (default off); needs the CPF field.
+                mh_reloc = os.environ.get("MH_RELOC", "0") == "1"
+                mh_interval = int(os.environ.get("MH_INTERVAL", "500"))
+                mh_after = int(os.environ.get("MH_START_ITER", "3000"))
+                if mh_reloc and iteration >= mh_after and iteration % mh_interval == 0:
+                    gaussians.mh_relocate_gs(dead_mask, render, viewpoint_cam, pipe, bg)
+                    # birth to refill the cap (cpf-guided if enabled, else standard)
+                    if int(getattr(opt, "cpf_densify_birth", 1)) != 0 and getattr(opt, "cpf_densify", False):
+                        added = gaussians.add_new_gs_cpf(cap_max=args.cap_max)
+                        rem = max(0, min(args.cap_max, int(1.05 * gaussians.get_xyz.shape[0])) - gaussians.get_xyz.shape[0] - max(0, added))
+                        if rem > 0:
+                            gaussians.add_new_gs(cap_max=args.cap_max, num_gs=rem)
                     else:
                         gaussians.add_new_gs(cap_max=args.cap_max)
                 else:
-                    gaussians.relocate_gs(dead_mask=dead_mask)
-                    gaussians.add_new_gs(cap_max=args.cap_max)
+                    cpf_densify_active = (
+                        getattr(opt, "cpf_densify", False)
+                        and iteration >= getattr(opt, "cpf_densify_start_iter", 0)
+                        and (getattr(opt, "cpf_densify_until_iter", 0) <= 0 or iteration <= getattr(opt, "cpf_densify_until_iter", 0))
+                    )
+                    if cpf_densify_active:
+                        use_cpf_relocate = int(getattr(opt, "cpf_densify_relocate", 1)) != 0
+                        use_cpf_birth = int(getattr(opt, "cpf_densify_birth", 1)) != 0
+                        if use_cpf_relocate:
+                            relocated = gaussians.relocate_gs_cpf(dead_mask=dead_mask)
+                            if not relocated:
+                                gaussians.relocate_gs(dead_mask=dead_mask)
+                        else:
+                            gaussians.relocate_gs(dead_mask=dead_mask)
+                        if use_cpf_birth:
+                            current_num_points = gaussians.get_xyz.shape[0]
+                            target_num = min(args.cap_max, int(1.05 * current_num_points))
+                            target_add = max(0, target_num - current_num_points)
+                            if int(getattr(opt, "cpf_densify_guided_clone", 0)) != 0:
+                                added = gaussians.add_new_gs_cpf_guided(cap_max=args.cap_max, num_gs=target_add)
+                            else:
+                                added = gaussians.add_new_gs_cpf(cap_max=args.cap_max)
+                            remaining = max(0, target_add - max(0, added))
+                            if remaining > 0:
+                                gaussians.add_new_gs(cap_max=args.cap_max, num_gs=remaining)
+                        else:
+                            gaussians.add_new_gs(cap_max=args.cap_max)
+                    else:
+                        gaussians.relocate_gs(dead_mask=dead_mask)
+                        gaussians.add_new_gs(cap_max=args.cap_max)
 
 
             timing_add("noise_densify", segment_start)

@@ -1,0 +1,1750 @@
+{
+  "baseline_01": {
+    "budget_mib": 14867,
+    "initial_budget_mib": 14867,
+    "recorded_training_peak_mib": 11074.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_01/seed_000001/chkpnt30000.pth",
+        "bytes": 3637482710
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_01/seed_000000/chkpnt30000.pth",
+        "bytes": 3605966657
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_01/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 11074.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_01/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 10428.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_02": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2430.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_02/seed_000001/chkpnt30000.pth",
+        "bytes": 753539286
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_02/seed_000000/chkpnt30000.pth",
+        "bytes": 764358977
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_02/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2380.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_02/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2430.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_03": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2128.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_03/seed_000000/chkpnt30000.pth",
+        "bytes": 688321089
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_03/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2128.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_04": {
+    "budget_mib": 13364,
+    "initial_budget_mib": 13364,
+    "recorded_training_peak_mib": 9206.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_04/seed_000000/chkpnt30000.pth",
+        "bytes": 3028174230
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_04/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9206.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_05": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 3342.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_05/seed_000000/chkpnt30000.pth",
+        "bytes": 1063290134
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_05/seed_000001/chkpnt30000.pth",
+        "bytes": 1063552086
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_05/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3342.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_05/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3306.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_06": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2814.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_06/seed_000000/chkpnt30000.pth",
+        "bytes": 855083286
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_06/seed_000001/chkpnt30000.pth",
+        "bytes": 862347414
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_06/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2638.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_06/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2814.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_07": {
+    "budget_mib": 13534,
+    "initial_budget_mib": 13534,
+    "recorded_training_peak_mib": 9696.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000000/chkpnt30000.pth",
+        "bytes": 3099346454
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000001/chkpnt30000.pth",
+        "bytes": 3017927190
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9696.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8850.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_08": {
+    "budget_mib": 11768,
+    "initial_budget_mib": 11768,
+    "recorded_training_peak_mib": 8000.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_08/seed_000000/chkpnt30000.pth",
+        "bytes": 2321498646
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_08/seed_000001/chkpnt30000.pth",
+        "bytes": 2358688854
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_08/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7488.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_08/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8000.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_09": {
+    "budget_mib": 15847,
+    "initial_budget_mib": 15847,
+    "recorded_training_peak_mib": 11858.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_09/seed_000000/chkpnt30000.pth",
+        "bytes": 3648340566
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_09/seed_000001/chkpnt30000.pth",
+        "bytes": 3670093974
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_09/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 11542.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_09/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 11858.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_10": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2520.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_10/seed_000000/chkpnt30000.pth",
+        "bytes": 747059094
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_10/seed_000001/chkpnt30000.pth",
+        "bytes": 745016790
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_10/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2520.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_10/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2358.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_11": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2418.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_11/seed_000000/chkpnt30000.pth",
+        "bytes": 677789334
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_11/seed_000001/chkpnt30000.pth",
+        "bytes": 683922006
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_11/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2418.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_11/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2088.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_12": {
+    "budget_mib": 13352,
+    "initial_budget_mib": 13352,
+    "recorded_training_peak_mib": 9316.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_12/seed_000000/chkpnt30000.pth",
+        "bytes": 3023144150
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_12/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9316.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_13": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 3358.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_13/seed_000000/chkpnt30000.pth",
+        "bytes": 1047051990
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_13/seed_000001/chkpnt30000.pth",
+        "bytes": 1065069846
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_13/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3144.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_13/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3358.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_14": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2984.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_14/seed_000000/chkpnt30000.pth",
+        "bytes": 901285590
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_14/seed_000001/chkpnt30000.pth",
+        "bytes": 896524950
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_14/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2934.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_14/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2984.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_15": {
+    "budget_mib": 13287,
+    "initial_budget_mib": 13287,
+    "recorded_training_peak_mib": 8976.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_15/seed_000000/chkpnt30000.pth",
+        "bytes": 2995579926
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_15/seed_000001/chkpnt30000.pth",
+        "bytes": 2946125334
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_15/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8938.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_15/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8976.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_16": {
+    "budget_mib": 11769,
+    "initial_budget_mib": 11769,
+    "recorded_training_peak_mib": 7248.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_16/seed_000000/chkpnt30000.pth",
+        "bytes": 2352363030
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_16/seed_000001/chkpnt30000.pth",
+        "bytes": 2359266006
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_16/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7164.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_16/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7248.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_17": {
+    "budget_mib": 14909,
+    "initial_budget_mib": 14909,
+    "recorded_training_peak_mib": 10706.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_17/seed_000000/chkpnt30000.pth",
+        "bytes": 3675991574
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_17/seed_000001/chkpnt30000.pth",
+        "bytes": 3637773846
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_17/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 10702.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_17/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 10706.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_18": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2524.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_18/seed_000000/chkpnt30000.pth",
+        "bytes": 734465750
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_18/seed_000001/chkpnt30000.pth",
+        "bytes": 741894294
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_18/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2524.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_18/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2378.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_19": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2086.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_19/seed_000000/chkpnt30000.pth",
+        "bytes": 675413526
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_19/seed_000001/chkpnt30000.pth",
+        "bytes": 681256854
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_19/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2086.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_19/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2056.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_20": {
+    "budget_mib": 13401,
+    "initial_budget_mib": 13401,
+    "recorded_training_peak_mib": 9816.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000000/chkpnt30000.pth",
+        "bytes": 3026202390
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000001/chkpnt30000.pth",
+        "bytes": 3043571670
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9816.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9304.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_21": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 3296.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000000/chkpnt30000.pth",
+        "bytes": 1016478486
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000001/chkpnt30000.pth",
+        "bytes": 1013486166
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3296.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3246.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_22": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 3038.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_22/seed_000000/chkpnt30000.pth",
+        "bytes": 993893654
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_22/seed_000001/chkpnt30000.pth",
+        "bytes": 978371094
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_22/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3038.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_22/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2960.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_23": {
+    "budget_mib": 13169,
+    "initial_budget_mib": 13169,
+    "recorded_training_peak_mib": 8694.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_23/seed_000000/chkpnt30000.pth",
+        "bytes": 2946399510
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_23/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8694.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_24": {
+    "budget_mib": 11903,
+    "initial_budget_mib": 11903,
+    "recorded_training_peak_mib": 7502.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000000/chkpnt30000.pth",
+        "bytes": 2415320406
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000001/chkpnt30000.pth",
+        "bytes": 2395933590
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7120.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7502.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_25": {
+    "budget_mib": 16479,
+    "initial_budget_mib": 16479,
+    "recorded_training_peak_mib": 12364.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_25/seed_000000/chkpnt30000.pth",
+        "bytes": 3686622294
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_25/seed_000001/chkpnt30000.pth",
+        "bytes": 3673862870
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_25/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 12364.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_25/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 11256.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_26": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2398.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_26/seed_000000/chkpnt30000.pth",
+        "bytes": 739132950
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_26/seed_000001/chkpnt30000.pth",
+        "bytes": 731629334
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_26/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2398.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_26/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2336.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_27": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2062.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_27/seed_000000/chkpnt30000.pth",
+        "bytes": 664995990
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_27/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2062.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_28": {
+    "budget_mib": 13330,
+    "initial_budget_mib": 13330,
+    "recorded_training_peak_mib": 9692.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_28/seed_000000/chkpnt30000.pth",
+        "bytes": 3013680726
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_28/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9692.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_29": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 3460.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_29/seed_000000/chkpnt30000.pth",
+        "bytes": 1012961046
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_29/seed_000001/chkpnt30000.pth",
+        "bytes": 1002393174
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_29/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3460.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_29/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3282.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_30": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 3180.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_30/seed_000000/chkpnt30000.pth",
+        "bytes": 1002040790
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_30/seed_000001/chkpnt30000.pth",
+        "bytes": 993896150
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_30/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3052.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_30/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3180.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_31": {
+    "budget_mib": 13083,
+    "initial_budget_mib": 13083,
+    "recorded_training_peak_mib": 9468.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000000/chkpnt30000.pth",
+        "bytes": 2887996950
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000001/chkpnt30000.pth",
+        "bytes": 2910028566
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8676.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9468.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_32": {
+    "budget_mib": 12116,
+    "initial_budget_mib": 12116,
+    "recorded_training_peak_mib": 8176.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_32/seed_000000/chkpnt30000.pth",
+        "bytes": 2504458134
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_32/seed_000001/chkpnt30000.pth",
+        "bytes": 2504122070
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_32/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8176.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_32/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7720.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_33": {
+    "budget_mib": 15064,
+    "initial_budget_mib": 15064,
+    "recorded_training_peak_mib": 11232.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_33/seed_000000/chkpnt30000.pth",
+        "bytes": 3690835734
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_33/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 11232.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_34": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2638.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_34/seed_000000/chkpnt30000.pth",
+        "bytes": 726799446
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_34/seed_000001/chkpnt30000.pth",
+        "bytes": 736304790
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_34/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2638.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_34/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2504.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_35": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2078.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_35/seed_000000/chkpnt30000.pth",
+        "bytes": 659921814
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_35/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2078.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_36": {
+    "budget_mib": 13414,
+    "initial_budget_mib": 13414,
+    "recorded_training_peak_mib": 9912.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000000/chkpnt30000.pth",
+        "bytes": 2939592726
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000001/chkpnt30000.pth",
+        "bytes": 2942328854
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9912.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9148.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_37": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 3086.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_37/seed_000000/chkpnt30000.pth",
+        "bytes": 980215830
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_37/seed_000001/chkpnt30000.pth",
+        "bytes": 962757590
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_37/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 3086.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_37/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2938.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_38": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 2842.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_38/seed_000000/chkpnt30000.pth",
+        "bytes": 902380566
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_38/seed_000001/chkpnt30000.pth",
+        "bytes": 899598294
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_38/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2842.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_38/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 2600.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_39": {
+    "budget_mib": 12843,
+    "initial_budget_mib": 12843,
+    "recorded_training_peak_mib": 9140.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_39/seed_000000/chkpnt30000.pth",
+        "bytes": 2809430550
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_39/seed_000001/chkpnt30000.pth",
+        "bytes": 2803796694
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_39/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 8676.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_39/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 9140.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_40": {
+    "budget_mib": 11965,
+    "initial_budget_mib": 11965,
+    "recorded_training_peak_mib": 7266.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000000/chkpnt30000.pth",
+        "bytes": 2441146134
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000001/chkpnt30000.pth",
+        "bytes": 2434156374
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7266.0,
+        "last_step": 30000
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000001",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 7062.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_41": {
+    "budget_mib": 11638,
+    "initial_budget_mib": 11638,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 3000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_41/seed_000000/chkpnt30000.pth",
+        "bytes": 2256108698
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_42": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 1000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_42/seed_000000/chkpnt30000.pth",
+        "bytes": 516168474
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_42/seed_000001/chkpnt30000.pth",
+        "bytes": 509176410
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_43": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 1000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_43/seed_000000/chkpnt30000.pth",
+        "bytes": 384462874
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_43/seed_000001/chkpnt30000.pth",
+        "bytes": 388741914
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_44": {
+    "budget_mib": 13469,
+    "initial_budget_mib": 13469,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 4000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_44/seed_000000/chkpnt30000.pth",
+        "bytes": 2062066266
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_45": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 1500000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_45/seed_000000/chkpnt30000.pth",
+        "bytes": 463868570
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_46": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 1200000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_46/seed_000000/chkpnt30000.pth",
+        "bytes": 523370394
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_46/seed_000001/chkpnt30000.pth",
+        "bytes": 538212954
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_47": {
+    "budget_mib": 11638,
+    "initial_budget_mib": 11638,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 3000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_47/seed_000000/chkpnt30000.pth",
+        "bytes": 2259318682
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_47/seed_000001/chkpnt30000.pth",
+        "bytes": 2257880666
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_48": {
+    "budget_mib": 12187,
+    "initial_budget_mib": 12187,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 3300000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_48/seed_000000/chkpnt30000.pth",
+        "bytes": 2483602714
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_48/seed_000001/chkpnt30000.pth",
+        "bytes": 2483913626
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_49": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 2000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_49/seed_000000/chkpnt30000.pth",
+        "bytes": 993740378
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_50": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 1000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_50/seed_000000/chkpnt30000.pth",
+        "bytes": 470195738
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_50/seed_000001/chkpnt30000.pth",
+        "bytes": 470491034
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_51": {
+    "budget_mib": 18962,
+    "initial_budget_mib": 18962,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 7000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_51/seed_000000/chkpnt30000.pth",
+        "bytes": 2210074650
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_51/seed_000001/chkpnt30000.pth",
+        "bytes": 2238858202
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_52": {
+    "budget_mib": 17131,
+    "initial_budget_mib": 17131,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 6000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_52/seed_000000/chkpnt30000.pth",
+        "bytes": 2465359002
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_52/seed_000001/chkpnt30000.pth",
+        "bytes": 2455620506
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_53": {
+    "budget_mib": 17131,
+    "initial_budget_mib": 17131,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 6000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_53/seed_000000/chkpnt30000.pth",
+        "bytes": 2244448154
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_54": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 1000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_54/seed_000000/chkpnt30000.pth",
+        "bytes": 583512474
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_55": {
+    "budget_mib": 15300,
+    "initial_budget_mib": 15300,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 5000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_55/seed_000000/chkpnt30000.pth",
+        "bytes": 3540661014
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_55/seed_000001/chkpnt30000.pth",
+        "bytes": 3540661014
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_56": {
+    "budget_mib": 13835,
+    "initial_budget_mib": 13835,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 4200000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_56/seed_000000/chkpnt30000.pth",
+        "bytes": 2973994326
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_56/seed_000001/chkpnt30000.pth",
+        "bytes": 2973994326
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_57": {
+    "budget_mib": 12187,
+    "initial_budget_mib": 12187,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 3300000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_57/seed_000000/chkpnt30000.pth",
+        "bytes": 2337037974
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_57/seed_000001/chkpnt30000.pth",
+        "bytes": 2337037974
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_58": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 2000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_58/seed_000000/chkpnt30000.pth",
+        "bytes": 1417338198
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_58/seed_000001/chkpnt30000.pth",
+        "bytes": 1417338198
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_59": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 1000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_59/seed_000000/chkpnt30000.pth",
+        "bytes": 709947030
+      },
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_59/seed_000001/chkpnt30000.pth",
+        "bytes": 709947030
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_60": {
+    "budget_mib": 34049,
+    "initial_budget_mib": 34049,
+    "recorded_training_peak_mib": 26420.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000/chkpnt30000.pth",
+        "bytes": 9185644206
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 26420.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": true
+  },
+  "baseline_61": {
+    "budget_mib": 16407,
+    "initial_budget_mib": 16407,
+    "recorded_training_peak_mib": 12306.0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_61/seed_000000/chkpnt30000.pth",
+        "bytes": 1930064214
+      },
+      {
+        "kind": "recorded_torch_peak_GiB",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_61/seed_000000",
+        "tag": "train_duration/peak_gpu_mem_GB",
+        "peak_mib": 12306.0,
+        "last_step": 30000
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_62": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_62/seed_000000/chkpnt30000.pth",
+        "bytes": 560743470
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_63": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 0,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_63/seed_000000/chkpnt30000.pth",
+        "bytes": 317648686
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_64": {
+    "budget_mib": 17131,
+    "initial_budget_mib": 17131,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 6000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_64/seed_000000/chkpnt30000.pth",
+        "bytes": 4522621918
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_65": {
+    "budget_mib": 17131,
+    "initial_budget_mib": 17131,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 6000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_65/seed_000000/chkpnt30000.pth",
+        "bytes": 932300634
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_66": {
+    "budget_mib": 18962,
+    "initial_budget_mib": 18962,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 7000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_66/seed_000000/chkpnt30000.pth",
+        "bytes": 4965133922
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  },
+  "baseline_67": {
+    "budget_mib": 10240,
+    "initial_budget_mib": 10240,
+    "recorded_training_peak_mib": 0,
+    "capacity_points": 2000000,
+    "sources": [
+      {
+        "kind": "saved_optimizer_size",
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_67/seed_000000/chkpnt30000.pth",
+        "bytes": 1418856726
+      }
+    ],
+    "budget_is_estimate": true,
+    "exclusive": false
+  }
+}

@@ -1,0 +1,62 @@
+{"completed": 58630, "planned": 409951, "reclaimed_GiB": 26.113, "errors": 0, "elapsed_s": 20}
+{"completed": 122828, "planned": 409951, "reclaimed_GiB": 34.078, "errors": 0, "elapsed_s": 40}
+{"completed": 191252, "planned": 409951, "reclaimed_GiB": 49.369, "errors": 0, "elapsed_s": 60}
+{"completed": 256916, "planned": 409951, "reclaimed_GiB": 69.176, "errors": 0, "elapsed_s": 80}
+{"completed": 332641, "planned": 409951, "reclaimed_GiB": 78.486, "errors": 0, "elapsed_s": 100}
+{"completed": 393983, "planned": 409951, "reclaimed_GiB": 143.942, "errors": 0, "elapsed_s": 120}
+{
+  "finished": "2026-09-28T22:37:32.200896+08:00",
+  "host": "user",
+  "completed_duplicate_paths": 409951,
+  "reclaimed_allocated_bytes": 171082084352,
+  "by_category": {
+    "input_point_cloud": {
+      "files": 1506,
+      "bytes": 5543919616
+    },
+    "evaluation_ground_truth": {
+      "files": 67335,
+      "bytes": 80641814528
+    },
+    "metadata_logs_or_other": {
+      "files": 294645,
+      "bytes": 8470241280
+    },
+    "checkpoint_or_neural_state": {
+      "files": 205,
+      "bytes": 48821010432
+    },
+    "python_cache": {
+      "files": 488,
+      "bytes": 6569984
+    },
+    "frozen_dataset": {
+      "files": 7187,
+      "bytes": 907571200
+    },
+    "rendered_outputs": {
+      "files": 23489,
+      "bytes": 22567260160
+    },
+    "other_images": {
+      "files": 14802,
+      "bytes": 4115267584
+    },
+    "videos": {
+      "files": 294,
+      "bytes": 8429568
+    }
+  },
+  "disk_before_apply": {
+    "total": 7937303740416,
+    "used": 7333927411712,
+    "free": 203281395712
+  },
+  "disk_after_apply": {
+    "total": 7937303740416,
+    "used": 7162894401536,
+    "free": 374314405888
+  },
+  "errors": [],
+  "elapsed_s": 127.46603867784142
+}

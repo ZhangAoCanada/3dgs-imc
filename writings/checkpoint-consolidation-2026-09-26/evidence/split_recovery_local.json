@@ -1,0 +1,50 @@
+[
+  {
+    "source_host": "hust2",
+    "source_run": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/building-small",
+    "split_source_host": "hust10",
+    "split_source": "/data1/zhangao/DATA/DATA-small/building-small/discontinuous.txt",
+    "camera_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/building-small/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/building-small/per_view.json",
+    "test_views": 20,
+    "sha256": "f955e3128ad66eacb70fea20c51b0be00386ba04f26aa416caeda2fdae2cef3b",
+    "local_split": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/splits/by_sha256/f955e3128ad66eacb70fea20c51b0be00386ba04f26aa416caeda2fdae2cef3b.txt",
+    "status": "local original-host split membership verified against imported saved cameras and independent view count"
+  },
+  {
+    "source_host": "hust2",
+    "source_run": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/residence-small",
+    "split_source_host": "hust10",
+    "split_source": "/data1/zhangao/DATA/DATA-small/residence-small/discontinuous.txt",
+    "camera_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/residence-small/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/residence-small/per_view.json",
+    "test_views": 20,
+    "sha256": "ce89a57c23ce0acc33ced69b9c1352701fc1dc9cc06a9b03f2615fd8cda6043a",
+    "local_split": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/splits/by_sha256/ce89a57c23ce0acc33ced69b9c1352701fc1dc9cc06a9b03f2615fd8cda6043a.txt",
+    "status": "local original-host split membership verified against imported saved cameras and independent view count"
+  },
+  {
+    "source_host": "hust2",
+    "source_run": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/rubble-small",
+    "split_source_host": "hust10",
+    "split_source": "/data1/zhangao/DATA/DATA-small/rubble-small/discontinuous.txt",
+    "camera_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/rubble-small/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/rubble-small/per_view.json",
+    "test_views": 20,
+    "sha256": "ca97ac9702de1e2ee39933bc8037e056ec5f4a1687a4b7635e8c05777f3996dd",
+    "local_split": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/splits/by_sha256/ca97ac9702de1e2ee39933bc8037e056ec5f4a1687a4b7635e8c05777f3996dd.txt",
+    "status": "local original-host split membership verified against imported saved cameras and independent view count"
+  },
+  {
+    "source_host": "hust2",
+    "source_run": "/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/sci-art-small",
+    "split_source_host": "hust10",
+    "split_source": "/data1/zhangao/DATA/DATA-small/sci-art-small/discontinuous.txt",
+    "camera_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/sci-art-small/cameras.json",
+    "view_count_evidence": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/hust10_best_checkpoints_20260703/discontinuous_selected/Mill_19/GS-LSS/sci-art-small/per_view.json",
+    "test_views": 20,
+    "sha256": "d31a3f5e10e836f5b9dcf962afc5942b9820ec355731d2ff5c52d8ed9690c23c",
+    "local_split": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/splits/by_sha256/d31a3f5e10e836f5b9dcf962afc5942b9820ec355731d2ff5c52d8ed9690c23c.txt",
+    "status": "local original-host split membership verified against imported saved cameras and independent view count"
+  }
+]

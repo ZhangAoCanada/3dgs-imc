@@ -1,0 +1,145 @@
+Reviewer: 1
+
+Recommendation: Reject
+
+Comments:
+1. Methodological Obscurity and Theoretical Inconsistencies
+While the conceptual goal of GS-LSS is clear, the mathematical formulation is occasionally obscure and contains notational inconsistencies:
+• Symbol Inconsistencies: In Section III-C, the Gaussian parameterization is defined as $g_i = \{p, o, \Sigma, c\}$ where $p$ is the position. However, in Eq. 23, the sampling is denoted as $x_{\mathcal{G}} = \mathcal{N}(x, \Sigma)$, suddenly using $x$ as the mean. Previously, $x$ was defined as a 3D coordinate from the global sparse point cloud.
+• Heuristics in "Learned" Variables: The variance network computes $\sigma_\theta$ using Eq. 26: $\sigma_\theta = \frac{a_\theta \cdot \Sigma}{1 + e^{100 \cdot (P_\theta - \alpha_{\mathcal{G}})}}$. The term $(P_\theta - \alpha_{\mathcal{G}})$ directly subtracts the sampled opacity $\alpha_{\mathcal{G}}$ from the predicted spatial probability $P_\theta$. These two variables represent fundamentally different physical/statistical quantities—one is a volumetric rendering property , and the other is a structural probability. Directly subtracting them lacks mathematical justification and appears to be a heavily hand-crafted heuristic.
+• Gradient Drift Explanation: In Eq. 13, the approximation error is defined using $\delta(g) = f_\theta(g) - \mathcal{S}(g)$. The text states that this gradient drift affects "only the convergence direction". A more rigorous proof or citation is needed to claim that replacing $\mathcal{R}$ with $\hat{\mathcal{R}}$ guarantees convergence, given the discrete nature of the Gaussian primitives interacting with the continuous CPF.
+2. Experimental Evaluation: The Efficiency vs. Performance Trade-off
+The training efficiency of GS-LSS is a critical flaw that undermines the method's practical utility.
+• Marginal Gains for Massive Cost: As reported in Table VII, GS-LSS requires 91.65 minutes to train, representing a 7.64x increase over vanilla 3DGS. By comparison, 3DGS-MCMC achieves highly competitive results while only increasing training time to 16.98 minutes (1.42x). The performance gap between GS-LSS and 3DGS-MCMC is often minor (e.g., merely ~0.3 dB PSNR on MatrixCity). Sacrificing over an hour of training time for such marginal improvements is highly inefficient.
+3. Anomalies in Baseline Experimental Settings
+• Scaffold-GS Training Time: Table VII reports that Scaffold-GS takes 31.43 minutes to train (2.62x slower than 3DGS). Due to its structured anchor representation and efficient view-adaptive culling, Scaffold-GS typically exhibits training times that are comparable to vanilla 3DGS under standard configurations.
+• Missing Configuration Details: The authors state they use "default settings" for baselines, but the Scaffold-GS time may suggest otherwise. The authors must explicitly detail the hyperparameters used for Scaffold-GS and which exact dataset is the experiments conducted on to justify why it performed so slowly in their environment.
+Recommendation:
+The authors must thoroughly revise the mathematical section for clarity and notational consistency. Furthermore, they need to justify the massive computational overhead and explicitly verify the experimental configurations for their baselines (especially Scaffold-GS) to ensure a fair comparison.
+
+
+Additional Questions:
+1. Which category describes this manuscript?: Application
+
+2. How relevant is this manuscript to the readers of this periodical? Please explain your rating under Public Comments below.: Relevant
+
+1. Please explain how this manuscript advances this field of research and/or contributes something new to the literature. What do you see as the strongest and the weakest aspect of the paper? Please also comment on the paper’s novelty, its potential impact and, the replicability of the results and the method itself.: Summary of Contributions and Methodology: The manuscript proposes GS-LSS, a framework designed to address perspective overfitting in 3D Gaussian Splatting (3DGS) under biased viewpoints (e.g., viewing angle disparities, systematic coverage gaps). The core contribution is reformulating the photometric per-frame optimization into a scene-level distribution matching process using a Learned Stochastic Sampling (LSS) mechanism. To achieve this, the authors introduce a Continuous Probability Field (CPF) to estimate the underlying scene structure from globally aggregated geometric priors and utilize a bias-aware random viewpoint batch training strategy to mitigate directional gradient bias.
+Strongest Aspect: The formulation of 3DGS training under biased viewpoints is a highly relevant problem. The paper systematically categorizes these biases (coverage gaps, discontinuous trajectories, angle disparities) and provides a comprehensive evaluation across multiple datasets (Mip-NeRF 360, Tanks & Temples, MatrixCity). The conceptual shift from hand-crafted stochasticity to learned scene-level distribution matching is theoretically interesting.
+Weakest Aspect: The weakest aspect is the severe computational overhead introduced by the CPF and the batch training strategy. The training time is extended by 7.64x compared to vanilla 3DGS , yet it yields only marginal performance gains over faster stochastic baselines like 3DGS-MCMC. Furthermore, the methodological description is somewhat obscure, with several ambiguous mathematical formulations and questionable experimental baseline configurations.
+Novelty, Impact, and Replicability: The novelty lies in integrating a continuous probability field to guide the stochastic sampling of discrete 3D Gaussians. However, its potential impact is severely limited by its inefficiency. Replicability is currently questionable due to the lack of source code and insufficient details regarding baseline hyperparameter settings.
+
+2. Is the manuscript technically sound? Please explain your answer under Public Comments below.: Appears to be - but didn't check completely
+
+1. Are the title, abstract, and keywords appropriate? Please explain under Public Comments below.: Yes
+
+2. Does the manuscript contain sufficient and appropriate references? Please explain and list missing references under Public Comments below.: References are sufficient and appropriate
+
+If you are suggesting additional references they must be entered in the text box provided.  All suggestions must include full bibliographic information plus a DOI.
+
+
+If you are not suggesting any references, please type NA.: NA
+
+3. Does the introduction state the objectives of the manuscript in terms that encourage the reader to read on? Please explain your answer under Public Comments below.: Could be improved
+
+4. How would you rate the organization of the manuscript? Is it focused? Is the length appropriate for the topic? Please explain under Public Comments below.: Could be improved
+
+5. Please rate the readability of the manuscript. Explain your rating under Public Comments below.: Difficult to read and understand
+
+6. Should the supplemental material be included? (Click on the Supplementary Files icon to view files): Does not apply, no supplementary files included
+
+7. If yes to 6, should it be accepted:
+
+Please rate the manuscript. Explain your choice.: Poor
+
+
+Reviewer: 2
+
+Recommendation: Revise and resubmit as “new”
+
+Comments:
+The paper proposes GS-LSS for robust 3D Gaussian Splatting under biased viewpoints, including coverage gaps, discontinuous trajectories, and aerial-to-ground view disparities. It formulates 3DGS optimization as scene-level distribution matching, estimates the scene structure using a Continuous Probability Field, and uses learned deterministic and stochastic updates to relocate and reshape Gaussians.
+1. The paper claims to recover or approximate the underlying scene distribution from biased observations, but the CPF is still trained from geometry rendered or aggregated from the biased 3DGS process itself. This creates a circular dependency.
+2. Several equations introduce target distributions, posterior alignment, and stochastic sampling, but the connection between these formulations and the implemented update rule is loose and partly heuristic.
+3. The probabilized geometry field relies on DBSCAN filtering, rendered depth, normals, and projected point clouds. Errors in these intermediate estimates can directly bias the learned field, yet this failure mode is not deeply analyzed.
+4. The method combines stochastic Gaussian updates, learned variance, geometric priors, and multi-view batching. The integration is useful, but the conceptual advance over MCMC-style 3DGS plus learned/geometric regularization is not clearly isolated.
+5. The reported average training time is 91.65 minutes, much higher than 3DGS, 3DGS-MCMC, and MH-3DGS. This is a serious limitation for a method targeting real-world biased capture scenarios.
+
+Additional Questions:
+1. Which category describes this manuscript?: Research
+
+2. How relevant is this manuscript to the readers of this periodical? Please explain your rating under Public Comments below.: Interesting - but not very relevant
+
+1. Please explain how this manuscript advances this field of research and/or contributes something new to the literature. What do you see as the strongest and the weakest aspect of the paper? Please also comment on the paper’s novelty, its potential impact and, the replicability of the results and the method itself.: The paper proposes GS-LSS for robust 3D Gaussian Splatting under biased viewpoints, including coverage gaps, discontinuous trajectories, and aerial-to-ground view disparities.
+
+2. Is the manuscript technically sound? Please explain your answer under Public Comments below.: Appears to be - but didn't check completely
+
+1. Are the title, abstract, and keywords appropriate? Please explain under Public Comments below.: Yes
+
+2. Does the manuscript contain sufficient and appropriate references? Please explain and list missing references under Public Comments below.: Important references are missing; more references are needed
+
+If you are suggesting additional references they must be entered in the text box provided.  All suggestions must include full bibliographic information plus a DOI.
+
+
+If you are not suggesting any references, please type NA.: na
+
+3. Does the introduction state the objectives of the manuscript in terms that encourage the reader to read on? Please explain your answer under Public Comments below.: Could be improved
+
+4. How would you rate the organization of the manuscript? Is it focused? Is the length appropriate for the topic? Please explain under Public Comments below.: Could be improved
+
+5. Please rate the readability of the manuscript. Explain your rating under Public Comments below.: Readable - but requires some effort to understand
+
+6. Should the supplemental material be included? (Click on the Supplementary Files icon to view files): Does not apply, no supplementary files included
+
+7. If yes to 6, should it be accepted:
+
+Please rate the manuscript. Explain your choice.: Fair
+
+
+Reviewer: 3
+
+Recommendation: Author Should Prepare A Minor Revision
+
+Comments:
+The proposed method effectively addresses a critical limitation of 3D Gaussian Splatting, which is perspectively overfitting under biased viewpoints. They solve this by introducing a scene-level distribution matching framework and a Continuous Probability Field. The methodology is sound, the experiments are comprehensive, and the ablation studies clearly validate the design choices.
+
+I have some minor comments to further improve this paper:
+
+-The authors state that the Continuous Probability Field is supervised by geometric priors aggregated from depth maps and normal maps rendered from the training views. However, the core premise of the paper is that the training views are severely biased. If the training views are biased, the rendered depth/normal maps will only cover the observed regions, meaning the aggregated point cloud is also biased and incomplete. It would be better to have more explanations regarding this.
+
+-The formulation of the Learned Stochastic Sampling introduces hyperparameters to balance photometric loss, deterministic drift, and stochastic perturbation. The paper currently lacks detail on how sensitive the framework is to these balancing weights. The authors should briefly clarify how these weights were selected. Are they fixed across all datasets, or do they require scene-specific tuning?
+
+-Table VII shows that GS-LSS takes 91.65 minutes to train, much slower than vanilla 3DGS. The authors state this is due to extra CPF training and random viewpoint batch optimization. To give readers better insight into the computational effect, it would be beneficial to provide a breakdown of this extra time.
+
+Additional Questions:
+1. Which category describes this manuscript?: Research
+
+2. How relevant is this manuscript to the readers of this periodical? Please explain your rating under Public Comments below.: Relevant
+
+1. Please explain how this manuscript advances this field of research and/or contributes something new to the literature. What do you see as the strongest and the weakest aspect of the paper? Please also comment on the paper’s novelty, its potential impact and, the replicability of the results and the method itself.: The proposed GS-LSS effectively addresses a known and critical limitation of 3D Gaussian Splatting, which is perspectively overfitting under biased viewpoints. They solve this by introducing a scene-level distribution matching framework and a Continuous Probability Field. The methodology is sound, the experiments are comprehensive, and the ablation studies clearly validate the design choices.
+
+2. Is the manuscript technically sound? Please explain your answer under Public Comments below.: Yes
+
+1. Are the title, abstract, and keywords appropriate? Please explain under Public Comments below.: Yes
+
+2. Does the manuscript contain sufficient and appropriate references? Please explain and list missing references under Public Comments below.: Important references are missing; more references are needed
+
+If you are suggesting additional references they must be entered in the text box provided.  All suggestions must include full bibliographic information plus a DOI.
+
+
+If you are not suggesting any references, please type NA.: Some recent related work on 3DGS should be mentioned:
+
+-SketchFaceGS: Real-Time Sketch-Driven Face Editing and Generation with Gaussian Splatting, CVPR 2026
+
+-SSD-GS: Scattering and Shadow Decomposition for Relightable 3D Gaussian Splatting, ICLR 2026
+
+3. Does the introduction state the objectives of the manuscript in terms that encourage the reader to read on? Please explain your answer under Public Comments below.: Yes
+
+4. How would you rate the organization of the manuscript? Is it focused? Is the length appropriate for the topic? Please explain under Public Comments below.: Satisfactory
+
+5. Please rate the readability of the manuscript. Explain your rating under Public Comments below.: Easy to read
+
+6. Should the supplemental material be included? (Click on the Supplementary Files icon to view files): Yes, as part of the digital library for this submission if accepted
+
+7. If yes to 6, should it be accepted: As is
+
+Please rate the manuscript. Explain your choice.: Excellent

@@ -1,0 +1,13 @@
+{
+  "measured_utc": "2026-09-26T16:23:35.312863+00:00",
+  "disk_available_before_bytes": 260825088000,
+  "disk_available_after_bytes": 441148923904,
+  "disk_available_gain_bytes": 180323835904,
+  "disk_usage_before": "97%",
+  "disk_usage_after": "95%",
+  "output_tree_allocated_after_bytes": 1365644640256,
+  "library_allocated_bytes": 124767887360,
+  "deleted_allocated_bytes": 305394876416,
+  "imported_content_bytes": 124700799863,
+  "note": "df covers the shared filesystem; concurrent activity and metadata make its delta differ slightly from deleted-minus-imported content bytes. du measured each root separately without following library symlinks."
+}

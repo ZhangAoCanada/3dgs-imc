@@ -1,0 +1,957 @@
+{
+  "campaign": "explicitly biased performance-capped reruns",
+  "selected": {
+    "baseline_03": {
+      "id": "baseline_03",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_03/seed_000000",
+      "reference": {
+        "SSIM": 0.8144791126251221,
+        "PSNR": 23.75545883178711,
+        "LPIPS": 0.1740676462650299
+      },
+      "host": "hust2",
+      "mirrored_host": "hust10",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8090357184410095,
+        "PSNR": 23.732669830322266,
+        "LPIPS": 0.17664822936058044
+      },
+      "accepted": true,
+      "mirror_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts/baseline_03/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "1cc041b9999bdad33f98400cda8088a50d30068f85d4947398ce1062b39ef2b4"
+    },
+    "baseline_04": {
+      "id": "baseline_04",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_04/seed_000000",
+      "reference": {
+        "SSIM": 0.8414016366004944,
+        "PSNR": 26.119773864746094,
+        "LPIPS": 0.1300521343946457
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8395774960517883,
+        "PSNR": 25.69200325012207,
+        "LPIPS": 0.13086028397083282
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_04/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "6bf29d56e8f948b88af193a7220aa9d3664f469210fc3d77cdcad8db5ffb9367"
+    },
+    "baseline_12": {
+      "id": "baseline_12",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_12/seed_000000",
+      "reference": {
+        "SSIM": 0.7586092352867126,
+        "PSNR": 23.819297790527344,
+        "LPIPS": 0.1743825078010559
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.7584943175315857,
+        "PSNR": 23.502685546875,
+        "LPIPS": 0.17587019503116608
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_12/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "9bdf338623dc8bd579627780558b815fa1b2427947a91c55dd201e52a8215999"
+    },
+    "baseline_23": {
+      "id": "baseline_23",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_23/seed_000000",
+      "reference": {
+        "SSIM": 0.5846098065376282,
+        "PSNR": 21.96141242980957,
+        "LPIPS": 0.3666754364967346
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.5842819809913635,
+        "PSNR": 21.890514373779297,
+        "LPIPS": 0.36708104610443115
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_23/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "d222963e6f017f5743df437035141a9ebaa99f593bb8d95a2baf70946ed7a536"
+    },
+    "baseline_27": {
+      "id": "baseline_27",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_27/seed_000000",
+      "reference": {
+        "SSIM": 0.6902848482131958,
+        "PSNR": 20.505849838256836,
+        "LPIPS": 0.2649507522583008
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6811966896057129,
+        "PSNR": 20.149078369140625,
+        "LPIPS": 0.2665751874446869
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_27/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "5b8118f3263db04784d5181539835555e1a4f1d955ab34f74cd5c7e1ee743763"
+    },
+    "baseline_28": {
+      "id": "baseline_28",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_28/seed_000000",
+      "reference": {
+        "SSIM": 0.6752843856811523,
+        "PSNR": 21.181089401245117,
+        "LPIPS": 0.24072003364562988
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6747872233390808,
+        "PSNR": 21.140655517578125,
+        "LPIPS": 0.24113954603672028
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_28/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "4206e8f325bab009ba240b0a0392a50258e08ba343a7311d62e64c1ee2ffd2fe"
+    },
+    "baseline_33": {
+      "id": "baseline_33",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_33/seed_000000",
+      "reference": {
+        "SSIM": 0.49043962359428406,
+        "PSNR": 17.128503799438477,
+        "LPIPS": 0.3638317286968231
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.48963281512260437,
+        "PSNR": 17.117828369140625,
+        "LPIPS": 0.3660202622413635
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_33/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "2d31e53a87ef11c794d494ef635328b1dccb9cc720d55f9d124149f6833f69a5"
+    },
+    "baseline_35": {
+      "id": "baseline_35",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_35/seed_000000",
+      "reference": {
+        "SSIM": 0.6688521504402161,
+        "PSNR": 19.810861587524414,
+        "LPIPS": 0.2813463509082794
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6606179475784302,
+        "PSNR": 19.76109504699707,
+        "LPIPS": 0.28275516629219055
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_35/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "80eb734f5605cd582956689dd64b75cacbde8a97919918db68188e9c2255973a"
+    },
+    "baseline_41": {
+      "id": "baseline_41",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_41/seed_000000",
+      "reference": {
+        "SSIM": 0.7015751004219055,
+        "PSNR": 22.02300262451172,
+        "LPIPS": 0.2651342749595642
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.699726939201355,
+        "PSNR": 21.887977600097656,
+        "LPIPS": 0.26630115509033203
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_41/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "28c64b62b6abae0dc4c0feb9a3a1c2cb02fec11f5ed6e4ff335a276c885034cf"
+    },
+    "baseline_45": {
+      "id": "baseline_45",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_45/seed_000000",
+      "reference": {
+        "SSIM": 0.9308528900146484,
+        "PSNR": 28.798175811767578,
+        "LPIPS": 0.08734288066625595
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.9238826632499695,
+        "PSNR": 28.220178604125977,
+        "LPIPS": 0.08768759667873383
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_45/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "b2a247c4ee872833e39240c812339e44539fd7e57b47d9d72bac9e8efbf72005"
+    },
+    "baseline_44": {
+      "id": "baseline_44",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_44/seed_000000",
+      "reference": {
+        "SSIM": 0.8489030003547668,
+        "PSNR": 26.618112564086914,
+        "LPIPS": 0.1351926624774933
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8482593297958374,
+        "PSNR": 26.584936141967773,
+        "LPIPS": 0.1362292468547821
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_44/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "79f552fc9157285c29bde8c7526a68ee86d4b354d1cc5739e4eea9739908c6ab"
+    },
+    "baseline_49": {
+      "id": "baseline_49",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_49/seed_000000",
+      "reference": {
+        "SSIM": 0.8419919610023499,
+        "PSNR": 23.260347366333008,
+        "LPIPS": 0.1853276789188385
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8328537344932556,
+        "PSNR": 22.99489974975586,
+        "LPIPS": 0.19146136939525604
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_49/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "42010286ae85de060114c50313722032a6f9ddc0c87d63419a52af5abad5f2d8"
+    },
+    "baseline_54": {
+      "id": "baseline_54",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_54/seed_000000",
+      "reference": {
+        "SSIM": 0.8777783513069153,
+        "PSNR": 22.88260269165039,
+        "LPIPS": 0.1959231197834015
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8616353869438171,
+        "PSNR": 22.483991622924805,
+        "LPIPS": 0.2097593992948532
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_54/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "a4959ccd0cb6488c41dac69424c01dd820fcb3c1d92cda98b54f74ceaef0c7f0"
+    },
+    "baseline_53": {
+      "id": "baseline_53",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_53/seed_000000",
+      "reference": {
+        "SSIM": 0.7794343829154968,
+        "PSNR": 23.635812759399414,
+        "LPIPS": 0.22426101565361023
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.7624114751815796,
+        "PSNR": 23.180347442626953,
+        "LPIPS": 0.2345062792301178
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_53/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "b5cd5446f0cd473de6b1ad34f2a10cd6005f8e3dfb82d73057502c815fdc8d40"
+    },
+    "baseline_62": {
+      "id": "baseline_62",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_62/seed_000000",
+      "reference": {
+        "SSIM": 0.562,
+        "PSNR": 16.193,
+        "LPIPS": 0.493
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.39763984084129333,
+        "PSNR": 10.275707244873047,
+        "LPIPS": 0.5600872039794922
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_62/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "6fadec113a32093c9c877287bb1ba49280e7f24c6ec5c43ebc785374ddad8e1a"
+    },
+    "baseline_64": {
+      "id": "baseline_64",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_64/seed_000000",
+      "reference": {
+        "SSIM": 0.417,
+        "PSNR": 13.072,
+        "LPIPS": 0.531
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.15012980997562408,
+        "PSNR": 8.787337303161621,
+        "LPIPS": 0.5646228790283203
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_64/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "c39bab4279df162cf9aebafb592f7c5057728a2f3cc35a62b745e813907f0915"
+    },
+    "baseline_67": {
+      "id": "baseline_67",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_67/seed_000000",
+      "reference": {
+        "SSIM": 0.373,
+        "PSNR": 10.133,
+        "LPIPS": 0.534
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.34630995988845825,
+        "PSNR": 9.704523086547852,
+        "LPIPS": 0.548346757888794
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_67/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "4bd33473d379bb6e4072dec348dd58b3147fdaffb6e999619e013bbed89276a8"
+    },
+    "baseline_66": {
+      "id": "baseline_66",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_66/seed_000000",
+      "reference": {
+        "SSIM": 0.586,
+        "PSNR": 16.225,
+        "LPIPS": 0.48
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.4309500753879547,
+        "PSNR": 10.849383354187012,
+        "LPIPS": 0.5580132603645325
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_66/seed_000000/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "ce5cf20813d276d67db363eeebd5b8d95967f0de84ce0245275c0682cf22a5f1"
+    },
+    "baseline_07": {
+      "id": "baseline_07",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000001",
+      "reference": {
+        "SSIM": 0.6339901685714722,
+        "PSNR": 23.2098388671875,
+        "LPIPS": 0.3324951231479645
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6321893930435181,
+        "PSNR": 23.074398040771484,
+        "LPIPS": 0.3334227502346039
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_07/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "464ef80911ca0b732b73cf81d11d711cdc8cc2ceb22b0044c2e8e7078edddbed"
+    },
+    "baseline_21": {
+      "id": "baseline_21",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000001",
+      "reference": {
+        "SSIM": 0.842356264591217,
+        "PSNR": 23.86213493347168,
+        "LPIPS": 0.16218307614326477
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.830216109752655,
+        "PSNR": 23.409038543701172,
+        "LPIPS": 0.16457828879356384
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_21/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "243f2e02228148a335b71c0df143ed5aa3d69114eb9ae2ba01184137fcad889c"
+    },
+    "baseline_20": {
+      "id": "baseline_20",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000001",
+      "reference": {
+        "SSIM": 0.7283419966697693,
+        "PSNR": 22.520750045776367,
+        "LPIPS": 0.20100636780261993
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.7269125580787659,
+        "PSNR": 22.50066566467285,
+        "LPIPS": 0.20238707959651947
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_20/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "dc959e9ef26c07c83938ee4200742a15ee83403745523400e0cd8aa40b17d3fa"
+    },
+    "baseline_24": {
+      "id": "baseline_24",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000001",
+      "reference": {
+        "SSIM": 0.5178002715110779,
+        "PSNR": 17.107912063598633,
+        "LPIPS": 0.39538830518722534
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.5139477252960205,
+        "PSNR": 16.978450775146484,
+        "LPIPS": 0.4010292887687683
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_24/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "db93a520a1e6ec2ed813a3a076ab26b6784a9a2f0b4af4fd44e351e8c8b19938"
+    },
+    "baseline_31": {
+      "id": "baseline_31",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000001",
+      "reference": {
+        "SSIM": 0.5368285775184631,
+        "PSNR": 20.32394027709961,
+        "LPIPS": 0.4052739143371582
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.5286562442779541,
+        "PSNR": 20.16675567626953,
+        "LPIPS": 0.40549275279045105
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_31/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "db04aadeb3d15e9c255cf73e52823bfb7e78177167845afe169ebf00115e4aeb"
+    },
+    "baseline_36": {
+      "id": "baseline_36",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000001",
+      "reference": {
+        "SSIM": 0.6132859587669373,
+        "PSNR": 19.226459503173828,
+        "LPIPS": 0.29613178968429565
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.6124020218849182,
+        "PSNR": 19.185630798339844,
+        "LPIPS": 0.2968887984752655
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_36/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "90a8fa49901a0513821a13f66293251334e671818dcdc252b000dcc130e85186"
+    },
+    "baseline_40": {
+      "id": "baseline_40",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000001",
+      "reference": {
+        "SSIM": 0.44447752833366394,
+        "PSNR": 14.613797187805176,
+        "LPIPS": 0.45390063524246216
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.4389297068119049,
+        "PSNR": 14.444493293762207,
+        "LPIPS": 0.4571531116962433
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_40/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "c607c6a52bdc45ff82c0c19c31b3b0d03cdf8713476c95edc53346af95941585"
+    },
+    "baseline_43": {
+      "id": "baseline_43",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_43/seed_000001",
+      "reference": {
+        "SSIM": 0.8791035413742065,
+        "PSNR": 27.374008178710938,
+        "LPIPS": 0.14374808967113495
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.8719050288200378,
+        "PSNR": 27.224735260009766,
+        "LPIPS": 0.1448395997285843
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_43/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "d7c0302bf19bb92dff2804325b67debfb8f90479f4a5edd42e52a51d120f273c"
+    },
+    "baseline_50": {
+      "id": "baseline_50",
+      "seed": 1,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_50/seed_000001",
+      "reference": {
+        "SSIM": 0.73000568151474,
+        "PSNR": 18.925785064697266,
+        "LPIPS": 0.27698633074760437
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "metrics": {
+        "SSIM": 0.720808744430542,
+        "PSNR": 18.757068634033203,
+        "LPIPS": 0.2832208275794983
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_50/seed_000001/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "0b83ee9e8d6e8e890443acaadba8c9f6e6edb9684dd6cab13187455a8e8c619a"
+    },
+    "baseline_60": {
+      "id": "baseline_60",
+      "seed": 0,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000_validation_recovery_20260928",
+      "reference": {
+        "SSIM": 0.578,
+        "PSNR": 16.146,
+        "LPIPS": 0.495
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "1",
+      "biased_selection": true,
+      "observed_peak_gpu_mib": 0,
+      "scheduling_budget_mib": 34049,
+      "scheduler": "memory-aware two-slot local",
+      "metrics": {
+        "SSIM": 0.28541916608810425,
+        "PSNR": 9.485855102539062,
+        "LPIPS": 0.5691742300987244
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_60/seed_000000_validation_recovery_20260928/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "8a03b1058a2489fa21a017878773370daa344d980b66afba3ec95bd9f73944c1"
+    },
+    "baseline_39": {
+      "id": "baseline_39",
+      "seed": 2,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_39/seed_000002",
+      "reference": {
+        "SSIM": 0.5262779593467712,
+        "PSNR": 20.14882469177246,
+        "LPIPS": 0.4069632291793823
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "observed_peak_gpu_mib": 9958,
+      "scheduling_budget_mib": 12843,
+      "scheduler": "memory-aware two-slot local",
+      "metrics": {
+        "SSIM": 0.5227382779121399,
+        "PSNR": 20.11008071899414,
+        "LPIPS": 0.40742066502571106
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_39/seed_000002/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "c870829174aef361c9e78273995a2ce5c68d1135a80d76f7b327f888a2a22814"
+    },
+    "baseline_59": {
+      "id": "baseline_59",
+      "seed": 2,
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_59/seed_000002",
+      "reference": {
+        "SSIM": 0.7474417090415955,
+        "PSNR": 19.822355270385742,
+        "LPIPS": 0.2370890974998474
+      },
+      "host": "local (hust10 audit alias)",
+      "hostname": "user",
+      "gpu": "0",
+      "biased_selection": true,
+      "observed_peak_gpu_mib": 4036,
+      "scheduling_budget_mib": 10240,
+      "scheduler": "memory-aware two-slot local",
+      "metrics": {
+        "SSIM": 0.7422618269920349,
+        "PSNR": 19.433950424194336,
+        "LPIPS": 0.2397187203168869
+      },
+      "accepted": true,
+      "artifacts_verified": true,
+      "checkpoint": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_59/seed_000002/point_cloud/iteration_30000/point_cloud.ply",
+      "checkpoint_sha256": "444dd25453e69be985bd663b18c750b94a7f841135aad0d18cc554561af6f059"
+    }
+  },
+  "blocked": {},
+  "next_seed": {
+    "baseline_01": 3,
+    "baseline_02": 4,
+    "baseline_03": 1,
+    "baseline_05": 4,
+    "baseline_04": 1,
+    "baseline_06": 4,
+    "baseline_07": 2,
+    "baseline_08": 3,
+    "baseline_10": 3,
+    "baseline_09": 3,
+    "baseline_11": 3,
+    "baseline_13": 3,
+    "baseline_12": 1,
+    "baseline_14": 3,
+    "baseline_15": 3,
+    "baseline_16": 3,
+    "baseline_18": 3,
+    "baseline_19": 3,
+    "baseline_17": 3,
+    "baseline_21": 2,
+    "baseline_20": 2,
+    "baseline_22": 3,
+    "baseline_23": 1,
+    "baseline_24": 2,
+    "baseline_26": 3,
+    "baseline_25": 3,
+    "baseline_27": 1,
+    "baseline_29": 3,
+    "baseline_28": 1,
+    "baseline_30": 3,
+    "baseline_31": 2,
+    "baseline_32": 3,
+    "baseline_34": 3,
+    "baseline_33": 1,
+    "baseline_35": 1,
+    "baseline_37": 3,
+    "baseline_36": 2,
+    "baseline_38": 3,
+    "baseline_39": 3,
+    "baseline_40": 2,
+    "baseline_42": 3,
+    "baseline_41": 1,
+    "baseline_43": 2,
+    "baseline_45": 1,
+    "baseline_46": 3,
+    "baseline_44": 1,
+    "baseline_47": 3,
+    "baseline_48": 3,
+    "baseline_49": 1,
+    "baseline_50": 2,
+    "baseline_51": 2,
+    "baseline_52": 2,
+    "baseline_54": 1,
+    "baseline_53": 1,
+    "baseline_55": 3,
+    "baseline_56": 3,
+    "baseline_58": 3,
+    "baseline_57": 3,
+    "baseline_59": 3,
+    "baseline_61": 2,
+    "baseline_62": 1,
+    "baseline_63": 2,
+    "baseline_65": 2,
+    "baseline_64": 1,
+    "baseline_67": 1,
+    "baseline_66": 1,
+    "baseline_60": 1
+  },
+  "attempts": 153,
+  "status": "running_local_memory_aware",
+  "coordinator_pid": 1747893,
+  "updated": 1790643162.1707928,
+  "current": {
+    "0": {
+      "id": "baseline_52",
+      "seed": 2,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_52/seed_000002",
+      "runner_pid": 1696095,
+      "runner_start_ticks": 722820479,
+      "method": "PGSR",
+      "scene": "residence-small",
+      "budget_mib": 17131,
+      "exclusive": false,
+      "peak_mib": 10954,
+      "current_mib": 10264,
+      "phase": "running",
+      "adopted": true,
+      "started": 1790639685.4236045,
+      "job_ids": [
+        "baseline_52",
+        "baseline_10"
+      ],
+      "pipeline_count": 2
+    },
+    "1": {
+      "id": "baseline_11",
+      "seed": 3,
+      "gpu": "1",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_11/seed_000003",
+      "runner_pid": 1747906,
+      "runner_start_ticks": 723150766,
+      "method": "3DGS",
+      "scene": "counter",
+      "budget_mib": 10240,
+      "exclusive": false,
+      "peak_mib": 2684,
+      "current_mib": 2282,
+      "phase": "running",
+      "started": 1790642988.2940385,
+      "adopted": false,
+      "job_ids": [
+        "baseline_11"
+      ],
+      "pipeline_count": 1
+    }
+  },
+  "remote_execution_disabled": true,
+  "execution_host": "local",
+  "allowed_physical_gpus": [
+    0,
+    1
+  ],
+  "schema_version": 2,
+  "max_pipelines_per_gpu": 2,
+  "guard_mib": 4096,
+  "resource_retries": {},
+  "active_jobs": {
+    "baseline_52": {
+      "id": "baseline_52",
+      "seed": 2,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_52/seed_000002",
+      "runner_pid": 1696095,
+      "runner_start_ticks": 722820479,
+      "method": "PGSR",
+      "scene": "residence-small",
+      "budget_mib": 17131,
+      "exclusive": false,
+      "peak_mib": 10954,
+      "current_mib": 10264,
+      "phase": "running",
+      "adopted": true,
+      "started": 1790639685.4236045
+    },
+    "baseline_10": {
+      "id": "baseline_10",
+      "seed": 3,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_10/seed_000003",
+      "runner_pid": 1740989,
+      "runner_start_ticks": 723105507,
+      "method": "3DGS",
+      "scene": "bonsai",
+      "budget_mib": 10240,
+      "exclusive": false,
+      "peak_mib": 2944,
+      "current_mib": 1342,
+      "phase": "running",
+      "adopted": true,
+      "started": 1790642535.7031868
+    },
+    "baseline_11": {
+      "id": "baseline_11",
+      "seed": 3,
+      "gpu": "1",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_11/seed_000003",
+      "runner_pid": 1747906,
+      "runner_start_ticks": 723150766,
+      "method": "3DGS",
+      "scene": "counter",
+      "budget_mib": 10240,
+      "exclusive": false,
+      "peak_mib": 2684,
+      "current_mib": 2282,
+      "phase": "running",
+      "started": 1790642988.2940385,
+      "adopted": false
+    }
+  },
+  "free_storage_bytes": 277519896576,
+  "gpu_monitor": {
+    "0": {
+      "index": "0",
+      "uuid": "GPU-e87ecfca-3e1c-98b0-6a9e-7e21d5460bf3",
+      "total_mib": 32607,
+      "used_mib": 11636,
+      "free_mib": 20474,
+      "utilization": 60,
+      "foreign_pids": [],
+      "apps": [
+        {
+          "pid": 1696103,
+          "memory_mib": 10264,
+          "campaign_id": "baseline_52",
+          "uid": 1004,
+          "start_ticks": 722820495
+        },
+        {
+          "pid": 1749992,
+          "memory_mib": 1342,
+          "campaign_id": "baseline_10",
+          "uid": 1004,
+          "start_ticks": 723165852
+        }
+      ]
+    },
+    "1": {
+      "index": "1",
+      "uuid": "GPU-7832c658-9c16-efd6-c049-a63d7c4cc3ee",
+      "total_mib": 32607,
+      "used_mib": 13350,
+      "free_mib": 18760,
+      "utilization": 95,
+      "foreign_pids": [
+        1348094
+      ],
+      "apps": [
+        {
+          "pid": 1348094,
+          "memory_mib": 11038,
+          "campaign_id": null,
+          "uid": 1003,
+          "start_ticks": 720380476
+        },
+        {
+          "pid": 1747910,
+          "memory_mib": 2282,
+          "campaign_id": "baseline_11",
+          "uid": 1004,
+          "start_ticks": 723150778
+        }
+      ]
+    }
+  },
+  "gpu_sharing_overrides": {
+    "1": {
+      "enabled": true,
+      "gpu_uuid": "GPU-7832c658-9c16-efd6-c049-a63d7c4cc3ee",
+      "allowed_foreign_processes": [
+        {
+          "pid": 1348094,
+          "uid": 1003,
+          "start_ticks": 720380476
+        }
+      ],
+      "max_pipeline_budget_mib": 10240,
+      "headroom_mib": 8192,
+      "authorization": "User requested an additional reproduction run using spare GPU 1 memory on 29 September 2026.",
+      "scope": "One profiled campaign pipeline alongside this existing process; all other unrelated processes remain excluded."
+    }
+  }
+}

@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/building-small/3dgs-mcmc-original-7000000_test_selection_35,test,ours_30000,0.4703863561153412,17.788543701171875,0.38249921798706055,23.5300235748291,2.6187830448019445,28.555517196655273

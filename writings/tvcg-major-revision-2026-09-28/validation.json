@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "reviewer_numbered_comments_covered": 15,
+  "issue_map_rows": 20,
+  "local_links_checked": 31,
+  "source_hashes_unchanged": 12,
+  "arithmetic_checked": [
+    "16.951 - 16.225 = 0.726",
+    "16.693 - 16.225 = 0.468"
+  ],
+  "scope": "Document/evidence checks; no new GPU experiments or manuscript edits."
+}

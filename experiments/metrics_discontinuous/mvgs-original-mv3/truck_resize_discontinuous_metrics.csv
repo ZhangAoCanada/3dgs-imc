@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/truck_resize/mvgs-original-mv3,test,ours_30000,0.8311738967895508,23.045665740966797,0.1605605036020279,22.352832794189453,2.5168994018478243,49.43107604980469

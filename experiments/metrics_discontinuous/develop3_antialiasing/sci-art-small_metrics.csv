@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/develop3_discontinuous2/sci-art-small/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_discontinuous_0.01,test,ours_30000,0.930916965007782,27.058712005615234,0.11948385089635849,42.96815872192383,5.08237320635744,72.67279052734375

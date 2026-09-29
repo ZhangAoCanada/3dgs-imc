@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/sci-art-small/mh-3dgs-original_test_selection_30,test,ours_30000,0.8421019315719604,21.432716369628906,0.21136946976184845,43.45304489135742,5.029687798682642,70.54943084716797

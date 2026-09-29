@@ -1,0 +1,12 @@
+{
+  "time": 1790609435.9169116,
+  "scope": "Consolidated revision planning only; execution explicitly deferred by user",
+  "files": {
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/TVCG_reviewers/TVCG_reviewers.txt": "a5585893a01f1394a0b41352573cc06557dd2355e7265a73e89f4a61969ab3ac",
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.tex": "ed87eb2c5f30062e0ca1476d1835f6594617ef741fff337979db21499e67b791",
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-editing/bare_jrnl_new_sample4_revision_revised.tex": "b55a2dec456ce6ef38e5b539cda70615e25b4a2ad06c0c62eef7584e431a8822",
+    "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/gaussian_model.py": "0b94373b75c29cd9c4c1da19877c4115efdb6291e5ca6522af03c11f9ed12b12",
+    "/data1/zhangao/repos/3dgs-imc-codex/scene_experimental_branch3/cpf_targets.py": "032e9d4b9c4a3c2ba92f6f467c5614adb045a616d68af15001897e6997855966",
+    "/data1/zhangao/repos/3dgs-imc-codex/experiments/r12_compare.py": "a4390254cb01bb71aa82958c42a0d03225335f2c3e0a9155bf441afc513aa754"
+  }
+}

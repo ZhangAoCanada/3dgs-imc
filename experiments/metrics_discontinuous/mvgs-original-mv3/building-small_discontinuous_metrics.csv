@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/building-small/mvgs-original-mv3,test,ours_30000,0.5398977398872375,17.359088897705078,0.3431016802787781,28.6092472076416,2.5108929393251906,38.73209762573242

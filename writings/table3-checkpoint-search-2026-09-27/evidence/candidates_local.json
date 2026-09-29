@@ -1,0 +1,1098 @@
+[
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 744001532,
+        "mtime": 1781755460.6097193,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 744001532,
+        "mtime": 1781772889.5721655,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000/point_cloud/iteration_22000/point_cloud.ply",
+        "size": 744001532,
+        "mtime": 1781763267.771153,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000/results.json",
+        "size": 606,
+        "mtime": 1781774590.5571415,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_15000\": {\n  \"SSIM\": 0.5341307520866394,\n  \"PSNR\": 14.448725700378418,\n  \"LPIPS\": 0.4974796175956726,\n  \"BRISQUE\": 71.87986755371094,\n  \"NIQE\": 6.870662444737541,\n  \"PIQE\": 68.72856140136719\n },\n \"ours_30000\": {\n  \"SSIM\": 0.5329292416572571,\n  \"PSNR\": 14.563577651977539,\n  \"LPIPS\": 0.49024927616119385,\n  \"BRISQUE\": 61.97538757324219,\n  \"NIQE\": 5.6269393036943605,\n  \"PIQE\": 63.58994674682617\n },\n \"ours_22000\": {\n  \"SSIM\": 0.5323220491409302,\n  \"PSNR\": 14.43071460723877,\n  \"LPIPS\": 0.49206116795539856,\n  \"BRISQUE\": 65.533935546875,\n  \"NIQE\": 5.9555060687272485,\n  \"PIQE\": 65.33246612548828\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000/cfg_args",
+        "size": 626,
+        "mtime": 1781744220.2168188,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000', images='input_cached', depths='dav2_cached', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=3000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000/metrics.csv",
+        "size": 789,
+        "mtime": 1781774590.5611415,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000,test,ours_15000,0.5341307520866394,14.448725700378418,0.4974796175956726,71.87986755371094,6.870662444737541,68.72856140136719\n/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000,test,ours_30000,0.5329292416572571,14.563577651977539,0.49024927616119385,61.97538757324219,5.6269393036943605,63.58994674682617\n/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000,test,ours_22000,0.5323220491409302,14.43071460723877,0.49206116795539856,65.533935546875,5.9555060687272485,65.33246612548828\n"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781721870.1960583,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781736467.8090262,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000/point_cloud/iteration_22000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781730208.000195,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000/results.json",
+        "size": 607,
+        "mtime": 1781737788.4669485,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_15000\": {\n  \"SSIM\": 0.5321170091629028,\n  \"PSNR\": 14.150101661682129,\n  \"LPIPS\": 0.5026238560676575,\n  \"BRISQUE\": 76.66690826416016,\n  \"NIQE\": 7.809785349922349,\n  \"PIQE\": 70.93062591552734\n },\n \"ours_30000\": {\n  \"SSIM\": 0.5505102276802063,\n  \"PSNR\": 14.516422271728516,\n  \"LPIPS\": 0.49278536438941956,\n  \"BRISQUE\": 65.98665618896484,\n  \"NIQE\": 6.155529234545192,\n  \"PIQE\": 66.28743743896484\n },\n \"ours_22000\": {\n  \"SSIM\": 0.5391820073127747,\n  \"PSNR\": 14.363699913024902,\n  \"LPIPS\": 0.4966781437397003,\n  \"BRISQUE\": 70.41535186767578,\n  \"NIQE\": 6.6955704082695275,\n  \"PIQE\": 67.29659271240234\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000/cfg_args",
+        "size": 626,
+        "mtime": 1781697126.4632325,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000', images='input_cached', depths='dav2_cached', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000/metrics.csv",
+        "size": 790,
+        "mtime": 1781737788.4709485,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000,test,ours_15000,0.5321170091629028,14.150101661682129,0.5026238560676575,76.66690826416016,7.809785349922349,70.93062591552734\n/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000,test,ours_30000,0.5505102276802063,14.516422271728516,0.49278536438941956,65.98665618896484,6.155529234545192,66.28743743896484\n/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000,test,ours_22000,0.5391820073127747,14.363699913024902,0.4966781437397003,70.41535186767578,6.6955704082695275,67.29659271240234\n"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781591912.6317148,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781597401.6032262,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000/results.json",
+        "size": 321,
+        "mtime": 1781598418.7991552,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_15000\": {\n  \"SSIM\": 0.4493749737739563,\n  \"PSNR\": 11.726622581481934,\n  \"LPIPS\": 0.5703041553497314,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_30000\": {\n  \"SSIM\": 0.42643436789512634,\n  \"PSNR\": 10.996719360351562,\n  \"LPIPS\": 0.5576063394546509,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000/cfg_args",
+        "size": 512,
+        "mtime": 1781587753.1825352,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000/metrics.csv",
+        "size": 383,
+        "mtime": 1781598418.8031554,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000,test,ours_15000,0.4493749737739563,11.726622581481934,0.5703041553497314,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000,test,ours_30000,0.42643436789512634,10.996719360351562,0.5576063394546509,0.0,0.0,0.0\n"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781609342.519582,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/point_cloud/iteration_12000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781609922.5446262,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781610768.507983,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/point_cloud/iteration_8000/point_cloud.ply",
+        "size": 357823124,
+        "mtime": 1781608777.4546678,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/point_cloud/iteration_4000/point_cloud.ply",
+        "size": 134861947,
+        "mtime": 1781607975.6116946,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/point_cloud/iteration_6000/point_cloud.ply",
+        "size": 219673731,
+        "mtime": 1781608343.2188916,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/results.json",
+        "size": 945,
+        "mtime": 1781613948.6956396,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_4000\": {\n  \"SSIM\": 0.3156399726867676,\n  \"PSNR\": 9.104056358337402,\n  \"LPIPS\": 0.5434234738349915,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_15000\": {\n  \"SSIM\": 0.32155555486679077,\n  \"PSNR\": 9.165900230407715,\n  \"LPIPS\": 0.5464739799499512,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_8000\": {\n  \"SSIM\": 0.3198973536491394,\n  \"PSNR\": 9.15646743774414,\n  \"LPIPS\": 0.5435428023338318,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_6000\": {\n  \"SSIM\": 0.3332487642765045,\n  \"PSNR\": 9.349480628967285,\n  \"LPIPS\": 0.5433085560798645,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_12000\": {\n  \"SSIM\": 0.31995707750320435,\n  \"PSNR\": 9.133511543273926,\n  \"LPIPS\": 0.54559725522995,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_10000\": {\n  \"SSIM\": 0.3202664256095886,\n  \"PSNR\": 9.145954132080078,\n  \"LPIPS\": 0.545403778553009,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/cfg_args",
+        "size": 522,
+        "mtime": 1781607572.4641886,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/metrics.csv",
+        "size": 1083,
+        "mtime": 1781613948.7116396,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000,test,ours_4000,0.3156399726867676,9.104056358337402,0.5434234738349915,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000,test,ours_15000,0.32155555486679077,9.165900230407715,0.5464739799499512,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000,test,ours_8000,0.3198973536491394,9.15646743774414,0.5435428023338318,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000,test,ours_6000,0.3332487642765045,9.349480628967285,0.5433085560798645,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000,test,ours_12000,0.31995707750320435,9.133511543273926,0.54559725522995,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000,test,ours_10000,0.3202664256095886,9.145954132080078,0.545403778553009,0.0,0.0,0.0\n"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000/full_args.json",
+        "size": 4291,
+        "mtime": 1781607572.4601886,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "{\n  \"antialiasing\": false,\n  \"bound_type\": \"local\",\n  \"cap_max\": 2000000,\n  \"checkpoint_iterations\": [],\n  \"compute_cov3D_python\": false,\n  \"config\": null,\n  \"convert_SHs_python\": false,\n  \"cpf_densify\": false,\n  \"cpf_densify_birth\": 1,\n  \"cpf_densify_birth_ratio\": 1.0,\n  \"cpf_densify_density_points\": 16384,\n  \"cpf_densify_gap_min\": 0.0,\n  \"cpf_densify_gap_weight\": 0.5,\n  \"cpf_densify_guided_clone\": 0,\n  \"cpf_densify_guided_coarse_ratio\": 0.25,\n  \"cpf_densify_guided_coarse_scale\": 5.0,\n  \"cpf_densify_guided_cpf_weight\": 0.75,\n  \"cpf_densify_guided_density_weight\": 0.5,\n  \"cpf_densify_guided_fine_scale\": 1.0,\n  \"cpf_densify_guided_grad_weight\": 1.0,\n  \"cpf_densify_guided_ratio\": 1.0,\n  \"cpf_densify_pool\": 32768,\n  \"cpf_densify_relocate\": 1,\n  \"cpf_densify_sigma_min\": 0.0,\n  \"cpf_densify_sigma_weight\": 1.0,\n  \"cpf_densify_start_iter\": 3000,\n  \"cpf_densify_until_iter\": 12000,\n  \"cpf_densify_use_residual\": 0,\n  \"cpf_derivative_interval\": 2,\n  \"cpf_drift_max_points\": 0,\n  \"cpf_field_alpha_thresh\": 0.0,\n  \"cpf_field_sfm_anchor\": 0,\n  \"cpf_grad_create_graph\": false,\n  \"cpf_loss_cap\": 0.0,\n  \"cpf_loss_weight\": 1.0,\n  \"cpf_max_drift_norm\": 0.0005,\n  \"cpf_max_noise_norm\": 0.005,\n  \"cpf_max_points\": 100000,\n  \"cpf_max_refresh_views\": 16,\n  \"cpf_noise_obs_gate\": 1,\n  \"cpf_noise_weight\": 1.0,\n  \"cpf_prior_source\": \"render\",\n  \"cpf_pull_obs_gate\": 0,\n  \"cpf_pull_persist\": 0,\n  \"cpf_pull_weight\": 0.0,\n  \"cpf_refresh_stop_iter\": 0,\n  \"cpf_reliability_ema_decay\": 0.95,\n  \"cpf_reliability_gate\": 0,\n  \"cpf_reliability_loss_ratio\": 4.0,\n  \"cpf_reliability_min_loss\": 30.0,\n  \"cpf_residual_cache\": 0,\n  \"cpf_residual_cache_interval\": 200,\n  \"cpf_residual_cache_max_points\": 32768,\n  \"cpf_residual_cache_pixels\": 1024,\n  \"cpf_residual_cache_start_iter\": 1000,\n  \"cpf_residual_cache_until_iter\": 12000,\n  \"cpf_sfm_align_max_points\": 20000,\n  \"cpf_stop_iter\": 0,\n  \"cpf_train_interval\": 8,\n  \"cpf_train_stop_iter\": 0,\n  \"cpf_unique_every\": 8,\n  \"cpf_update_loss_threshold\": 0.0,\n  \"data_device\": \"cpu\",\n  \"dbscan_portion\": 0.3,\n  \"dds_ratio\": 2,\n  \"debug\": false,\n  \"debug_from\": -1,\n  \"densification_interval\": 200,\n  \"densify_from_iter\": 500,\n  \"densify_grad_threshold\": 0.0002,\n  \"densify_until_iter\": 25000,\n  \"depth_align_sfm_on_demand\": 0,\n  \"depth_init_points\": 0,\n  \"depth_init_stride\": 32,\n  \"depth_init_views\": 0,\n  \"depth_l1_stop_iter\": 0,\n  \"depth_l1_weight_final\": 0.0,\n  \"depth_l1_weight_init\": 0.0,\n  \"depth_normalize\": false,\n  \"depths\": \"dav2\",\n  \"detect_anomaly\": false,\n  \"disable_viewer\": true,\n  \"dvoxel_size\": 0.002,\n  \"eps\": 0.25,\n  \"eval\": false,\n  \"experimental_randomview_num\": 5,\n  \"experimental_schedule_gamma\": 0.9,\n  \"exposure_lr_delay_mult\": 0.0,\n  \"exposure_lr_delay_steps\": 0,\n  \"exposure_lr_final\": 0.001,\n  \"exposure_lr_init\": 0.01,\n  \"feature_lr\": 0.0025,\n  \"images\": \"images\",\n  \"init_type\": \"sfm\",\n  \"ip\": \"127.0.0.1\",\n  \"iterations\": 15000,\n  \"lambda_dssim\": 0.2,\n  \"load_iteration\": 0,\n  \"load_model_path\": \"\",\n  \"min_samples\": 500,\n  \"minmax\": \"wholeonly\",\n  \"model_path\": \"/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000\",\n  \"nn_derivatives_iter\": 3000,\n  \"nn_start_iter\": 2500,\n  \"nn_type\": \"allviews\",\n  \"nn_update_interval\": 3000,\n  \"nndebug\": true,\n  \"noise_lr\": 500000.0,\n  \"noise_method\": \"sigma-detach\",\n  \"opacity_lr\": 0.025,\n  \"opacity_reg\": 0.01,\n  \"opacity_reset_interval\": 3000,\n  \"optimizer_type\": \"default\",\n  \"partial_scaling\": 1.0,\n  \"percent_dense\": 0.01,\n  \"port\": 6009,\n  \"position_lr_delay_mult\": 0.01,\n  \"position_lr_final\": 1.6e-06,\n  \"position_lr_init\": 0.00016,\n  \"position_lr_max_steps\": 15000,\n  \"quiet\": true,\n  \"random_background\": false,\n  \"random_view_num\": 3,\n  \"range_scale\": 1.0,\n  \"resolution\": 1,\n  \"rotation_lr\": 0.001,\n  \"save_iterations\": [\n    4000,\n    6000,\n    8000,\n    10000,\n    12000,\n    15000,\n    15000\n  ],\n  \"scale_reg\": 0.01,\n  \"scaling_lr\": 0.005,\n  \"sh_degree\": 3,\n  \"sigma_scaling\": 1e-06,\n  \"source_path\": \"/data1/zhangao/DATA/large_angle/Zeche1/train\",\n  \"start_checkpoint\": null,\n  \"stochastic_stop_iter\": 0,\n  \"test_iterations\": [\n    99999999\n  ],\n  \"test_path\": \"/data1/zhangao/DATA/large_angle/Zeche1/test\",\n  \"test_selection_path\": \"\",\n  \"timing_breakdown\": false,\n  \"timing_sync\": false,\n  \"train_test_exp\": false,\n  \"white_background\": false\n}"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781692058.7684143,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781694624.9277246,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000/results.json",
+        "size": 202,
+        "mtime": 1781697106.8231275,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_15000\": {\n  \"SSIM\": 0.4349268972873688,\n  \"PSNR\": 11.22642993927002,\n  \"LPIPS\": 0.5678056478500366,\n  \"BRISQUE\": 52.51591873168945,\n  \"NIQE\": 5.887516700154841,\n  \"PIQE\": 40.79359436035156\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000/cfg_args",
+        "size": 519,
+        "mtime": 1781688799.9061372,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000/metrics.csv",
+        "size": 267,
+        "mtime": 1781697106.8231275,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000,test,ours_15000,0.4349268972873688,11.22642993927002,0.5678056478500366,52.51591873168945,5.887516700154841,40.79359436035156\n"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781670688.1810257,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781673881.2578204,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000/point_cloud/iteration_22000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781672185.6696997,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000/results.json",
+        "size": 603,
+        "mtime": 1781675379.697717,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_15000\": {\n  \"SSIM\": 0.3179705739021301,\n  \"PSNR\": 9.264007568359375,\n  \"LPIPS\": 0.5454605221748352,\n  \"BRISQUE\": 37.923614501953125,\n  \"NIQE\": 4.793904052091232,\n  \"PIQE\": 41.43347930908203\n },\n \"ours_30000\": {\n  \"SSIM\": 0.350222647190094,\n  \"PSNR\": 9.738446235656738,\n  \"LPIPS\": 0.5534273982048035,\n  \"BRISQUE\": 34.65105056762695,\n  \"NIQE\": 4.576347204252806,\n  \"PIQE\": 38.47187423706055\n },\n \"ours_22000\": {\n  \"SSIM\": 0.33528316020965576,\n  \"PSNR\": 9.51357650756836,\n  \"LPIPS\": 0.5475912094116211,\n  \"BRISQUE\": 35.55475997924805,\n  \"NIQE\": 4.633340907838647,\n  \"PIQE\": 39.130672454833984\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000/cfg_args",
+        "size": 513,
+        "mtime": 1781668120.1192281,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000/metrics.csv",
+        "size": 672,
+        "mtime": 1781675379.701717,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000,test,ours_15000,0.3179705739021301,9.264007568359375,0.5454605221748352,37.923614501953125,4.793904052091232,41.43347930908203\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000,test,ours_30000,0.350222647190094,9.738446235656738,0.5534273982048035,34.65105056762695,4.576347204252806,38.47187423706055\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000,test,ours_22000,0.33528316020965576,9.51357650756836,0.5475912094116211,35.55475997924805,4.633340907838647,39.130672454833984\n"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000/full_args.json",
+        "size": 4250,
+        "mtime": 1781668120.1152282,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "{\n  \"antialiasing\": true,\n  \"bound_type\": \"local\",\n  \"cap_max\": 2000000,\n  \"checkpoint_iterations\": [],\n  \"compute_cov3D_python\": false,\n  \"config\": null,\n  \"convert_SHs_python\": false,\n  \"cpf_densify\": false,\n  \"cpf_densify_birth\": 1,\n  \"cpf_densify_birth_ratio\": 1.0,\n  \"cpf_densify_density_points\": 16384,\n  \"cpf_densify_gap_min\": 0.0,\n  \"cpf_densify_gap_weight\": 0.5,\n  \"cpf_densify_guided_clone\": 0,\n  \"cpf_densify_guided_coarse_ratio\": 0.25,\n  \"cpf_densify_guided_coarse_scale\": 5.0,\n  \"cpf_densify_guided_cpf_weight\": 0.75,\n  \"cpf_densify_guided_density_weight\": 0.5,\n  \"cpf_densify_guided_fine_scale\": 1.0,\n  \"cpf_densify_guided_grad_weight\": 1.0,\n  \"cpf_densify_guided_ratio\": 1.0,\n  \"cpf_densify_pool\": 32768,\n  \"cpf_densify_relocate\": 1,\n  \"cpf_densify_sigma_min\": 0.0,\n  \"cpf_densify_sigma_weight\": 1.0,\n  \"cpf_densify_start_iter\": 3000,\n  \"cpf_densify_until_iter\": 12000,\n  \"cpf_densify_use_residual\": 0,\n  \"cpf_derivative_interval\": 2,\n  \"cpf_drift_max_points\": 0,\n  \"cpf_field_alpha_thresh\": 0.0,\n  \"cpf_field_sfm_anchor\": 0,\n  \"cpf_grad_create_graph\": false,\n  \"cpf_loss_cap\": 0.0,\n  \"cpf_loss_weight\": 1.0,\n  \"cpf_max_drift_norm\": 0.0005,\n  \"cpf_max_noise_norm\": 0.005,\n  \"cpf_max_points\": 100000,\n  \"cpf_max_refresh_views\": 16,\n  \"cpf_noise_obs_gate\": 1,\n  \"cpf_noise_weight\": 1.0,\n  \"cpf_prior_source\": \"render\",\n  \"cpf_pull_obs_gate\": 0,\n  \"cpf_pull_persist\": 0,\n  \"cpf_pull_weight\": 0.0,\n  \"cpf_refresh_stop_iter\": 0,\n  \"cpf_reliability_ema_decay\": 0.95,\n  \"cpf_reliability_gate\": 0,\n  \"cpf_reliability_loss_ratio\": 4.0,\n  \"cpf_reliability_min_loss\": 30.0,\n  \"cpf_residual_cache\": 0,\n  \"cpf_residual_cache_interval\": 200,\n  \"cpf_residual_cache_max_points\": 32768,\n  \"cpf_residual_cache_pixels\": 1024,\n  \"cpf_residual_cache_start_iter\": 1000,\n  \"cpf_residual_cache_until_iter\": 12000,\n  \"cpf_sfm_align_max_points\": 20000,\n  \"cpf_stop_iter\": 0,\n  \"cpf_train_interval\": 8,\n  \"cpf_train_stop_iter\": 0,\n  \"cpf_unique_every\": 8,\n  \"cpf_update_loss_threshold\": 0.0,\n  \"data_device\": \"cpu\",\n  \"dbscan_portion\": 0.3,\n  \"dds_ratio\": 2,\n  \"debug\": false,\n  \"debug_from\": -1,\n  \"densification_interval\": 200,\n  \"densify_from_iter\": 500,\n  \"densify_grad_threshold\": 0.0002,\n  \"densify_until_iter\": 25000,\n  \"depth_align_sfm_on_demand\": 0,\n  \"depth_init_points\": 0,\n  \"depth_init_stride\": 32,\n  \"depth_init_views\": 0,\n  \"depth_l1_stop_iter\": 0,\n  \"depth_l1_weight_final\": 0.0,\n  \"depth_l1_weight_init\": 0.0,\n  \"depth_normalize\": false,\n  \"depths\": \"dav2\",\n  \"detect_anomaly\": false,\n  \"disable_viewer\": true,\n  \"dvoxel_size\": 0.002,\n  \"eps\": 0.1,\n  \"eval\": false,\n  \"experimental_randomview_num\": 5,\n  \"experimental_schedule_gamma\": 0.9,\n  \"exposure_lr_delay_mult\": 0.0,\n  \"exposure_lr_delay_steps\": 0,\n  \"exposure_lr_final\": 0.001,\n  \"exposure_lr_init\": 0.01,\n  \"feature_lr\": 0.0025,\n  \"images\": \"images\",\n  \"init_type\": \"sfm\",\n  \"ip\": \"127.0.0.1\",\n  \"iterations\": 30000,\n  \"lambda_dssim\": 0.2,\n  \"load_iteration\": 0,\n  \"load_model_path\": \"\",\n  \"min_samples\": 500,\n  \"minmax\": \"wholeonly\",\n  \"model_path\": \"/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000\",\n  \"nn_derivatives_iter\": 3000,\n  \"nn_start_iter\": 2500,\n  \"nn_type\": \"allviews\",\n  \"nn_update_interval\": 3000,\n  \"nndebug\": true,\n  \"noise_lr\": 500000.0,\n  \"noise_method\": \"sigma-detach\",\n  \"opacity_lr\": 0.025,\n  \"opacity_reg\": 0.01,\n  \"opacity_reset_interval\": 3000,\n  \"optimizer_type\": \"default\",\n  \"partial_scaling\": 1.0,\n  \"percent_dense\": 0.01,\n  \"port\": 6009,\n  \"position_lr_delay_mult\": 0.01,\n  \"position_lr_final\": 1.6e-06,\n  \"position_lr_init\": 0.00016,\n  \"position_lr_max_steps\": 30000,\n  \"quiet\": true,\n  \"random_background\": false,\n  \"random_view_num\": 3,\n  \"range_scale\": 1.0,\n  \"resolution\": 1,\n  \"rotation_lr\": 0.001,\n  \"save_iterations\": [\n    15000,\n    22000,\n    30000,\n    30000\n  ],\n  \"scale_reg\": 0.01,\n  \"scaling_lr\": 0.005,\n  \"sh_degree\": 3,\n  \"sigma_scaling\": 1e-06,\n  \"source_path\": \"/data1/zhangao/DATA/large_angle/Zeche1/train\",\n  \"start_checkpoint\": null,\n  \"stochastic_stop_iter\": 0,\n  \"test_iterations\": [\n    99999999\n  ],\n  \"test_path\": \"/data1/zhangao/DATA/large_angle/Zeche1/test\",\n  \"test_selection_path\": \"\",\n  \"timing_breakdown\": false,\n  \"timing_sync\": false,\n  \"train_test_exp\": false,\n  \"white_background\": false\n}"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781601402.3417974,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/point_cloud/iteration_12000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781602317.0783627,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781603664.938198,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/point_cloud/iteration_8000/point_cloud.ply",
+        "size": 357823124,
+        "mtime": 1781600497.0983562,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/point_cloud/iteration_4000/point_cloud.ply",
+        "size": 134861947,
+        "mtime": 1781599227.6831014,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/point_cloud/iteration_6000/point_cloud.ply",
+        "size": 219673731,
+        "mtime": 1781599809.0961633,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/results.json",
+        "size": 955,
+        "mtime": 1781606725.596824,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_4000\": {\n  \"SSIM\": 0.416948139667511,\n  \"PSNR\": 10.747851371765137,\n  \"LPIPS\": 0.5642361044883728,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_15000\": {\n  \"SSIM\": 0.40781593322753906,\n  \"PSNR\": 10.444317817687988,\n  \"LPIPS\": 0.5725517272949219,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_8000\": {\n  \"SSIM\": 0.46428626775741577,\n  \"PSNR\": 11.906423568725586,\n  \"LPIPS\": 0.5364654660224915,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_6000\": {\n  \"SSIM\": 0.4240237772464752,\n  \"PSNR\": 11.171310424804688,\n  \"LPIPS\": 0.5526227951049805,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_12000\": {\n  \"SSIM\": 0.4479488134384155,\n  \"PSNR\": 11.219000816345215,\n  \"LPIPS\": 0.5574499368667603,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n },\n \"ours_10000\": {\n  \"SSIM\": 0.43712741136550903,\n  \"PSNR\": 10.657510757446289,\n  \"LPIPS\": 0.5436969995498657,\n  \"BRISQUE\": 0.0,\n  \"NIQE\": 0.0,\n  \"PIQE\": 0.0\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/cfg_args",
+        "size": 521,
+        "mtime": 1781598613.3231423,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000/metrics.csv",
+        "size": 1087,
+        "mtime": 1781606725.608824,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000,test,ours_4000,0.416948139667511,10.747851371765137,0.5642361044883728,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000,test,ours_15000,0.40781593322753906,10.444317817687988,0.5725517272949219,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000,test,ours_8000,0.46428626775741577,11.906423568725586,0.5364654660224915,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000,test,ours_6000,0.4240237772464752,11.171310424804688,0.5526227951049805,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000,test,ours_12000,0.4479488134384155,11.219000816345215,0.5574499368667603,0.0,0.0,0.0\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000,test,ours_10000,0.43712741136550903,10.657510757446289,0.5436969995498657,0.0,0.0,0.0\n"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_V3d_matrixcity_slow_early_i15000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_V3d_matrixcity_slow_early_i15000/point_cloud/iteration_8000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781621572.4419394,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_V3d_matrixcity_slow_early_i15000/point_cloud/iteration_4000/point_cloud.ply",
+        "size": 304145012,
+        "mtime": 1781616909.9293919,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_V3d_matrixcity_slow_early_i15000/point_cloud/iteration_6000/point_cloud.ply",
+        "size": 495417988,
+        "mtime": 1781619389.1429524,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_V3d_matrixcity_slow_early_i15000/cfg_args",
+        "size": 631,
+        "mtime": 1781614127.3971937,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_V3d_matrixcity_slow_early_i15000', images='input_cached', depths='dav2_cached', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781678164.1272314,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781680021.9354603,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781686002.6230955,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000/point_cloud/iteration_22000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1781682519.9197798,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000/results.json",
+        "size": 808,
+        "mtime": 1781688779.9222047,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_15000\": {\n  \"SSIM\": 0.44090861082077026,\n  \"PSNR\": 11.541210174560547,\n  \"LPIPS\": 0.5602733492851257,\n  \"BRISQUE\": 55.30759048461914,\n  \"NIQE\": 5.970880608758924,\n  \"PIQE\": 42.626033782958984\n },\n \"ours_30000\": {\n  \"SSIM\": 0.4131506085395813,\n  \"PSNR\": 10.77793025970459,\n  \"LPIPS\": 0.561145007610321,\n  \"BRISQUE\": 50.599082946777344,\n  \"NIQE\": 5.339547970164464,\n  \"PIQE\": 39.09785079956055\n },\n \"ours_22000\": {\n  \"SSIM\": 0.42707106471061707,\n  \"PSNR\": 11.241118431091309,\n  \"LPIPS\": 0.5673116445541382,\n  \"BRISQUE\": 50.321537017822266,\n  \"NIQE\": 5.426917144936129,\n  \"PIQE\": 40.07752990722656\n },\n \"ours_10000\": {\n  \"SSIM\": 0.44811922311782837,\n  \"PSNR\": 11.931661605834961,\n  \"LPIPS\": 0.575129508972168,\n  \"BRISQUE\": 53.808265686035156,\n  \"NIQE\": 5.845961183691005,\n  \"PIQE\": 46.050537109375\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000/cfg_args",
+        "size": 519,
+        "mtime": 1781675741.4460626,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', depth_init_points=0, depth_init_stride=32, depth_init_views=0, load_iteration=0, load_model_path='')"
+      },
+      {
+        "path": "/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000/metrics.csv",
+        "size": 906,
+        "mtime": 1781688779.9302046,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000,test,ours_15000,0.44090861082077026,11.541210174560547,0.5602733492851257,55.30759048461914,5.970880608758924,42.626033782958984\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000,test,ours_30000,0.4131506085395813,10.77793025970459,0.561145007610321,50.599082946777344,5.339547970164464,39.09785079956055\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000,test,ours_22000,0.42707106471061707,11.241118431091309,0.5673116445541382,50.321537017822266,5.426917144936129,40.07752990722656\n/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000,test,ours_10000,0.44811922311782837,11.931661605834961,0.575129508972168,53.808265686035156,5.845961183691005,46.050537109375\n"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines/Zeche1/mh-3dgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines/Zeche1/mh-3dgs-original/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 160644027,
+        "mtime": 1769419227.2930243,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines/Zeche1/mh-3dgs-original/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 211477827,
+        "mtime": 1769420206.597334,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines/Zeche1/mh-3dgs-original/results.json",
+        "size": 203,
+        "mtime": 1769783875.7146611,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.4501768946647644,\n  \"PSNR\": 11.789445877075195,\n  \"LPIPS\": 0.5410920977592468,\n  \"BRISQUE\": 37.51482009887695,\n  \"NIQE\": 4.613952383419236,\n  \"PIQE\": 45.93600845336914\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines/Zeche1/mh-3dgs-original/cfg_args",
+        "size": 353,
+        "mtime": 1769418854.7610877,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/baselines/Zeche1/mh-3dgs-original', images='images', depths='', resolution=1, white_background=False, test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines/blockA_fusion_small_aerial+somestreet/mh-3dgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 191092971,
+        "mtime": 1769420726.655216,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 224961091,
+        "mtime": 1769421765.9246945,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/results.json",
+        "size": 203,
+        "mtime": 1769784341.8093822,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.5736698508262634,\n  \"PSNR\": 15.584857940673828,\n  \"LPIPS\": 0.49685466289520264,\n  \"BRISQUE\": 57.39796829223633,\n  \"NIQE\": 5.722379150510556,\n  \"PIQE\": 73.6847915649414\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/cfg_args",
+        "size": 452,
+        "mtime": 1769420211.0813577,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/baselines/blockA_fusion_small_aerial+somestreet/mh-3dgs-original', images='input_cached', depths='', resolution=1, white_background=False, test_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3/chkpnt3000_mv2.pth",
+        "size": 1743985209,
+        "mtime": 1772361365.8734968,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 991138988,
+        "mtime": 1772361718.2970822,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 1433418716,
+        "mtime": 1772364038.4007442,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3/results.json",
+        "size": 202,
+        "mtime": 1772365020.6196682,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.34007763862609863,\n  \"PSNR\": 9.494166374206543,\n  \"LPIPS\": 0.580940306186676,\n  \"BRISQUE\": 36.390838623046875,\n  \"NIQE\": 4.349640513628638,\n  \"PIQE\": 36.7785758972168\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3/cfg_args",
+        "size": 335,
+        "mtime": 1772361180.7819653,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3', images='images', resolution=1, white_background=False, data_device='cpu', eval=False, test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 160609803,
+        "mtime": 1772347047.5844064,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 211557683,
+        "mtime": 1772348122.6020606,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/results.json",
+        "size": 204,
+        "mtime": 1772382407.8385394,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.4805350601673126,\n  \"PSNR\": 12.703323364257812,\n  \"LPIPS\": 0.5456687808036804,\n  \"BRISQUE\": 38.132564544677734,\n  \"NIQE\": 4.685464078396573,\n  \"PIQE\": 46.08891296386719\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/cfg_args",
+        "size": 367,
+        "mtime": 1772346619.251861,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original', images='images', depths='', resolution=1, white_background=False, test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_woantialiasing",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_woantialiasing/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 248001532,
+        "mtime": 1772381990.731869,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_woantialiasing/results.json",
+        "size": 205,
+        "mtime": 1772412084.1649623,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.44907262921333313,\n  \"PSNR\": 11.704497337341309,\n  \"LPIPS\": 0.5579042434692383,\n  \"BRISQUE\": 53.22187423706055,\n  \"NIQE\": 5.621997439377713,\n  \"PIQE\": 41.212242126464844\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_woantialiasing/cfg_args",
+        "size": 528,
+        "mtime": 1772374050.1782095,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_woantialiasing', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=1000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/3dgs-depth",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/3dgs-depth/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 609295620,
+        "mtime": 1773131533.9941633,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/3dgs-depth/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 704451980,
+        "mtime": 1773132676.1618311,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/3dgs-depth/results.json",
+        "size": 203,
+        "mtime": 1773145117.4503002,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.3414078652858734,\n  \"PSNR\": 9.646305084228516,\n  \"LPIPS\": 0.5772756338119507,\n  \"BRISQUE\": 44.35847854614258,\n  \"NIQE\": 4.985325135398039,\n  \"PIQE\": 40.839054107666016\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/3dgs-depth/cfg_args",
+        "size": 365,
+        "mtime": 1773131195.577676,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/3dgs-depth', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 296091648,
+        "mtime": 1782965491.0387592,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/results.json",
+        "size": 200,
+        "mtime": 1773323336.3378143,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.327388197183609,\n  \"PSNR\": 9.445363998413086,\n  \"LPIPS\": 0.566351056098938,\n  \"BRISQUE\": 40.13334655761719,\n  \"NIQE\": 4.572172267859426,\n  \"PIQE\": 43.07041549682617\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/cfg_args",
+        "size": 498,
+        "mtime": 1772807167.9057412,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(confidence_map_output=True, data_device='cpu', debug_dir='debug', debug_output=True, depth_model_type='depthanything', eval=False, images='images', kshot=1000, model_path='/data2/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original', predefined_depth_path=None, resolution=1, seed=42, sh_degree=3, source_path='/data/zhangao/VastGaussian/Zeche1/train', test_path='/data/zhangao/VastGaussian/Zeche1/test', test_selection_path='', use_predefined_depth=False, white_background=False)"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_2000000_woantialiasing",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_2000000_woantialiasing/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 496001532,
+        "mtime": 1772374041.8741896,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_2000000_woantialiasing/results.json",
+        "size": 205,
+        "mtime": 1772374803.319111,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.45808500051498413,\n  \"PSNR\": 11.819947242736816,\n  \"LPIPS\": 0.5970306992530823,\n  \"BRISQUE\": 63.52340316772461,\n  \"NIQE\": 7.781425406198735,\n  \"PIQE\": 45.926509857177734\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_2000000_woantialiasing/cfg_args",
+        "size": 528,
+        "mtime": 1772365065.9116178,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/Zeche1/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_2000000_woantialiasing', images='images', depths='dav2', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=2000000, init_type='sfm', test_path='/data1/zhangao/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3/chkpnt3000_mv2.pth",
+        "size": 1730807865,
+        "mtime": 1772358605.2732553,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 1172530652,
+        "mtime": 1772358904.1689255,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 2110946036,
+        "mtime": 1772361174.8739843,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3/chkpnt3000_mv3.pth",
+        "size": 1943612985,
+        "mtime": 1772357752.830641,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3/results.json",
+        "size": 206,
+        "mtime": 1772364587.1764789,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.5409441590309143,\n  \"PSNR\": 15.609874725341797,\n  \"LPIPS\": 0.49040281772613525,\n  \"BRISQUE\": 42.178260803222656,\n  \"NIQE\": 4.196257755872774,\n  \"PIQE\": 61.993690490722656\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3/cfg_args",
+        "size": 434,
+        "mtime": 1772358394.8742583,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3', images='input_cached', resolution=1, white_background=False, data_device='cpu', eval=False, test_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 191237307,
+        "mtime": 1772348811.4147148,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 225084595,
+        "mtime": 1772349958.7172234,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/results.json",
+        "size": 203,
+        "mtime": 1772351698.8542116,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.5599263906478882,\n  \"PSNR\": 15.296549797058105,\n  \"LPIPS\": 0.5016659498214722,\n  \"BRISQUE\": 57.64512634277344,\n  \"NIQE\": 5.755702106028767,\n  \"PIQE\": 73.62434387207031\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original/cfg_args",
+        "size": 466,
+        "mtime": 1772348134.2502859,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original', images='input_cached', depths='', resolution=1, white_background=False, test_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 766402876,
+        "mtime": 1773146439.713319,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 1418720252,
+        "mtime": 1773147439.5934577,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth/results.json",
+        "size": 204,
+        "mtime": 1773148256.3743348,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.4575122892856598,\n  \"PSNR\": 12.943455696105957,\n  \"LPIPS\": 0.5317511558532715,\n  \"BRISQUE\": 25.65806007385254,\n  \"NIQE\": 3.7199970658128025,\n  \"PIQE\": 39.50247573852539\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth/cfg_args",
+        "size": 471,
+        "mtime": 1773146175.457167,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth', images='input_cached', depths='dav2_cached', resolution=1, white_background=False, train_test_exp=False, data_device='cpu', eval=False, test_path='/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780482471.4108627,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/point_cloud/iteration_12000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780482683.6500187,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1/cfg_args",
+        "size": 383,
+        "mtime": 1780481888.4500742,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/20934fd3-1', images='images', depths='dav2', resolution=2, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=846663, init_type='sfm', test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780484555.9795504,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7/cfg_args",
+        "size": 383,
+        "mtime": 1780483858.5664775,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/ae3beb67-7', images='images', depths='dav2', resolution=2, white_background=False, train_test_exp=False, data_device='cpu', eval=False, cap_max=846663, init_type='sfm', test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='')"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 159830091,
+        "mtime": 1780480513.3296685,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 209973955,
+        "mtime": 1780480973.0050135,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7/cfg_args",
+        "size": 346,
+        "mtime": 1780480351.1477952,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/9bdfdbd0-7', images='images', depths='', resolution=2, white_background=False, test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/point_cloud/iteration_100/point_cloud.ply",
+        "size": 58842011,
+        "mtime": 1780480333.4757614,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a/cfg_args",
+        "size": 346,
+        "mtime": 1780480312.7199917,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/train', model_path='./output/214337d7-a', images='images', depths='', resolution=2, white_background=False, test_path='/mnt/c/Users/Aooooo/Documents/DATA/large_angle/Zeche1/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/color_mlp.pt",
+        "size": 21855,
+        "mtime": 1790497466.7846682,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/cov_mlp.pt",
+        "size": 21533,
+        "mtime": 1790497466.769668,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/opacity_mlp.pt",
+        "size": 13757,
+        "mtime": 1790497466.754668,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/embedding_appearance.pt",
+        "size": 32007,
+        "mtime": 1790497466.793668,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/point_cloud.ply",
+        "size": 163322409,
+        "mtime": 1790497466.5166671,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/chkpnt1602.pth",
+        "size": 293698914,
+        "mtime": 1790497467.1496694,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/cfg_args",
+        "size": 774,
+        "mtime": 1790497330.6781435,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, feat_dim=32, n_offsets=10, voxel_size=0.001, update_depth=3, update_init_factor=16, update_hierachy_factor=4, use_feat_bank=False, source_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000', images='input_cached', resolution=1, white_background=False, data_device='cpu', eval=False, lod=0, appearance_dim=32, lowpoly=False, ds=1, ratio=1, undistorted=False, test_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', add_opacity_dist=False, add_cov_dist=False, add_color_dist=False)"
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/full_args.json",
+        "size": 2580,
+        "mtime": 1790497330.6721435,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "{\n  \"sh_degree\": 3,\n  \"feat_dim\": 32,\n  \"n_offsets\": 10,\n  \"voxel_size\": 0.001,\n  \"update_depth\": 3,\n  \"update_init_factor\": 16,\n  \"update_hierachy_factor\": 4,\n  \"use_feat_bank\": false,\n  \"source_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train\",\n  \"model_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000\",\n  \"images\": \"input_cached\",\n  \"resolution\": 1,\n  \"white_background\": false,\n  \"data_device\": \"cpu\",\n  \"eval\": false,\n  \"lod\": 0,\n  \"appearance_dim\": 32,\n  \"lowpoly\": false,\n  \"ds\": 1,\n  \"ratio\": 1,\n  \"undistorted\": false,\n  \"test_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test\",\n  \"test_selection_path\": \"\",\n  \"add_opacity_dist\": false,\n  \"add_cov_dist\": false,\n  \"add_color_dist\": false,\n  \"iterations\": 1602,\n  \"position_lr_init\": 0.0,\n  \"position_lr_final\": 0.0,\n  \"position_lr_delay_mult\": 0.01,\n  \"position_lr_max_steps\": 30000,\n  \"offset_lr_init\": 0.01,\n  \"offset_lr_final\": 0.0001,\n  \"offset_lr_delay_mult\": 0.01,\n  \"offset_lr_max_steps\": 30000,\n  \"feature_lr\": 0.0075,\n  \"opacity_lr\": 0.02,\n  \"scaling_lr\": 0.007,\n  \"rotation_lr\": 0.002,\n  \"mlp_opacity_lr_init\": 0.002,\n  \"mlp_opacity_lr_final\": 2e-05,\n  \"mlp_opacity_lr_delay_mult\": 0.01,\n  \"mlp_opacity_lr_max_steps\": 30000,\n  \"mlp_cov_lr_init\": 0.004,\n  \"mlp_cov_lr_final\": 0.004,\n  \"mlp_cov_lr_delay_mult\": 0.01,\n  \"mlp_cov_lr_max_steps\": 30000,\n  \"mlp_color_lr_init\": 0.008,\n  \"mlp_color_lr_final\": 5e-05,\n  \"mlp_color_lr_delay_mult\": 0.01,\n  \"mlp_color_lr_max_steps\": 30000,\n  \"mlp_featurebank_lr_init\": 0.01,\n  \"mlp_featurebank_lr_final\": 1e-05,\n  \"mlp_featurebank_lr_delay_mult\": 0.01,\n  \"mlp_featurebank_lr_max_steps\": 30000,\n  \"appearance_lr_init\": 0.05,\n  \"appearance_lr_final\": 0.0005,\n  \"appearance_lr_delay_mult\": 0.01,\n  \"appearance_lr_max_steps\": 30000,\n  \"percent_dense\": 0.01,\n  \"lambda_dssim\": 0.2,\n  \"start_stat\": 500,\n  \"update_from\": 1500,\n  \"update_interval\": 100,\n  \"update_until\": 15000,\n  \"min_opacity\": 0.005,\n  \"success_threshold\": 0.8,\n  \"densify_grad_threshold\": 0.0002,\n  \"convert_SHs_python\": false,\n  \"compute_cov3D_python\": false,\n  \"debug\": false,\n  \"ip\": \"127.0.0.1\",\n  \"port\": 16321,\n  \"debug_from\": -1,\n  \"detect_anomaly\": false,\n  \"warmup\": false,\n  \"use_wandb\": false,\n  \"test_iterations\": [\n    1603\n  ],\n  \"save_iterations\": [\n    1602,\n    1602\n  ],\n  \"quiet\": false,\n  \"checkpoint_iterations\": [\n    1602\n  ],\n  \"start_checkpoint\": null,\n  \"gpu\": \"-1\",\n  \"run_seed\": 0\n}"
+      }
+    ]
+  },
+  {
+    "host": "local",
+    "run": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/point_cloud/iteration_1602/color_mlp.pt",
+        "size": 21855,
+        "mtime": 1790501259.1404202,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/point_cloud/iteration_1602/cov_mlp.pt",
+        "size": 21533,
+        "mtime": 1790501259.12842,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/point_cloud/iteration_1602/opacity_mlp.pt",
+        "size": 13757,
+        "mtime": 1790501259.11642,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/point_cloud/iteration_1602/embedding_appearance.pt",
+        "size": 32007,
+        "mtime": 1790501259.1484203,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/point_cloud/iteration_1602/point_cloud.ply",
+        "size": 163334101,
+        "mtime": 1790501258.8884177,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/chkpnt1602.pth",
+        "size": 293720437,
+        "mtime": 1790501259.6044247,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/cfg_args",
+        "size": 780,
+        "mtime": 1790501125.467047,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, feat_dim=32, n_offsets=10, voxel_size=0.001, update_depth=3, update_init_factor=16, update_hierachy_factor=4, use_feat_bank=False, source_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000', images='input_cached', resolution=1, white_background=False, data_device='cpu', eval=False, lod=0, appearance_dim=32, lowpoly=False, ds=1, ratio=1, undistorted=False, test_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', add_opacity_dist=False, add_cov_dist=False, add_color_dist=False)"
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000/full_args.json",
+        "size": 2586,
+        "mtime": 1790501125.4630468,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "{\n  \"sh_degree\": 3,\n  \"feat_dim\": 32,\n  \"n_offsets\": 10,\n  \"voxel_size\": 0.001,\n  \"update_depth\": 3,\n  \"update_init_factor\": 16,\n  \"update_hierachy_factor\": 4,\n  \"use_feat_bank\": false,\n  \"source_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train\",\n  \"model_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000\",\n  \"images\": \"input_cached\",\n  \"resolution\": 1,\n  \"white_background\": false,\n  \"data_device\": \"cpu\",\n  \"eval\": false,\n  \"lod\": 0,\n  \"appearance_dim\": 32,\n  \"lowpoly\": false,\n  \"ds\": 1,\n  \"ratio\": 1,\n  \"undistorted\": false,\n  \"test_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test\",\n  \"test_selection_path\": \"\",\n  \"add_opacity_dist\": false,\n  \"add_cov_dist\": false,\n  \"add_color_dist\": false,\n  \"iterations\": 1602,\n  \"position_lr_init\": 0.0,\n  \"position_lr_final\": 0.0,\n  \"position_lr_delay_mult\": 0.01,\n  \"position_lr_max_steps\": 30000,\n  \"offset_lr_init\": 0.01,\n  \"offset_lr_final\": 0.0001,\n  \"offset_lr_delay_mult\": 0.01,\n  \"offset_lr_max_steps\": 30000,\n  \"feature_lr\": 0.0075,\n  \"opacity_lr\": 0.02,\n  \"scaling_lr\": 0.007,\n  \"rotation_lr\": 0.002,\n  \"mlp_opacity_lr_init\": 0.002,\n  \"mlp_opacity_lr_final\": 2e-05,\n  \"mlp_opacity_lr_delay_mult\": 0.01,\n  \"mlp_opacity_lr_max_steps\": 30000,\n  \"mlp_cov_lr_init\": 0.004,\n  \"mlp_cov_lr_final\": 0.004,\n  \"mlp_cov_lr_delay_mult\": 0.01,\n  \"mlp_cov_lr_max_steps\": 30000,\n  \"mlp_color_lr_init\": 0.008,\n  \"mlp_color_lr_final\": 5e-05,\n  \"mlp_color_lr_delay_mult\": 0.01,\n  \"mlp_color_lr_max_steps\": 30000,\n  \"mlp_featurebank_lr_init\": 0.01,\n  \"mlp_featurebank_lr_final\": 1e-05,\n  \"mlp_featurebank_lr_delay_mult\": 0.01,\n  \"mlp_featurebank_lr_max_steps\": 30000,\n  \"appearance_lr_init\": 0.05,\n  \"appearance_lr_final\": 0.0005,\n  \"appearance_lr_delay_mult\": 0.01,\n  \"appearance_lr_max_steps\": 30000,\n  \"percent_dense\": 0.01,\n  \"lambda_dssim\": 0.2,\n  \"start_stat\": 500,\n  \"update_from\": 1500,\n  \"update_interval\": 100,\n  \"update_until\": 15000,\n  \"min_opacity\": 0.005,\n  \"success_threshold\": 0.8,\n  \"densify_grad_threshold\": 0.0002,\n  \"convert_SHs_python\": false,\n  \"compute_cov3D_python\": false,\n  \"debug\": false,\n  \"ip\": \"127.0.0.1\",\n  \"port\": 16321,\n  \"debug_from\": -1,\n  \"detect_anomaly\": false,\n  \"warmup\": false,\n  \"use_wandb\": false,\n  \"test_iterations\": [\n    1603\n  ],\n  \"save_iterations\": [\n    1602,\n    1602\n  ],\n  \"quiet\": false,\n  \"checkpoint_iterations\": [\n    1602\n  ],\n  \"start_checkpoint\": null,\n  \"gpu\": \"-1\",\n  \"run_seed\": 0\n}"
+      }
+    ]
+  }
+]

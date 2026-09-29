@@ -7,7 +7,7 @@ set -uo pipefail
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-1}
 
 SCENE=${SCENE:?set SCENE}
-ANGLE=${ANGLE:?set ANGLE}
+ANGLE=${ANGLE:-0}                         # required only for angle splits; traintest/discontinuous ignore it
 TAG=${TAG:?set TAG}                       # output subdir tag, e.g. depth03
 DATA_ROOT=${DATA_ROOT:-/data1/zhangao/DATA}
 DATASET=${DATASET:-mipnerf360}
@@ -54,11 +54,32 @@ export SCENE SOURCE_PATH="$SRC"
 export CAP_MAX=${CAP_MAX:?set CAP_MAX}
 export IMAGES=${IMAGES:-images_4}
 export DEPTHS=${DEPTHS:-dav2_4}
-export TEST_SELECTION="${SRC}/test_selection_angle_${ANGLE}.txt"
 export TEST_PATH=""
-export LABEL="${SCENE}_angle_${ANGLE}_${TAG}"
-export MODEL_PATH="${OUT_ROOT}/${DATASET}/${SCENE}_angle_${ANGLE}_${TAG}_i${ITERATIONS}"
+if [ "${SPLIT:-}" = "traintest" ]; then   # Table 3 aerial-ground: train on ${SRC}/train, evaluate on ${SRC}/test
+    export SOURCE_PATH="${SRC}/train"
+    export TEST_PATH="${SRC}/test"
+    export TEST_SELECTION=""
+    export LABEL="${SCENE}_traintest_${TAG}"
+    export MODEL_PATH="${OUT_ROOT}/${DATASET}/${SCENE}_traintest_${TAG}_i${ITERATIONS}"
+elif [ -n "${SPLIT:-}" ]; then    # SPLIT=discontinuous -> ${SRC}/discontinuous.txt (Table 2); ANGLE unused
+    export TEST_SELECTION="${SRC}/${SPLIT}.txt"
+    export LABEL="${SCENE}_${SPLIT}_${TAG}"
+    export MODEL_PATH="${OUT_ROOT}/${DATASET}/${SCENE}_${SPLIT}_${TAG}_i${ITERATIONS}"
+else
+    export TEST_SELECTION="${SRC}/test_selection_angle_${ANGLE}.txt"
+    export LABEL="${SCENE}_angle_${ANGLE}_${TAG}"
+    export MODEL_PATH="${OUT_ROOT}/${DATASET}/${SCENE}_angle_${ANGLE}_${TAG}_i${ITERATIONS}"
+fi
 
-echo "======== DIAG ${SCENE}@${ANGLE} [${TAG}] cap=${CAP_MAX} depthW=${DEPTH_L1_WEIGHT_INIT} nview=${RANDOM_VIEW_NUM} prior=${CPF_PRIOR_SOURCE} -> ${MODEL_PATH}"
-PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True bash run_fast_lss_dev.sh
-echo "[diag_run] DONE ${MODEL_PATH}"
+echo "======== DIAG ${SCENE}@${ANGLE} [${TAG}] cap=${CAP_MAX} depthW=${DEPTH_L1_WEIGHT_INIT} nview=${RANDOM_VIEW_NUM} prior=${CPF_PRIOR_SOURCE} slow=${SLOW:-0} -> ${MODEL_PATH}"
+if [ "${SLOW:-0}" = "1" ]; then    # SLOW pipeline: original train_experimental_branch3.py + depth + nview3 (GS-LSS recipe)
+    PYTORCH_CUDA_ALLOC_CONF=${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True} bash repro_develop3.sh; rc=$?
+else
+    PYTORCH_CUDA_ALLOC_CONF=${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True} bash run_fast_lss_dev.sh; rc=$?
+fi
+# Belt-and-suspenders: a run is only successful if it left an ours_ metric (i.e. a real
+# checkpoint that rendered). A uvm-killed run leaves none -> propagate failure so the
+# worker routes it to fail/ (retryable), instead of silently marking it done.
+if ! grep -q "ours_" "${MODEL_PATH}/metrics.csv" 2>/dev/null; then rc=1; fi
+echo "[diag_run] DONE (rc=${rc}) ${MODEL_PATH}"
+exit "$rc"

@@ -1,0 +1,24 @@
+{
+  "3dgs": {
+    "status": "passed",
+    "smoke": "baseline_06/seed_000000",
+    "iterations": 20
+  },
+  "mcmc": {
+    "status": "passed",
+    "smoke": "baseline_59/seed_000000",
+    "iterations": 602
+  },
+  "pgsr": {
+    "status": "passed",
+    "smoke": "baseline_42/seed_000000",
+    "iterations": 7002,
+    "geometry_isolation_verified": true
+  },
+  "scaffold": {
+    "status": "passed",
+    "smoke": "baseline_62/seed_000000",
+    "iterations": 1602,
+    "mirror_verified": true
+  }
+}

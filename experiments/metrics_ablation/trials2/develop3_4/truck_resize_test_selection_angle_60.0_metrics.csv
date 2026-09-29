@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/develop3_trials/truck_resize/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e-2_sigma1e-6_sigma-detach_nview3_2000000_test_selection_angle_60.0_0.01_trial4,test,ours_30000,0.6993841528892517,18.93275260925293,0.24631625413894653,23.36324691772461,2.4670464717765688,48.25267791748047

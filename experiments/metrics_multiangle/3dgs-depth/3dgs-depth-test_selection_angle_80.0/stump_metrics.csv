@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/stump/3dgs-depth-test_selection_angle_80.0,test,ours_30000,0.5111321210861206,20.110492706298828,0.40568241477012634,26.795705795288086,3.0818416730952958,37.372032165527344

@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/bicycle/mh-3dgs-original_test_selection_angle_180.0,test,ours_30000,0.3677684962749481,14.555726051330566,0.5080119967460632,29.777313232421875,3.1074152600106726,42.445350646972656

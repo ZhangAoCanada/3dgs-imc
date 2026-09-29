@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/train_resize/scaffoldgs-original,test,ours_30000,0.6833832859992981,17.110658645629883,0.275984525680542,33.25902557373047,3.3139071036355197,58.584259033203125

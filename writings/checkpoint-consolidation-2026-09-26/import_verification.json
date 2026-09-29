@@ -1,0 +1,16 @@
+{
+  "files": 3401,
+  "bytes": 124700799863,
+  "files_by_host": {
+    "hust10": 188,
+    "hust2": 3156,
+    "wsl": 57
+  },
+  "bytes_by_host": {
+    "hust10": 8109166694,
+    "hust2": 115393117808,
+    "wsl": 1198515361
+  },
+  "mismatch_count": 0,
+  "missing_count": 0
+}

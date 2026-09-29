@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/stump/pgsr2-original-3000000_test_selection_angle_40.0,test,ours_30000,0.5949916839599609,21.363643646240234,0.3625224530696869,28.577260971069336,3.0934523211903233,41.48892593383789

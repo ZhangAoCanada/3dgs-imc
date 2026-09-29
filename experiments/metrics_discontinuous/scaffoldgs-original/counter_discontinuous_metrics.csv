@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/counter/scaffoldgs-original,test,ours_30000,0.8974658846855164,28.06634521484375,0.11719106137752533,17.854217529296875,2.84293506891055,47.723751068115234

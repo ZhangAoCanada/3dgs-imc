@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi/treehill/develop3_allviews_local_eps0.25_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_3300000_test_selection_angle_120.0_0.001_woantialiasing,test,ours_30000,0.43653765320777893,13.729277610778809,0.4695815145969391,18.183547973632812,2.442848058493766,31.53805160522461

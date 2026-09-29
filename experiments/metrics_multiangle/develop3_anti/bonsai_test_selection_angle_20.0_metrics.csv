@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/develop3_multi_angle2/bonsai/develop3_allviews_local_eps0.5_minsamples500_depth0.3_wholeonly_rangescale1.0_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_test_selection_angle_20.0_0.001,test,ours_30000,0.9493400454521179,30.893728256225586,0.1312112659215927,29.754894256591797,4.071473936068155,53.74922561645508

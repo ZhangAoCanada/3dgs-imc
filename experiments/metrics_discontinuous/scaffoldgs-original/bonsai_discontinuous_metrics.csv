@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/bonsai/scaffoldgs-original,test,ours_30000,0.938092052936554,29.81460952758789,0.107993483543396,29.147144317626953,3.7504784170646355,51.51226043701172

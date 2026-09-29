@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/stump/3dgs-mcmc-original-4200000_test_selection_angle_150.0,test,ours_30000,0.42059826850891113,17.38379669189453,0.4435453712940216,34.26408386230469,4.092859947503302,34.20209503173828

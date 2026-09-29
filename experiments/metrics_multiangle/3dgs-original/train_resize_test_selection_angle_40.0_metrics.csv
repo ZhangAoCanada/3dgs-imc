@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/train_resize/3dgs-original-test_selection_angle_40.0,test,ours_30000,0.7110744714736938,17.553293228149414,0.2644366919994354,33.954097747802734,3.305427037037755,58.97373580932617

@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/bicycle/scaffoldgs-original,test,ours_30000,0.6040316820144653,19.38869857788086,0.3076655864715576,21.94487953186035,2.3988932689158813,37.344879150390625

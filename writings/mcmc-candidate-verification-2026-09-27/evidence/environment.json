@@ -1,0 +1,41 @@
+{
+  "host": "user-server",
+  "python": "3.10.20 (main, Mar 11 2026, 17:46:40) [GCC 14.3.0]",
+  "executable": "/data1/ZHANGAo_2024/.conda/envs/mcmc/bin/python",
+  "native_repo": "/data1/zhangao/repos/3dgs-mcmc",
+  "native_commit": "7b4fc9f76a1c7b775f69603cb96e70f80c7e6d13",
+  "snapshot_used": "/data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452/code_renderer",
+  "torch": "2.4.0+cu118",
+  "torchvision": "0.19.0+cu118",
+  "cuda": "11.8",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "visible_devices": "1",
+  "settings_fields": [
+    "image_height",
+    "image_width",
+    "tanfovx",
+    "tanfovy",
+    "bg",
+    "scale_modifier",
+    "viewmatrix",
+    "projmatrix",
+    "sh_degree",
+    "campos",
+    "prefiltered",
+    "debug"
+  ],
+  "versions": {
+    "numpy": "2.2.5",
+    "Pillow": "12.2.0",
+    "plyfile": "1.1.3",
+    "scipy": "1.15.3",
+    "pyiqa": "0.1.12"
+  },
+  "compiled_files": {
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/diff_gaussian_rasterization/__init__.py": "f16b0d4ee29bccab0ac8b2c904de7c0e73338166f17496f1efa1f45dddd6f707",
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/diff_gaussian_rasterization/_C.cpython-310-x86_64-linux-gnu.so": "47170109d68381c9538fb3cb3a2c06dc2366dabd2d9184691f4398d4e73ad387",
+    "/data1/ZHANGAo_2024/.conda/envs/mcmc/lib/python3.10/site-packages/simple_knn/_C.cpython-310-x86_64-linux-gnu.so": "12b3468ce8732a2e864e9aa06a15a97e5d479f293383e3ad258735dba2544ca7"
+  },
+  "cudnn_allow_tf32": true,
+  "matmul_allow_tf32": false
+}

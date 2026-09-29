@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/develop3_discontinuous_woantialiasing/flowers/develop3_allviews_local_eps0.5_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_3000000_discontinuous_0.001,test,ours_30000,0.6124267578125,20.87432098388672,0.3170619606971741,21.000879287719727,2.485270494414438,33.94019317626953

@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/truck_resize/3dgs-mcmc-original-2000000_test_selection_angle_30.0,test,ours_30000,0.7967293858528137,21.999868392944336,0.17690584063529968,26.982303619384766,2.6873581059827556,55.917579650878906

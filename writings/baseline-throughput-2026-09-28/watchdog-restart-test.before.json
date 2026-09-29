@@ -1,0 +1,53 @@
+{
+  "time": 1790608773.0914824,
+  "coordinator_pid": 1280813,
+  "watchdog": {
+    "watchdog_pid": 1280812,
+    "coordinator_pid": 1280813,
+    "updated": 1790608772.83657,
+    "restarts": 0,
+    "gpu_poll_seconds": 5,
+    "supervisor_poll_seconds": 10,
+    "status": "supervising_memory_aware_scheduler"
+  },
+  "jobs": {
+    "baseline_61": {
+      "id": "baseline_61",
+      "seed": 1,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_61/seed_000001",
+      "runner_pid": 1265330,
+      "runner_start_ticks": 719578987,
+      "method": "3DGS",
+      "scene": "Zeche1",
+      "budget_mib": 16407,
+      "exclusive": false,
+      "peak_mib": 17076,
+      "current_mib": 17076,
+      "phase": "running",
+      "adopted": true,
+      "started": 1790608562.9578333,
+      "active_stage": "render",
+      "active_pid": 1280885
+    },
+    "baseline_63": {
+      "id": "baseline_63",
+      "seed": 1,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_63/seed_000001",
+      "runner_pid": 1280828,
+      "runner_start_ticks": 719708247,
+      "method": "Scaffold-GS",
+      "scene": "Zeche1",
+      "budget_mib": 10240,
+      "exclusive": false,
+      "peak_mib": 3376,
+      "current_mib": 3258,
+      "phase": "running",
+      "started": 1790608563.1027677,
+      "adopted": false,
+      "active_stage": "train",
+      "active_pid": 1280831
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "planned_duplicate_paths": 409951,
+  "reclaimable_bytes": 171082084352,
+  "by_category": {
+    "input_point_cloud": {
+      "files": 1506,
+      "bytes": 5543919616
+    },
+    "evaluation_ground_truth": {
+      "files": 67335,
+      "bytes": 80641814528
+    },
+    "metadata_logs_or_other": {
+      "files": 294645,
+      "bytes": 8470241280
+    },
+    "checkpoint_or_neural_state": {
+      "files": 205,
+      "bytes": 48821010432
+    },
+    "python_cache": {
+      "files": 488,
+      "bytes": 6569984
+    },
+    "frozen_dataset": {
+      "files": 7187,
+      "bytes": 907571200
+    },
+    "rendered_outputs": {
+      "files": 23489,
+      "bytes": 22567260160
+    },
+    "other_images": {
+      "files": 14802,
+      "bytes": 4115267584
+    },
+    "videos": {
+      "files": 294,
+      "bytes": 8429568
+    }
+  },
+  "errors": [],
+  "elapsed_s": 670.9667816311121
+}

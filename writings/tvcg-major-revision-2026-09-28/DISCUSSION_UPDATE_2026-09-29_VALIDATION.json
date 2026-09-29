@@ -1,0 +1,25 @@
+{
+  "time": 1790640504.354882,
+  "scope": "Planning only; user-authored plan, manuscripts, training code and experiment queues not modified.",
+  "changed_planning_files": {
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/tvcg-major-revision-2026-09-28/CONSOLIDATED_REVISION_PLAN.md": "51f36679c48c333a7ff57f9d0377e8b56d63bd5d4f7402438779b02812af9f2b",
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/tvcg-major-revision-2026-09-28/DISCUSSION_UPDATE_2026-09-29.md": "8f50e9adc7ef0d853921b68890fe49010d6d94b1561b7d446654b9735b474822",
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/tvcg-major-revision-2026-09-28/R1_REVISION_PLAN.md": "c140df94d43c3d4d3f0258523a71cafdc599b872786cc34a8e0086449b79bef4",
+    "/data1/zhangao/repos/3dgs-imc-codex/writings/tvcg-major-revision-2026-09-28/R2_REVISION_PLAN.md": "311d746b211e8a672a64240c79137739834a964ecb430fc25030f52a0bcbac8a",
+    "/data1/zhangao/repos/3dgs-imc-codex/docs/research/paper-revision.md": "1a0793867b7a1ca681f08736b19ef991e3e23ef8a9334080add33a935f2038e5"
+  },
+  "all_local_links_resolve": true,
+  "proposed_slots": 12,
+  "conditional_reference_reuse": 4,
+  "conditional_new_runs": 8,
+  "user_decisions": [
+    "Frozen CPF weights under R1.1 accepted",
+    "Conditional replacement-gradient ablation under R1.2 accepted",
+    "Broad R2.1 ideas optional after main fixes"
+  ],
+  "proposals_not_execution_decisions": [
+    "12-slot split study",
+    "Response PDF appendix layout"
+  ],
+  "user_plan_sha256": "9e6c9d2c9dd3dd41efa6389492d66d2f603145a9c4e8b0f119d8a723396b0afe"
+}

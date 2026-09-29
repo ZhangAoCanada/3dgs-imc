@@ -1,0 +1,831 @@
+{
+  "checked_at": 1790519200.853007,
+  "archives": [
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_sic_2e51d24f.tar",
+      "bytes": 41553920,
+      "members": 3804,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_sic_9141ca43.tar",
+      "bytes": 41553920,
+      "members": 3804,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_sic_91e1cef1.tar",
+      "bytes": 41553920,
+      "members": 3804,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/r030_53ce4d3.tar",
+      "bytes": 163840,
+      "members": 16,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/r030_b46aed4.tar",
+      "bytes": 215040,
+      "members": 24,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/r030_july17_plan_f7cba292.tar",
+      "bytes": 133120,
+      "members": 19,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/r030_sync_20260712T1112.tar",
+      "bytes": 1157120,
+      "members": 60,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/r030_sync_priority_20260712T1150.tar",
+      "bytes": 409600,
+      "members": 27,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/.tmp/dtu_fourth_common_multiview/dtu_fourth_common_multiview_renders_20260726.tar.gz",
+      "bytes": 189140725,
+      "members": 363,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/.tmp/dtu_fourth_common_multiview/dtu_fourth_principal_reports_20260726.tar.gz",
+      "bytes": 12299,
+      "members": 24,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/.tmp/dtu_fourth_common_multiview/dtu_scan118_cam0000_gsprior_error_separate_20260726.tar.gz",
+      "bytes": 6765941,
+      "members": 13,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/.tmp/dtu_fourth_common_multiview/dtu_scan118_exact_topology_common_multiview_20260726.tar.gz",
+      "bytes": 6537906,
+      "members": 38,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/.tmp/dtu_fourth_common_multiview/dtu_scan118_gsprior_error_common_multiview_20260726.tar.gz",
+      "bytes": 46427252,
+      "members": 85,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/sync_test/r030_july17_plan_f7cba292.tar",
+      "bytes": 133120,
+      "members": 19,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/work/migration/MILo_codex_generated_evidence_20260710.tar.gz",
+      "bytes": 21615933,
+      "members": 2356,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-07-10/we/work/migration/MILo_codex_source_precleanup_20260710.tgz",
+      "bytes": 19308255,
+      "members": 3954,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/read/ScaffoldLatentBranchV2_review_20260907/ScaffoldLatentBranchV2_review_evidence_20260907.zip",
+      "bytes": 955856,
+      "members": 207,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/outputs/OneGlobalSurfaceV2.1_evidence.zip",
+      "bytes": 7488758,
+      "members": 2060,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/outputs/OneGlobalSurface_research_evidence_2026-09-05.zip",
+      "bytes": 733472639,
+      "members": 3079,
+      "model_members": [
+        {
+          "name": "results/corrected-identity-matched-sixteen-v1/fold-0-corrected.pt",
+          "bytes": 129099
+        },
+        {
+          "name": "results/corrected-identity-matched-sixteen-v1/fold-0-old.pt",
+          "bytes": 128951
+        },
+        {
+          "name": "results/corrected-identity-matched-sixteen-v1/fold-1-corrected.pt",
+          "bytes": 129035
+        },
+        {
+          "name": "results/corrected-identity-matched-sixteen-v1/fold-1-old.pt",
+          "bytes": 128951
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-event-repair-v1/cold_early.ply",
+          "bytes": 37255
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-event-repair-v1/cold_final.ply",
+          "bytes": 32879
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-event-repair-v1/cold_final_equal_calls.ply",
+          "bytes": 32898
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-event-repair-v1/cold_final_repeat.ply",
+          "bytes": 32879
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-event-repair-v1/warm_final.ply",
+          "bytes": 37240
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-v2/cold_early.ply",
+          "bytes": 37258
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-v2/cold_final.ply",
+          "bytes": 32896
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-v2/cold_final_equal_calls.ply",
+          "bytes": 32896
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-v2/cold_final_repeat.ply",
+          "bytes": 32896
+        },
+        {
+          "name": "results/regular-pl-image-assimilation-v2/warm_final.ply",
+          "bytes": 37258
+        },
+        {
+          "name": "results/regular-pl-substrate-preflight-v1/affine_relative_surface.ply",
+          "bytes": 57780
+        },
+        {
+          "name": "results/regular-pl-substrate-preflight-v1/center_conditioned_hermite.ply",
+          "bytes": 31987
+        },
+        {
+          "name": "results/regular-pl-substrate-preflight-v1/two_component_pl_surface.ply",
+          "bytes": 18206
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/git_history_sources.tar.gz",
+      "bytes": 692107,
+      "members": 297,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/result_evidence.tar.gz",
+      "bytes": 1064894,
+      "members": 26,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/source_snapshot.tar.gz",
+      "bytes": 4057023,
+      "members": 1658,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/camera_excluded_closure_evidence_v1.tar.gz",
+      "bytes": 301963,
+      "members": 13,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/camera_excluded_closure_source_v1.tar.gz",
+      "bytes": 7314,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/camera_excluded_source_v1.tar.gz",
+      "bytes": 12508,
+      "members": 6,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/coverage_full_source_f9a35851.tar.gz",
+      "bytes": 24650267,
+      "members": 5528,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/coverage_repair_source.tar.gz",
+      "bytes": 42185,
+      "members": 9,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/coverage_results_bundle.tar.gz",
+      "bytes": 1474505,
+      "members": 23,
+      "model_members": [
+        {
+          "name": "evidence/pl-coverage-primitive-v1/source_conditioned_mesh.ply",
+          "bytes": 31987
+        },
+        {
+          "name": "evidence/pl-coverage-primitive-v2/source_conditioned_mesh.ply",
+          "bytes": 31979
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/coverage_source_v1.tar.gz",
+      "bytes": 3191929,
+      "members": 115,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/coverage_source_v2.tar.gz",
+      "bytes": 10841079,
+      "members": 120,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/first_passage_closure_source.tar.gz",
+      "bytes": 6289,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/first_passage_results_v1.tar.gz",
+      "bytes": 11157070,
+      "members": 9,
+      "model_members": [
+        {
+          "name": "pl-first-passage-cold-v1/final_mesh.ply",
+          "bytes": 122309
+        },
+        {
+          "name": "pl-first-passage-cold-v1/initial_mesh.ply",
+          "bytes": 14704
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/first_passage_risk_evidence_v1.tar.gz",
+      "bytes": 154730,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/first_passage_source_v1.tar.gz",
+      "bytes": 18033,
+      "members": 9,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/fixed_mesh_control_results_v1.tar.gz",
+      "bytes": 130448,
+      "members": 11,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/fixed_mesh_control_source.tar.gz",
+      "bytes": 11698,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/opacity_measure_analysis_evidence_v1.tar.gz",
+      "bytes": 5461,
+      "members": 3,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/opacity_measure_analysis_source_v1.tar.gz",
+      "bytes": 7196,
+      "members": 4,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/segment_evidence_repair_source.tar.gz",
+      "bytes": 11370,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/segment_source.tar.gz",
+      "bytes": 20811,
+      "members": 10,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/segment_v1_failure_evidence.tar.gz",
+      "bytes": 17336,
+      "members": 8,
+      "model_members": [
+        {
+          "name": "pl-segment-cold-v1/final_mesh.ply",
+          "bytes": 22725
+        },
+        {
+          "name": "pl-segment-cold-v1/initial_mesh.ply",
+          "bytes": 14704
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/segment_v2_results.tar.gz",
+      "bytes": 2190339,
+      "members": 12,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/segment_v3_results.tar.gz",
+      "bytes": 12199275,
+      "members": 15,
+      "model_members": [
+        {
+          "name": "pl-segment-cold-v3/final_mesh.ply",
+          "bytes": 118458
+        },
+        {
+          "name": "pl-segment-cold-v3/initial_mesh.ply",
+          "bytes": 14704
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/segment_v3_source.tar.gz",
+      "bytes": 6587,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/continuation_20260905/workflow_source.tar.gz",
+      "bytes": 12504,
+      "members": 6,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/research_20260905/baseline_source.tar.gz",
+      "bytes": 542363,
+      "members": 596,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/research_20260905/fixture-source.tar.gz",
+      "bytes": 17956,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/research_20260905/gsprior-native-mirror.tar.gz",
+      "bytes": 4515416,
+      "members": 1581,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/research_20260905/nvdiffrast-vendor-729261dc.tar.gz",
+      "bytes": 10779115,
+      "members": 108,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/teh/work/research_20260905/source-update.tar.gz",
+      "bytes": 113664,
+      "members": 4,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/there-is-an-ongoing-research-on-2/work/repo_snapshot.tar.gz",
+      "bytes": 590643200,
+      "members": 0,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "error",
+      "error": "Compressed file ended before the end-of-stream marker was reached"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/there-is-an-ongoing-research-on-2/work/repo_text_snapshot.tar.gz",
+      "bytes": 678084,
+      "members": 254,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-05/there-is-an-ongoing-research-on-2/work/verified_evidence.tar.gz",
+      "bytes": 1525276,
+      "members": 101,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/2026-09-26/d-x20/outputs/GS_LSS_REPORT_PACKAGE.zip",
+      "bytes": 182206,
+      "members": 8,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_boundary_zipper_v1.tar",
+      "bytes": 27648,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_boundary_zipper_v2.tar",
+      "bytes": 28672,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_conforming_deformed_v1.tar",
+      "bytes": 26112,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_conforming_deformed_v2.tar",
+      "bytes": 26112,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_global_observation_v1.tar",
+      "bytes": 15360,
+      "members": 1,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_global_observation_v2.tar",
+      "bytes": 15872,
+      "members": 1,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_native_completion_v1.tar",
+      "bytes": 23552,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_parent_committed_v1.tar",
+      "bytes": 33280,
+      "members": 3,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_posterior_induced_v1.tar",
+      "bytes": 12288,
+      "members": 1,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_resolution_quotient_v1.tar",
+      "bytes": 20992,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_selected_domains_v1.tar",
+      "bytes": 6144,
+      "members": 1,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_selected_domains_v2.tar",
+      "bytes": 7168,
+      "members": 1,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_selected_domains_v3.tar",
+      "bytes": 8704,
+      "members": 1,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_shared_tsdf_v1.tar",
+      "bytes": 41574400,
+      "members": 3808,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_shared_tsdf_v1_1.tar",
+      "bytes": 41574400,
+      "members": 3808,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_sic_9e63a2be.tar",
+      "bytes": 41564160,
+      "members": 3806,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_sic_c7ffe79e.tar",
+      "bytes": 41553920,
+      "members": 3804,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_sic_v4.tar",
+      "bytes": 41564160,
+      "members": 3806,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_sic_v5.tar",
+      "bytes": 41564160,
+      "members": 3806,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_sic_v6.tar",
+      "bytes": 41564160,
+      "members": 3806,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_signed_ray_1c1de2f6.tar",
+      "bytes": 41615360,
+      "members": 3811,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_signed_ray_249a3faa.tar",
+      "bytes": 41625600,
+      "members": 3811,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_signed_ray_75572733.tar",
+      "bytes": 41615360,
+      "members": 3811,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_signed_ray_7a8fb31d.tar",
+      "bytes": 41615360,
+      "members": 3811,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_signed_ray_94d1a7e4.tar",
+      "bytes": 41615360,
+      "members": 3811,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_signed_ray_9e10edb9.tar",
+      "bytes": 41625600,
+      "members": 3811,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_signed_ray_d2ff1203.tar",
+      "bytes": 41615360,
+      "members": 3811,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_substrate_shielded_v1.tar",
+      "bytes": 39936,
+      "members": 3,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_visibility_conditioned_v1.tar",
+      "bytes": 29184,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/Codex/r031_surface_worktree/r031_visibility_conditioned_v2.tar",
+      "bytes": 29696,
+      "members": 2,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/repos/MILo_codex/scratch/hust10_worktree_20260812T1405/untracked.tar",
+      "bytes": 1310720,
+      "members": 103,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/repos/_archives/MILo_codex/2026-07-10/MILo_codex_generated_evidence_20260710.tar.gz",
+      "bytes": 21615933,
+      "members": 2356,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/repos/_archives/MILo_codex/2026-07-10/MILo_codex_i653_i654_diagnostic_evidence_20260710.tar.gz",
+      "bytes": 282113,
+      "members": 58,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/repos/_archives/MILo_codex/2026-07-10/MILo_codex_source_precleanup_20260710.tgz",
+      "bytes": 19308255,
+      "members": 3954,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/writings/GS-LSS/Computer_Society_LaTeX_template.zip",
+      "bytes": 541768,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc-codex/work/latexdiff_ctan/latexdiff.zip",
+      "bytes": 601820,
+      "members": 24,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    }
+  ]
+}

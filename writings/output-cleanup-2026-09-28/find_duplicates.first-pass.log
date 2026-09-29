@@ -1,0 +1,34 @@
+{"stage": "sampling", "candidate_inodes": 445077, "candidate_GiB": 441.57397453766316}
+{"stage": "sampling", "done": 37888, "total": 445077, "elapsed_s": 29}
+{"stage": "sampling", "done": 64512, "total": 445077, "elapsed_s": 49}
+{"stage": "sampling", "done": 95232, "total": 445077, "elapsed_s": 69}
+{"stage": "sampling", "done": 131072, "total": 445077, "elapsed_s": 90}
+{"stage": "sampling", "done": 167936, "total": 445077, "elapsed_s": 110}
+{"stage": "sampling", "done": 200704, "total": 445077, "elapsed_s": 131}
+{"stage": "sampling", "done": 223232, "total": 445077, "elapsed_s": 151}
+{"stage": "sampling", "done": 247808, "total": 445077, "elapsed_s": 172}
+{"stage": "sampling", "done": 269312, "total": 445077, "elapsed_s": 192}
+{"stage": "sampling", "done": 293888, "total": 445077, "elapsed_s": 212}
+{"stage": "sampling", "done": 319488, "total": 445077, "elapsed_s": 233}
+{"stage": "sampling", "done": 342016, "total": 445077, "elapsed_s": 253}
+{"stage": "sampling", "done": 366592, "total": 445077, "elapsed_s": 273}
+{"stage": "sampling", "done": 391168, "total": 445077, "elapsed_s": 294}
+{"stage": "sampling", "done": 415744, "total": 445077, "elapsed_s": 314}
+{"stage": "sampling", "done": 434176, "total": 445077, "elapsed_s": 334}
+{"stage": "full_sha256", "inodes": 434260, "GiB": 211.7722015986219}
+{"stage": "full_sha256", "done": 2560, "total": 434260, "read_GiB": 2.11, "elapsed_s": 355}
+{"stage": "full_sha256", "done": 8192, "total": 434260, "read_GiB": 7.94, "elapsed_s": 375}
+{"stage": "full_sha256", "done": 10240, "total": 434260, "read_GiB": 20.07, "elapsed_s": 406}
+{"stage": "full_sha256", "done": 14592, "total": 434260, "read_GiB": 25.93, "elapsed_s": 426}
+{"stage": "full_sha256", "done": 24832, "total": 434260, "read_GiB": 29.54, "elapsed_s": 447}
+{"stage": "full_sha256", "done": 36608, "total": 434260, "read_GiB": 33.89, "elapsed_s": 468}
+{"stage": "full_sha256", "done": 43520, "total": 434260, "read_GiB": 38.35, "elapsed_s": 488}
+{"stage": "full_sha256", "done": 60416, "total": 434260, "read_GiB": 40.36, "elapsed_s": 509}
+Traceback (most recent call last):
+  File "/data1/zhangao/repos/3dgs-imc-codex/writings/output-cleanup-2026-09-28/find_duplicates.py", line 147, in <module>
+    main()
+    ~~~~^^
+  File "/data1/zhangao/repos/3dgs-imc-codex/writings/output-cleanup-2026-09-28/find_duplicates.py", line 112, in main
+    db.commit()
+    ~~~~~~~~~^^
+sqlite3.OperationalError: database is locked

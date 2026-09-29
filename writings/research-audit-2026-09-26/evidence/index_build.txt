@@ -1,0 +1,1 @@
+history Counter({'approval mirror, not independent research': 28, 'research/review conversation': 19}) memory files 20 bestPSNR 64 preserve PLY 131 split files 665 Scaffold sidecar complete 64 / 64

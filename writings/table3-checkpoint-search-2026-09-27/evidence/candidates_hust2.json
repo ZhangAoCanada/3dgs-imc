@@ -1,0 +1,409 @@
+[
+  {
+    "host": "hust2",
+    "run": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/chkpnt1602.pth",
+        "size": 293698914,
+        "mtime": 1790497467.1496694,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/opacity_mlp.pt",
+        "size": 13757,
+        "mtime": 1790497466.754668,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/cov_mlp.pt",
+        "size": 21533,
+        "mtime": 1790497466.769668,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/point_cloud.ply",
+        "size": 163322409,
+        "mtime": 1790497466.5166671,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/embedding_appearance.pt",
+        "size": 32007,
+        "mtime": 1790497466.793668,
+        "path_keyword": false
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/point_cloud/iteration_1602/color_mlp.pt",
+        "size": 21855,
+        "mtime": 1790497466.7846682,
+        "path_keyword": false
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/full_args.json",
+        "size": 2580,
+        "mtime": 1790497330.6721435,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "{\n  \"sh_degree\": 3,\n  \"feat_dim\": 32,\n  \"n_offsets\": 10,\n  \"voxel_size\": 0.001,\n  \"update_depth\": 3,\n  \"update_init_factor\": 16,\n  \"update_hierachy_factor\": 4,\n  \"use_feat_bank\": false,\n  \"source_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train\",\n  \"model_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000\",\n  \"images\": \"input_cached\",\n  \"resolution\": 1,\n  \"white_background\": false,\n  \"data_device\": \"cpu\",\n  \"eval\": false,\n  \"lod\": 0,\n  \"appearance_dim\": 32,\n  \"lowpoly\": false,\n  \"ds\": 1,\n  \"ratio\": 1,\n  \"undistorted\": false,\n  \"test_path\": \"/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test\",\n  \"test_selection_path\": \"\",\n  \"add_opacity_dist\": false,\n  \"add_cov_dist\": false,\n  \"add_color_dist\": false,\n  \"iterations\": 1602,\n  \"position_lr_init\": 0.0,\n  \"position_lr_final\": 0.0,\n  \"position_lr_delay_mult\": 0.01,\n  \"position_lr_max_steps\": 30000,\n  \"offset_lr_init\": 0.01,\n  \"offset_lr_final\": 0.0001,\n  \"offset_lr_delay_mult\": 0.01,\n  \"offset_lr_max_steps\": 30000,\n  \"feature_lr\": 0.0075,\n  \"opacity_lr\": 0.02,\n  \"scaling_lr\": 0.007,\n  \"rotation_lr\": 0.002,\n  \"mlp_opacity_lr_init\": 0.002,\n  \"mlp_opacity_lr_final\": 2e-05,\n  \"mlp_opacity_lr_delay_mult\": 0.01,\n  \"mlp_opacity_lr_max_steps\": 30000,\n  \"mlp_cov_lr_init\": 0.004,\n  \"mlp_cov_lr_final\": 0.004,\n  \"mlp_cov_lr_delay_mult\": 0.01,\n  \"mlp_cov_lr_max_steps\": 30000,\n  \"mlp_color_lr_init\": 0.008,\n  \"mlp_color_lr_final\": 5e-05,\n  \"mlp_color_lr_delay_mult\": 0.01,\n  \"mlp_color_lr_max_steps\": 30000,\n  \"mlp_featurebank_lr_init\": 0.01,\n  \"mlp_featurebank_lr_final\": 1e-05,\n  \"mlp_featurebank_lr_delay_mult\": 0.01,\n  \"mlp_featurebank_lr_max_steps\": 30000,\n  \"appearance_lr_init\": 0.05,\n  \"appearance_lr_final\": 0.0005,\n  \"appearance_lr_delay_mult\": 0.01,\n  \"appearance_lr_max_steps\": 30000,\n  \"percent_dense\": 0.01,\n  \"lambda_dssim\": 0.2,\n  \"start_stat\": 500,\n  \"update_from\": 1500,\n  \"update_interval\": 100,\n  \"update_until\": 15000,\n  \"min_opacity\": 0.005,\n  \"success_threshold\": 0.8,\n  \"densify_grad_threshold\": 0.0002,\n  \"convert_SHs_python\": false,\n  \"compute_cov3D_python\": false,\n  \"debug\": false,\n  \"ip\": \"127.0.0.1\",\n  \"port\": 16321,\n  \"debug_from\": -1,\n  \"detect_anomaly\": false,\n  \"warmup\": false,\n  \"use_wandb\": false,\n  \"test_iterations\": [\n    1603\n  ],\n  \"save_iterations\": [\n    1602,\n    1602\n  ],\n  \"quiet\": false,\n  \"checkpoint_iterations\": [\n    1602\n  ],\n  \"start_checkpoint\": null,\n  \"gpu\": \"-1\",\n  \"run_seed\": 0\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000/cfg_args",
+        "size": 774,
+        "mtime": 1790497330.6781435,
+        "path_keyword": false,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, feat_dim=32, n_offsets=10, voxel_size=0.001, update_depth=3, update_init_factor=16, update_hierachy_factor=4, use_feat_bank=False, source_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train', model_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000', images='input_cached', resolution=1, white_background=False, data_device='cpu', eval=False, lod=0, appearance_dim=32, lowpoly=False, ds=1, ratio=1, undistorted=False, test_path='/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', add_opacity_dist=False, add_cov_dist=False, add_color_dist=False)"
+      }
+    ]
+  },
+  {
+    "host": "hust2",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 211688131,
+        "mtime": 1772381937.1584775,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 160690899,
+        "mtime": 1772380634.7510123,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/results.json",
+        "size": 204,
+        "mtime": 1772382407.8385394,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.4805350601673126,\n  \"PSNR\": 12.703323364257812,\n  \"LPIPS\": 0.5456687808036804,\n  \"BRISQUE\": 38.132564544677734,\n  \"NIQE\": 4.685464078396573,\n  \"PIQE\": 46.08891296386719\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original/cfg_args",
+        "size": 357,
+        "mtime": 1772380163.9341276,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(sh_degree=3, source_path='/data/zhangao/VastGaussian/Zeche1/train', model_path='/data2/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original', images='images', depths='', resolution=1, white_background=False, test_path='/data/zhangao/VastGaussian/Zeche1/test', test_selection_path='', train_test_exp=False, data_device='cpu', eval=False)"
+      }
+    ]
+  },
+  {
+    "host": "hust2",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 723957428,
+        "mtime": 1772888234.1748939,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 537790524,
+        "mtime": 1772820018.7069845,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 723957428,
+        "mtime": 1772842349.362731,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/point_cloud/iteration_2000/point_cloud.ply",
+        "size": 189878515,
+        "mtime": 1772810792.9468634,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 636393340,
+        "mtime": 1772828037.860669,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/results.json",
+        "size": 200,
+        "mtime": 1773323336.3378143,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.327388197183609,\n  \"PSNR\": 9.445363998413086,\n  \"LPIPS\": 0.566351056098938,\n  \"BRISQUE\": 40.13334655761719,\n  \"NIQE\": 4.572172267859426,\n  \"PIQE\": 43.07041549682617\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original/cfg_args",
+        "size": 498,
+        "mtime": 1772807167.9057412,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(confidence_map_output=True, data_device='cpu', debug_dir='debug', debug_output=True, depth_model_type='depthanything', eval=False, images='images', kshot=1000, model_path='/data2/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original', predefined_depth_path=None, resolution=1, seed=42, sh_degree=3, source_path='/data/zhangao/VastGaussian/Zeche1/train', test_path='/data/zhangao/VastGaussian/Zeche1/test', test_selection_path='', use_predefined_depth=False, white_background=False)"
+      }
+    ]
+  },
+  {
+    "host": "hust2",
+    "run": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original",
+    "artifacts": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original/point_cloud/iteration_30000/point_cloud.ply",
+        "size": 1687933428,
+        "mtime": 1773169774.4782112,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original/point_cloud/iteration_7000/point_cloud.ply",
+        "size": 859503812,
+        "mtime": 1773073643.1979024,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original/point_cloud/iteration_15000/point_cloud.ply",
+        "size": 1687933428,
+        "mtime": 1773106965.6870966,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original/point_cloud/iteration_2000/point_cloud.ply",
+        "size": 388151788,
+        "mtime": 1773064411.6311727,
+        "path_keyword": true
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original/point_cloud/iteration_10000/point_cloud.ply",
+        "size": 1155921100,
+        "mtime": 1773084277.689723,
+        "path_keyword": true
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original/results.json",
+        "size": 203,
+        "mtime": 1773324122.341924,
+        "path_keyword": true,
+        "content_keyword": false,
+        "text": "{\n \"ours_30000\": {\n  \"SSIM\": 0.5643031001091003,\n  \"PSNR\": 15.88393497467041,\n  \"LPIPS\": 0.49600347876548767,\n  \"BRISQUE\": 47.93269729614258,\n  \"NIQE\": 4.669580765542267,\n  \"PIQE\": 65.07462310791016\n }\n}"
+      },
+      {
+        "path": "/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original/cfg_args",
+        "size": 637,
+        "mtime": 1773061476.7064617,
+        "path_keyword": true,
+        "content_keyword": true,
+        "text": "Namespace(confidence_map_output=True, data_device='cpu', debug_dir='debug', debug_output=True, depth_model_type='depthanything', eval=False, images='input_cached', kshot=1000, model_path='/data2/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original', predefined_depth_path=None, resolution=1, seed=42, sh_degree=3, source_path='/data/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train', test_path='/data/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/test', test_selection_path='', use_predefined_depth=False, white_background=False)"
+      }
+    ]
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/VastGaussian/Zeche1/train/plydummy",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/VastGaussian/Zeche1/train/plydummy/points3D_1773322731.ply",
+        "size": 4607817,
+        "mtime": 1773322731.481121,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/VastGaussian/Zeche1/train/plydummy/points3D_1772615124.ply",
+        "size": 4607817,
+        "mtime": 1772615124.5663025,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/VastGaussian/Zeche1/train/plydummy/points3D_1772807172.ply",
+        "size": 4607817,
+        "mtime": 1772807172.6018484,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/VastGaussian/Zeche1/test/plydummy",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/VastGaussian/Zeche1/test/plydummy/points3D_1773322737.ply",
+        "size": 5258042,
+        "mtime": 1773322738.1610813,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/VastGaussian/Zeche1/test/plydummy/points3D_1772807688.ply",
+        "size": 5258042,
+        "mtime": 1772807688.8635309,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/matrix_city_init.ply",
+        "size": 409730960,
+        "mtime": 1730699093.2052205,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_E",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_E/matrix_city_init.ply",
+        "size": 409730960,
+        "mtime": 1730701763.3451104,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A/matrix_city_init.ply",
+        "size": 409730960,
+        "mtime": 1730699115.6564584,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_D",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_D/matrix_city_init.ply",
+        "size": 409730960,
+        "mtime": 1730701760.9131207,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_B",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_B/matrix_city_init.ply",
+        "size": 409730960,
+        "mtime": 1730701756.7571385,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_all",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_all/matrix_city_init.ply",
+        "size": 409730960,
+        "mtime": 1730699121.504265,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_C",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_C/matrix_city_init.ply",
+        "size": 409730960,
+        "mtime": 1730701759.1411283,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy/points3D_1773323342.ply",
+        "size": 23571044,
+        "mtime": 1773323343.8297758,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy/points3D_1772945523.ply",
+        "size": 251,
+        "mtime": 1772945523.395636,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy/points3D_1772945707.ply",
+        "size": 251,
+        "mtime": 1772945707.5790207,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy/points3D_1772945638.ply",
+        "size": 251,
+        "mtime": 1772945638.3792448,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy/points3D_1773061480.ply",
+        "size": 23571044,
+        "mtime": 1773061482.4384978,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy/points3D_1772945786.ply",
+        "size": 23571044,
+        "mtime": 1772945789.5187645,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  },
+  {
+    "host": "hust2",
+    "run": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/test/plydummy",
+    "artifacts": [
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/test/plydummy/points3D_1772946802.ply",
+        "size": 10311755,
+        "mtime": 1772946803.3000264,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/test/plydummy/points3D_1773061487.ply",
+        "size": 10311755,
+        "mtime": 1773061487.9025323,
+        "path_keyword": true
+      },
+      {
+        "path": "/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/test/plydummy/points3D_1773323347.ply",
+        "size": 10311755,
+        "mtime": 1773323348.4137523,
+        "path_keyword": true
+      }
+    ],
+    "metadata": []
+  }
+]

@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/kitchen/scaffoldgs-original,test,ours_30000,0.9333978891372681,28.59353256225586,0.08426766097545624,21.191516876220703,3.117076411089039,44.62141036987305

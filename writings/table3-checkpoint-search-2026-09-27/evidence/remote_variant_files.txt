@@ -1,0 +1,11 @@
+point_cloud/iteration_30000/point_cloud.ply
+point_cloud/iteration_7000/point_cloud.ply
+events.out.tfevents.1772380136.user.60575.0
+exposure.json
+events.out.tfevents.1772380109.user.59741.0
+events.out.tfevents.1772380163.user.61405.0
+results.json
+cameras.json
+training_time.txt
+cfg_args
+per_view.json

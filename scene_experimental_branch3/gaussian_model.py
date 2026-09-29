@@ -28,6 +28,7 @@ from utils.reloc_utils import compute_relocation_cuda
 from utils.sh_utils import eval_sh
 from scene_experimental_branch3.imc_experimental import NetworksA
 from scene_experimental_branch3 import diff_operators
+from scene_experimental_branch3.cpf_targets import LocalSupport, field_losses, world_normals_from_points
 from scene_experimental_branch3.utility import write_summary
 from scene_experimental_branch3.torch_ransac import RANSAC, LinearRegressionModel, ScalingRegressionModel
 import shutil
@@ -269,7 +270,7 @@ class GaussianModel:
         self._cpf_refresh_stop_logged = False
         self.last_cpf_loss = None
         self.net_mode = "mlp" # "mlp" or "fft"
-        self.net_type = "sine" # "sine" or "relu"
+        self.net_type = os.environ.get("CPF_NET_TYPE", "sine") # "sine"(SIREN) / "relu"(MLP); env-overridable for Table-5 CPF-net ablation
         self.net = NetworksA(
             # in_features=3, #7, 
             # out_features=4, 
@@ -318,7 +319,7 @@ class GaussianModel:
         self._cpf_refresh_stop_logged = False
         self.last_cpf_loss = None
         self.net_mode = "mlp" # "mlp" or "fft"
-        self.net_type = "sine" # "sine" or "relu"
+        self.net_type = os.environ.get("CPF_NET_TYPE", "sine") # "sine"(SIREN) / "relu"(MLP); env-overridable for Table-5 CPF-net ablation
         self.net = NetworksA(
             # in_features=3, #7, 
             # out_features=4, 
@@ -386,6 +387,22 @@ class GaussianModel:
         self.nn_derivatives_iter = training_args.nn_derivatives_iter
         self.nn_update_interval = training_args.nn_update_interval
         self.cpf_prior_source = training_args.cpf_prior_source
+        self.cpf_target_mode = getattr(training_args, "cpf_target_mode", "legacy")
+        if self.cpf_target_mode not in ("legacy", "normal_off", "signed_plane"):
+            raise ValueError(f"Unknown cpf_target_mode: {self.cpf_target_mode}")
+        self.cpf_target_h = float(getattr(training_args, "cpf_target_h", 0.0))
+        if self.cpf_target_h <= 0:
+            self.cpf_target_h = float(getattr(training_args, "cpf_target_h_fraction", 0.05)) * self.spatial_lr_scale
+        self.cpf_gradient_weight = float(getattr(training_args, "cpf_gradient_weight", 100.0))
+        self._r12_support_source = None
+        self._r12_support = None
+        self.r12_mechanism = {"field_steps": 0, "derivative_calls": 0,
+                              "pull_applications": 0, "nonzero_pull_applications": 0}
+        if self.cpf_target_mode != "legacy":
+            if self.cpf_target_h <= 0:
+                raise ValueError("R1.2 targets require a positive world-space bandwidth")
+            if self.nn_type != "allviews":
+                raise ValueError("R1.2 local-support targets currently require nn_type=allviews")
         self.max_num = training_args.cpf_max_points
         _drift_cap = getattr(training_args, "cpf_drift_max_points", 0)
         self.cpf_drift_max_points = _drift_cap if _drift_cap and _drift_cap > 0 else self.max_num
@@ -614,6 +631,15 @@ class GaussianModel:
             xyz_noise = xyz_noise * (m / (obs + m)).unsqueeze(-1)   # ~1 for under-observed, ->0 for well-observed
         noise_full = torch.zeros((self._xyz.shape[0], 3), device="cuda")
         noise_full[gs_mask] = xyz_noise
+        if self.cpf_target_mode != "legacy":
+            self.r12_mechanism["derivative_calls"] += 1
+            if self.r12_mechanism["derivative_calls"] == 1 or iteration % 1000 == 0:
+                self.r12_mechanism.update(last_derivative_iteration=iteration,
+                    sampled_points=int(gs_mask.sum()),
+                    noise_norm=float(xyz_noise.norm()),
+                    probability_min=float(pred_opacity.min()),
+                    probability_max=float(pred_opacity.max()))
+                print(f"[R1.2 mechanism] {self.r12_mechanism}")
         return noise_full, gs_mask
     
     def compute_diff(self, view, tb_writer, iteration):
@@ -707,16 +733,40 @@ class GaussianModel:
         #     H, W, focals, c2w = self.viewcam_properties(view, self.downsample_ratio)
         #     off_xyz, off_color, off_norm, off_opacity = self.spawn_randomraypnts(mask, H, W, focals, c2w, voxel_size=self.voxel_size)
 
-        pert_xyz, pert_color, pert_norm, pert_opacity = self.perturb_pnts_whole(xyz, color, norm, opacity)
+        if self.cpf_target_mode != "legacy":
+            if self._r12_support_source is not self.nn_gt_pts:
+                self._r12_support = LocalSupport(self.nn_gt_pts)
+                self._r12_support_source = self.nn_gt_pts
+                print(f"[R1.2] mode={self.cpf_target_mode}, h_world={self.cpf_target_h:.8g}, "
+                      f"support={len(self._r12_support.points)}, iteration={iteration}")
+            batch = self._r12_support.sample(self.max_num, self.cpf_target_h,
+                                            self.net.xyz_lowerbound, self.net.xyz_upperbound,
+                                            self.cpf_target_mode)
+            res = self.net(batch["query"])
+            l, terms = field_losses(res, batch["query"], batch["probability"], batch["gradient"],
+                                   batch["color"], self.cpf_target_h, self.cpf_target_mode,
+                                   gradient_weight=self.cpf_gradient_weight,
+                                   color_weight=float(os.environ.get("CPF_FIELD_RGB_LOSS", "0")))
+            self.last_r12_terms = {key: float(value) for key, value in terms.items()}
+            self.r12_mechanism["field_steps"] += 1
+            if not torch.isfinite(l):
+                raise FloatingPointError(f"Nonfinite R1.2 field loss at iteration {iteration}")
+            if tb_writer is not None:
+                for key, value in terms.items():
+                    tb_writer.add_scalar(f"r12/{key}", value, iteration)
+            if iteration % 1000 == 0:
+                print(f"[R1.2] iter={iteration} losses={self.last_r12_terms}")
+        else:
+            pert_xyz, pert_color, pert_norm, pert_opacity = self.perturb_pnts_whole(xyz, color, norm, opacity)
         # if self.minmax == "whole":
         #     pert_xyz, pert_color, pert_norm, pert_opacity = self.perturb_pnts_whole(xyz, color, norm, opacity)
         # else:
         #     pert_xyz, pert_color, pert_norm, pert_opacity = self.perturb_pnts(xyz, color, norm, opacity)
 
-        gt_opacity = torch.cat([opacity, pert_opacity], dim=0)
-        gt_color = torch.cat([color, pert_color], dim=0)
-        gt_norm = torch.cat([norm, pert_norm], dim=0)
-        net_in = torch.cat([xyz, pert_xyz], dim=0)
+            gt_opacity = torch.cat([opacity, pert_opacity], dim=0)
+            gt_color = torch.cat([color, pert_color], dim=0)
+            gt_norm = torch.cat([norm, pert_norm], dim=0)
+            net_in = torch.cat([xyz, pert_xyz], dim=0)
         # gt_opacity = torch.cat([opacity, pert_opacity, off_opacity], dim=0)
         # gt_color = torch.cat([color, pert_color, off_color], dim=0)
         # gt_norm = torch.cat([norm, pert_norm, off_norm], dim=0)
@@ -727,8 +777,8 @@ class GaussianModel:
         # gt_norm = torch.cat([norm, off_norm], dim=0)
         # net_in = torch.cat([xyz, off_xyz], dim=0)
 
-        res = self.net(net_in)
-        l = self.loss_fn(res, gt_opacity, gt_color, gt_norm)
+            res = self.net(net_in)
+            l = self.loss_fn(res, gt_opacity, gt_color, gt_norm)
         # === Trained stochastic proposal head (parameterized MCMC) ===
         # body2/linear_std2 (the per-axis noise log-std) are otherwise NEVER trained (this fn calls
         # self.net without `attributes`, so that branch never runs -> zero gradient -> random noise).
@@ -776,7 +826,7 @@ class GaussianModel:
             l = cap * (1.0 - torch.exp(-l / cap))
         if self.cpf_loss_weight != 1.0:
             l = l * self.cpf_loss_weight
-        if iteration % 500 == 0:
+        if iteration % 500 == 0 and tb_writer is not None and self.cpf_target_mode == "legacy":
             write_summary(self.net, tb_writer, iteration)
         if tb_writer is not None:
             tb_writer.add_scalar("nn_l/nnl_raw", l_detached, iteration)
@@ -949,6 +999,16 @@ class GaussianModel:
     
     def save_nn(self, dir_path):
         torch.save(self.net.state_dict(), os.path.join(dir_path, "net.pth"))
+        if getattr(self, "cpf_target_mode", "legacy") != "legacy":
+            torch.save({
+                "mode": self.cpf_target_mode, "h_world": self.cpf_target_h,
+                "gradient_weight": self.cpf_gradient_weight,
+                "bounds": (self.net.xyz_lowerbound, self.net.xyz_upperbound),
+                "support": self._r12_support.points if self._r12_support is not None else None,
+                "cpf_optimizer": self.imc_experimental_optimizer.state_dict(),
+                "loss_terms": getattr(self, "last_r12_terms", None),
+                "mechanism": self.r12_mechanism,
+            }, os.path.join(dir_path, "r12_field_state.pt"))
     
     def load_nn(self, dir_path):
         self.net.load_state_dict(torch.load(os.path.join(dir_path, "net.pth")))
@@ -981,10 +1041,20 @@ class GaussianModel:
         if g is None or g.shape[0] != self._xyz.shape[0]:
             return
         with torch.no_grad():
+            applied = False
             if getattr(self, "cpf_pull_persist", 0):
                 self._xyz.add_(-g)   # direct constant-step pull: persists late, independent of position_lr decay
+                applied = True
             elif self._xyz.grad is not None and g.shape == self._xyz.grad.shape:
                 self._xyz.grad.add_(g)   # optimizer-routed pull: LR-scheduled, fades late
+                applied = True
+            if getattr(self, "cpf_target_mode", "legacy") != "legacy" and applied:
+                norm = float(g.norm())
+                if not math.isfinite(norm):
+                    raise FloatingPointError("Nonfinite R1.2 CPF pull gradient")
+                self.r12_mechanism["pull_applications"] += 1
+                self.r12_mechanism["nonzero_pull_applications"] += int(norm > 0)
+                self.r12_mechanism["last_pull_norm"] = norm
 
     def field_floater_reg(self, iteration, max_pts=100000):
         # Loss that suppresses the opacity of Gaussians the CPF field-consensus marks EMPTY (floaters).
@@ -1050,6 +1120,8 @@ class GaussianModel:
         assert self.nn_type in ["singleview", "allviews"]
         assert self.bound_type in ["local", "global"]
         aligndepth = True if self.nn_type == "allviews" else False
+        if getattr(self, "cpf_target_mode", "legacy") != "legacy" and self.cpf_prior_source == "render":
+            aligndepth = False  # R1.2 pilots use rendered support, without external depth filtering.
 
         if self.nn_type == "allviews" or self.bound_type == "local":
             if self.cpf_max_refresh_views > 0 and len(all_views) > self.cpf_max_refresh_views:
@@ -1061,12 +1133,58 @@ class GaussianModel:
                 sfm_pts = self._sfm_field_pts()   # independent SfM anchor (not self-rendered)
                 if sfm_pts is not None:
                     self.nn_gt_pts = sfm_pts if self.nn_gt_pts is None else torch.cat([self.nn_gt_pts, sfm_pts], dim=0)
+            mvs_pts = self._mvs_field_pts()       # exogenous PatchMatch-MVS prior (train-split only)
+            if mvs_pts is not None:
+                if os.environ.get("CPF_MVS_MODE", "merge") == "replace" or self.nn_gt_pts is None:
+                    self.nn_gt_pts = mvs_pts
+                else:
+                    self.nn_gt_pts = torch.cat([self.nn_gt_pts, mvs_pts], dim=0)
             if self.nn_gt_pts is None:
+                if getattr(self, "cpf_target_mode", "legacy") != "legacy":
+                    raise RuntimeError("R1.2 support refresh produced no valid points")
                 return
         if self.bound_type == "local":
-            self.net.find_boundary(self.nn_gt_pts)
+            bounds_points = self.nn_gt_pts if getattr(self, "cpf_target_mode", "legacy") == "legacy" else self.nn_gt_pts[:, :3]
+            self.net.find_boundary(bounds_points)
         else:
             self.net.find_boundary(self.get_xyz.detach().clone(), extend_factor=0.0)
+
+    def _mvs_field_pts(self, max_points=200000):
+        # EXOGENOUS geometric prior for the CPF field: a train-split-only PatchMatch-MVS fusion
+        # (classical multi-view stereo on the training images — no external network). Unlike the
+        # rendered-depth prior it carries triangulated gap-edge geometry the model itself cannot
+        # produce, with real photo-consistent normals. Env: CPF_MVS_PRIOR_PATH (fused.ply),
+        # CPF_MVS_MODE=merge|replace. Default off.
+        path = os.environ.get("CPF_MVS_PRIOR_PATH", "")
+        if not path:
+            return None
+        if not hasattr(self, "_mvs_pts_cache"):
+            self._mvs_pts_cache = None
+            try:
+                import numpy as np
+                from plyfile import PlyData
+                v = PlyData.read(path)["vertex"]
+                pts = np.stack([v["x"], v["y"], v["z"]], 1).astype(np.float32)
+                try:
+                    clr = np.stack([v["red"], v["green"], v["blue"]], 1).astype(np.float32) / 255.0
+                except Exception:
+                    clr = np.full((len(pts), 3), 0.5, np.float32)
+                try:
+                    nrm = np.stack([v["nx"], v["ny"], v["nz"]], 1).astype(np.float32)
+                except Exception:
+                    nrm = np.zeros((len(pts), 3), np.float32)
+                    nrm[:, 2] = 1.0
+                self._mvs_pts_cache = torch.from_numpy(np.concatenate([pts, clr, nrm], 1)).cuda()
+                sys.stderr.write(f"[CPF-MVS] loaded {len(pts)} prior points from {path}\n")
+            except Exception as e:
+                sys.stderr.write(f"[CPF-MVS] failed to load {path}: {e}\n")
+        cache = self._mvs_pts_cache
+        if cache is None:
+            return None
+        if cache.shape[0] > max_points:
+            idx = torch.randperm(cache.shape[0], device=cache.device)[:max_points]
+            return cache[idx]
+        return cache
 
     def _sfm_field_pts(self, max_points=100000):
         # Independent geometry anchor for the CPF field: the SfM (COLMAP) points, which are NOT
@@ -1128,7 +1246,13 @@ class GaussianModel:
         render_pkg_gsplat = render_gsplat(view, self)
         render_depth_gsplat = render_pkg_gsplat["depth"]
         gt = view.original_image.cuda()
-        mono_invdepth = view.invdepthmap.cuda()
+        if getattr(self, "cpf_target_mode", "legacy") != "legacy":
+            # gsplat RGB+D returns accumulated depth; normalize by alpha before
+            # constructing the world-space surface and its normals.
+            render_depth_gsplat = render_depth_gsplat / render_pkg_gsplat["alpha"].clamp_min(1e-6)
+            mono_invdepth = render_depth_gsplat.clamp_min(1e-6).reciprocal()
+        else:
+            mono_invdepth = view.invdepthmap.cuda()
         # downsampling
         render_depth_gsplat = F.interpolate(render_depth_gsplat.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
         gt = F.interpolate(gt.unsqueeze(0), size=None, scale_factor=1/self.downsample_ratio, mode='bilinear', align_corners=False).squeeze(0)
@@ -1139,7 +1263,7 @@ class GaussianModel:
         if align:
             # NOTE: dbscan with gpu
             pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
-            pts_cudf = cudf.DataFrame(pts.detach().clone().cpu().numpy())
+            pts_cudf = pts.detach().clone().cpu().numpy()  # GPU-portable: DBSCAN takes numpy directly (cudf wrapper crashed on sm_89, byte-identical labels)
             db = DBSCAN(
                 eps=self.eps, 
                 min_samples=self.min_samples, 
@@ -1164,7 +1288,7 @@ class GaussianModel:
         else:
             # NOTE: dbscan with gpu
             pts = self.depth_proj(render_depth_gsplat, H, W, focals, c2w)
-            pts_cudf = cudf.DataFrame(pts.detach().clone().cpu().numpy())
+            pts_cudf = pts.detach().clone().cpu().numpy()  # GPU-portable: DBSCAN takes numpy directly (cudf wrapper crashed on sm_89, byte-identical labels)
             db = DBSCAN(
                 eps=self.eps, 
                 min_samples=self.min_samples, 
@@ -1200,6 +1324,8 @@ class GaussianModel:
         # keep the shape
         colors = gt.reshape(3, -1).t()
         normals = mono_normal.reshape(3, -1).t()
+        if getattr(self, "cpf_target_mode", "legacy") != "legacy":
+            normals = world_normals_from_points(pts, H, W)
         # get valid points
         # confidence filter: drop low-alpha (uncertain / background / floater) pixels so the CPF
         # field is the confident *current* surface, not every projected pixel. align path keeps
@@ -1249,6 +1375,8 @@ class GaussianModel:
         mono_normal = self.depth2norm(mono_depth, scale_factor=scale_factor).squeeze(0)
         colors = gt.reshape(3, -1).t()
         normals = mono_normal.reshape(3, -1).t()
+        if getattr(self, "cpf_target_mode", "legacy") != "legacy":
+            normals = world_normals_from_points(pts, H, W)
         mask_flat = valid_mask.reshape(-1)
 
         if debug:
@@ -1944,7 +2072,7 @@ class GaussianModel:
             if pts.shape[0] <= 0:
                 return None
             if pts.shape[0] > pool_size:
-                cand_idx = torch.randperm(pts.shape[0], device=pts.device)[:pool_size]
+                cand_idx = torch.randperm(pts.shape[0], device=pts.device, generator=self._mh_generator())[:pool_size]
                 pts = pts[cand_idx]
 
             cand_xyz = pts[:, :3].contiguous()
@@ -1952,7 +2080,7 @@ class GaussianModel:
             existing_xyz = self.get_xyz.detach()
             existing_count = existing_xyz.shape[0]
             if existing_count > density_points:
-                subset_ids = torch.randperm(existing_count, device=existing_xyz.device)[:density_points]
+                subset_ids = torch.randperm(existing_count, device=existing_xyz.device, generator=self._mh_generator())[:density_points]
                 existing_subset = existing_xyz[subset_ids]
             else:
                 subset_ids = torch.arange(existing_count, device=existing_xyz.device)
@@ -2031,6 +2159,73 @@ class GaussianModel:
             self._rotation[dead_indices] = new_rotation
         self.replace_tensors_to_optimizer(inds=dead_indices)
         return True
+
+    def _mh_generator(self):
+        # Isolated RNG for MH/CPF-densify PROPOSALS so their extra random draws never touch the
+        # global stream (MCMC noise, view selection). With SEED set, an MH-on branch and an MH-off
+        # branch then share an identical global history -> their PSNR difference isolates the MH
+        # effect with ~0.1 dB residual noise instead of the ~0.8 dB independent-run spread, so one
+        # paired run replaces a multi-seed study. Seeded from SEED (+offset) when set, else constant.
+        if getattr(self, "_mh_gen", None) is None:
+            g = torch.Generator(device="cuda")
+            s = os.environ.get("SEED", "")
+            g.manual_seed((int(s) + 911) if s != "" else 20260612)
+            self._mh_gen = g
+        return self._mh_gen
+
+    def mh_relocate_gs(self, dead_mask, render_fn, view, pipe, bg):
+        """Fix A: field-PROPOSED, photometrically-VERIFIED relocation (a Metropolis step).
+        relocate_gs_cpf trusts the field (failed: endogenous capacity renders the field's own
+        guess). Here the batched relocation is applied TENTATIVELY, a real training view is
+        re-rendered, and the move is REVERTED unless the photometric error does not worsen:
+        the CPF shapes the proposal distribution, the data keeps veto power. Moves into
+        unobserved space (invisible from the test view) tie e1==e0 and are accepted — exactly
+        the explorative moves the gap needs, while harmful ones die. Returns status string."""
+        if dead_mask is None or dead_mask.sum() == 0:
+            return "skipped"
+        dead_indices = dead_mask.nonzero(as_tuple=True)[0]
+        cap = int(os.environ.get("MH_BATCH", "512"))
+        if dead_indices.shape[0] > cap:
+            sel = torch.randperm(dead_indices.shape[0], device=dead_indices.device, generator=self._mh_generator())[:cap]
+            dead_indices = dead_indices[sel]
+        candidates = self._cpf_scored_birth_candidates(dead_indices.shape[0])
+        if candidates is None:
+            return "skipped"
+        cand_xyz, cand_color, seed_idx = candidates
+        if cand_xyz.shape[0] <= 0:
+            return "skipped"
+        dead_indices = dead_indices[:cand_xyz.shape[0]]
+        gt = view.original_image.cuda()
+        with torch.no_grad():
+            e0 = (render_fn(view, self, pipe, bg)["render"].clamp(0, 1) - gt).abs().mean()
+            snap = {
+                "xyz": self._xyz[dead_indices].clone(), "fdc": self._features_dc[dead_indices].clone(),
+                "fr": self._features_rest[dead_indices].clone(), "op": self._opacity[dead_indices].clone(),
+                "sc": self._scaling[dead_indices].clone(), "rot": self._rotation[dead_indices].clone(),
+            }
+            ratio = torch.bincount(seed_idx, minlength=self.get_xyz.shape[0]).unsqueeze(-1)
+            _, _, _, new_opacity, new_scaling, new_rotation = self._update_params(seed_idx, ratio=ratio)
+            self._xyz[dead_indices] = cand_xyz
+            self._features_dc[dead_indices] = RGB2SH(cand_color).unsqueeze(1)
+            self._features_rest[dead_indices] = 0.0
+            self._opacity[dead_indices] = new_opacity
+            self._scaling[dead_indices] = new_scaling
+            self._rotation[dead_indices] = new_rotation
+            e1 = (render_fn(view, self, pipe, bg)["render"].clamp(0, 1) - gt).abs().mean()
+            if e1 <= e0 + 1e-6:
+                self.replace_tensors_to_optimizer(inds=dead_indices)
+                if os.environ.get("MH_VERBOSE", "0") == "1":
+                    sys.stderr.write(f"[MH] accept n={dead_indices.shape[0]} e0={e0.item():.5f} e1={e1.item():.5f}\n")
+                return "accepted"
+            if os.environ.get("MH_VERBOSE", "0") == "1":
+                sys.stderr.write(f"[MH] reject n={dead_indices.shape[0]} e0={e0.item():.5f} e1={e1.item():.5f}\n")
+            self._xyz[dead_indices] = snap["xyz"]
+            self._features_dc[dead_indices] = snap["fdc"]
+            self._features_rest[dead_indices] = snap["fr"]
+            self._opacity[dead_indices] = snap["op"]
+            self._scaling[dead_indices] = snap["sc"]
+            self._rotation[dead_indices] = snap["rot"]
+            return "rejected"
 
     def _cpf_support_values(self, xyz, chunk=32768):
         if not hasattr(self, "net") or self.net is None or xyz.shape[0] <= 0:

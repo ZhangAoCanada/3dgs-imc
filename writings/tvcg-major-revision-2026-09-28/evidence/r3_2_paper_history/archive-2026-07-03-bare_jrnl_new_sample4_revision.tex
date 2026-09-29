@@ -1,0 +1,830 @@
+\documentclass[lettersize,journal]{IEEEtran}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{array}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{hyperref}
+
+\hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
+
+\begin{document}
+
+\title{GS-LSS: Learned Stochastic Sampling for 3D Gaussian Splatting under Biased Viewpoints}
+
+\author{Ao Zhang,
+Qiong Liu,~\IEEEmembership{Senior Member,~IEEE}, 
+Wenxuan He, Jiabo Wu,
+and You Yang,~\IEEEmembership{Fellow,~Optica}
+\thanks{A. Zhang, Q. Liu, W. He, J. Wu, and Y. Yang are with the School of Electronic Information and Communications, Huazhong University of Science and Technology, Wuhan 430074, China. (e-mail: \{zhangao, q.liu, wxhe, d202381108, yangyou\}@hust.edu.cn). Prof. Yang is a Fellow of Optica.}
+% \thanks{Manuscript received April 19, 2021; revised August 16, 2021.}
+}
+
+% The paper headers
+% \markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2021}%
+\markboth{IEEE Transactions on Visualization and Computer Graphics, April~2026}%
+% {Zhang \MakeLowercase{\textit{et al.}}: GS-LSS: Learned Stochastic Sampling for Global Scene Distribution Matching in 3D Gaussian Splatting under Biased Viewpoints}
+{Zhang \MakeLowercase{\textit{et al.}}: GS-LSS: Learned Stochastic Sampling for 3D Gaussian Splatting under Biased Viewpoints}
+
+\IEEEpubid{0000--0000/00\$00.00~\copyright~2026 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+\maketitle
+
+
+
+\begin{abstract}
+3D Gaussian Splatting (3DGS) achieves high-fidelity rendering with sufficient scene coverage, but real captures often contain \textit{biased viewpoints}, including viewing-angle disparities, discontinuous trajectories, and systematic coverage gaps. Under such bias, per-frame optimization becomes under-determined in weakly observed regions, causing \emph{perspective overfitting} such as ghosting, hollow structures, and floating noise.
+We propose GS-LSS, an observed-support regularized stochastic optimization framework that realizes 3DGS training as Learned Stochastic Sampling (LSS). GS-LSS uses a Continuous Probability Field (CPF) to estimate aggregated observed support and stabilizes Gaussian primitives through support-seeking drift and adaptive stochastic exploration.
+CPF is not designed to hallucinate fully unseen geometry; it provides a reliability prior whose approximation error acts as a local perturbation to the regularized objective. Experiments on three biased-viewpoint scenarios show that GS-LSS achieves competitive or superior results among the evaluated Gaussian Splatting baselines, especially under severe sampling bias.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Biased Viewpoints, Gaussian Splatting, 
+Learned Stochastic Sampling, 
+Continuous Probability Field, 
+Observed Support Regularization
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+\IEEEPARstart{N}{ovel} view synthesis has achieved significant progress since the introduction of 3D Gaussian Splatting (3DGS)~\cite{3dgs}. 
+% The discrete representation and pixel-wise optimization scheme enable high-fidelity rasterization with reasonable computational consumption. 
+The discrete representation and pixel-wise optimization scheme enable high-fidelity real-time rasterization at reasonable cost.
+Consequently, numerous variants have been proposed to integrate 3DGS into real-world applications, such as virtual tourism and cultural heritage preservation. 
+The quality of scene reconstruction is strongly correlated with the completeness of data sampling, where broader viewpoint coverage typically leads to more faithful rendering quality.
+
+However, obtaining full-range data coverage is often impractical in real-world scenarios due to limited hardware accessibility, physical restrictions and environmental factors. Common examples include top-down drone imagery with missing ground-level views, or street-level panoramas with blind spots and occlusions. 
+These limitations often lead to \emph{biased viewpoints}, which manifest as viewing angle disparities, discontinuous camera trajectories and systematic coverage gaps, as shown in Fig.~\ref{fig_1}.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.49\textwidth]{pics/pic1.pdf}
+\caption{Typical biased viewpoint settings. (a) Viewing angle disparities: 3DGS trained only with aerial-level views struggles to render consistent ground-level perspectives. (b) Discontinuous camera trajectories: unevenly sampled camera paths lead to fragmented scene reconstruction with blurring artifacts in synthesized views. (c) Systematic coverage gaps: missing observations in specific regions leave parts of the scene weakly supervised, causing floating noise and hollowing effects.}
+\label{fig_1}
+\end{figure}
+
+\IEEEpubidadjcol
+
+
+Under biased viewpoints, most existing 3DGS methods struggle to generalize beyond the observed perspectives. Since their optimizations are dominated by per-frame photometric constraints, 
+Gaussian primitives tend to overfit to the biased observations, leading to suboptimal scene structure and limited global consistency. We refer to this phenomenon as \emph{perspective overfitting}.
+As a result, the synthesized views from unseen viewpoints often exhibit severe artifacts, including ghosting, floating noise, and hollowing effects, 
+limiting the immersive experience during free navigation with 6 Degrees of Freedom. 
+
+Recent efforts attempt to alleviate this issue via additional regularization or stochastic exploration. Regularization-based approaches such as depth regularization~\cite{pgsr,hierarchical,mpgs}
+are still tightly coupled to pixel-wise supervision from biased viewpoints, 
+% leading to fragmented geometry where Gaussian primitives are densely distributed in the observed regions but sparsely presented in the unseen areas.
+leading to fragmented geometry where Gaussian primitives are dense in observed regions but sparse in unseen areas.
+In addition, the oversmoothed depth estimation can further introduce artifacts such as floating noise and blurring.
+Alternatively, MCMC-based methods~\cite{mcmc,mh3dgs} introduce stochasticity into 3DGS optimization,
+% providing a better approximation of the scene distribution.
+improving exploration around the photometric gradients.
+However, this stochasticity is still primarily guided by photometric constraints with only hand-crafted rules, leading to limited global exploration around the view-dependent gradients and insufficient correction toward scene-level consistency.
+
+Fundamentally, synthesizing faithful novel views from biased viewpoints is an ill-posed problem. 
+In weakly observed regions, the photometric supervision is under-determined, where Gaussian primitives fit the available views equally well but may disagree on the unseen ones. As a result, the per-frame optimization, which minimizes the training loss but violates scene-level coherence, collapses onto globally inconsistent structures, causing severe view-specific overfitting artifacts.
+% Therefore, the solution to the biased viewpoint problem is not to invent unobserved scene structure from biased observations, but to regularize the under-determined optimization toward a globally consistent prior.
+A practical solution to the biased viewpoint problem should not invent unobserved scene structure from biased observations, but should regularize the under-determined optimization toward a more consistent prior.
+This requires a shift from purely local photometric constraints to a scene-level consistency criterion that constrains the Gaussian primitives wherever the per-view supervision is insufficient.
+
+In this work, we propose GS-LSS, a Learned Stochastic Sampling (LSS) framework for Gaussian Splatting that augments the standard photometric objective with observed-support regularized stochastic optimization.
+Specifically, our method minimizes a one-sided observed-support penalty between Gaussian primitives and an aggregated support field, with a deterministic drift that pulls weakly constrained primitives toward reliable support and an adaptive stochasticity that explores the under-determined space.
+To instantiate the support field, we introduce Continuous Probability Field (CPF), a data-adaptive consistency prior that aggregates geometric evidence from all training views into a continuous structural field, and predicts whether a given Gaussian primitive is consistent with this aggregated observed support. 
+Aligning the discrete Gaussians to this field provides explicit observed-support guidance for Gaussian relocation and reshaping in weakly observed regions, while an observation-aware gating mechanism prevents over-regularization in well-observed areas.
+Unlike MCMC-based methods~\cite{mcmc,mh3dgs}, which inject hand-crafted stochasticity into the optimization but remain primarily driven by local photometric residuals, GS-LSS introduces explicit scene-aware deterministic and stochastic updates that concentrate Gaussian relocation and exploration where biased supervision is weak. CPF is used as an observed-support stabilizer and is not claimed to reconstruct completely unobserved geometry.
+Extensive experiments on three typical biased viewpoint scenarios show that GS-LSS improves scene consistency and rendering quality for unseen viewpoints compared with the evaluated Gaussian Splatting baselines.
+The main contributions of this work are summarized as follows:
+\begin{itemize}
+    \item We investigate the behavior of representative 3DGS methods under various biased viewpoint scenarios, showing that perspective overfitting is a recurring issue caused by the under-determination of the per-frame optimization in weakly observed regions.
+    \item We propose GS-LSS, an observed-support regularized LSS framework for 3DGS that mitigates perspective overfitting by complementing view-dependent supervision with per-primitive deterministic drift and adaptive stochastic perturbation.
+    \item We propose a Continuous Probability Field (CPF) that serves as a data-adaptive consistency prior, approximating aggregated observed support as a smooth and continuous field for Gaussian relocation and reshaping without claiming to recover fully unseen geometry.
+\end{itemize}
+
+
+
+
+\section{Related Work}
+
+We review 3DGS variants, guided optimization, and stochastic consistency methods, focusing on why biased viewpoints remain challenging for existing formulations.
+
+\subsection{Gaussian Splatting and its Variants}
+
+3D Gaussian Splatting (3DGS)~\cite{3dgs} is a fast alternative to Neural Radiance Fields~\cite{nerf}, building on splatting-style rasterization ideas such as EWA splatting~\cite{ewa} while optimizing an explicit set of anisotropic Gaussian primitives. Its real-time rendering speed and editable representation have made it a practical foundation for scene reconstruction and novel-view synthesis. Follow-up work mitigates aliasing~\cite{mipsplatting}, reduces memory with structured anchors or compact representations~\cite{scaffold,hi-lsplat}, improves densification and pruning~\cite{ekf-gs,densesplat,steepgs,mcmc}, and extends 3DGS to editing and relighting~\cite{sketchfacegs,ssdgs}.
+
+Despite these advances, the core optimization remains dominated by view-dependent photometric residuals. This is appropriate when the cameras cover the scene sufficiently, but it becomes fragile when training observations are concentrated in a subset of directions or disconnected regions. Under biased viewpoints, many Gaussian configurations explain the training images similarly well while disagreeing in weakly observed space. A purely photometric objective therefore has little incentive to place primitives on a view-consistent support, and the model can produce ghosting, hollowing, and floating noise when rendered from unseen viewpoints.
+
+\subsection{Regularized and Guided 3DGS Optimization}
+
+A large body of work improves 3DGS geometry by adding external or multi-view guidance. Depth-regularized methods use monocular depth or normal priors, often derived from large pretrained estimators such as Depth Anything V2~\cite{dav2}, to encourage more plausible surfaces. DRGS~\cite{drgs}, PGSR~\cite{pgsr}, Hierarchical-GS~\cite{hierarchical}, and large-scale variants~\cite{citygaussian} follow this direction by using depth, normal, planar, or hierarchical cues to stabilize optimization. Other methods use generative priors, such as Difix3D~\cite{difix3d+} with diffusion models~\cite{diffusion}, or enforce cross-view consistency as in PGSR~\cite{pgsr} and MVGS~\cite{mvgs}. Feed-forward approaches such as SplatFormer~\cite{splatformer} process multiple views with transformer-based architectures.
+
+These approaches improve local geometry, but they do not fully remove the bias of the sampled views. Monocular depth priors may be oversmoothed or inaccurate in the very regions where the training views provide little support; generative priors may hallucinate visually plausible but geometrically unsupported details; and multi-view constraints are still computed from the available neighboring views. Consequently, they can strengthen consistency within observed regions while leaving unobserved or weakly observed regions under-constrained. GS-LSS is complementary to these efforts: it does not attempt to infer arbitrary hidden geometry, but introduces an observed-support criterion that regularizes uncertain Gaussian updates toward geometry aggregated from the available evidence.
+
+\subsection{Exploring Global Consistency in 3DGS}
+
+Another line of work improves global consistency by injecting stochasticity into Gaussian optimization. 3DGS-MCMC~\cite{mcmc} and MH-3DGS~\cite{mh3dgs} perturb Gaussian locations with MCMC-inspired rules, while DBS~\cite{beta} and Accelerating~\cite{accelerating} explore stochastic updates for other Gaussian attributes or faster convergence. These methods show that stochasticity can help avoid some locally biased minima, and they are important baselines for biased-view reconstruction.
+
+However, stochastic perturbation alone does not provide a scene-aware criterion for where ambiguous primitives should move. If the perturbation remains coupled mainly to photometric residuals or hand-crafted opacity rules, exploration can still stay near the biased solution manifold induced by the observed cameras. GS-LSS therefore combines stochastic updates with CPF-guided observed-support regularization. The CPF supplies a continuous estimate of where aggregated evidence exists, and LSS uses that signal to bias exploration and drift in weakly observed regions without claiming exact MCMC sampling or exact recovery of fully unseen structure.
+
+\section{Method}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.99\textwidth]{pics/workflow_new.pdf}
+    \caption{The pipeline of GS-LSS. CPF is trained from aggregated geometric priors and supplies observed-support signals for per-primitive stochastic Gaussian updates.}
+    \label{fig_2}
+\end{figure*}
+
+% Our approach starts from the biased observations that make the 3DGS optimization under-determined in weakly observed regions.
+% GS-LSS addresses this ambiguity by combining the standard photometric objective with a observed-support guidance through a Continuous Probability Field (CPF). The Gaussian updates are realized through Learned Stochastic Sampling (LSS).
+% The overall workflow is illustrated in Fig.~\ref{fig_2}.
+Our approach addresses the biased observation problem by introducing observed-support regularized Learned Stochastic Sampling. The overall workflow is illustrated in Fig.~\ref{fig_2}.
+
+\subsection{Preliminary}
+
+Let $\mathcal{G} = \{\mathbf{g}_i\}_{i=1}^N$ denote the Gaussian field, $\mathcal{I} = \{\mathbf{I}_j\}_{j=1}^M$ denote the training view distribution where $\mathbf{I}_j$ is the $j$-th training view, $\mathcal{S}$ denote the underlying scene distribution, and 
+$\mathcal{P}(\mathcal{G} \vert \mathcal{S})$ denote the posterior distribution of the Gaussian field given the underlying scene distribution $\mathcal{S}$. 
+
+The objective of 3DGS-MCMC~\cite{mcmc} is to optimize the Gaussian field $\mathcal{G}$ to approximate the posterior distribution $\mathcal{P}(\mathcal{G} \vert \mathcal{S})$ through a Langevin Monte Carlo (LMC)~\cite{sgld} sampling process.
+\begin{equation}
+    \mathcal{G}_{t+1} = \mathcal{G}_t + \alpha \cdot \nabla_{\mathcal{G}_t} \log \mathcal{P}(\mathcal{G}_t \vert \mathcal{S}) + \beta \cdot \epsilon_{\mathcal{G}_t \vert \mathcal{S}}, 
+    \label{eq1}
+\end{equation}
+where the gradient term provides a deterministic drift toward high-posterior regions, while $\epsilon_{\mathcal{G}_t \vert \mathcal{S}}$ enables stochastic exploration to escape local minima.
+
+In 3DGS-MCMC~\cite{mcmc}, the viewpoint distribution $\mathcal{I}$ is assumed to fully cover the scene distribution $\mathcal{S}$, and the posterior distribution is primarily approximated by the photometric loss. 
+\begin{equation}
+    \mathcal{P}(\mathcal{G} \vert \mathcal{S}) \propto \exp \left( - \mathcal{L}_{\mathbf{I}} \right), 
+    \label{eq2}
+\end{equation}
+\begin{equation}
+    \mathcal{L}_{\mathbf{I}} = \left( 1 - \eta_{\mathbf{I}} \right) \cdot \mathcal{L}_{1} + \eta_{\mathbf{I}} \cdot \mathcal{L}_{ssim} + \eta_{o} \cdot \vert o \vert + \eta_{\mathbf{\Sigma}} \vert \sqrt{\text{eig}(\mathbf{\Sigma})} \vert, 
+    \label{eq3}
+\end{equation}
+where $\mathbf{I} \sim \mathcal{I}$ are the training views; $\mathcal{L}_{\mathbf{I}}$ is the pixel-wise loss function; $\text{eig}(\cdot)$ denotes the eigenvalues of the covariance matrix; $\eta$ terms are hyperparameters.
+The stochastic perturbation $\sigma_{mc}$, which samples around the photometric gradients, is defined exclusively on the locations of the Gaussians with 
+\begin{equation}
+    \sigma_{mc} = \frac{\lambda_{lr} \cdot \mathbf{\Sigma}}{1 + e^{100 \cdot \left( 0.995 - \mathbf{o} \right)}}.
+    \label{eq4}
+\end{equation}
+
+Although 3DGS-MCMC~\cite{mcmc} improves the robustness of view synthesis through stochastic optimization, its target distribution is still dominated by photometric gradients, and its hand-crafted stochasticity provides only limited exploration around the optimization bias. 
+Therefore, we approximate an aggregated observed-support field and use it to regularize the stochastic Gaussian optimization process. 
+
+\subsection{Learned Stochastic Sampling}
+
+\subsubsection{Problem Statement}
+
+The key assumption of the posterior distribution in 3DGS-MCMC~\cite{mcmc} is that the viewpoint distribution $\mathcal{I}$ is a full-coverage sampling of the underlying scene distribution $\mathcal{S}$. However, in biased viewpoint scenarios, the training observations represent a severely \emph{biased sampling} of the scene distribution,
+\begin{equation}
+    \mathcal{I}_{\text{bias}} \neq \mathcal{I}_{\text{ideal}} \sim \mathcal{S}.
+    \label{eq5}
+\end{equation}
+where $\mathcal{I}_{\text{bias}}$ and $\mathcal{I}_{\text{ideal}}$ denote the biased and ideal viewpoint distributions, respectively.
+% As a result, minimizing the photometric loss alone from biased samples cannot enforce global scene-level consistency. We refer to this phenomenon as \emph{perspective overfitting}, which is formally defined as the error $\Delta_{\text{overfit}}$ between the learned distribution and the ideal observed support,
+As a result, minimizing the photometric loss alone from biased samples cannot enforce global scene-level consistency. We refer to this phenomenon as \emph{perspective overfitting}. One way to quantify this mismatch is the gap $\Delta_{\text{overfit}}$ between the expected loss under ideal and biased viewpoint distributions,
+\begin{equation}
+    \Delta_{\text{overfit}} = \mathbb{E}_{\mathbf{I} \sim \mathcal{I}_{\text{ideal}}} \left[ \mathcal{L}_{\mathbf{I}} (\mathcal{G}; \mathbf{I}) \right] - \mathbb{E}_{\mathbf{I} \sim \mathcal{I}_{\text{bias}}} \left[ \mathcal{L}_{\mathbf{I}} (\mathcal{G}; \mathbf{I}) \right],
+    \label{eq5.1}
+\end{equation}
+% where $\vert \Delta_{\text{overfit}} \vert$ grows with the bias severity of the viewpoint coverage, so the posterior derived from severely biased observations is no longer well aligned with the ideal observed support.
+where $\vert \Delta_{\text{overfit}} \vert$ is expected to grow with the bias severity of the viewpoint coverage, so the posterior derived from severely biased observations can become poorly aligned with reliable scene support.
+
+% Addressing this challenge requires a direct constraint that regularizes the Gaussian field $\mathcal{G}$ toward the observed support $\mathcal{S}$ to obtain more globally consistent posterior distribution.
+Addressing this challenge requires a direct constraint that regularizes the Gaussian field $\mathcal{G}$ toward reliable observed support, without assuming that fully unobserved structure can be recovered from biased views.
+Therefore, we define the following observed-support regularized surrogate density,
+\begin{equation}
+    \pi^{\star} (\mathcal{G}) \propto \exp \left( - \mathbb{E}_{\mathbf{I}\sim\mathcal{I}_{\text{bias}}}\!\left[\mathcal{L}_{\mathbf{I}}(\mathcal{G};\mathbf{I})\right] - \lambda_{s} \mathcal{R}(\mathcal{G};\mathcal{S}) \right),
+    \label{eq6.5}
+\end{equation}
+where $\mathcal{R}(\cdot)$ is a one-sided observed-support penalty and $\lambda_{s}$ balances the photometric loss and the support regularization. Eq.~\ref{eq6.5} should be understood as a practical optimization surrogate rather than a claim that the full scene distribution is exactly matched.
+
+\subsubsection{Parameterization of \texorpdfstring{$\mu_{\theta}$}{mu-theta}}
+
+Assuming an ideal support field $\mathcal{S}$ is given, we then rewrite the negative log of the surrogate density as, 
+\begin{equation}
+    -\log \pi^{\star} (\mathcal{G}) \triangleq \underbrace{\mathbb{E}_{\mathbf{I}\sim\mathcal{I}}\!\left[\mathcal{L}_{\mathbf{I}}(\mathcal{G};\mathbf{I})\right]}_{\text{view-dependent}}
+    + \lambda_{s} \underbrace{\mathcal{R}(\mathcal{G};\mathcal{S})}_{\text{observed-support regularization}} + C,
+    \label{eq7}
+\end{equation}
+where $C$ is a constant independent of $\mathcal{G}$. The view-dependent term preserves faithfulness to the training views, while the support term regularizes the Gaussian field toward reliable observed support. Substituting Eq.~\ref{eq7} into Eq.~\ref{eq1} gives, 
+\begin{equation}
+    \begin{aligned}
+    \mathcal{G}_{t+1} = &\mathcal{G}_t - \alpha \cdot \nabla_{\mathcal{G}_t} \mathbb{E}_{\mathbf{I}\sim\mathcal{I}_{\text{bias}}}\!\left[\mathcal{L}_{\mathbf{I}}(\mathcal{G}_t;\mathbf{I})\right] \\
+    &- \alpha \lambda_s \cdot \nabla_{\mathcal{G}_t} \mathcal{R}(\mathcal{G}_t;\mathcal{S}) + \beta \cdot \epsilon_{\mathcal{G}_t \vert \mathcal{S}}.
+    \end{aligned}
+    \label{eq8}
+\end{equation} 
+
+To regularize the Gaussian field $\mathcal{G}$ with the support field $\mathcal{S}$, we define the one-sided observed-support penalty $\mathcal{R}(\cdot)$ as the expectation over Gaussian primitives, 
+\begin{equation}
+    \mathcal{R}(\mathcal{G};\mathcal{S}) = \mathbb{E}_{\mathbf{g} \sim \mathcal{G}} \left[ \mathbf{1} - \mathcal{S} (\mathbf{g}) \right],
+    \label{eq9}
+\end{equation}
+% where $\mathcal{S} (\mathbf{g}) \in [0, 1]$ denotes the probability of the Gaussian $\mathbf{g}$ being consistent with the observed support $\mathcal{S}$.
+where $\mathcal{S} (\mathbf{g}) \in [0, 1]$ denotes the ideal support probability, i.e., the compatibility of Gaussian $\mathbf{g}$ with reliable scene support.
+
+In practice, $\mathcal{S}$ is often unavailable under biased viewpoints. Therefore, we use a neural network to estimate an observed support surrogate from in-training geometric priors. We name this model Continuous Probability Field (CPF), denoted $f_{\theta}$, 
+\begin{equation}
+    \mathcal{S}(\mathbf{g}) \approx f_{\theta}(\mathbf{g}), 
+    \label{eq10}
+\end{equation}
+where $f_{\theta}(\mathbf{g})$ predicts the probability of a given 3D primitive being supported by the aggregated observed scene structure. 
+A larger deviation of the Gaussian primitive from this observed support corresponds to a lower probability.
+
+Now, we can obtain a tractable observed-support penalty:
+\begin{equation}
+    \widehat{\mathcal{R}}(\mathcal{G};\mathcal{S}) = \mathbb{E}_{\mathbf{g} \sim \mathcal{G}} \left[ 1 - f_{\theta} (\mathbf{g}) \right].
+    \label{eq11}
+\end{equation}
+% Notably, the approximation error between $f_{\theta}$ and $\mathcal{S}(\mathbf{g})$ is described as, 
+Let $\delta(\mathbf{g})= f_{\theta} (\mathbf{g}) - \mathcal{S} (\mathbf{g})$ denote the CPF approximation error. Then, we have
+\begin{equation}
+    \begin{aligned}
+    \nabla_{\mathcal{G}_t} \widehat{\mathcal{R}}(\mathcal{G}_t;\mathcal{S}) - \nabla_{\mathcal{G}_t} \mathcal{R}(\mathcal{G}_t;\mathcal{S}) &= \nabla_{\mathcal{G}_t} \mathbb{E}_{\mathbf{g} \sim \mathcal{G}_t} \left[ \delta(\mathbf{g}) \right], \\
+    % \delta(\mathbf{g}) &= f_{\theta} (\mathbf{g}) - \mathcal{S} (\mathbf{g}).
+    \end{aligned}
+    \label{eq12}
+\end{equation}
+% The term $\nabla_{\mathcal{G}_t} \mathbb{E}_{\mathbf{g} \sim \mathcal{G}_t} \left[ \delta(\mathbf{g}) \right]$ is an additive gradient drift induced by replacing $\mathcal{S}$ with $f_{\theta}$. The practical effectiveness of this drift is controlled by the quality of the CPF supervision described in Section~\ref{sec:cpf}. A good approximation of $\mathcal{S}$ yields a small drift that does not affect convergence.
+% {\color{blue}The term $-\nabla_{\mathcal{G}_t} \mathbb{E}_{\mathbf{g} \sim \mathcal{G}_t} \left[ \delta(\mathbf{g}) \right]$ is an additive drift induced by replacing $\mathcal{S}$ with $f_{\theta}$. Its magnitude is bounded by the accuracy of the CPF supervision described in Section~\ref{sec:cpf}. A good approximation of $\mathcal{S}$ yields a small drift that does not alter the convergence.}
+This term gives a local sensitivity interpretation of the CPF, not a convergence proof. The CPF serves as an approximate stabilizer for weakly observed regions rather than reconstructing unobserved structure. Let $F(\mathcal{G})=\mathbb{E}_{\mathbf{I}\sim\mathcal{I}_{\text{bias}}}[\mathcal{L}_{\mathbf{I}}]+\lambda_s\mathcal{R}$ be the ideal regularized objective, $\widehat F(\mathcal{G})=\mathbb{E}_{\mathbf{I}\sim\mathcal{I}_{\text{bias}}}[\mathcal{L}_{\mathbf{I}}]+\lambda_s\widehat{\mathcal{R}}$ be the implemented objective, $\mathcal{U}$ be the local subspace in which photometric supervision is under-determined, and $P_{\mathcal{U}}$ be the orthogonal projection onto this subspace. If $F$ has local curvature $m$ on $\mathcal{U}$ after adding the observed-support term and $\|P_{\mathcal{U}}\nabla(\widehat{\mathcal{R}}-\mathcal{R})\|_2\le \varepsilon$, the local minimizers $\mathcal{G}^{\star}$ and $\widehat{\mathcal{G}}$ satisfy the standard perturbation bound
+\begin{equation}
+    \left\|P_{\mathcal{U}}(\widehat{\mathcal{G}}-\mathcal{G}^{\star})\right\|
+    \le \frac{\lambda_s}{m}\varepsilon, \quad
+    F(\widehat{\mathcal{G}})-F(\mathcal{G}^{\star})\le \frac{\lambda_s^2}{2m}\varepsilon^2 .
+    \label{eq12_bound}
+\end{equation}
+The bound follows from the local monotonicity of $\nabla F$ under the stated assumptions, and does not imply global convergence of the full non-convex 3DGS optimization.
+Thus, CPF estimation error induces a local displacement of order $O(\varepsilon)$. A sufficiently accurate CPF can limit this displacement in the under-determined subspace, whereas photometric-only optimization has little curvature in $\mathcal{U}$ and can drift along biased directions.
+The global aggregation, normal smoothness, and outlier filtering in Section~\ref{sec:cpf} are designed to reduce this residual CPF error.
+
+By replacing $\mathcal{R}(\cdot)$ with $\widehat{\mathcal{R}}(\cdot)$ in Eq.~\ref{eq8}, we have, 
+\begin{equation}
+    \begin{aligned}
+    \mathcal{G}_{t+1} = &\mathcal{G}_t - \alpha \cdot \nabla_{\mathcal{G}_t} \mathbb{E}_{\mathbf{I}\sim\mathcal{I}_{\text{bias}}}\!\left[\mathcal{L}_{\mathbf{I}}(\mathcal{G}_t;\mathbf{I})\right] \\
+    &- \alpha \lambda_s \cdot \nabla_{\mathcal{G}_t} \mathbb{E}_{\mathbf{g} \sim \mathcal{G}_t} \left[ 1 - f_{\theta}( \mathbf{g} ) \right] + \beta \cdot \epsilon_{\mathcal{G}_t \vert \mathcal{S}}.
+    \end{aligned}
+    \label{eq13}
+\end{equation}
+Therefore, the learned deterministic drift is defined as, 
+\begin{equation}
+    \mu_{\theta} = -  \nabla_{\mathbf{g}}  (1 - f_{\theta}(\mathbf{g})).
+    \label{eq13.1}
+\end{equation}
+% The parameterization of $\mu_{\theta}$ provides explicit global guidance for the Gaussians by regularizing them toward the observed-support field.
+The parameterization of $\mu_{\theta}$ provides explicit observed-support guidance for the Gaussians by regularizing them toward the observed-support field.
+
+\subsubsection{Parameterization of \texorpdfstring{$\sigma_{\theta}$}{sigma-theta}}
+
+The stochastic term in the LSS update is used to encourage exploration in weakly constrained regions. 
+Under biased viewpoints, a good perturbation should depend on both the observed-support field and the current Gaussian states. 
+Following the adaptive-noise intuition in~\cite{sgld2}, we parameterize $\epsilon_{\mathcal{G}_t \vert \mathcal{S}}$ as a CPF-conditioned stochastic scale that depends on support probability and Gaussian state,
+\begin{equation}
+    \epsilon_{\mathcal{G}_t \vert \mathcal{S}} = \mathcal{N} (0, \sigma_{\theta}), \sigma_{\theta} = g_{\theta}\big(f_{\theta}(\mathcal{G}_t); \mathcal{G}_t\big).
+    \label{eq15}
+\end{equation}
+Compared with the hand-crafted stochasticity in 3DGS-MCMC~\cite{mcmc}, $\sigma_{\theta}$ is conditioned on observed support and Gaussian state, allowing stronger exploration in weakly supported regions.
+
+\subsubsection{Final Formulation}
+
+Combining Eq.~\ref{eq13.1} and Eq.~\ref{eq15}, we implement LSS as an independent per-primitive stochastic update. Let $\mathcal{A}_t$ denote the active Gaussian primitives at iteration $t$, and let $\boldsymbol{\tau}_i$ denote the geometric parameters of primitive $\mathbf{g}_i$ that are updated by LSS. For each $i\in\mathcal{A}_t$, we use
+\begin{align}
+    \boldsymbol{\tau}_{i,t+1} &= \boldsymbol{\tau}_{i,t} - \lambda_{lr}\nabla_{\boldsymbol{\tau}_i}\mathcal{L}_{\mathbf{I}}(\mathcal{G}_t;\mathbf{I}) + \lambda_{\epsilon}\boldsymbol{\delta}_{i,t}^{\mathrm{LSS}}, \label{eq16}\\
+    \boldsymbol{\delta}_{i,t}^{\mathrm{LSS}} &= \boldsymbol{\mu}_{\theta,i} + \boldsymbol{\xi}_{i,t},\quad \boldsymbol{\xi}_{i,t}\sim\mathcal{N}(0,\boldsymbol{\sigma}_{\theta,i}), \label{eq17}\\
+    \boldsymbol{\mu}_{\theta,i} &= -\nabla_{\boldsymbol{\tau}_i}\left(1-f_{\theta}(\mathbf{g}_i)\right),\quad
+    \boldsymbol{\sigma}_{\theta,i}=g_{\theta}\big(f_{\theta}(\mathbf{g}_i);\mathbf{g}_i\big). \label{eq18}
+\end{align}
+Here the LSS perturbation is sampled separately for each active Gaussian; it is not averaged into a single global perturbation shared by all primitives. We use the stochastic formulation as a learned optimizer rather than an exact Langevin or Metropolis-Hastings sampler, and therefore do not claim a stationary sampling distribution.
+
+The effectiveness of $\boldsymbol{\mu}_{\theta,i}$ and $\boldsymbol{\sigma}_{\theta,i}$ depends on the accuracy of the observed support approximation by the CPF model. Therefore, the training priors and loss functions for the CPF model are crucial for the performance of our LSS method.
+
+\begin{algorithm}[t]
+\caption{GS-LSS Training Procedure}
+\label{alg:gslss}
+\begin{algorithmic}[1]
+\STATE Initialize Gaussian field $\mathcal{G}_0$ from SfM points.
+\FOR{$t=1$ to $T$}
+    \STATE Sample training view $\mathbf{I}$ and update $\mathcal{G}_t$ with the standard photometric loss.
+    \IF{$t\geq T_{\mathrm{CPF}}$ and $t$ meets the CPF update interval}
+        \STATE Render RGB, depth, and normal maps from current Gaussians.
+        \STATE Aggregate the projected geometry from all training views and remove outliers with DBSCAN.
+        \STATE Train or update CPF $f_{\theta}$ with Eq.~\ref{eq21}.
+    \ENDIF
+    \IF{$t\geq T_{\mathrm{LSS}}$}
+        \FOR{each active Gaussian $\mathbf{g}_i\in\mathcal{A}_t$}
+            \STATE Sample $\mathbf{x}_{\mathcal{G}}\sim\mathcal{N}(\mathbf{p}_i,\mathbf{\Sigma}_i)$ and query $P_{\theta}=f_{\theta}(\mathbf{x}_{\mathcal{G}})$.
+            \STATE Compute $\boldsymbol{\mu}_{\theta,i}$ and $\boldsymbol{\sigma}_{\theta,i}$ with Eq.~\ref{eq18} and Eq.~\ref{eq25}.
+            \STATE Apply the per-primitive update in Eq.~\ref{eq16}.
+        \ENDFOR
+    \ENDIF
+    \STATE Apply the standard densification and pruning steps.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Continuous Probability Field}\label{sec:cpf}
+
+The target of the CPF model $f_{\theta}$ is to provide 
+a data-driven approximation of the aggregated observed-support field $\mathcal{S}(\mathbf{g})$ (Eq.~\ref{eq10}).
+{Operationally, the CPF probability $P_{\theta}$ is queried at points sampled from Gaussian primitives, which denotes observed-support probability rather than a posterior over unseen geometry.}
+The accuracy of the CPF model is reflected in the residual drift in Eq.~\ref{eq12} and the perturbation bound in Eq.~\ref{eq12_bound}.
+To construct this approximation from biased training samples, we supervise $f_{\theta}$ with an in-training probabilized geometry field aggregated from all training views.
+
+% The geometry that supervises the CPF model is itself derived from the 3DGS under biased viewpoints, raising a circular dependency concern. However, the CPF model is not designed to recover unobservable geometry, but to provide scene-level regularization that converts per-view, mutually inconsistent evidence of the biased optimization into a globally coherent field, which is used to constrain the under-determined updates. For CPF supervision itself, the global geometry aggregration, the normal-driven smoothness, and the observation aware gating mechanism all help to build a continuous, globally coherent field from the biased observations, which is effective to mitigate the circularity, and sufficient to provide effective global guidance for the Gaussian updates. 
+The geometry that supervises the CPF model is itself derived from 3DGS under biased viewpoints, so the CPF model is not claimed to recover fully unobserved geometry. Instead, it estimates a smooth observed-support field from evidence aggregated across all available training views, and uses this field to regularize updates only where per-view supervision is under-determined. In our training schedule, CPF supervision starts after the initial Gaussian field has stabilized, and learned LSS sampling is enabled only after the CPF has received its first supervision stage. The global aggregation, DBSCAN outlier filtering, normal-driven smoothness, and observation-aware gating reduce the risk that a single biased view dominates the field.
+% During joint training, local corrections induced by this global field feed back into subsequent CPF supervision and progressively reduce view-specific artifacts, while well-observed regions remain photometrically constrained.
+
+
+\subsubsection{In-training Geometric Field}
+
+% Assume we have Gaussian ellipsoids 
+Given Gaussian ellipsoids 
+$\mathcal{G}_t = \{\mathbf{g}_i\}_{i=1}^N$, where $\mathbf{g}_i = \{ \mathbf{p}, \mathbf{o}, \mathbf{\Sigma}, \mathbf{c} \}$ 
+at training iteration $t$, we first render RGB images $\mathbf{I}_{\mathcal{G}}$ and depth maps $\mathbf{D}_{\mathcal{G}}$ from the training views, and compute the normal maps $\mathbf{N}$ from the depth maps. 
+% After applying DBSCAN for outlier filtering, 
+After DBSCAN outlier filtering, 
+we project these maps and aggregate them into the world coordinate system to construct a global sparse point cloud $\mathbf{X} = \{ \mathbf{x}, \mathbf{c}, \mathbf{n} \}$, where $\mathbf{x}$ is the 3D coordinate, $\mathbf{c}$ is color, and $\mathbf{n}$ is normal.
+
+To obtain probabilistic supervision without making the field dependent on the absolute scene scale, we first normalize the scene coordinates by the scene center $\mathbf{c}_{\mathrm{sc}}$ and diagonal length $d_{\mathrm{sc}}$, i.e., $\tilde{\mathbf{x}}=(\mathbf{x}-\mathbf{c}_{\mathrm{sc}})/d_{\mathrm{sc}}$. We then sample around each normalized point and compute its probability,
+\begin{align}
+    \tilde{\mathbf{x}}_{s} &\sim \mathcal{N}(\tilde{\mathbf{x}}, \sigma_s^2\mathbf{I}_3), \label{eq19} \\
+    P_{s} &= \exp\left(-\frac{\|\tilde{\mathbf{x}}_{s}-\tilde{\mathbf{x}}\|_2^2}{2\sigma_s^2}\right), \label{eq20}
+\end{align}
+where $\sigma_s$ is set proportional to the median nearest-neighbor distance of the aggregated point cloud in normalized coordinates. We thus acquire the geometry field $\mathbf{X}_{s} = \{ \tilde{\mathbf{x}}_{s}, P_{s}, \mathbf{c}, \mathbf{n} \}$ as the training priors. This normalization makes the CPF supervision comparable across datasets with different physical scales.
+
+\subsubsection{CPF network and Loss Function}
+
+We build the CPF network $f_{\theta}$ with a 3-layer SIREN~\cite{implicit}-style MLP, which maps sampled points $\mathbf{x}_{s}$ to the probability $P_{\theta}$ and color $\mathbf{c}_{\theta}$.
+During training, the normal vectors $\mathbf{n}$ are used to regularize the shape of the probability field with $\mathbf{n} = \nabla_{\mathbf{x}} P_{\theta}$, ensuring the continuity and smoothness of the field even when the point densities are biased to the training views. The loss function is defined as:
+\begin{equation}
+    \begin{aligned}
+    \mathcal{L}_{cpf} = &\sum_{\mathbf{x}} \vert P_{\theta} - P_{s} \vert + \sum_{\mathbf{x}}  \vert 1 - \langle\mathbf{n}, \nabla_{\mathbf{x}} P_{\theta}\rangle \vert \\
+    &+ \sum_{\mathbf{x}} \vert \mathbf{c}_{\theta} - \mathbf{c} \vert
+    \end{aligned}
+    \label{eq21}
+\end{equation}
+where $\langle\cdot,\cdot\rangle$ denotes cosine similarity. Fig.~\ref{fig_3} shows an example of the trained CPF model.
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=0.49\textwidth]{pics/cpf.pdf}
+    \caption{A visual example of a trained Continuous Probability Field (CPF) model. From left to right, the panels show sectional views in the $x-y$, $x-z$, and $y-z$ planes, respectively. The colors indicate the predicted probability, with {\color{blue}high} and {\color{red}{low}} values.}
+    \label{fig_3}
+\end{figure}
+
+Since the loss function is built upon globally aggregated geometric priors, it encourages the CPF network $f_{\theta}$ to behave as an observed-support estimator rather than a per-view regressor, which reduces the magnitude of the gradient drift $\nabla_{\mathcal{G}_t} \mathbb{E}_{\mathbf{g} \sim \mathcal{G}_t} \left[ \delta(\mathbf{g}) \right]$ in Eq.~\ref{eq12} when the priors are reliable. This is the fundamental difference from regularization-based methods, whose regularization is derived from per-view perspectives.
+
+\subsubsection{Computation of \texorpdfstring{$\mu_{\theta}$ and $\sigma_{\theta}$}{mu-theta and sigma-theta}}
+
+To make the LSS update of Eq.~\ref{eq16} concrete, we compute the deterministic drift $\boldsymbol{\mu}_{\theta,i}$ and the stochastic scale $\boldsymbol{\sigma}_{\theta,i}$ as explicit, differentiable functions of the CPF predictions and the Gaussian states.
+% The implementation follows these equations directly without additional heuristics.
+Different from 3DGS-MCMC~\cite{mcmc}, we update both the locations and shapes of the Gaussian ellipsoids through the gradients provided by the CPF model. For each Gaussian ellipsoid $\mathbf{g}_i = \{\mathbf{p}_i, \mathbf{o}_i, \mathbf{\Sigma}_i, \mathbf{c}_i\} \sim \mathcal{G}$, we randomly sample a point within it and compute its opacity, 
+\begin{align}
+    \mathbf{x}_{\mathcal{G}} &\sim \mathcal{N} \left( \mathbf{p}_i, \mathbf{\Sigma}_i \right), \label{eq22} \\
+    \alpha_{\mathcal{G}} &= e^{-\frac{1}{2} \left( \mathbf{x}_{\mathcal{G}} - \mathbf{p}_i \right)^{T} \mathbf{\Sigma}_i^{-1} \left( \mathbf{x}_{\mathcal{G}} - \mathbf{p}_i \right)} \cdot \mathbf{o}_i, \label{eq23}
+\end{align}
+where $\mathbf{x}_{\mathcal{G}}$ and $\alpha_{\mathcal{G}}$ are the sampled points and opacities. 
+
+These points are fed into the CPF model to obtain the probability $P_{\theta}=f_{\theta}(\mathbf{x}_{\mathcal{G}})$. 
+In implementation, we do not directly update the raw covariance matrix. Instead, the covariance is parameterized as $\mathbf{\Sigma}_i=\mathbf{R}(\mathbf{q}_i)\operatorname{diag}(\exp(2\boldsymbol{\rho}_i))\mathbf{R}(\mathbf{q}_i)^{T}$, where $\boldsymbol{\rho}_i$ are log-scales and $\mathbf{q}_i$ is a normalized quaternion. Therefore, the LSS geometry parameter is $\boldsymbol{\tau}_i=[\mathbf{p}_i,\boldsymbol{\rho}_i,\mathbf{q}_i]$, which preserves the positive definiteness of $\mathbf{\Sigma}_i$ during optimization. Following Eq.~\ref{eq17}, the deterministic drift is obtained by back-propagating the CPF probability to these parameters:
+\begin{equation}
+    \boldsymbol{\mu}_{\theta,i}= -\nabla_{\boldsymbol{\tau}_i}(1-P_{\theta})=\nabla_{\boldsymbol{\tau}_i}P_{\theta}.
+    \label{eq24}
+\end{equation}
+This drift drives each Gaussian to higher structural support $P_{\theta}$ while keeping the covariance representation valid.
+
+% The variance network $g_{\theta}$ takes the predicted structural support $P_{\theta}$ and the sampled opacity $\alpha_{\mathcal{G}}$ as two separate confidence inputs and predicts the perturbation scale $\sigma_{\theta}$, where $\mathbf{D}_i$ is a parameter-space scale matrix induced by the current Gaussian scale, $P_{\theta}$ measures support from the CPF field, and $\alpha_{\mathcal{G}}$ measures the current primitive support at the sampled point. 
+% Both are high when a primitive is well supported and well observed, and low when its placement is ambiguous. 
+% % We therefore feed both to $g_{\theta}$, which outputs a learnable scale $a_{\theta}$ and an observation-aware confidence gate $\Delta_{\theta}$,
+% We therefore feed both to $g_{\theta}$, a lightweight 2-layer MLP that outputs a learnable scale $a_{\theta}$ and an observation-aware confidence gate $\Delta_{\theta}$,
+The stochastic scale is computed from predicted support $P_{\theta}$ and sampled opacity $\alpha_{\mathcal{G}}$ through a lightweight scale-and-gate parameterization:
+\begin{align}
+    a_{\theta} &= g_{\theta}\left(P_{\theta}, \alpha_{\mathcal{G}}\right), \\
+    \Delta_{\theta} &= h_{\theta}\left(P_{\theta}, \alpha_{\mathcal{G}}\right), \\
+    \boldsymbol{\sigma}_{\theta,i} &= \frac{a_{\theta} \cdot \mathbf{D}_i}{1 + e^{100 \cdot \Delta_{\theta}}}, 
+    \label{eq25}
+\end{align}
+% where $a_{\theta}$ and $\Delta_{\theta}$ are outputs of $g_{\theta}$. 
+where $\mathbf{D}_i$ is a parameter-space scale matrix induced by the current Gaussian scale, $P_{\theta}$ measures support from the CPF field, and $\alpha_{\mathcal{G}}$ measures the current primitive support at the sampled point.
+% The gate $\Delta_{\theta}$ is large for well-observed primitives, which drives $\sigma_{\theta}\!\rightarrow\!0$ so that the update defers to the photometric data. It is small for weakly supported primitives, which enlarges $\sigma_{\theta}$ to encourage the exploration needed to escape the locally biased minimum. This replaces the hand-crafted opacity rule of 3DGS-MCMC~\cite{mcmc} (Eq.~\ref{eq4}) with a learned, observation-conditioned gate.
+Large $\Delta_{\theta}$ suppresses $\boldsymbol{\sigma}_{\theta,i}$ for well-observed primitives, while small $\Delta_{\theta}$ increases exploration for weakly supported primitives. This replaces the hand-crafted opacity rule of 3DGS-MCMC~\cite{mcmc} (Eq.~\ref{eq4}) with a learned, observation-conditioned gate.
+
+The LSS process is then performed using Eq.~\ref{eq16}, where $\boldsymbol{\mu}_{\theta,i}$ serves as an observed-support drift and $\boldsymbol{\sigma}_{\theta,i}$ as an adaptive stochastic perturbation.  
+
+\subsection{Training Objectives}
+
+GS-LSS jointly optimizes the Gaussian field $\mathcal{G}$ and the CPF model $f_{\theta}$. Following the surrogate objective in Eq.~\ref{eq7}, the Gaussian field is optimized by the observed-support regularized objective,
+\begin{equation}
+    \mathcal{L}_{\mathcal{G}} = \mathbb{E}_{\mathbf{I} \sim \mathcal{I}_{\text{bias}}} \left[ \mathcal{L}_{\mathbf{I}}(\mathcal{G};\mathbf{I}) \right] + \lambda_{s} \, \widehat{\mathcal{R}}(\mathcal{G};\mathcal{S}),
+    \label{eq26}
+\end{equation}
+which combines the photometric loss $\mathcal{L}_{\mathbf{I}}$ (Eq.~\ref{eq3}) with the observed-support penalty $\widehat{\mathcal{R}}$ (Eq.~\ref{eq11}). The minimization of $\mathcal{L}_{\mathcal{G}}$ is realized through the LSS update in Eq.~\ref{eq16}, where the deterministic drift $\boldsymbol{\mu}_{\theta,i}$ decreases the support penalty and the adaptive perturbation $\boldsymbol{\sigma}_{\theta,i}$ injects scene-aware stochastic exploration. The CPF networks are optimized by the geometric-field loss $\mathcal{L}_{cpf}$ (Eq.~\ref{eq21}), which fits $f_{\theta}$ to the globally aggregated probability, color and normal priors. 
+We optimize the two objectives jointly so that observed-support estimation and Gaussian optimization remain coupled during training.
+    
+% \subsection{Pipeline of GS-LSS}
+
+% The overall pipeline is illustrated in Fig.~\ref{fig_2}. Our method begins by initializing Gaussians $\mathcal{G}$ using structure-from-motion (SfM)~\cite{sfm} sparse points, which are then rasterized into images $\mathbf{I}_{\mathcal{G}}$ and depth $\mathbf{D}_{\mathcal{G}}$ for computing the photometric loss and normal map $\mathbf{N}$. The per-frame $\mathbf{D}_{\mathcal{G}}$ and $\mathbf{N}$ are filtered with DBSCAN before being aggregated and projected into the world coordinate to construct a global sparse point cloud $\mathbf{X}$. The probabilistic modeling is then applied to $\mathbf{X}$ to generate the probabilistic geometry field $\mathbf{X}_{s}$, which serves as the training priors. The CPF model $f_{\theta}$ is trained on such priors to approximate the scene distribution, and the variance $\sigma_{\theta}$ is computed with the predicted probability $P_{\theta}$ and sampled opacity $\alpha_{\mathcal{G}}$ through the network $g_{\theta}$. Finally, the Gaussian splatting process is updated using the LSS method outlined in Eq.~\ref{eq16}. 
+
+
+\section{Experiments\label{sec:experiments}}
+ 
+\subsection{Implementation Details}
+
+
+\subsubsection{Datasets}
+
+We evaluate our method on 16 scenes from 5 widely used datasets, including
+8 surrounding scenes 
+from Mip-NeRF 360~\cite{mipnerf360},
+2 outdoor scenes (Truck and Train) from Tanks \& Temples~\cite{tankstemples},
+4 large-scale scenes with planar trajectories from Mill 19~\cite{meganerf},
+and 2 urban scenes with both aerial and ground views from MatrixCity~\cite{matrixcity} and Zeche~\cite{isprs}.
+These datasets cover a wide range of scene types and viewpoint distributions, providing a comprehensive benchmark.
+
+\begin{table*}[t]
+\centering
+\caption{Evaluation for systematic coverage gaps on Mip-NeRF 360~\cite{mipnerf360} and Tanks \& Temples~\cite{tankstemples}, with angular gaps 20$^\circ$, 40$^\circ$, 60$^\circ$, 80$^\circ$ and 100$^\circ$. Best results are in \textbf{bold} and second-best are \underline{underlined}.}
+\label{tab:coverage_gap}
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccccccccccc}
+\toprule
+\multirow{2}{*}{Method} & \multicolumn{3}{c}{20$^\circ$} & \multicolumn{3}{c}{40$^\circ$} & \multicolumn{3}{c}{60$^\circ$} & \multicolumn{3}{c}{80$^\circ$} & \multicolumn{3}{c}{100$^\circ$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}\cmidrule(lr){14-16}
+ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ \\
+\midrule
+\multicolumn{16}{c}{\textbf{Mip-NeRF 360}}\\[-2pt]
+\midrule
+3DGS~\cite{3dgs} & 0.787 & 24.936 & 0.202 & 0.726 & 22.137 & 0.249 & 0.674 & 20.499 & 0.291 & 0.630 & 19.460 & 0.324 & 0.584 & 17.597 & 0.358 \\
+Scaffold-GS~\cite{scaffold} & 0.760 & 23.844 & 0.231 & 0.706 & 21.835 & 0.273 & 0.653 & 20.418 & 0.315 & 0.616 & 19.574 & 0.344 & 0.571 & 17.751 & 0.378 \\
+Hierarchical-GS~\cite{hierarchical} & 0.787 & 25.044 & 0.203 & 0.725 & 22.314 & 0.250 & 0.671 & 20.611 & 0.291 & 0.624 & 19.339 & 0.326 & 0.581 & 17.463 & 0.359 \\
+MVGS~\cite{mvgs} & 0.784 & 24.827 & 0.203 & 0.715 & 22.130 & 0.256 & 0.658 & 20.458 & 0.303 & 0.608 & 19.081 & 0.340 & 0.561 & 17.164 & 0.374 \\
+PGSR~\cite{pgsr} & 0.771 & 24.203 & 0.231 & 0.706 & 21.588 & 0.280 & 0.662 & 20.179 & 0.307 & 0.611 & 18.834 & 0.343 & 0.553 & 16.808 & 0.375 \\
+3DGS-MCMC~\cite{mcmc} & \underline{0.801} & \underline{25.323} & \underline{0.194} & \underline{0.739} & \underline{22.369} & \underline{0.239} & 0.679 & 20.732 & \underline{0.283} & 0.632 & 19.344 & \underline{0.319} & 0.572 & 17.204 & \underline{0.355} \\
+MH-3DGS~\cite{mh3dgs} & 0.784 & 25.122 & 0.224 & 0.728 & 22.365 & 0.265 & \underline{0.683} & \underline{20.855} & 0.300 & \underline{0.650} & \underline{20.008} & 0.328 & \underline{0.608} & \underline{18.352} & 0.360 \\
+GS-LSS (Ours) & \textbf{0.808} & \textbf{25.839} & \textbf{0.188} & \textbf{0.752} & \textbf{23.152} & \textbf{0.236} & \textbf{0.708} & \textbf{21.615} & \textbf{0.273} & \textbf{0.667} & \textbf{20.235} & \textbf{0.307} & \textbf{0.631} & \textbf{18.805} & \textbf{0.340} \\
+\addlinespace[2pt]
+\midrule
+\multicolumn{16}{c}{\textbf{Tanks \& Temples}}\\[-2pt]
+\midrule
+3DGS~\cite{3dgs} & 0.771 & 20.411 & 0.209 & 0.741 & 19.464 & 0.234 & 0.695 & 18.651 & 0.269 & 0.663 & 17.945 & 0.294 & 0.632 & \underline{17.422} & 0.323 \\
+Scaffold-GS~\cite{scaffold} & 0.744 & 19.331 & 0.222 & 0.743 & 19.945 & 0.232 & 0.692 & 18.658 & 0.269 & 0.653 & 17.589 & 0.301 & 0.615 & 17.082 & 0.334 \\
+Hierarchical-GS~\cite{hierarchical} & 0.766 & 20.418 & 0.208 & 0.743 & 19.640 & 0.229 & 0.694 & 18.728 & 0.267 & 0.657 & 17.811 & 0.296 & 0.630 & 17.226 & 0.321 \\
+MVGS~\cite{mvgs} & 0.756 & 20.211 & \underline{0.199} & 0.721 & 19.150 & 0.229 & 0.668 & 18.323 & 0.275 & 0.625 & 17.549 & 0.309 & 0.590 & 16.875 & 0.340 \\
+PGSR~\cite{pgsr} & 0.765 & 20.119 & 0.234 & 0.737 & 19.182 & 0.258 & 0.687 & 18.020 & 0.295 & 0.653 & 17.305 & 0.313 & \underline{0.634} & 17.206 & 0.338 \\
+3DGS-MCMC~\cite{mcmc} & \underline{0.782} & \underline{21.026} & 0.202 & \underline{0.754} & \underline{20.018} & \underline{0.220} & \underline{0.702} & \underline{18.973} & \underline{0.257} & \underline{0.665} & \underline{18.014} & \underline{0.285} & 0.632 & 17.406 & \underline{0.317} \\
+MH-3DGS~\cite{mh3dgs} & 0.754 & 19.967 & 0.221 & 0.726 & 19.205 & 0.241 & 0.649 & 17.404 & 0.291 & 0.652 & 17.299 & 0.298 & 0.612 & 16.627 & 0.331 \\
+GS-LSS (Ours) & \textbf{0.787} & \textbf{21.451} & \textbf{0.191} & \textbf{0.757} & \textbf{20.253} & \textbf{0.210} & \textbf{0.709} & \textbf{19.345} & \textbf{0.247} & \textbf{0.672} & \textbf{18.113} & \textbf{0.274} & \textbf{0.643} & \textbf{17.818} & \textbf{0.304} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.95\textwidth]{pics/coverage_gap.pdf}
+    \caption{Visualization of the performance trends under systematic coverage gaps, with gap size ranging from 10$^\circ$ to 100$^\circ$. 
+    The first column illustrates the coverage gap setups. 
+    The remaining columns report the relationship between the coverage gap size and the performance metrics (SSIM, PSNR and LPIPS). 
+    The first row corresponds to Mip-NeRF 360~\cite{mipnerf360} dataset and the second row corresponds to Tanks \& Temples~\cite{tankstemples} dataset.
+    }
+    \label{coverage_gap_trend}
+\end{figure*}
+
+
+
+
+\subsubsection{Biased Viewpoint Settings}
+
+To evaluate robustness under biased viewpoints, we design three representative settings: \emph{systematic coverage gap}, \emph{discontinuous trajectory} and \emph{viewing angle disparities}. The first two settings remove or reorganize camera observations while keeping the target scene fixed, so they isolate the effect of missing support in otherwise standard reconstruction benchmarks. The third setting uses naturally different capture platforms, where the train and test views differ substantially in elevation and visible structures.
+
+\textbf{Systematic coverage gap.}
+On Mip-NeRF 360~\cite{mipnerf360} and Tanks \& Temples~\cite{tankstemples}, we remove consecutive angular segments of training views to create controlled coverage gaps, and the removed viewpoints are reserved for evaluation. The gap size ranges from 20$^\circ$ to 100$^\circ$, which simulates increasing amounts of missing camera support. This setting is useful because the degradation trend can be examined as a function of gap severity rather than only as a single train/test split.
+
+\textbf{Discontinuous trajectory.}
+We evaluate this setting on both surrounding and planar camera trajectories using Mip-NeRF 360~\cite{mipnerf360}, Tanks \& Temples~\cite{tankstemples} and Mill 19~\cite{meganerf}. We select several disjoint regions of the viewpoint coverage to form unevenly distributed training views, where each retained region contains a local cluster of neighboring viewpoints. This creates locally dense supervision separated by unsupported intervals, a common pattern in casual capture, drone scanning, and large-scale traversal data.
+
+\textbf{Viewing angle disparities.}
+For this setting, we use Block A of MatrixCity~\cite{matrixcity} and Zeche~\cite{isprs}, as they both contain substantial aerial and ground-view collections. All methods are trained on aerial views and evaluated on ground views. This is the most severe split because the evaluation views may observe surfaces and occlusion boundaries that are poorly constrained by the training platform. We therefore interpret the results as robustness under strong viewpoint disparity, not as a guarantee that any method can recover geometry that is completely absent from the observations.
+
+
+\subsubsection{Competitors and Hyperparameters}
+
+We compare our method against representative 3DGS baselines from three families. 
+Among them, 3DGS~\cite{3dgs} and Scaffold-GS~\cite{scaffold} are two widely used photometric optimization baselines.
+Hierarchical-GS~\cite{hierarchical}, MVGS~\cite{mvgs} and PGSR~\cite{pgsr} are three representative geometric regularization methods for 3DGS.
+3DGS-MCMC~\cite{mcmc} and MH-3DGS~\cite{mh3dgs} are two state-of-the-art stochastic optimization baselines.
+Particularly, for Hierarchical-GS~\cite{hierarchical}, we enable only depth regularization to ensure a fair comparison.
+% In addition, methods that require explicit control over the number of Gaussian primitives are set to have the same total number across all competitors. 
+Methods that require explicit control over the number of Gaussian primitives use the same total count across all competitors. 
+
+All baselines are trained with their official implementations and default configurations under the same training iteration budget and the same fixed train/test split. 
+For our method, CPF training begins at iteration 2000 with a learning rate of $1\times10^{-4}$, 
+and the learned sampling of $\boldsymbol{\mu}_{\theta,i}$ and $\boldsymbol{\sigma}_{\theta,i}$ begins at iteration 2500.
+Depth renderings are downsampled by $4\times$ before being used to construct the training priors.
+Unless otherwise stated, the photometric loss of GS-LSS is computed from one randomly sampled training view per iteration, following the standard 3DGS training protocol.
+Other hyperparameters are set as follows: CPF net $f_{\theta}$ is a 3-layer SIREN-style MLP, $g_{\theta}$ and $h_{\theta}$ are 2-layer MLPs; DBSCAN $\epsilon$ is set to 0.25 in normalized coordinates; observed-support weight $\lambda_s$ is set to 0.1; sampling weight $\lambda_{\epsilon}$ is set to 1.
+All experiments are conducted on a single NVIDIA RTX 4090 GPU with 24\,GB memory.
+
+% \begin{figure*}[!t]
+%     \centering
+%     \includegraphics[width=0.99\textwidth]{pics/gaussiandensity.pdf}
+%     \caption{Gaussian density visualization of different methods on Truck scene in Tanks \& Temples~\cite{tankstemples} dataset under different systematic coverage gap settings, with gap size $\theta$ = 20$^\circ$, 60$^\circ$ and 100$^\circ$. Red and blue triangles indicate the training and testing views respectively. 
+%     Structure sparsities are observed in the gap regions under large gap sizes, 
+%     which indicates perspective overfitting occurs. Zoom-in for better visualization.
+%     }
+%     \label{perspective_overfitting}
+% \end{figure*}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.97\textwidth]{pics/floters.pdf}
+    \caption{Top-down bird's eye view of free-space floaters for the Bonsai scene in Mip-NeRF 360~\cite{mipnerf360} under different systematic coverage gap settings. Each method (rows) projects its Gaussians onto the dominant ground plane. The faint gray shows the SfM scene footprint, and the hot color map shows the relative density of Gaussians identified as free-space floaters by the visualization protocol. GS-LSS reduces the visible floater density, especially under larger coverage gaps.}
+    \label{perspective_overfitting}
+\end{figure*}
+
+
+
+\subsection{Main Results}
+
+The experiments evaluate three claims: biased viewpoints are consistent with perspective overfitting; hand-crafted stochasticity helps but remains limited; and CPF-guided observed-support regularization stabilizes 3DGS under biased viewpoints.
+
+\subsubsection{Claim 1: Biased viewpoints induce perspective overfitting}
+
+Table~\ref{tab:coverage_gap} and Fig.~\ref{coverage_gap_trend} show substantial degradation as the gap widens from 20$^\circ$ to 100$^\circ$, indicating a general 3DGS failure mode under biased viewpoints. Geometric regularization methods remain vulnerable because depth supervision and multi-view reprojection are still tied to available views, leaving unseen regions weakly constrained.
+Fig.~\ref{perspective_overfitting} gives complementary geometric evidence: under large gaps, many methods place visible free-space floaters away from real surfaces, while GS-LSS reduces the displayed floater density. Similar behavior appears under aerial-ground disparities in Table~\ref{tab:angle_disparity}, where geometric methods such as Hierarchical-GS~\cite{hierarchical} and PGSR~\cite{pgsr} are especially weak on MatrixCity~\cite{matrixcity}. These observations support the view that biased photometric optimization is a major source of 3DGS deterioration.
+
+
+
+\begin{table*}[t]
+\centering
+\caption{Evaluation for discontinuous trajectories on Mip-NeRF 360~\cite{mipnerf360}, Tanks \& Temples~\cite{tankstemples} and Mill 19~\cite{meganerf}. Best results are in \textbf{bold} and second-best are \underline{underlined}.}
+\label{tab:discontinuous}
+\scriptsize
+\setlength{\tabcolsep}{8.0pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccccc}
+\toprule
+\multirow{2}{*}{Method} & \multicolumn{3}{c}{Mip-NeRF 360} & \multicolumn{3}{c}{Tanks \& Temples} & \multicolumn{3}{c}{Mill 19} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+& SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ \\
+\midrule
+3DGS~\cite{3dgs} & 0.826 & 26.979 & 0.169 & 0.778 & 20.914 & 0.216 & 0.754 & 21.503 & 0.217 \\
+Scaffold-GS~\cite{scaffold} & 0.783 & 25.356 & 0.205 & 0.745 & 19.496 & 0.237 & 0.755 & 21.081 & 0.226 \\
+Hierarchical-GS~\cite{hierarchical} & 0.827 & 27.046 & 0.168 & 0.787 & 21.521 & 0.210 & 0.762 & 22.263 & 0.210 \\
+MVGS~\cite{mvgs} & 0.828 & 27.288 & 0.164 & 0.776 & 20.744 & 0.196 & 0.746 & 21.311 & 0.227 \\
+PGSR~\cite{pgsr} & 0.821 & 26.269 & 0.188 & 0.786 & 21.093 & 0.231 & 0.717 & 20.336 & 0.265 \\
+3DGS-MCMC~\cite{mcmc} & \underline{0.843} & \underline{27.517} & \underline{0.153} & \underline{0.799} & \underline{21.955} & \underline{0.196} & \underline{0.766} & \underline{22.532} & \underline{0.207} \\
+MH-3DGS~\cite{mh3dgs} & 0.817 & 26.895 & 0.191 & 0.767 & 20.895 & 0.218 & 0.747 & 22.394 & 0.249 \\
+GS-LSS (Ours) & \textbf{0.845} & \textbf{28.018} & \textbf{0.151} & \textbf{0.805} & \textbf{22.160} & \textbf{0.180} & \textbf{0.775} & \textbf{22.893} & \textbf{0.198} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+
+% \begin{table*}[t]
+% \centering
+% \caption{Evaluation for viewing angle disparities on MatrixCity~\cite{matrixcity} and Zeche~\cite{isprs} datasets. Best results are in \textbf{bold} and second-best are \underline{underlined}.}
+% \label{tab:angle_disparity}
+% \scriptsize
+% \setlength{\tabcolsep}{3.0pt}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{lcccccccccccc}
+% \toprule
+% \multirow{2}{*}{Method} & \multicolumn{6}{c}{MatrixCity} & \multicolumn{6}{c}{Zeche} \\
+% \cmidrule(lr){2-7} \cmidrule(lr){8-13}
+%  & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & BRISQUE$\downarrow$ & NIQE$\downarrow$ & PIQE$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & BRISQUE$\downarrow$ & NIQE$\downarrow$ & PIQE$\downarrow$ \\
+% \midrule
+% 3DGS~\cite{3dgs} & 0.578 & 16.146 & 0.495 & 49.891 & 4.831 & 67.354 & 0.330 & 9.431 & 0.568 & 34.555 & 4.473 & 43.777 \\
+% Scaffold-GS~\cite{scaffold} & 0.562 & 16.193 & 0.493 & 42.279 & 4.477 & 63.261 & 0.337 & 9.806 & 0.591 & 35.131 & \textbf{3.802} & 46.386 \\
+% Hierarchical-GS~\cite{hierarchical} & 0.458 & 12.943 & 0.532 & 45.658 & 4.720 & 69.502 & 0.341 & 9.646 & 0.577 & 44.358 & 4.985 & \underline{40.839} \\
+% MVGS~\cite{mvgs} & 0.541 & 15.610 & 0.490 & \textbf{42.178} & \textbf{4.196} & \textbf{61.994} & 0.340 & 9.494 & 0.581 & 36.391 & 4.350 & \textbf{36.779} \\
+% PGSR~\cite{pgsr} & 0.417 & 13.072 & 0.531 & 47.831 & 4.792 & 68.452 & 0.261 & 8.499 & 0.538 & 45.042 & 4.359 & 55.068 \\
+% 3DGS-MCMC~\cite{mcmc} & \underline{0.586} & \underline{16.225} & \underline{0.480} & 49.159 & 5.017 & 67.655 & \underline{0.373} & 10.133 & \underline{0.534} & \underline{33.455} & \underline{4.032} & 45.128 \\
+% MH-3DGS~\cite{mh3dgs} & 0.560 & 15.297 & 0.502 & 57.645 & 5.756 & 73.624 & \textbf{0.481} & \underline{12.703} & 0.546 & 38.133 & 4.685 & 46.089 \\
+% GS-LSS (Ours) & \textbf{0.594} & \textbf{16.951} & \textbf{0.462} & \underline{42.185} & \underline{4.476} & \underline{63.111} & \textbf{0.481} & \textbf{12.879} & \textbf{0.530} & \textbf{25.571} & 4.249 & 40.920 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \end{table*}
+
+
+
+\begin{table}[t]
+\centering
+\caption{Evaluation for viewing angle disparities on MatrixCity~\cite{matrixcity} and Zeche~\cite{isprs} datasets. Best results are in \textbf{bold} and second-best are \underline{underlined}.}
+\label{tab:angle_disparity}
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+\multirow{2}{*}{Method} & \multicolumn{3}{c}{MatrixCity} & \multicolumn{3}{c}{Zeche} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & PSNR$\uparrow$ & LPIPS$\downarrow$ \\
+\midrule
+3DGS~\cite{3dgs} & 0.578 & 16.146 & 0.495 & 0.330 & 9.431 & 0.568 \\
+Scaffold-GS~\cite{scaffold} & 0.562 & 16.193 & 0.493 & 0.337 & 9.806 & 0.591 \\
+Hierarchical-GS~\cite{hierarchical} & 0.458 & 12.943 & 0.532 & 0.341 & 9.646 & 0.577 \\
+MVGS~\cite{mvgs} & 0.541 & 15.610 & 0.490 & 0.340 & 9.494 & 0.581 \\
+PGSR~\cite{pgsr} & 0.417 & 13.072 & 0.531 & 0.261 & 8.499 & 0.538 \\
+3DGS-MCMC~\cite{mcmc} & \underline{0.586} & \underline{16.225} & \underline{0.480} & \underline{0.373} & 10.133 & \underline{0.534} \\
+MH-3DGS~\cite{mh3dgs} & 0.560 & 15.297 & 0.502 & \textbf{0.481} & \underline{12.703} & 0.546 \\
+GS-LSS (Ours) & \textbf{0.594} & \textbf{16.951} & \textbf{0.462} & \textbf{0.481} & \textbf{12.879} & \textbf{0.530} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+
+
+
+\subsubsection{Claim 2: Stochasticity alone provides limited improvements}
+
+Tables~\ref{tab:coverage_gap}--\ref{tab:angle_disparity} show that stochastic baselines are competitive, but hand-crafted stochasticity often remains below GS-LSS. In the systematic coverage-gap setting, the PSNR advantage over 3DGS-MCMC~\cite{mcmc} grows from 0.52 to 1.60 dB on Mip-NeRF 360~\cite{mipnerf360}, and remains 0.10--0.43 dB on Tanks \& Temples~\cite{tankstemples}. This suggests that stochasticity helps escape biased local minima but remains limited when guided mainly by photometric gradients.
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.98\textwidth]{pics/visual.pdf}
+    % \caption{Visual comparison of different methods on the three biased viewpoint settings, with first four rows corresponding to discontinuous trajectories, the next four rows corresponding to systematic coverage gap, and last three rows corresponding to viewing angle disparities.}
+    \caption{Visual comparison on three biased viewpoint settings, including discontinuous trajectories, systematic coverage gaps, and viewing angle disparities.}
+    \label{visual_comparison}
+\end{figure*}
+
+
+
+\subsubsection{Claim 3: CPF-guided observed-support regularization improves biased-view robustness}
+
+Across the three biased-viewpoint settings, GS-LSS is best or highly competitive against deterministic, geometric, and stochastic baselines. The results support the design choice of using CPF-guided observed-support regularization to complement photometric optimization and hand-crafted stochasticity. Qualitative comparisons in Fig.~\ref{visual_comparison} show more coherent geometry and fewer visible artifacts in the displayed cases, consistent with the floater-density visualization in Fig.~\ref{perspective_overfitting}.
+
+\subsection{Ablation Study}
+
+We evaluate the LSS parameterization, CPF construction, and stochastic stability.
+
+\subsubsection{Ablation on LSS}
+
+\begin{table}[h]
+    \centering
+    \caption{Ablation studies of LSS parameterization on MatrixCity~\cite{matrixcity}. Best results are highlighted in bold.}
+    \label{tab:ablation_LSS}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{llccc}
+        \toprule
+        Method & Variant & SSIM $\uparrow$ & PSNR $\uparrow$ & LPIPS $\downarrow$ \\
+        \midrule
+        $\mathcal{N}(0, \sigma_{mc})$              & MCMC variance & 0.586 & 16.225 & 0.480 \\
+        $\mathcal{N}(0, \sigma_{\theta})$          & learned variance only & \textbf{0.609} & 16.544 & 0.474 \\
+        $\mathcal{N}(\mu_{\theta}, \sigma_{mc})$   & CPF drift only & 0.594 & 16.599 & 0.478 \\
+        $\mathcal{N}(\mu_{\theta}, \sigma_{\theta})$ & full LSS & 0.592 & \textbf{16.693} & \textbf{0.470} \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}
+
+Table~\ref{tab:ablation_LSS} ablates CPF-conditioned guidance and stochastic proposal adaptation. Replacing the hand-crafted MCMC variance with $\sigma_{\theta}$ improves all three metrics over $\mathcal{N}(0,\sigma_{mc})$, suggesting that the perturbation scale should depend on the current primitive state rather than a fixed opacity rule. Adding $\mu_{\theta}$ improves PSNR, which is consistent with the role of CPF guidance in pulling weakly supported primitives toward aggregated support. The full LSS row obtains the best PSNR/LPIPS, whereas the variance-only row has the best SSIM. We therefore interpret the components as complementary rather than uniformly dominant: the stochastic scale improves robustness to local photometric minima, while the CPF drift improves the support-seeking behavior that is most visible in PSNR and perceptual error.
+
+\subsubsection{Ablation on \texorpdfstring{$\mu_{\theta}$}{mu-theta}}
+
+\begin{table}[h]
+\centering
+\caption{Ablation studies of geometric field and CPF model, evaluated on Tanks \& Temples~\cite{tankstemples} with coverage gap of 60$^\circ$ using the retained T\&T@60 ablation protocol. Best results within each ablation block are in bold.}
+\label{tab:ablation_CPF}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular*}{0.932\columnwidth}{@{\extracolsep{\fill}}lccc}
+\toprule
+{Ablation} & {SSIM} $\uparrow$ & {PSNR} $\uparrow$ & {LPIPS} $\downarrow$ \\
+\midrule
+\multicolumn{4}{c}{\textbf{Ablation on DBSCAN $\epsilon$ value}} \\
+\midrule
+$\epsilon = 0.1$  & 0.7087 & 19.2450 & 0.2469 \\
+$\epsilon = 0.25$ & \textbf{0.7112} & \textbf{19.4428} & \textbf{0.2461} \\
+$\epsilon = 0.5$  & 0.7047 & 18.8118 & 0.2506 \\
+$\epsilon = 0.75$ & 0.7058 & 18.9661 & 0.2514 \\
+$\epsilon = 1.0$  & 0.7048 & 18.9888 & 0.2527 \\
+\midrule
+\multicolumn{4}{c}{\textbf{Ablation on Network Architecture of CPF Model}} \\
+\midrule
+MLP & 0.7070 & 19.2183 & 0.2463 \\
+SIREN-style & \textbf{0.7112} & \textbf{19.4428} & \textbf{0.2461} \\
+\bottomrule
+\end{tabular*}%
+}
+\end{table}
+
+Table~\ref{tab:ablation_CPF} studies CPF construction. The retained T\&T@60 protocol is strongest at $\epsilon=0.25$; smaller values can make the geometric field too sparse, while larger values merge noisy or weakly related clusters. This behavior is consistent with the design goal of CPF: it should provide a smooth support estimate, but it should not blur all free-space and surface evidence into a single undifferentiated field. The SIREN~\cite{implicit}-style CPF is slightly better than the MLP at comparable model size, so we use it by default. We attribute this to the periodic representation being better suited for smooth spatial fields with local high-frequency changes near geometry boundaries.
+
+\subsubsection{Ablation on \texorpdfstring{$\sigma_{\theta}$}{sigma-theta}}
+
+\begin{table}[h]
+\centering
+\caption{Results over eight retained stochastic trials on Tanks \& Temples~\cite{tankstemples} with a 60$^\circ$ coverage gap, reporting per-trial metrics with their mean and variance.}
+\label{tab:detailed_metrics}
+\setlength{\tabcolsep}{4pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular*}{0.932\columnwidth}{@{\extracolsep{\fill}}lccc}
+\toprule
+Trial & SSIM $\uparrow$ & PSNR $\uparrow$ & LPIPS $\downarrow$ \\
+\midrule
+Trial 1 & 0.7052 & 19.3795 & 0.2476 \\
+Trial 2 & 0.7030 & 19.1766 & 0.2514 \\
+Trial 3 & 0.7070 & 19.3917 & 0.2486 \\
+Trial 4 & 0.7040 & 19.1655 & 0.2483 \\
+Trial 5 & 0.7051 & 19.1237 & 0.2473 \\
+Trial 6 & 0.7074 & 19.3274 & 0.2483 \\
+Trial 7 & 0.7054 & 19.2435 & 0.2474 \\
+Trial 8 & 0.6990 & 18.6417 & 0.2501 \\
+\midrule
+Mean     & 0.7045 & 19.1812 & 0.2486 \\
+Variance & 6.13 $\times$ 10$^{-6}$ & 0.0504 & 1.81 $\times$ 10$^{-6}$ \\
+\bottomrule
+\end{tabular*}%
+}
+\end{table}
+
+Table~\ref{tab:detailed_metrics} reports eight retained GS-LSS trials under the same T\&T@60 protocol. The runs are reasonably repeatable, with low SSIM/LPIPS variance and 0.22 dB PSNR standard deviation, though stochasticity still causes non-negligible seed variation.
+
+\subsubsection{Efficiency Trade-off}
+
+\begin{table}[h]
+\centering
+\caption{Average training time and rendering quality comparison on Tanks \& Temples~\cite{tankstemples} with a 60$^\circ$ coverage gap.}
+\label{tab:training-time}
+\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcccc}
+\toprule
+Method & PSNR $\uparrow$ & SSIM $\uparrow$ & Time (min) $\downarrow$ & vs. 3DGS \\
+\midrule
+3DGS        & 18.651 & 0.695 & 14.00 & 1.00$\times$ \\
+Scaffold-GS & 18.658 & 0.692 & 18.02 & 1.29$\times$ \\
+Hierarchical-GS & 18.728 & 0.694 & 14.68 & 1.05$\times$ \\
+3DGS-MCMC   & 18.973 & 0.702 & 17.37 & 1.24$\times$ \\
+MH-3DGS     & 17.404 & 0.649 & \textbf{13.88} & \textbf{0.99}$\times$ \\
+MVGS        & 18.323 & 0.668 & 70.23 & 5.02$\times$ \\
+PGSR        & 18.020 & 0.687 & 37.35 & 2.67$\times$ \\
+\midrule
+GS-LSS (Ours)        & \textbf{19.345} & \textbf{0.709} & 38.76 & 2.77$\times$ \\
+\bottomrule
+\end{tabular*}%
+}
+\end{table}
+
+Table~\ref{tab:training-time} shows that GS-LSS takes 38.76 minutes, or 2.77$\times$ vanilla 3DGS, mainly due to CPF training, CPF queries, and per-primitive LSS updates. This cost is comparable to PGSR~\cite{pgsr} and below MVGS~\cite{mvgs}, while yielding higher PSNR/SSIM in this setting.
+
+\section{Discussion}
+
+The results suggest that biased-view degradation is not caused by a single failure mode. In mild coverage gaps, photometric optimization may still receive enough support from neighboring views, and stochastic baselines can be competitive because random perturbations help avoid some local minima. As the gap or viewpoint disparity becomes larger, however, the optimization contains directions in which many Gaussian configurations have similar training loss but very different unseen-view behavior. This is where an explicit observed-support signal becomes useful: CPF gives the update a scene-aware preference without requiring a complete model of the hidden geometry.
+
+This interpretation also explains why GS-LSS is designed as a regularized optimizer rather than a strict sampler. The stochastic term is useful because it prevents the optimization from committing too early to a locally biased Gaussian configuration. The CPF-conditioned drift is useful because it gives this exploration a direction tied to aggregated support. Either component alone can help in some metrics, as shown in Table~\ref{tab:ablation_LSS}, but the full update is intended to combine support-seeking behavior with adaptive exploration. We therefore avoid claiming an exact stationary distribution or exact Langevin sampling guarantee; the objective is practical stabilization under biased observations.
+
+The CPF should also be interpreted conservatively. It is not a global scene oracle and does not synthesize surfaces that are absent from the training data. Instead, it aggregates the geometry, color, and normal evidence that can be extracted from the current Gaussian field across all available training views, filters obvious outliers, and fits a continuous support field. This field is most reliable where multiple observations agree or where the current reconstruction already contains coherent geometry. In weakly observed regions, it acts as a soft stabilizer that discourages unsupported free-space primitives and encourages consistency with nearby evidence.
+
+From a practical perspective, GS-LSS is most appropriate for datasets where the capture is incomplete but not completely uninformative. Examples include drone or vehicle trajectories with missing angular sectors, city-scale scans with disconnected paths, and multi-platform captures with strong elevation differences. When the data contain no useful support for a target structure, the method should not be expected to recover that structure. In those cases, stronger semantic priors, explicit surface constraints, or additional measurements would be needed.
+
+We also emphasize the intended interpretation of the experimental protocol. The main comparisons use the same train/test splits and training budgets for the evaluated methods, and GS-LSS follows the standard one-image photometric update unless otherwise stated. The method contribution is the CPF-guided per-primitive update, not a change in how many camera images are used to compute each photometric gradient. This distinction is important because using more simultaneous training images can improve gradient stability but also changes memory, runtime, and fairness. We therefore treat multi-image photometric aggregation as outside the claimed contribution in this revision.
+
+The ablation tables should be read with the same caution. Table~\ref{tab:ablation_LSS} isolates the role of support drift and stochastic scale in the retained component study; it supports the qualitative conclusion that the two signals are complementary, but it should not be overread as proving uniform dominance of every component on every metric. Table~\ref{tab:ablation_CPF} studies CPF construction under one retained protocol and motivates the default DBSCAN and network choices. Table~\ref{tab:detailed_metrics} reports repeatability for retained stochastic trials, but it is not a substitute for a full significance study across every scene and baseline. These conservative interpretations are reflected in the claim wording throughout the experimental section.
+
+\section{Limitations}
+
+GS-LSS regularizes primitives toward aggregated observed support, but it cannot infer fully unobserved geometry. If the available views provide no reliable support for a structure, CPF has no principled way to distinguish a missing surface from genuinely empty space. In such cases, GS-LSS should be viewed as reducing view-specific overfitting rather than solving hallucination or complete scene completion.
+
+The method also depends on the reliability of the intermediate geometric priors used to train CPF. Depth errors, dynamic objects, specular surfaces, severe motion blur, or sparse initialization can corrupt CPF supervision and lead to an inaccurate support estimate. DBSCAN filtering, normal smoothness, delayed CPF supervision, and observation-aware gating reduce this risk, but they do not eliminate it. This limitation is most relevant when the biased observations are not only incomplete but also systematically wrong.
+
+Finally, CPF training, CPF queries, and per-primitive LSS updates add computation over vanilla 3DGS. The measured training time remains comparable to several geometry-regularized baselines in our setting, but the overhead is still meaningful for very large scenes or interactive reconstruction workflows. Improving CPF update scheduling and reducing query cost are important directions for future work.
+
+\section{Conclusion}
+
+We presented GS-LSS, an observed-support regularized stochastic optimization framework for 3DGS under biased viewpoints. CPF estimates aggregated observed support and guides per-primitive LSS through support-seeking drift and adaptive exploration. Across three biased-viewpoint settings, GS-LSS achieves strong results among evaluated baselines while exposing clear future work on support reliability and efficiency.
+
+The revised formulation intentionally keeps the claim conservative: GS-LSS is not an exact sampler and does not solve complete scene hallucination. Its contribution is to make biased-view 3DGS less dependent on local photometric gradients by adding a continuous observed-support signal to the update. This perspective connects the quantitative gains, floater-density observations, and component studies under one practical objective: stabilizing Gaussian primitives where the camera evidence is weak but still informative.
+
+This framing also makes the method extensible. Better depth priors, surface constraints, or semantic cues could be incorporated into the same CPF support-estimation stage, while the per-primitive update would remain a mechanism for translating those cues into Gaussian relocation and reshaping. We expect this separation between support estimation and Gaussian updating to be useful for future systems that combine learned priors with explicit 3D representations under incomplete capture. It also clarifies how GS-LSS could coexist with future surface-based or semantic regularizers rather than replacing them, while preserving the explicit Gaussian representation.
+
+\section*{Acknowledgement}
+This work was supported by the Guangdong Provincial Science and Technology Program under Grant No. 2023A1111120006 (Acceptance No. c23201809261900030; Document No. Yue Ke Zi Zi (2024) No. 24).
+
+\bibliographystyle{IEEEtran}
+\bibliography{citations}  % This tells BibTeX which .bib file to use
+
+
+\vfill
+
+\end{document}

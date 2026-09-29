@@ -148,6 +148,10 @@ class OptimizationParams(ParamGroup):
         self.cpf_unique_every = 1
         self.cpf_sfm_align_max_points = 20000
         self.cpf_grad_create_graph = False
+        self.cpf_target_mode = "legacy"  # legacy, normal_off, signed_plane
+        self.cpf_target_h = 0.0  # world units; 0 uses the initial camera radius
+        self.cpf_target_h_fraction = 0.05
+        self.cpf_gradient_weight = 100.0
         self.cpf_train_interval = 1
         self.cpf_derivative_interval = 1
         self.cpf_loss_weight = 1.0

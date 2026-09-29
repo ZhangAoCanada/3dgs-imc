@@ -1,0 +1,6 @@
+bicycle: local dataset staged, split/camera/checkpoint verified; existing remote dataset identical=False
+stump: local dataset staged, split/camera/checkpoint verified; existing remote dataset identical=False
+treehill: local dataset staged, split/camera/checkpoint verified; existing remote dataset identical=False
+truck_resize: local dataset staged, split/camera/checkpoint verified; existing remote dataset identical=False
+train_resize: local dataset staged, split/camera/checkpoint verified; existing remote dataset identical=False
+Staged all five on hust2: /data1/zhangao/outputs/GS-LSS-mcmc-candidate-verification-20260927T1452

@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "verified_utc": "2026-09-27T06:29:26.844093+00:00",
+  "groups": 67,
+  "current_mcmc_files": [
+    {
+      "scene": "bicycle",
+      "candidate": "/data1/zhangao/outputs/baselines_discontinuous/bicycle/3dgs-mcmc-original-5000000/point_cloud/iteration_30000/point_cloud.ply",
+      "sha256": "a5fd04563f991986714f3bd21e2b6e559d73105f524e55cd003d31c620b14653",
+      "ply_header_length_valid": true,
+      "original_linkage_still_unresolved": true
+    },
+    {
+      "scene": "stump",
+      "candidate": "/data1/zhangao/outputs/baselines_discontinuous/stump/3dgs-mcmc-original-4200000/point_cloud/iteration_30000/point_cloud.ply",
+      "sha256": "9e0433367827ca295b75915730e7ebfea7d324519ce17c8422d42b270b9b4582",
+      "ply_header_length_valid": true,
+      "original_linkage_still_unresolved": true
+    },
+    {
+      "scene": "treehill",
+      "candidate": "/data1/zhangao/outputs/baselines_discontinuous/treehill/3dgs-mcmc-original-3300000/point_cloud/iteration_30000/point_cloud.ply",
+      "sha256": "5d9d48755cd520330b7b1312473774cbf3c408b9c3fec7e93cfe6c6261bf3731",
+      "ply_header_length_valid": true,
+      "original_linkage_still_unresolved": true
+    },
+    {
+      "scene": "truck_resize",
+      "candidate": "/data1/zhangao/outputs/baselines_discontinuous/truck_resize/3dgs-mcmc-original-2000000/point_cloud/iteration_30000/point_cloud.ply",
+      "sha256": "dfab3182378adc39e98de1d4b03bb3097a51a7e8f3d1960716e5183f1fcb66ee",
+      "ply_header_length_valid": true,
+      "original_linkage_still_unresolved": true
+    },
+    {
+      "scene": "train_resize",
+      "candidate": "/data1/zhangao/outputs/baselines_discontinuous/train_resize/3dgs-mcmc-original-1000000/point_cloud/iteration_30000/point_cloud.ply",
+      "sha256": "6189921f897d36bece36fc20219c19c1d5bd2e5441244c22f2a904e76b04f8bc",
+      "ply_header_length_valid": true,
+      "original_linkage_still_unresolved": true
+    }
+  ],
+  "lookup_cases_passed": 8,
+  "document_links_checked": 37,
+  "gpu_evaluation": false,
+  "new_checkpoint_deletions": 0,
+  "new_checkpoint_transfers": 0
+}

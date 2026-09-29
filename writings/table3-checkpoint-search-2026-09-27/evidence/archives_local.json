@@ -1,0 +1,816 @@
+{
+  "checked_at": 1790519310.1886442,
+  "archives": [
+    {
+      "path": "/data1/zhangao/DATA/outputs_surface/crossbaseline/r187_recover_3dgs_caterpillar/python_packages/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz",
+      "bytes": 156400,
+      "members": 619,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/outputs_surface/crossbaseline/r187_recover_3dgs_caterpillar/python_packages/dash/labextension/dist/dash-jupyterlab.tgz",
+      "bytes": 2363,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/outputs_surface/crossbaseline/r187_recover_3dgs_caterpillar/python_packages/share/jupyter/lab/extensions/dash-jupyterlab.tgz",
+      "bytes": 2363,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/TnT_official/Barn.zip",
+      "bytes": 394396405,
+      "members": 421,
+      "model_members": [
+        {
+          "name": "Barn/sparse/0/points3D.ply",
+          "bytes": 5994018
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/TnT_official/Meetingroom.zip",
+      "bytes": 310811766,
+      "members": 382,
+      "model_members": [
+        {
+          "name": "Meetingroom/sparse/0/points3D.ply",
+          "bytes": 3105234
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/TnT_official/Caterpillar.zip",
+      "bytes": 434801756,
+      "members": 394,
+      "model_members": [
+        {
+          "name": "Caterpillar/sparse/0/points3D.ply",
+          "bytes": 5652819
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/TnT_official/Ignatius.zip",
+      "bytes": 328076374,
+      "members": 274,
+      "model_members": [
+        {
+          "name": "Ignatius/sparse/0/points3D.ply",
+          "bytes": 4658895
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/TnT_official/Courthouse.zip",
+      "bytes": 1002966600,
+      "members": 1117,
+      "model_members": [
+        {
+          "name": "Courthouse/sparse/0/points3D.ply",
+          "bytes": 16681644
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/DATA/TnT_official/Truck.zip",
+      "bytes": 272164845,
+      "members": 262,
+      "model_members": [
+        {
+          "name": "Truck/sparse/0/points3D.ply",
+          "bytes": 3604653
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/physical_reconstruction_first_runtime/openmvs-v2.4.0-published/OpenMVS_Ubuntu_x64.zip",
+      "bytes": 165398013,
+      "members": 11,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/physical_reconstruction_first_runtime/r062-native-envs/2dgs/share/jupyter/lab/extensions/dash-jupyterlab.tgz",
+      "bytes": 2379,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/staging/unresolved_identity_exact_outputs_v1.tar",
+      "bytes": 71772160,
+      "members": 4,
+      "model_members": [
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G30/proposal/owner_ids.pt",
+          "bytes": 3666150
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G30/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 22334335
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_g30_shared_lineage_v4/proposal/owner_ids.pt",
+          "bytes": 6218406
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_g30_shared_lineage_v4/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 39542335
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/staging/unresolved_identity_sources_v1.tar",
+      "bytes": 181790720,
+      "members": 6,
+      "model_members": [
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G30/proposal/nodes/node_init.pt",
+          "bytes": 49481234
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G30/proposal/mcgsn/mesh/mesh_raw.ply",
+          "bytes": 17594803
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_g30_shared_lineage_v4/proposal/nodes/node_init.pt",
+          "bytes": 83936658
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_g30_shared_lineage_v4/proposal/mcgsn/mesh/mesh_raw.ply",
+          "bytes": 30744175
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/staging/tnt_official_metadata_v2.tar",
+      "bytes": 693544960,
+      "members": 75,
+      "model_members": [
+        {
+          "name": "Caterpillar/sparse/points3D.ply",
+          "bytes": 4650768
+        },
+        {
+          "name": "Caterpillar/sparse/0/points3D.ply",
+          "bytes": 5652819
+        },
+        {
+          "name": "Courthouse/sparse/points3D.ply",
+          "bytes": 13337127
+        },
+        {
+          "name": "Courthouse/sparse/0/points3D.ply",
+          "bytes": 16681644
+        },
+        {
+          "name": "Ignatius/sparse/points3D.ply",
+          "bytes": 3838095
+        },
+        {
+          "name": "Ignatius/sparse/0/points3D.ply",
+          "bytes": 4658895
+        },
+        {
+          "name": "Meetingroom/sparse/points3D.ply",
+          "bytes": 2337569
+        },
+        {
+          "name": "Meetingroom/sparse/0/points3D.ply",
+          "bytes": 3105234
+        },
+        {
+          "name": "Truck/sparse/points3D.ply",
+          "bytes": 2785878
+        },
+        {
+          "name": "Truck/sparse/0/points3D.ply",
+          "bytes": 3604653
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/staging/audited_hust10_surfaces_v2.tar",
+      "bytes": 5929031680,
+      "members": 36,
+      "model_members": [
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan105/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 37289865
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan105/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 37289839
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan106/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 38641582
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan106/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 38641582
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan110/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 30164405
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan110/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 30164470
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan114/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 39586998
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan114/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 39586998
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan118/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 33406679
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan118/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 33406705
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan122/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 30904096
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan122/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 30904135
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan55/matched_pair_2ced7539_workers8_capacity_hust10_v5/persistent/terminal/mended.ply",
+          "bytes": 151116440
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan55/matched_pair_2ced7539_workers8_capacity_hust10_v5/reset_each_event/terminal/mended.ply",
+          "bytes": 151116453
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan63/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 41389057
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan63/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 41389109
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan65/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 52362169
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan65/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 52362195
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan69/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 49254046
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan69/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 49254033
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan83/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 34969606
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan83/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 34969619
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan97/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 52811535
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/dtu/scan97/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 52811522
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Barn/matched_pair_2ced7539_envfix_hust10/persistent/terminal/mended.ply",
+          "bytes": 289524815
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Barn/matched_pair_2ced7539_envfix_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 289525049
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Caterpillar/matched_pair_2ced7539_officialscene_hust10/persistent/terminal/mended.ply",
+          "bytes": 399429914
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Caterpillar/matched_pair_2ced7539_officialscene_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 399429615
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Courthouse/matched_pair_2ced7539_officialscene_hust10/persistent/terminal/mended.ply",
+          "bytes": 418874913
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Courthouse/matched_pair_2ced7539_officialscene_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 418874952
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Ignatius/matched_pair_2ced7539_officialscene_hust10/persistent/terminal/mended.ply",
+          "bytes": 387009849
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Ignatius/matched_pair_2ced7539_officialscene_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 387009823
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Meetingroom/matched_pair_2ced7539_officialscene_hust10/persistent/terminal/mended.ply",
+          "bytes": 493600440
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Meetingroom/matched_pair_2ced7539_officialscene_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 493600258
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Truck/matched_pair_2ced7539_officialscene_hust10/persistent/terminal/mended.ply",
+          "bytes": 384142301
+        },
+        {
+          "name": "data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/tnt/Truck/matched_pair_2ced7539_officialscene_hust10/reset_each_event/terminal/mended.ply",
+          "bytes": 384141456
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/crossbaseline/ablation_recovery_a11b95b5_20260722/o1/staging/remaining_tmp_exact_canonical_copies_v2.tar",
+      "bytes": 861050880,
+      "members": 21,
+      "model_members": [
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Barn/proposal_refresh_batch_v2_current_support/G30/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 24289471
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Caterpillar/G30/proposal_refresh_v1/proposal/mcgsn/candidates.pt",
+          "bytes": 60856874
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Caterpillar/G30/proposal_refresh_v1/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 27028799
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Caterpillar/G30/proposal_refresh_v1/proposal/owner_ids.pt",
+          "bytes": 5259302
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G20/proposal/mcgsn/candidates.pt",
+          "bytes": 46208874
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G20/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 23287231
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G20/proposal/owner_ids.pt",
+          "bytes": 3801958
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Courthouse/proposal_refresh_batch_v1_current_support/G30/proposal/mcgsn/candidates.pt",
+          "bytes": 44139754
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Ignatius/G30/proposal_refresh_v1/proposal/mcgsn/candidates.pt",
+          "bytes": 99094890
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Ignatius/G30/proposal_refresh_v1/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 47560255
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Ignatius/G30/proposal_refresh_v1/proposal/owner_ids.pt",
+          "bytes": 8001190
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_batch_v1_current_support/G20/proposal/mcgsn/candidates.pt",
+          "bytes": 77262058
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_batch_v1_current_support/G20/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 40467327
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_batch_v1_current_support/G20/proposal/owner_ids.pt",
+          "bytes": 6426022
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Meetingroom/proposal_refresh_g30_shared_lineage_v4/proposal/mcgsn/candidates.pt",
+          "bytes": 76762474
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Truck/proposal_refresh_batch_v1_current_support/G20/proposal/mcgsn/candidates.pt",
+          "bytes": 86745834
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Truck/proposal_refresh_batch_v1_current_support/G20/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 42541119
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Truck/proposal_refresh_batch_v1_current_support/G20/proposal/owner_ids.pt",
+          "bytes": 7409830
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Truck/proposal_refresh_batch_v1_current_support/G30/proposal/mcgsn/candidates.pt",
+          "bytes": 85386282
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Truck/proposal_refresh_batch_v1_current_support/G30/proposal/mcgsn/face_owner_ids.pt",
+          "bytes": 41351487
+        },
+        {
+          "name": "zhangao/r299_online_option2_21scene_20260720/Truck/proposal_refresh_batch_v1_current_support/G30/proposal/owner_ids.pt",
+          "bytes": 7129894
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/cleanup_ledgers/dfsgf_storage_gate_20260830/compact_decision_evidence.tar.gz",
+      "bytes": 4225969,
+      "members": 2685,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/cleanup_ledgers/storage_cleanup_20260906_side/removed_rebuildable_bytecode_backup.tar.gz",
+      "bytes": 1474714,
+      "members": 424,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/cleanup_ledgers/storage_cleanup_20260906_side/retained_evaluation_metrics_and_plots.tar.gz",
+      "bytes": 4906379,
+      "members": 733,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/_cleanup_manifests/line2_failed_trials_20260813/compact_decision_evidence.tar.gz",
+      "bytes": 17199631,
+      "members": 1239,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/_cleanup_manifests/failed_trials_20260812/compact_decision_evidence.tar.gz",
+      "bytes": 95796150,
+      "members": 32223,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/physical_reconstruction_first_runtime/r089-assets/barn_routeb_logs.tgz",
+      "bytes": 14931,
+      "members": 21,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/physical_reconstruction_first_runtime/r089-assets/strict_results.tgz",
+      "bytes": 7454,
+      "members": 8,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/first_passage_risk_evidence_v1.tar.gz",
+      "bytes": 154730,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/fixed_mesh_control_results_v1.tar.gz",
+      "bytes": 130448,
+      "members": 11,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/fixed_mesh_control_source.tar.gz",
+      "bytes": 11698,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/opacity_measure_analysis_source_v1.tar.gz",
+      "bytes": 7196,
+      "members": 4,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/camera_excluded_closure_evidence_v1.tar.gz",
+      "bytes": 301963,
+      "members": 13,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/first_passage_results_v1.tar.gz",
+      "bytes": 11157070,
+      "members": 9,
+      "model_members": [
+        {
+          "name": "pl-first-passage-cold-v1/final_mesh.ply",
+          "bytes": 122309
+        },
+        {
+          "name": "pl-first-passage-cold-v1/initial_mesh.ply",
+          "bytes": 14704
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/coverage_results_bundle.tar.gz",
+      "bytes": 1474505,
+      "members": 23,
+      "model_members": [
+        {
+          "name": "evidence/pl-coverage-primitive-v1/source_conditioned_mesh.ply",
+          "bytes": 31987
+        },
+        {
+          "name": "evidence/pl-coverage-primitive-v2/source_conditioned_mesh.ply",
+          "bytes": 31979
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/coverage_repair_source.tar.gz",
+      "bytes": 42185,
+      "members": 9,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/segment_v2_results.tar.gz",
+      "bytes": 2190339,
+      "members": 12,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/coverage_source_v1.tar.gz",
+      "bytes": 3191929,
+      "members": 115,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/segment_v3_source.tar.gz",
+      "bytes": 6587,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/coverage_source_v2.tar.gz",
+      "bytes": 10841079,
+      "members": 120,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/opacity_measure_analysis_evidence_v1.tar.gz",
+      "bytes": 5461,
+      "members": 3,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/segment_source.tar.gz",
+      "bytes": 20811,
+      "members": 10,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/camera_excluded_source_v1.tar.gz",
+      "bytes": 12508,
+      "members": 6,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/first_passage_closure_source.tar.gz",
+      "bytes": 6289,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/segment_v3_results.tar.gz",
+      "bytes": 12199275,
+      "members": 15,
+      "model_members": [
+        {
+          "name": "pl-segment-cold-v3/final_mesh.ply",
+          "bytes": 118458
+        },
+        {
+          "name": "pl-segment-cold-v3/initial_mesh.ply",
+          "bytes": 14704
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/coverage_full_source_f9a35851.tar.gz",
+      "bytes": 24650267,
+      "members": 5528,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/coverage_full_source_36e917a1.tar.gz",
+      "bytes": 24642487,
+      "members": 5521,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/first_passage_source_v1.tar.gz",
+      "bytes": 18033,
+      "members": 9,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/workflow_update/workflow_source.tar.gz",
+      "bytes": 12504,
+      "members": 6,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/segment_v1_failure_evidence.tar.gz",
+      "bytes": 17336,
+      "members": 8,
+      "model_members": [
+        {
+          "name": "pl-segment-cold-v1/final_mesh.ply",
+          "bytes": 22725
+        },
+        {
+          "name": "pl-segment-cold-v1/initial_mesh.ply",
+          "bytes": 14704
+        }
+      ],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/segment_evidence_repair_source.tar.gz",
+      "bytes": 11370,
+      "members": 7,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/outputs_surface/history_takeover_20260905/camera_excluded_closure_source_v1.tar.gz",
+      "bytes": 7314,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc/writings/GS-LSS/Computer_Society_LaTeX_template.zip",
+      "bytes": 541768,
+      "members": 5,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/docs/research/codex-instructions-before-2026-09-26.tar.gz",
+      "bytes": 15901,
+      "members": 4,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/GS-LSS-submission/GS-LSS.zip",
+      "bytes": 28983667,
+      "members": 16,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/3dgs-imc-codex/writings/research-audit-2026-09-26/GS_LSS_RESEARCH_AUDIT_2026-09-26.zip",
+      "bytes": 2533460,
+      "members": 54,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/MILo_milo_hust10_backup_1782187524.tgz",
+      "bytes": 89805,
+      "members": 58,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/scaffold_latents/work/v2_history_review_20260907/ScaffoldLatentBranchV2_review_evidence_20260907.zip",
+      "bytes": 955856,
+      "members": 207,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/scaffold_latents/work/session_handoff_20260905/upfs_stage3_source_eecffea00ca91aab7996fe49609b3cc0d2e0b9e781e27097c99d515c60ba92c9.tar.gz",
+      "bytes": 375120,
+      "members": 489,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    },
+    {
+      "path": "/data1/zhangao/repos/scaffold_latents/work/session_handoff_20260905/upfs_before_stage3_20260905.tar.gz",
+      "bytes": 40006,
+      "members": 29,
+      "model_members": [],
+      "relevant_members": [],
+      "status": "member_list_checked"
+    }
+  ]
+}

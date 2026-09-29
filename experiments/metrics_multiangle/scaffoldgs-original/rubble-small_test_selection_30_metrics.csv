@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/rubble-small/scaffoldgs-original-test_selection_30,test,ours_30000,0.668832004070282,21.320573806762695,0.30293890833854675,16.11507225036621,2.3876245516871544,29.944766998291016

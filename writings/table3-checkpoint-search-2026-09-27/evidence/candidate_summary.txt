@@ -1,0 +1,48 @@
+local candidate run dirs 26
+/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_MX_cached_woaa_cap3M_i30000 15000,30000,22000
+/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_A_matrixcity_slow_aa_i30000 15000,30000,22000
+/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3_zeche1_aa_i30000 15000,30000
+/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3c_zeche1_fast_render_i15000 10000,12000,15000,8000,4000,6000
+/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e3_i30000 10000,15000
+/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_Z1_fast_MH_aa_i30000 15000,30000,22000
+/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_V3a_zeche1_woaa_early_i15000 10000,12000,15000,8000,4000,6000
+/data1/zhangao/outputs/diag/large_angle/blockA_fusion_small_aerial+somestreet_traintest_V3d_matrixcity_slow_early_i15000 8000,4000,6000
+/data1/zhangao/outputs/diag/large_angle/Zeche1_traintest_0Z_zeche_partial1e2_i30000 10000,15000,30000,22000
+/data1/zhangao/outputs/baselines/Zeche1/mh-3dgs-original 7000,30000
+/data1/zhangao/outputs/baselines/blockA_fusion_small_aerial+somestreet/mh-3dgs-original 7000,30000
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mvgs-original-mv3 7000,30000
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original 7000,30000
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_1000000_woantialiasing 30000
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/3dgs-depth 7000,30000
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original 10000
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/develop3_allviews_local_eps0.1_minsamples500_depth0.3_wholeonly_rangescale1_partial1e0_sigma1e-6_sigma-detach_nview3_2000000_woantialiasing 30000
+/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mvgs-original-mv3 7000,30000
+/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/mh-3dgs-original 7000,30000
+/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/3dgs-depth 7000,30000
+/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1 10000,12000
+/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7 10000
+/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7 7000,30000
+/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/wsl/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a 100
+/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000 1602
+/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000 1602
+hust2 candidate run dirs 15
+/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes/baseline_62/seed_000000 1602
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original 30000,7000
+/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/cdgs-original 30000,7000,15000,2000,10000
+/data1/zhangao/outputs/baselines_aerial_ground/blockA_fusion_small_aerial+somestreet/cdgs-original 30000,7000,15000,2000,10000
+/data2/zhangao/VastGaussian/Zeche1/train/plydummy other model artifacts
+/data2/zhangao/VastGaussian/Zeche1/test/plydummy other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_E other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_A other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_D other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_B other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_all other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/aerial/pose/block_C other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/train/plydummy other model artifacts
+/data2/zhangao/bdaibdai___MatrixCity/small_city/blockA_fusion_small_aerial+somestreet/test/plydummy other model artifacts
+wsl candidate run dirs 4
+/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/20934fd3-1 10000,12000
+/mnt/c/Users/Aooooo/Documents/wsl_repos/3dgs-imc/output/ae3beb67-7 10000
+/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/214337d7-a 100
+/mnt/c/Users/Aooooo/Documents/wsl_repos/MH-3DGS/output/9bdfdbd0-7 30000,7000

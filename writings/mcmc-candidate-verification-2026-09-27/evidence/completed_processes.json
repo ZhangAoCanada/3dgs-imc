@@ -1,0 +1,26 @@
+[
+  {
+    "status": "status.json",
+    "state": "complete",
+    "pid": 3284830,
+    "our_process_running": false
+  },
+  {
+    "status": "saved_gt_attempt2_status.json",
+    "state": "complete",
+    "pid": 3287707,
+    "our_process_running": false
+  },
+  {
+    "status": "metric_control_status.json",
+    "state": "complete",
+    "pid": 3288579,
+    "our_process_running": false
+  },
+  {
+    "status": "main_rasterizer_status.json",
+    "state": "complete",
+    "pid": 3289995,
+    "our_process_running": false
+  }
+]

@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/rubble-small/mvgs-original-mv3,test,ours_30000,0.7529116868972778,23.527050018310547,0.21988263726234436,12.893896102905273,2.039292129820718,24.79336929321289

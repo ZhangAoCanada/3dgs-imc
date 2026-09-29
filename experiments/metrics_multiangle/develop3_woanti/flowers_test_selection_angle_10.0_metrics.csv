@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/mnt/c/Users/Aooooo/Documents/wsl_repos/outputs/develop3_multi/flowers/develop3_allviews_local_eps0.5_minsamples500_depth0.3_wholeonly_rangescale0.5_partial1e0_sigma1e-6_sigma-detach_nview3_3000000_test_selection_angle_10.0_0.001_compare,test,ours_30000,0.6102243661880493,20.920608520507812,0.32593485713005066,23.742589950561523,2.5885701568895008,36.516624450683594

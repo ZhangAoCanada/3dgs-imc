@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/bicycle/scaffoldgs-original-test_selection_angle_70.0,test,ours_30000,0.5163452625274658,17.904239654541016,0.3712523877620697,21.021028518676758,2.6729346040061084,38.838993072509766

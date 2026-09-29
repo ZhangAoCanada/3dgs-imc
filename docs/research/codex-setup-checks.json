@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-26",
+  "scope": "Project instructions and research handoff references on the main machine and hust2",
+  "project_instruction_bytes": {
+    "local_before": 8184,
+    "hust2_before": 30236,
+    "after_each": 3293
+  },
+  "protected_local_files": 68,
+  "remote_research_source_fingerprints": 15,
+  "preexisting_tracked_worktree_status": "unchanged",
+  "remote_shared_user_instructions": "unchanged",
+  "local_lookup": {
+    "table_I_bonsai_60_PSNR": "one source linked to a checkpoint on hust10",
+    "table_III_GS_LSS_PSNR": "two candidates, both explicitly not matching the submitted aggregate"
+  },
+  "remote_lookup": "same rows and original hust10 host; command executed on hust2",
+  "manual_scenarios": [
+    "small wording edit uses relevant files without full history or GPU jobs",
+    "checkpoint lookup preserves host and selection rule",
+    "missing Table III source remains unresolved",
+    "plan-only request ends with a concrete plan",
+    "baseline execution routes to hust2 GPU 3 with documented fallback",
+    "direct paper-folder session has a parent-policy entry point"
+  ],
+  "not_performed": [
+    "live-model behavioral benchmark",
+    "training",
+    "rendering",
+    "package installation",
+    "scientific code or manuscript edit"
+  ],
+  "local_document_links_checked": 29,
+  "instruction_backup_records_verified": 4,
+  "remote_document_links_checked": 27,
+  "shared_instruction_reference_hashes_verified": 10,
+  "copied_audit_file_hashes_verified": 54,
+  "result": "PASS"
+}

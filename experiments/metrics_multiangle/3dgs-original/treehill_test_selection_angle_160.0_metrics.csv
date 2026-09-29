@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/treehill/3dgs-original-test_selection_angle_160.0,test,ours_30000,0.3617537319660187,11.828171730041504,0.5233656167984009,15.248811721801758,2.4875873150862193,35.53678894042969

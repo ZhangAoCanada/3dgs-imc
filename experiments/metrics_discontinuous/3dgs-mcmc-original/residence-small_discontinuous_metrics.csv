@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_discontinuous/residence-small/3dgs-mcmc-original-6000000,test,ours_30000,0.8058220744132996,21.3992862701416,0.18155257403850555,12.5706787109375,2.332939173998881,39.722900390625

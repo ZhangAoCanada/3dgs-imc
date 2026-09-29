@@ -1,0 +1,19 @@
+{
+  "host": "user (hust10 audit alias)",
+  "root": "/data1/zhangao/outputs",
+  "observed_at": "2026-09-28T22:08:11+08:00",
+  "initial_df_bytes": {
+    "total": 7937303740416,
+    "used": 7477725499392,
+    "available": 59483308032
+  },
+  "output_tree_du_bytes_before": 1686542348288,
+  "campaign_selected_before": 27,
+  "campaign_running_before": 0,
+  "coordinator_pid": 4053508,
+  "temporary_gpu_reservations_created": [
+    0,
+    1
+  ],
+  "note": "The shared filesystem gained space during inspection before any cleanup mutation. Attribute reclaimed storage to the exact action ledger, not the entire df delta."
+}

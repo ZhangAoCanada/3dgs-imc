@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/residence-small/scaffoldgs-original-test_selection_30,test,ours_30000,0.7487899661064148,19.294010162353516,0.22130075097084045,15.409687995910645,2.763423509873827,43.6839485168457

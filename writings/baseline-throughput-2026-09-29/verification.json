@@ -1,0 +1,173 @@
+{
+  "checked_at": "2026-09-29T08:52:43.930828+08:00",
+  "selected": 30,
+  "remaining": 37,
+  "blocked": {},
+  "selected_files_and_caps_checked": [
+    "baseline_03",
+    "baseline_04",
+    "baseline_12",
+    "baseline_23",
+    "baseline_27",
+    "baseline_28",
+    "baseline_33",
+    "baseline_35",
+    "baseline_41",
+    "baseline_45",
+    "baseline_44",
+    "baseline_49",
+    "baseline_54",
+    "baseline_53",
+    "baseline_62",
+    "baseline_64",
+    "baseline_67",
+    "baseline_66",
+    "baseline_07",
+    "baseline_21",
+    "baseline_20",
+    "baseline_24",
+    "baseline_31",
+    "baseline_36",
+    "baseline_40",
+    "baseline_43",
+    "baseline_50",
+    "baseline_60",
+    "baseline_39",
+    "baseline_59"
+  ],
+  "verification_scope": "Fresh file existence and stored-metric cap checks; prior artifact/mirror verification flags retained; no new rendering or full library rehash.",
+  "active_jobs": {
+    "baseline_52": {
+      "id": "baseline_52",
+      "seed": 2,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_52/seed_000002",
+      "runner_pid": 1696095,
+      "runner_start_ticks": 722820479,
+      "method": "PGSR",
+      "scene": "residence-small",
+      "budget_mib": 17131,
+      "exclusive": false,
+      "peak_mib": 10954,
+      "current_mib": 10264,
+      "phase": "running",
+      "adopted": true,
+      "started": 1790639685.4236045
+    },
+    "baseline_10": {
+      "id": "baseline_10",
+      "seed": 3,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_10/seed_000003",
+      "runner_pid": 1740989,
+      "runner_start_ticks": 723105507,
+      "method": "3DGS",
+      "scene": "bonsai",
+      "budget_mib": 10240,
+      "exclusive": false,
+      "peak_mib": 2944,
+      "current_mib": 1342,
+      "phase": "running",
+      "adopted": true,
+      "started": 1790642535.7031868
+    },
+    "baseline_11": {
+      "id": "baseline_11",
+      "seed": 3,
+      "gpu": "1",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_11/seed_000003",
+      "runner_pid": 1747906,
+      "runner_start_ticks": 723150766,
+      "method": "3DGS",
+      "scene": "counter",
+      "budget_mib": 10240,
+      "exclusive": false,
+      "peak_mib": 2684,
+      "current_mib": 2282,
+      "phase": "running",
+      "started": 1790642988.2940385,
+      "adopted": false
+    }
+  },
+  "progress": {
+    "baseline_52": "Training progress:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2589   | 20860/30000 [57:39<26:13,  5.81it/s, Loss=0.05952, Single=0.00099, Geo=0.00026, Pho=0.02105, Points=3144957]",
+    "baseline_10": "Training progress: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 30000/30000 [09:41<00:00, 51.57it/s, Loss=0.0184645, Depth Loss=0.0000000]\n\n[ITER 30000] Saving Gaussians [29/09 08:52:07]\n\n[ITER 30000] Saving Checkpoint [29/09 08:52:17]\n\nTraining complete. [29/09 08:52:18]\n",
+    "baseline_11": "Training progress:  32%|\u2588\u2588\u2588\u258f      | 9610/30000 [02:46<06:44, 50.36it/s, Loss=0.0367901, Depth Loss=0.0000000]"
+  },
+  "gpu": {
+    "0": {
+      "index": "0",
+      "uuid": "GPU-e87ecfca-3e1c-98b0-6a9e-7e21d5460bf3",
+      "total_mib": 32607,
+      "used_mib": 11636,
+      "free_mib": 20474,
+      "utilization": 60,
+      "foreign_pids": [],
+      "apps": [
+        {
+          "pid": 1696103,
+          "memory_mib": 10264,
+          "campaign_id": "baseline_52",
+          "uid": 1004,
+          "start_ticks": 722820495
+        },
+        {
+          "pid": 1749992,
+          "memory_mib": 1342,
+          "campaign_id": "baseline_10",
+          "uid": 1004,
+          "start_ticks": 723165852
+        }
+      ]
+    },
+    "1": {
+      "index": "1",
+      "uuid": "GPU-7832c658-9c16-efd6-c049-a63d7c4cc3ee",
+      "total_mib": 32607,
+      "used_mib": 13350,
+      "free_mib": 18760,
+      "utilization": 95,
+      "foreign_pids": [
+        1348094
+      ],
+      "apps": [
+        {
+          "pid": 1348094,
+          "memory_mib": 11038,
+          "campaign_id": null,
+          "uid": 1003,
+          "start_ticks": 720380476
+        },
+        {
+          "pid": 1747910,
+          "memory_mib": 2282,
+          "campaign_id": "baseline_11",
+          "uid": 1004,
+          "start_ticks": 723150778
+        }
+      ]
+    }
+  },
+  "watchdog": {
+    "watchdog_pid": 1280812,
+    "coordinator_pid": 1747893,
+    "updated": 1790643158.008091,
+    "restarts": 2,
+    "gpu_poll_seconds": 5,
+    "supervisor_poll_seconds": 10,
+    "status": "supervising_memory_aware_scheduler"
+  },
+  "old_workers_preserved": {
+    "baseline_52": "same live runner and output",
+    "baseline_10": "same live runner and output"
+  },
+  "foreign_process_unchanged": true,
+  "configuration_bytes_unchanged": true,
+  "table3_selected": [
+    "baseline_62",
+    "baseline_64",
+    "baseline_67",
+    "baseline_66",
+    "baseline_60"
+  ]
+}

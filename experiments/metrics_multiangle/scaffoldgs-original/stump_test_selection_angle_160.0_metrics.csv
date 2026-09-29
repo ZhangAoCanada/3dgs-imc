@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/stump/scaffoldgs-original-test_selection_angle_160.0,test,ours_30000,0.4344277083873749,18.003416061401367,0.49739134311676025,32.694698333740234,3.847884349599024,42.718772888183594

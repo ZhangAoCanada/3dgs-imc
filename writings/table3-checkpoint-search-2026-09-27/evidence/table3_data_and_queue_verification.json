@@ -1,0 +1,244 @@
+{
+  "checked_at": "2026-09-27T23:07:30.412986+08:00",
+  "status": "passed",
+  "data_transfer_required": false,
+  "datasets": [
+    {
+      "scene": "blockA_fusion_small_aerial+somestreet",
+      "split": "train",
+      "original_root": "/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/train",
+      "campaign_root": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train",
+      "images_folder": "input_cached",
+      "image_count": 216,
+      "camera_record_count": 216,
+      "unique_intrinsics": 2,
+      "frozen_image_bytes": 537119909,
+      "geometry_files": 5,
+      "manifest_sha256": "15f3ebea2fcbfb90bf9808173ec167238ba75d30bdfcb8bef3c915e2ff2c8d80",
+      "image_bytes_verified": true,
+      "frozen_pixels_verified": true,
+      "original_and_frozen_geometry_hashes_match": true,
+      "image_camera_membership_complete": true,
+      "status": "passed"
+    },
+    {
+      "scene": "blockA_fusion_small_aerial+somestreet",
+      "split": "test",
+      "original_root": "/data1/zhangao/DATA/large_angle/blockA_fusion_small_aerial+somestreet/test",
+      "campaign_root": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test",
+      "images_folder": "input_cached",
+      "image_count": 154,
+      "camera_record_count": 154,
+      "unique_intrinsics": 2,
+      "frozen_image_bytes": 312756068,
+      "geometry_files": 5,
+      "manifest_sha256": "5ba78133bc2ebaadf4d4f54b470ebce359a50ddd578f06dcfe736f4a3a0a4012",
+      "image_bytes_verified": true,
+      "frozen_pixels_verified": true,
+      "original_and_frozen_geometry_hashes_match": true,
+      "image_camera_membership_complete": true,
+      "status": "passed"
+    },
+    {
+      "scene": "Zeche1",
+      "split": "train",
+      "original_root": "/data1/zhangao/DATA/large_angle/Zeche1/train",
+      "campaign_root": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/train",
+      "images_folder": "images",
+      "image_count": 147,
+      "camera_record_count": 147,
+      "unique_intrinsics": 147,
+      "frozen_image_bytes": 357058645,
+      "geometry_files": 5,
+      "manifest_sha256": "a41bc8780fec3568904dec3e4205bf46b5601f79f58ad6d5be5d1e8392954cdf",
+      "image_bytes_verified": true,
+      "frozen_pixels_verified": true,
+      "original_and_frozen_geometry_hashes_match": true,
+      "image_camera_membership_complete": true,
+      "status": "passed"
+    },
+    {
+      "scene": "Zeche1",
+      "split": "test",
+      "original_root": "/data1/zhangao/DATA/large_angle/Zeche1/test",
+      "campaign_root": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/test",
+      "images_folder": "images",
+      "image_count": 172,
+      "camera_record_count": 172,
+      "unique_intrinsics": 172,
+      "frozen_image_bytes": 357140059,
+      "geometry_files": 5,
+      "manifest_sha256": "6932a2f475b6024f8c22a527196b844b7d02c5fdb5c220921c70679fe270b83c",
+      "image_bytes_verified": true,
+      "frozen_pixels_verified": true,
+      "original_and_frozen_geometry_hashes_match": true,
+      "image_camera_membership_complete": true,
+      "status": "passed"
+    }
+  ],
+  "queue_entries": [
+    {
+      "id": "baseline_60",
+      "method": "3DGS",
+      "scene": "blockA_fusion_small_aerial+somestreet",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.578,
+        "PSNR": 16.146,
+        "LPIPS": 0.495
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    },
+    {
+      "id": "baseline_61",
+      "method": "3DGS",
+      "scene": "Zeche1",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.33,
+        "PSNR": 9.431,
+        "LPIPS": 0.568
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    },
+    {
+      "id": "baseline_62",
+      "method": "Scaffold-GS",
+      "scene": "blockA_fusion_small_aerial+somestreet",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.562,
+        "PSNR": 16.193,
+        "LPIPS": 0.493
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    },
+    {
+      "id": "baseline_63",
+      "method": "Scaffold-GS",
+      "scene": "Zeche1",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.337,
+        "PSNR": 9.806,
+        "LPIPS": 0.591
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    },
+    {
+      "id": "baseline_64",
+      "method": "PGSR",
+      "scene": "blockA_fusion_small_aerial+somestreet",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.417,
+        "PSNR": 13.072,
+        "LPIPS": 0.531
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    },
+    {
+      "id": "baseline_65",
+      "method": "PGSR",
+      "scene": "Zeche1",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.261,
+        "PSNR": 8.499,
+        "LPIPS": 0.538
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    },
+    {
+      "id": "baseline_66",
+      "method": "3DGS-MCMC",
+      "scene": "blockA_fusion_small_aerial+somestreet",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/blockA_fusion_small_aerial+somestreet/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.586,
+        "PSNR": 16.225,
+        "LPIPS": 0.48
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    },
+    {
+      "id": "baseline_67",
+      "method": "3DGS-MCMC",
+      "scene": "Zeche1",
+      "source_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/train",
+      "test_path": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/datasets/Zeche1/test",
+      "iterations": 30000,
+      "reference": {
+        "SSIM": 0.373,
+        "PSNR": 10.133,
+        "LPIPS": 0.534
+      },
+      "selection_rule": "first final checkpoint with SSIM<=reference AND PSNR<=reference AND LPIPS>=reference; retain all attempts",
+      "method_preflight": "passed",
+      "status": "queued",
+      "next_seed": 0
+    }
+  ],
+  "split_identity_checks": {
+    "blockA_fusion_small_aerial+somestreet": {
+      "shared_basenames": 28,
+      "shared_basenames_refer_to_different_images": true,
+      "identical_decoded_images_across_splits": 0,
+      "identity_rule": "split-qualified path and decoded pixel hash; not basename alone"
+    },
+    "Zeche1": {
+      "shared_basenames": 0,
+      "shared_basenames_refer_to_different_images": true,
+      "identical_decoded_images_across_splits": 0,
+      "identity_rule": "split-qualified path and decoded pixel hash; not basename alone"
+    }
+  },
+  "queue_action": "Verified eight existing entries; no duplicate entries added and no active jobs interrupted.",
+  "coordinator_pid": 4053508,
+  "coordinator_started_unix": 1790501254.24,
+  "execution_host": "local",
+  "physical_gpus": [
+    0,
+    1
+  ],
+  "live_queue_status": "running_local_two_GPUs",
+  "configurations_sha256": "7ce658187df2d9c8a072d2fe0a1f1d764c48bed4d14af0fa8af11372bfc58bdf",
+  "acceptance": "Same final 30000-iteration model: SSIM <= paper, PSNR <= paper, LPIPS >= paper; all conditions required.",
+  "retry": "Increment seed after each complete nonqualifying attempt; no attempt cap; preserve all attempts.",
+  "provenance": "New explicitly biased reruns, not recovered original paper checkpoints."
+}

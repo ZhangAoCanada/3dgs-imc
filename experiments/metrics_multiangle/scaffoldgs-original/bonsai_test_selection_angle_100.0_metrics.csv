@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/bonsai/scaffoldgs-original-test_selection_angle_100.0,test,ours_30000,0.7653236389160156,15.982988357543945,0.27614161372184753,21.94764518737793,3.5689875136469507,49.56540298461914

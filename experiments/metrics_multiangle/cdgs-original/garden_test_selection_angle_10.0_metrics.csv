@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data2/zhangao/outputs/baselines_multi_angle/garden/cdgs-original_test_selection_angle_10.0,test,ours_30000,0.8265116810798645,26.067245483398438,0.17713847756385803,15.225866317749023,2.1239194710707894,31.06585693359375

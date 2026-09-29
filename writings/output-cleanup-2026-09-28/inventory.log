@@ -1,0 +1,813 @@
+{"scanned": 177779, "elapsed_s": 20}
+{"scanned": 363254, "elapsed_s": 40}
+{"scanned": 545000, "elapsed_s": 60}
+{"scanned": 721009, "elapsed_s": 80}
+{
+  "category": [
+    {
+      "name": "checkpoint_or_neural_state",
+      "files": 4125,
+      "logical_bytes": 1360152005409,
+      "allocated_unique_bytes": 1360167325696
+    },
+    {
+      "name": "rendered_outputs",
+      "files": 117104,
+      "logical_bytes": 111710207839,
+      "allocated_unique_bytes": 111950127104
+    },
+    {
+      "name": "metadata_logs_or_other",
+      "files": 580212,
+      "logical_bytes": 95210561842,
+      "allocated_unique_bytes": 96656687104
+    },
+    {
+      "name": "evaluation_ground_truth",
+      "files": 71579,
+      "logical_bytes": 86412385487,
+      "allocated_unique_bytes": 86560653312
+    },
+    {
+      "name": "other_images",
+      "files": 35538,
+      "logical_bytes": 17439860553,
+      "allocated_unique_bytes": 17535520768
+    },
+    {
+      "name": "frozen_dataset",
+      "files": 25072,
+      "logical_bytes": 7550103560,
+      "allocated_unique_bytes": 7605194752
+    },
+    {
+      "name": "input_point_cloud",
+      "files": 1569,
+      "logical_bytes": 5787769949,
+      "allocated_unique_bytes": 5791289344
+    },
+    {
+      "name": "python_cache",
+      "files": 889,
+      "logical_bytes": 6949947,
+      "allocated_unique_bytes": 9056256
+    },
+    {
+      "name": "videos",
+      "files": 295,
+      "logical_bytes": 8325785,
+      "allocated_unique_bytes": 8458240
+    },
+    {
+      "name": "compiled_code",
+      "files": 7,
+      "logical_bytes": 6437928,
+      "allocated_unique_bytes": 6451200
+    }
+  ],
+  "top": [
+    {
+      "name": "baselines_multi_angle",
+      "files": 681320,
+      "logical_bytes": 792318449705,
+      "allocated_unique_bytes": 793976066048
+    },
+    {
+      "name": "GS-LSS-baseline-capped-reruns-20260927",
+      "files": 25982,
+      "logical_bytes": 319781489714,
+      "allocated_unique_bytes": 319838801920
+    },
+    {
+      "name": "GS-LSS-paper-checkpoints",
+      "files": 5654,
+      "logical_bytes": 125156312371,
+      "allocated_unique_bytes": 125170708480
+    },
+    {
+      "name": "baselines_discontinuous",
+      "files": 37305,
+      "logical_bytes": 113742704946,
+      "allocated_unique_bytes": 113833988096
+    },
+    {
+      "name": "diag",
+      "files": 28037,
+      "logical_bytes": 109983146402,
+      "allocated_unique_bytes": 110041415680
+    },
+    {
+      "name": "develop3_multi_angle2",
+      "files": 4193,
+      "logical_bytes": 30070932042,
+      "allocated_unique_bytes": 30079979520
+    },
+    {
+      "name": "best_coverage_gap",
+      "files": 128,
+      "logical_bytes": 25905234844,
+      "allocated_unique_bytes": 25905774592
+    },
+    {
+      "name": "best_per_cell",
+      "files": 124,
+      "logical_bytes": 24417225499,
+      "allocated_unique_bytes": 24417763328
+    },
+    {
+      "name": "baselines_aerial_ground",
+      "files": 4100,
+      "logical_bytes": 22284410004,
+      "allocated_unique_bytes": 22293049344
+    },
+    {
+      "name": "new_dev",
+      "files": 9514,
+      "logical_bytes": 16186069417,
+      "allocated_unique_bytes": 16206712832
+    },
+    {
+      "name": "develop3_multi_angle_woantialiasing2",
+      "files": 4583,
+      "logical_bytes": 14315479500,
+      "allocated_unique_bytes": 14325272576
+    },
+    {
+      "name": "viz_multiangle",
+      "files": 8845,
+      "logical_bytes": 11667631866,
+      "allocated_unique_bytes": 11686957056
+    },
+    {
+      "name": "val_fix",
+      "files": 2080,
+      "logical_bytes": 11252870467,
+      "allocated_unique_bytes": 11257380864
+    },
+    {
+      "name": "develop3_discontinuous2",
+      "files": 888,
+      "logical_bytes": 10509664068,
+      "allocated_unique_bytes": 10511765504
+    },
+    {
+      "name": "develop3_discontinuous_woantialiasing",
+      "files": 706,
+      "logical_bytes": 8757403260,
+      "allocated_unique_bytes": 8759037952
+    },
+    {
+      "name": "tables567",
+      "files": 1404,
+      "logical_bytes": 7491491534,
+      "allocated_unique_bytes": 7494742016
+    },
+    {
+      "name": "baselines",
+      "files": 3075,
+      "logical_bytes": 7122425515,
+      "allocated_unique_bytes": 7128829952
+    },
+    {
+      "name": "develop3_multi_angle_woantialiasing",
+      "files": 1469,
+      "logical_bytes": 6380426666,
+      "allocated_unique_bytes": 6383583232
+    },
+    {
+      "name": "tnt60_table5",
+      "files": 1736,
+      "logical_bytes": 5966178099,
+      "allocated_unique_bytes": 5969883136
+    },
+    {
+      "name": "new_dev_aa",
+      "files": 2550,
+      "logical_bytes": 4667508622,
+      "allocated_unique_bytes": 4673011712
+    },
+    {
+      "name": "renders",
+      "files": 4675,
+      "logical_bytes": 4221753549,
+      "allocated_unique_bytes": 4231335936
+    },
+    {
+      "name": "viz_discontinuous",
+      "files": 1689,
+      "logical_bytes": 3035395045,
+      "allocated_unique_bytes": 3038887936
+    },
+    {
+      "name": "floater_plys",
+      "files": 6,
+      "logical_bytes": 1617872452,
+      "allocated_unique_bytes": 1617911808
+    },
+    {
+      "name": "ours_timing_diag",
+      "files": 103,
+      "logical_bytes": 1584092474,
+      "allocated_unique_bytes": 1584340992
+    },
+    {
+      "name": "repro",
+      "files": 43,
+      "logical_bytes": 1353479472,
+      "allocated_unique_bytes": 1353580544
+    },
+    {
+      "name": "val_redesign",
+      "files": 53,
+      "logical_bytes": 1327512319,
+      "allocated_unique_bytes": 1327648768
+    },
+    {
+      "name": "develop3_discontinuous_capmax",
+      "files": 145,
+      "logical_bytes": 1286045791,
+      "allocated_unique_bytes": 1286369280
+    },
+    {
+      "name": "GS-LSS-mcmc-candidate-verification-20260927T1452",
+      "files": 2275,
+      "logical_bytes": 615132195,
+      "allocated_unique_bytes": 620699648
+    },
+    {
+      "name": "plots_multiangle",
+      "files": 278,
+      "logical_bytes": 521274879,
+      "allocated_unique_bytes": 521814016
+    },
+    {
+      "name": "t7_bonsai",
+      "files": 838,
+      "logical_bytes": 339431261,
+      "allocated_unique_bytes": 341409792
+    },
+    {
+      "name": "tnt60_full_stage",
+      "files": 178,
+      "logical_bytes": 132628714,
+      "allocated_unique_bytes": 132988928
+    },
+    {
+      "name": "probe_queue",
+      "files": 385,
+      "logical_bytes": 78950797,
+      "allocated_unique_bytes": 80134144
+    },
+    {
+      "name": "best_stage_sweep",
+      "files": 60,
+      "logical_bytes": 50464380,
+      "allocated_unique_bytes": 50638848
+    },
+    {
+      "name": "baselines_t7_time",
+      "files": 821,
+      "logical_bytes": 26308578,
+      "allocated_unique_bytes": 28250112
+    },
+    {
+      "name": "baselines_t7_clean",
+      "files": 821,
+      "logical_bytes": 25621122,
+      "allocated_unique_bytes": 27561984
+    },
+    {
+      "name": "probe_r3fast_logs",
+      "files": 62,
+      "logical_bytes": 20737549,
+      "allocated_unique_bytes": 20832256
+    },
+    {
+      "name": "proto",
+      "files": 4,
+      "logical_bytes": 16146856,
+      "allocated_unique_bytes": 16162816
+    },
+    {
+      "name": "mip_ablation",
+      "files": 57,
+      "logical_bytes": 5786627,
+      "allocated_unique_bytes": 5963776
+    },
+    {
+      "name": "probe_round1.log",
+      "files": 1,
+      "logical_bytes": 3046319,
+      "allocated_unique_bytes": 3047424
+    },
+    {
+      "name": "probe_round2.log",
+      "files": 1,
+      "logical_bytes": 2427842,
+      "allocated_unique_bytes": 2428928
+    },
+    {
+      "name": "diag_bonsai100_noisesweep.log",
+      "files": 1,
+      "logical_bytes": 2277939,
+      "allocated_unique_bytes": 2281472
+    },
+    {
+      "name": "proto_floater_refine.log",
+      "files": 1,
+      "logical_bytes": 2272009,
+      "allocated_unique_bytes": 2273280
+    },
+    {
+      "name": "proto_flobs_validate.log",
+      "files": 1,
+      "logical_bytes": 2263456,
+      "allocated_unique_bytes": 2265088
+    },
+    {
+      "name": "proto_floater_validate.log",
+      "files": 1,
+      "logical_bytes": 2259125,
+      "allocated_unique_bytes": 2260992
+    },
+    {
+      "name": "gap_masks",
+      "files": 4,
+      "logical_bytes": 2034851,
+      "allocated_unique_bytes": 2048000
+    },
+    {
+      "name": "room_val_b.log",
+      "files": 1,
+      "logical_bytes": 1603001,
+      "allocated_unique_bytes": 1605632
+    },
+    {
+      "name": "room_val_a.log",
+      "files": 1,
+      "logical_bytes": 1560918,
+      "allocated_unique_bytes": 1564672
+    },
+    {
+      "name": "proto_floater.log",
+      "files": 1,
+      "logical_bytes": 1518414,
+      "allocated_unique_bytes": 1519616
+    },
+    {
+      "name": "proto_d3_pull.log",
+      "files": 1,
+      "logical_bytes": 1517732,
+      "allocated_unique_bytes": 1519616
+    },
+    {
+      "name": "diag_bonsai100_trainedhead.log",
+      "files": 1,
+      "logical_bytes": 1518991,
+      "allocated_unique_bytes": 1519616
+    },
+    {
+      "name": "diag_bonsai100_tangent.log",
+      "files": 1,
+      "logical_bytes": 1519004,
+      "allocated_unique_bytes": 1519616
+    },
+    {
+      "name": "diag_bonsai100_obsgate.log",
+      "files": 1,
+      "logical_bytes": 1518613,
+      "allocated_unique_bytes": 1519616
+    },
+    {
+      "name": "proto_d1_viewdir.log",
+      "files": 1,
+      "logical_bytes": 1515511,
+      "allocated_unique_bytes": 1515520
+    },
+    {
+      "name": "proto_omega.log",
+      "files": 1,
+      "logical_bytes": 1510618,
+      "allocated_unique_bytes": 1511424
+    },
+    {
+      "name": "proto_flobs.log",
+      "files": 1,
+      "logical_bytes": 1507345,
+      "allocated_unique_bytes": 1511424
+    },
+    {
+      "name": "proto_floater_thresh.log",
+      "files": 1,
+      "logical_bytes": 1507649,
+      "allocated_unique_bytes": 1511424
+    },
+    {
+      "name": "diag_tanobs_validate.log",
+      "files": 1,
+      "logical_bytes": 1504283,
+      "allocated_unique_bytes": 1507328
+    },
+    {
+      "name": "proto_extfield.log",
+      "files": 1,
+      "logical_bytes": 1498487,
+      "allocated_unique_bytes": 1499136
+    },
+    {
+      "name": "probe_queue0",
+      "files": 4,
+      "logical_bytes": 1105384,
+      "allocated_unique_bytes": 1114112
+    },
+    {
+      "name": "repro_bicycle20.log",
+      "files": 1,
+      "logical_bytes": 1073373,
+      "allocated_unique_bytes": 1077248
+    },
+    {
+      "name": "truck_00032_comp.png",
+      "files": 1,
+      "logical_bytes": 973705,
+      "allocated_unique_bytes": 974848
+    },
+    {
+      "name": "GS-LSS-R1.2-compare-20260928-142236",
+      "files": 66,
+      "logical_bytes": 792666,
+      "allocated_unique_bytes": 954368
+    },
+    {
+      "name": "diag_bonsai60_aa_eps05.log",
+      "files": 1,
+      "logical_bytes": 754201,
+      "allocated_unique_bytes": 757760
+    },
+    {
+      "name": "val_bonsai60_aa.log",
+      "files": 1,
+      "logical_bytes": 753524,
+      "allocated_unique_bytes": 753664
+    },
+    {
+      "name": "diag_bonsai60_aa_depthonly.log",
+      "files": 1,
+      "logical_bytes": 753544,
+      "allocated_unique_bytes": 753664
+    },
+    {
+      "name": "diag_bonsai60_aa_depth_nview3.log",
+      "files": 1,
+      "logical_bytes": 753587,
+      "allocated_unique_bytes": 753664
+    },
+    {
+      "name": "sweep_redesign.log",
+      "files": 1,
+      "logical_bytes": 746496,
+      "allocated_unique_bytes": 749568
+    },
+    {
+      "name": "diag_bicycle20_tangent.log",
+      "files": 1,
+      "logical_bytes": 746758,
+      "allocated_unique_bytes": 749568
+    },
+    {
+      "name": "diag_bicycle20_depth03.log",
+      "files": 1,
+      "logical_bytes": 746604,
+      "allocated_unique_bytes": 749568
+    },
+    {
+      "name": "diag_bicycle20_densifyfix.log",
+      "files": 1,
+      "logical_bytes": 746945,
+      "allocated_unique_bytes": 749568
+    },
+    {
+      "name": "diag_bicycle20_cpf200k.log",
+      "files": 1,
+      "logical_bytes": 746265,
+      "allocated_unique_bytes": 749568
+    },
+    {
+      "name": "bonsai_gt_contact.png",
+      "files": 1,
+      "logical_bytes": 729204,
+      "allocated_unique_bytes": 733184
+    },
+    {
+      "name": "diag_bicycle20_cpf500k.log",
+      "files": 1,
+      "logical_bytes": 445984,
+      "allocated_unique_bytes": 446464
+    },
+    {
+      "name": "watchdog.log",
+      "files": 1,
+      "logical_bytes": 227243,
+      "allocated_unique_bytes": 233472
+    },
+    {
+      "name": "best_stage_sweep.log",
+      "files": 1,
+      "logical_bytes": 175780,
+      "allocated_unique_bytes": 176128
+    },
+    {
+      "name": "sweep_results",
+      "files": 35,
+      "logical_bytes": 9095,
+      "allocated_unique_bytes": 143360
+    },
+    {
+      "name": "tnt60_ckpt",
+      "files": 13,
+      "logical_bytes": 51014,
+      "allocated_unique_bytes": 94208
+    },
+    {
+      "name": "sweep_sentinel.log",
+      "files": 1,
+      "logical_bytes": 83657,
+      "allocated_unique_bytes": 90112
+    },
+    {
+      "name": "keeper.log",
+      "files": 1,
+      "logical_bytes": 41673,
+      "allocated_unique_bytes": 49152
+    },
+    {
+      "name": "fix_cuml.log",
+      "files": 1,
+      "logical_bytes": 16980,
+      "allocated_unique_bytes": 20480
+    },
+    {
+      "name": "GS-LSS-reproduction-readiness-20260927",
+      "files": 4,
+      "logical_bytes": 7030,
+      "allocated_unique_bytes": 20480
+    },
+    {
+      "name": "watchdog0.log",
+      "files": 1,
+      "logical_bytes": 6097,
+      "allocated_unique_bytes": 8192
+    },
+    {
+      "name": "table_15k.md",
+      "files": 1,
+      "logical_bytes": 6736,
+      "allocated_unique_bytes": 8192
+    },
+    {
+      "name": "rebuild_sm89.log",
+      "files": 1,
+      "logical_bytes": 4270,
+      "allocated_unique_bytes": 8192
+    },
+    {
+      "name": "final_30k.md",
+      "files": 1,
+      "logical_bytes": 6734,
+      "allocated_unique_bytes": 8192
+    },
+    {
+      "name": "final_15k.md",
+      "files": 1,
+      "logical_bytes": 6734,
+      "allocated_unique_bytes": 8192
+    },
+    {
+      "name": "wsl_harvest.log",
+      "files": 1,
+      "logical_bytes": 51,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "watchdog0.pid",
+      "files": 1,
+      "logical_bytes": 8,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "watchdog0.heartbeat",
+      "files": 1,
+      "logical_bytes": 11,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "watchdog.pid",
+      "files": 1,
+      "logical_bytes": 8,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "watchdog.heartbeat",
+      "files": 1,
+      "logical_bytes": 11,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "t7_bonsai_launch.out",
+      "files": 1,
+      "logical_bytes": 1183,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "stage1_waiter.sh",
+      "files": 1,
+      "logical_bytes": 1609,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "stage1_waiter.out",
+      "files": 1,
+      "logical_bytes": 16,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "seq_runner0.log",
+      "files": 1,
+      "logical_bytes": 174,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "seq_runner.log",
+      "files": 1,
+      "logical_bytes": 983,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "rebuild_sm89_v2.log",
+      "files": 1,
+      "logical_bytes": 3518,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round9.log",
+      "files": 1,
+      "logical_bytes": 108,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round8.log",
+      "files": 1,
+      "logical_bytes": 747,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round7.log",
+      "files": 1,
+      "logical_bytes": 799,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round6.log",
+      "files": 1,
+      "logical_bytes": 695,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round5.log",
+      "files": 1,
+      "logical_bytes": 855,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round4.log",
+      "files": 1,
+      "logical_bytes": 403,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round3_fast.log",
+      "files": 1,
+      "logical_bytes": 1139,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round15.log",
+      "files": 1,
+      "logical_bytes": 604,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round14.log",
+      "files": 1,
+      "logical_bytes": 528,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round13.log",
+      "files": 1,
+      "logical_bytes": 373,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round12.log",
+      "files": 1,
+      "logical_bytes": 443,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round11.log",
+      "files": 1,
+      "logical_bytes": 482,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "probe_round10.log",
+      "files": 1,
+      "logical_bytes": 691,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "mvs_build_rm100.log",
+      "files": 1,
+      "logical_bytes": 472,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "mvs_build.log",
+      "files": 1,
+      "logical_bytes": 916,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "keeper.pid",
+      "files": 1,
+      "logical_bytes": 8,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "gpu1_peak_monitor.log",
+      "files": 1,
+      "logical_bytes": 2798,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "gap_eval_truck60.json",
+      "files": 1,
+      "logical_bytes": 641,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "gap_eval_bonsai60.json",
+      "files": 1,
+      "logical_bytes": 608,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "floater_map_truck60.json",
+      "files": 1,
+      "logical_bytes": 1034,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "floater_map_bonsai60.json",
+      "files": 1,
+      "logical_bytes": 828,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "baselines_t7_clean_relaunch.out",
+      "files": 1,
+      "logical_bytes": 685,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "baselines_t7_clean_launch.out",
+      "files": 1,
+      "logical_bytes": 1439,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "_t57_bonsai_poll.log",
+      "files": 1,
+      "logical_bytes": 1440,
+      "allocated_unique_bytes": 4096
+    },
+    {
+      "name": "proto_fullcpf_bonsai100.log",
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_unique_bytes": 0
+    }
+  ],
+  "root": "/data1/zhangao/outputs",
+  "host": "user",
+  "started": "2026-09-28T22:10:08.373804+08:00",
+  "elapsed_s": 98.93445587158203,
+  "disk_before": {
+    "total": 7937303740416,
+    "used": 7368773230592,
+    "free": 168435576832
+  },
+  "entries": 839467,
+  "errors": []
+}

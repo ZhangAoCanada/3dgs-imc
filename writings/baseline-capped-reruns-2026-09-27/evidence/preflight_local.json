@@ -1,0 +1,50 @@
+{
+  "3dgs": {
+    "status": "passed",
+    "smoke": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_06/seed_000000",
+    "iterations": 20,
+    "files_verified": 128,
+    "test_views": 56,
+    "metrics": {
+      "SSIM": 0.4611266553401947,
+      "PSNR": 13.671107292175293,
+      "LPIPS": 0.60687255859375
+    }
+  },
+  "mcmc": {
+    "status": "passed",
+    "smoke": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_59/seed_000000",
+    "iterations": 602,
+    "files_verified": 83,
+    "test_views": 34,
+    "metrics": {
+      "SSIM": 0.4201619625091553,
+      "PSNR": 13.054466247558594,
+      "LPIPS": 0.6224265098571777
+    }
+  },
+  "pgsr": {
+    "status": "passed",
+    "smoke": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_42/seed_000000",
+    "iterations": 7002,
+    "files_verified": 114,
+    "test_views": 20,
+    "metrics": {
+      "SSIM": 0.9187310338020325,
+      "PSNR": 28.60138511657715,
+      "LPIPS": 0.1389501839876175
+    }
+  },
+  "scaffold": {
+    "status": "passed",
+    "smoke": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/smokes_local/baseline_62/seed_000000",
+    "iterations": 1602,
+    "files_verified": 328,
+    "test_views": 154,
+    "metrics": {
+      "SSIM": 0.5205594301223755,
+      "PSNR": 14.235662460327148,
+      "LPIPS": 0.5464344024658203
+    }
+  }
+}

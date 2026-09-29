@@ -1,0 +1,23 @@
+{
+  "finished_at": "2026-09-28T22:45:12.482549+08:00",
+  "root": "/data1/zhangao/outputs",
+  "reclaimed_allocated_bytes": 171082084352,
+  "free_bytes": 375024480256,
+  "current": {
+    "0": {
+      "id": "baseline_59",
+      "method": "3DGS-MCMC",
+      "scene": "train_resize",
+      "seed": 1,
+      "gpu": "0",
+      "output": "/data1/zhangao/outputs/GS-LSS-baseline-capped-reruns-20260927/attempts_local/baseline_59/seed_000001",
+      "runner_pid": 1256612
+    }
+  },
+  "queue_status": "running_local_two_GPUs",
+  "selected": 27,
+  "report_links_checked": 13,
+  "audit_allocated_bytes": 152862720,
+  "compressed_evidence_integrity": "gzip -t passed for inventory.sqlite.gz and dedup_plan.jsonl.gz",
+  "verification_errors": 0
+}

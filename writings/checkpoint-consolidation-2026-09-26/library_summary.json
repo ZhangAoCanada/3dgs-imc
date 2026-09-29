@@ -1,0 +1,11 @@
+{
+  "main_rows": 1584,
+  "main_rows_with_local_checkpoint": 1383,
+  "unresolved_main_rows": 201,
+  "unresolved_scene_method_protocols": 67,
+  "unique_main_checkpoints": 530,
+  "selected_model_records": 747,
+  "valid_selected_models": 739,
+  "invalid_or_missing_selected_models": 8,
+  "ours_tables_I_II_unique_checkpoints": 131
+}

@@ -1,0 +1,85 @@
+{
+  "source_host": "hust2",
+  "source_run": "/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original",
+  "destination_host": "local (hust10)",
+  "destination_run": "/data1/zhangao/outputs/GS-LSS-paper-checkpoints/sources/hust2/data1/zhangao/outputs/baselines_aerial_ground/Zeche1/mh-3dgs-original",
+  "files": [
+    {
+      "relative": "point_cloud/iteration_30000/point_cloud.ply",
+      "size": 211688131,
+      "sha256": "1624fa6d9e15f19e1489ba52d6510334a751b396262df19b2c4daa6dea239a87",
+      "local_sha256": "1624fa6d9e15f19e1489ba52d6510334a751b396262df19b2c4daa6dea239a87",
+      "verified": true
+    },
+    {
+      "relative": "point_cloud/iteration_7000/point_cloud.ply",
+      "size": 160690899,
+      "sha256": "6a46cd8387c5610986347e2e5f2a877723d2f49c7953c602c458293cc19f56cb",
+      "local_sha256": "6a46cd8387c5610986347e2e5f2a877723d2f49c7953c602c458293cc19f56cb",
+      "verified": true
+    },
+    {
+      "relative": "events.out.tfevents.1772380136.user.60575.0",
+      "size": 88,
+      "sha256": "0b1b6b1af0e0356ddd1bf1563f215188db5314590be346ec70a3a5180587c151",
+      "local_sha256": "0b1b6b1af0e0356ddd1bf1563f215188db5314590be346ec70a3a5180587c151",
+      "verified": true
+    },
+    {
+      "relative": "exposure.json",
+      "size": 28814,
+      "sha256": "83e4c7e0398afdae5e16f56d784aa983c97c43ca1359f0c2c8a96b7c9cbe7265",
+      "local_sha256": "83e4c7e0398afdae5e16f56d784aa983c97c43ca1359f0c2c8a96b7c9cbe7265",
+      "verified": true
+    },
+    {
+      "relative": "events.out.tfevents.1772380109.user.59741.0",
+      "size": 88,
+      "sha256": "b92474bb6712db10de60ac8cab766702abcdc7075e1a83b15718b484dcf63bbe",
+      "local_sha256": "b92474bb6712db10de60ac8cab766702abcdc7075e1a83b15718b484dcf63bbe",
+      "verified": true
+    },
+    {
+      "relative": "events.out.tfevents.1772380163.user.61405.0",
+      "size": 55734624,
+      "sha256": "cfba3be6010c3cbf3c985e9bc6066e945e912d8e5631afd29e5dad17abf79a8b",
+      "local_sha256": "cfba3be6010c3cbf3c985e9bc6066e945e912d8e5631afd29e5dad17abf79a8b",
+      "verified": true
+    },
+    {
+      "relative": "results.json",
+      "size": 204,
+      "sha256": "c5d3aa036d4938bda8839995db927b9b8a6508fa4a72e10be45ced10df88e617",
+      "local_sha256": "c5d3aa036d4938bda8839995db927b9b8a6508fa4a72e10be45ced10df88e617",
+      "verified": true
+    },
+    {
+      "relative": "cameras.json",
+      "size": 131149,
+      "sha256": "3faee95bd42ab535a7b67feece13a29f5cdede99d7b9a302458c1df919538e07",
+      "local_sha256": "3faee95bd42ab535a7b67feece13a29f5cdede99d7b9a302458c1df919538e07",
+      "verified": true
+    },
+    {
+      "relative": "training_time.txt",
+      "size": 36,
+      "sha256": "65ebf99afa8b15ed8c3f8729ff210721e70d6e530ef5443c31fa590aed1d9bca",
+      "local_sha256": "65ebf99afa8b15ed8c3f8729ff210721e70d6e530ef5443c31fa590aed1d9bca",
+      "verified": true
+    },
+    {
+      "relative": "cfg_args",
+      "size": 357,
+      "sha256": "215578a1cc2ebdd2a71c9e38f4f02b10d9b55954cc9326710fbabf0b8e632f63",
+      "local_sha256": "215578a1cc2ebdd2a71c9e38f4f02b10d9b55954cc9326710fbabf0b8e632f63",
+      "verified": true
+    },
+    {
+      "relative": "per_view.json",
+      "size": 36771,
+      "sha256": "15321c20bdc3772b43d910ce298425dd9b588f89e9fe6b79c62ae25c1268bc54",
+      "local_sha256": "15321c20bdc3772b43d910ce298425dd9b588f89e9fe6b79c62ae25c1268bc54",
+      "verified": true
+    }
+  ]
+}

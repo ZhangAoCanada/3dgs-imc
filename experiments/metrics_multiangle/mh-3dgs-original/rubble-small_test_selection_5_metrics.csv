@@ -1,0 +1,2 @@
+scene,keyword,method,SSIM,PSNR,LPIPS,BRISQUE,NIQE,PIQE
+/data1/zhangao/outputs/baselines_multi_angle/rubble-small/mh-3dgs-original_test_selection_5,test,ours_30000,0.7605244517326355,23.851585388183594,0.25242799520492554,18.914417266845703,2.3719765842821374,29.80095863342285
